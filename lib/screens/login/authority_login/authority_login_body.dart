@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 import '../../components/loginsignupfooter.dart';
 import '../../components/userloginheader.dart';
+import 'authority_login.dart';
 
 class AuthorityLoginBody extends StatelessWidget {
   const AuthorityLoginBody({super.key});
@@ -11,63 +12,64 @@ class AuthorityLoginBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
-    return SingleChildScrollView(
-      child: SizedBox(
-        width: size.width,
-        height: size.height - 92,
-        child: Container(
-          margin: EdgeInsets.only(top: 10),
-          padding: EdgeInsets.only(
-            top: kDefaultPadding / 2,
-          ),
-          height: size.height * 0.79,
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(30, 30, 30, 1),
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(40.0),
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.only(top: 5),
+            padding: EdgeInsets.only(
+              top: kDefaultPadding / 2,
             ),
-            boxShadow: [
-              BoxShadow(
-                offset: Offset(0, -5),
-                color: kAuthorityColor.withOpacity(0.9),
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(30, 30, 30, 1),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(40.0),
               ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 2,
-                child: UserLoginHeader(
-                  size: size,
-                  bradius: 30.0,
-                  bgcolor: kBackgroundColor,
-                  shcolor: Color.fromRGBO(10, 10, 10, 1),
-                  fgcolor: kAuthorityColor,
-                  icon: Icons.work,
-                  title: "Authority",
-                  fsize: 18,
-                  press: () {},
-                  iconbg: kPrimaryColor,
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0, -5),
+                  color: kAuthorityColor.withOpacity(0.9),
                 ),
-              ),
-              Expanded(
-                flex: 14,
-                child: Container(),
-              ),
-              Expanded(
-                flex: 2,
-                child: LoginSignUpFooter(
-                  size: size,
-                  msg: "Contact support to register as an Authority.",
-                  btntext: "Support",
-                  fsize: 16,
-                  press: () {}, //Todo
+              ],
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: UserLoginHeader(
+                    size: size,
+                    bradius: 30.0,
+                    bgcolor: kBackgroundColor,
+                    shcolor: Color.fromRGBO(10, 10, 10, 1),
+                    fgcolor: kAuthorityColor,
+                    icon: Icons.work,
+                    title: "Authority Login",
+                    fsize: 16,
+                    press: () {
+                      Navigator.pop(context);
+                    },
+                    iconbg: kPrimaryColor,
+                  ),
                 ),
-              ),
-            ],
+                Expanded(
+                  flex: 14,
+                  child: Column(),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+        SizedBox(
+          height: size.height * 0.1,
+          child: LoginSignUpFooter(
+            size: size,
+            msg: "Contact support to register as an Authority.",
+            btntext: "Support",
+            fsize: 16,
+            press: () {}, //Todo
+          ),
+        )
+      ],
     );
   }
 }

@@ -5,8 +5,8 @@ import '../../../constants.dart';
 import '../../components/loginsignupfooter.dart';
 import '../../components/userloginheader.dart';
 
-class StudentLoginBody extends StatelessWidget {
-  const StudentLoginBody({super.key});
+class AdminLoginBody extends StatelessWidget {
+  const AdminLoginBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class StudentLoginBody extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   offset: Offset(0, -5),
-                  color: kStudentColor.withOpacity(0.9),
+                  color: kAdminColor.withOpacity(0.9),
                 ),
               ],
             ),
@@ -40,9 +40,9 @@ class StudentLoginBody extends StatelessWidget {
                     bradius: 30.0,
                     bgcolor: kBackgroundColor,
                     shcolor: Color.fromRGBO(10, 10, 10, 1),
-                    fgcolor: kStudentColor,
-                    icon: Icons.school,
-                    title: "Student Login",
+                    fgcolor: kAdminColor,
+                    icon: Icons.key,
+                    title: "Admin Login",
                     fsize: 16,
                     press: () {
                       Navigator.pop(context);
@@ -50,8 +50,10 @@ class StudentLoginBody extends StatelessWidget {
                     iconbg: kPrimaryColor,
                   ),
                 ),
-                Expanded(flex: 14, child: Container() //StudentLoginForm(),
-                    ),
+                Expanded(
+                  flex: 14,
+                  child: Column(),
+                ),
               ],
             ),
           ),
@@ -60,8 +62,8 @@ class StudentLoginBody extends StatelessWidget {
           height: size.height * 0.1,
           child: LoginSignUpFooter(
             size: size,
-            msg: "Don't have an account ?",
-            btntext: "Sign Up",
+            msg: "Contact support to register as an Admin.",
+            btntext: "Support",
             fsize: 16,
             press: () {}, //Todo
           ),

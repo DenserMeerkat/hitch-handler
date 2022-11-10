@@ -147,7 +147,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
             Material(
               type: MaterialType.transparency,
               child: InkWell(
-                onTap: () {}, //Todo
+                onTap: press,
                 borderRadius: BorderRadius.circular(bradius),
               ),
             ),

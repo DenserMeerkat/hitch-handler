@@ -16,7 +16,7 @@ class PopupMenu extends StatelessWidget {
         position: PopupMenuPosition.over,
         color: Color.fromRGBO(30, 30, 30, 1),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
         ),
         itemBuilder: (context) {
           return [

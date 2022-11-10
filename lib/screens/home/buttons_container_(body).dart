@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../components/customelevatedbutton.dart';
+import '../login/admin_login/admin_login.dart';
 import '../login/student_login/student_login.dart';
+import '../login/authority_login/authority_login.dart';
 
 class ButtonsContainer extends StatelessWidget {
   const ButtonsContainer({
@@ -52,7 +54,15 @@ class ButtonsContainer extends StatelessWidget {
               bradius: 40.0,
               fsize: 16.0,
               title: "Student",
-              press: () {},
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return StudentLoginScreen();
+                  }),
+                );
+                print("Done");
+              },
               icon: Icons.school,
             ),
             CustomElevatedButtonWithIcon(
@@ -62,7 +72,14 @@ class ButtonsContainer extends StatelessWidget {
               bradius: 40.0,
               fsize: 16.0,
               title: "Authority",
-              press: () {},
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return AuthorityLoginScreen();
+                  }),
+                );
+              },
               icon: Icons.work,
             ),
             CustomElevatedButtonWithIcon(
@@ -72,7 +89,14 @@ class ButtonsContainer extends StatelessWidget {
               bradius: 40.0,
               fsize: 16.0,
               title: "Admin",
-              press: () {},
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return AdminLoginScreen();
+                  }),
+                );
+              },
               icon: Icons.key,
             ),
           ],

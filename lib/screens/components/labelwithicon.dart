@@ -53,8 +53,8 @@ class LabelWithIcon extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(
-              left: kDefaultPadding * 1,
-              right: kDefaultPadding * 2,
+              left: kDefaultPadding * 0.75,
+              right: kDefaultPadding * 1.5,
               top: kDefaultPadding / 2,
               bottom: kDefaultPadding / 2,
             ),
