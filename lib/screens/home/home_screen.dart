@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/components/popupmenu.dart';
-import 'package:hitch_handler/screens/home/body_(home_screen).dart';
+import '../../constants.dart';
+import '../components/popupmenu.dart';
+import 'body_(home_screen).dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

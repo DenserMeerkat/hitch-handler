@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/home/buttons_container_(body).dart';
+import '../../constants.dart';
+import 'buttons_container_(body).dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
