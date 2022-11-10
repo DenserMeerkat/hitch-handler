@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/components/customelevatedbutton.dart';
-import 'package:hitch_handler/screens/login/student_login/student_login.dart';
+import '../../constants.dart';
+import '../components/customelevatedbutton.dart';
+import '../login/student_login/student_login.dart';
 
 class ButtonsContainer extends StatelessWidget {
   const ButtonsContainer({

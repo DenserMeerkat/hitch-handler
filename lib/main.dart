@@ -2,9 +2,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'constants.dart';
-import 'package:hitch_handler/screens/home/home_screen.dart';
-import 'package:hitch_handler/screens/login/student_login/student_login.dart';
-import 'package:hitch_handler/screens/login/authority_login/authority_login.dart';
+import 'screens/home/home_screen.dart';
+import 'screens/login/student_login/student_login.dart';
+import 'screens/login/authority_login/authority_login.dart';
 
 void main() {
   runApp(const MyApp());

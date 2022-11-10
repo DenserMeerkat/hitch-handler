@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/login/authority_login/authority_login_body.dart';
+import '../../../constants.dart';
+import 'authority_login_body.dart';
 
 class AuthorityLoginScreen extends StatelessWidget {
   const AuthorityLoginScreen({super.key});
