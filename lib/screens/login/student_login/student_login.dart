@@ -2,8 +2,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
-import '../../components/popupmenu.dart';
-import '../../home/body_(home_screen).dart';
 import 'student_login_body.dart';
 
 class StudentLoginScreen extends StatelessWidget {
@@ -12,6 +10,7 @@ class StudentLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: kBackgroundColor,
@@ -28,7 +27,7 @@ class StudentLoginScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: LoginBody(),
+      body: StudentLoginBody(),
     );
   }
 }

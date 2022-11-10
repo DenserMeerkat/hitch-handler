@@ -36,7 +36,7 @@ class UserLoginHeader extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         left: size.width * 0.075,
-        right: size.width * 0.1,
+        right: size.width * 0.075,
       ),
       child: Row(
         children: [
