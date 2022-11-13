@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-// ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
@@ -92,7 +90,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: shcolor,
-            offset: Offset(1, 2),
+            offset: const Offset(1, 2),
           )
         ],
       ),
@@ -115,7 +113,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                     borderRadius: BorderRadius.circular(bradius),
                     boxShadow: [
                       BoxShadow(
-                        offset: Offset(1, 0),
+                        offset: const Offset(1, 0),
                         color: shcolor,
                       )
                     ],
@@ -129,7 +127,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(right: kDefaultPadding),
+                    padding: const EdgeInsets.only(right: kDefaultPadding),
                     child: Text(
                       title,
                       textAlign: TextAlign.center,
