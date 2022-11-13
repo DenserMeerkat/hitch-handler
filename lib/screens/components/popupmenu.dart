@@ -14,6 +14,10 @@ class PopupMenu extends StatelessWidget {
         splashRadius: 25.0,
         offset: Offset(-10, 10),
         position: PopupMenuPosition.over,
+        icon: Icon(
+          Icons.more_vert,
+          color: kTextColor.withOpacity(0.6),
+        ),
         color: Color.fromRGBO(30, 30, 30, 1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),

@@ -61,7 +61,7 @@ class LoginSignUpFooter extends StatelessWidget {
                 onPressed: press, //todo,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
+                    borderRadius: BorderRadius.circular(10.0),
                     border: Border.all(
                       width: 2.0,
                       color: kTextColor.withOpacity(0.7),

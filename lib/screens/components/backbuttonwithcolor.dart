@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-// ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
@@ -20,29 +18,38 @@ class BackButtonWithColor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: iconbg,
-        borderRadius: BorderRadius.circular(30.0),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 2),
-            color: shcolor,
-          ),
-        ],
-      ),
-      child: IconButton(
-        onPressed: press,
-        icon: Icon(
-          Icons.arrow_back,
-          shadows: [
-            Shadow(
-              offset: Offset(1, 1),
-              blurRadius: 5,
-              color: bgcolor.withOpacity(0.5),
+        decoration: BoxDecoration(
+            color: iconbg.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(30.0),
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(0, 2),
+                color: shcolor,
+              ),
+            ],
+            border: Border.all(
+              width: 2.0,
+              color: iconbg,
+            )),
+        child: Material(
+          color: Colors.transparent,
+          shape: const CircleBorder(),
+          clipBehavior: Clip.hardEdge,
+          child: IconButton(
+            splashRadius: 50.0,
+            splashColor: Colors.white.withOpacity(0.2),
+            onPressed: press,
+            icon: Icon(
+              Icons.arrow_back,
+              shadows: [
+                Shadow(
+                  offset: const Offset(1, 1),
+                  blurRadius: 5,
+                  color: bgcolor.withOpacity(0.5),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

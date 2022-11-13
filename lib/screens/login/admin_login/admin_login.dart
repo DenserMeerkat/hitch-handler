@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
+import '../login_form.dart';
 import 'admin_login_body.dart';
 
 class AdminLoginScreen extends StatelessWidget {
@@ -10,24 +11,14 @@ class AdminLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: kBackgroundColor,
-        foregroundColor: kTextColor,
-        elevation: 0,
-        title: Text(
-          "HITCH  HANDLER",
+      body: SingleChildScrollView(
+          child: AdminLoginBody(
+        title: "Admin",
+        fgcolor: kAdminColor,
+        formwidget: LoginForm(
+          fgcolor: kAdminColor,
         ),
-        titleTextStyle: TextStyle(
-          color: kTextColor.withOpacity(0.7),
-          fontWeight: FontWeight.bold,
-          fontSize: 12,
-          letterSpacing: 2,
-        ),
-        centerTitle: true,
-      ),
-      body: AdminLoginBody(),
+      )),
     );
   }
 }

@@ -43,8 +43,12 @@ class LabelWithIcon extends StatelessWidget {
             padding: EdgeInsets.symmetric(
                 vertical: kDefaultPadding / 2, horizontal: kDefaultPadding),
             decoration: BoxDecoration(
-              color: fgcolor,
+              color: fgcolor.withOpacity(0.9),
               borderRadius: BorderRadius.circular(bradius),
+              border: Border.all(
+                width: 3.0,
+                color: fgcolor,
+              ),
             ),
             child: Icon(
               icon,
