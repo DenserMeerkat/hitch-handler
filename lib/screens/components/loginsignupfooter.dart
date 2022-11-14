@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-// ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
@@ -56,6 +54,7 @@ class LoginSignUpFooter extends StatelessWidget {
                     if (states.contains(MaterialState.pressed)) {
                       return Colors.white.withOpacity(0.1);
                     }
+                    return null;
                   }),
                 ),
                 onPressed: press, //todo,
@@ -70,7 +69,8 @@ class LoginSignUpFooter extends StatelessWidget {
                   child: Center(
                     child: Text(
                       btntext,
-                      style: TextStyle(color: kTextColor, letterSpacing: 1),
+                      style:
+                          const TextStyle(color: kTextColor, letterSpacing: 1),
                     ),
                   ),
                 ),

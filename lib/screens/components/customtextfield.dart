@@ -1,43 +1,5 @@
 import 'package:flutter/material.dart';
 
-// class Field {
-//   String hint = 'E-mail';
-//   IconData icon = Icons.alternate_email;
-//   Field({required String hint, required IconData icon}) {
-//     hint = hint;
-//     icon = icon;
-//   }
-// }
-
-// class Fields {
-//   int _current_index = 0;
-
-//   final List<Field> _fields = [
-//     Field(hint: 'E-mail', icon: Icons.alternate_email),
-//     Field(hint: 'Phone', icon: Icons.call),
-//     Field(hint: 'ID Number', icon: Icons.badge),
-//   ];
-
-//   void nextField() {
-//     if (_current_index < 2) {
-//       _current_index += 1;
-//     } else {
-//       _current_index = 0;
-//     }
-//     print(_current_index);
-//   }
-
-//   String getHintText() {
-//     print(_fields[_current_index].hint);
-//     return _fields[_current_index].hint;
-//   }
-
-//   IconData getIconData() {
-//     print(_fields[_current_index].icon);
-//     return _fields[_current_index].icon;
-//   }
-// }
-
 class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
