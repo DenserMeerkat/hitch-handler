@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-// ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
@@ -26,13 +24,13 @@ class LabelWithIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(0.0),
+      padding: const EdgeInsets.all(0.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(bradius),
         color: bgcolor,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
             color: shcolor,
           ),
         ],
@@ -40,7 +38,7 @@ class LabelWithIcon extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
                 vertical: kDefaultPadding / 2, horizontal: kDefaultPadding),
             decoration: BoxDecoration(
               color: fgcolor.withOpacity(0.9),
@@ -56,7 +54,7 @@ class LabelWithIcon extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: kDefaultPadding * 0.75,
               right: kDefaultPadding * 1.5,
               top: kDefaultPadding / 2,

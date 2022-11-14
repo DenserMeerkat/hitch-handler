@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-// ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../components/popupmenu.dart';
@@ -15,7 +13,7 @@ class HomeScreenBody extends StatelessWidget {
       children: [
         Container(
           height: size.height * 0.95,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color.fromRGBO(30, 30, 30, 1),
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(20.0),
@@ -32,7 +30,7 @@ class HomeScreenBody extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   top: 20,
                 ),
                 height: size.height * 0.10,
@@ -49,11 +47,11 @@ class HomeScreenBody extends StatelessWidget {
                           color: kTextColor.withOpacity(0.6),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: kDefaultPadding / 2,
                       ),
                       //PopupMenu(),
-                      SizedBox(
+                      const SizedBox(
                         width: kDefaultPadding,
                       )
                     ],
@@ -107,7 +105,7 @@ class LogoContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: size.height * 0.45,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: kBackgroundColor,
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(40.0),

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-// ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'backbuttonwithcolor.dart';
 import 'labelwithicon.dart';
@@ -17,8 +15,10 @@ class UserLoginHeader extends StatelessWidget {
     required this.fsize,
     required this.press,
     required this.iconbg,
+    this.herotag,
   }) : super(key: key);
 
+  final Object? herotag;
   final Color shcolor;
   final Function()? press;
   final Color bgcolor;
@@ -40,14 +40,20 @@ class UserLoginHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          LabelWithIcon(
-            bradius: bradius,
-            bgcolor: bgcolor,
-            shcolor: shcolor,
-            fgcolor: fgcolor,
-            icon: icon,
-            title: title,
-            fsize: fsize,
+          Hero(
+            tag: herotag!,
+            child: Material(
+              type: MaterialType.transparency,
+              child: LabelWithIcon(
+                bradius: bradius,
+                bgcolor: bgcolor,
+                shcolor: shcolor,
+                fgcolor: fgcolor,
+                icon: icon,
+                title: title,
+                fsize: fsize,
+              ),
+            ),
           ),
           Spacer(),
           BackButtonWithColor(

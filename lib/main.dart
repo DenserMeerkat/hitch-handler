@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-// ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'screens/home/home_screen.dart';
@@ -23,7 +21,7 @@ class MyApp extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
         //inputDecorationTheme: InputTheme().theme(),
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
