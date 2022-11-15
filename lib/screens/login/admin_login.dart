@@ -36,10 +36,10 @@ class AdminLoginScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
           child: LoginBody(
-        title: title,
-        fgcolor: fgcolor,
         formwidget: LoginForm(
+          title: title,
           fgcolor: fgcolor,
+          icon: icon,
         ),
         footerwidget: LoginSignUpFooter(
           size: size,

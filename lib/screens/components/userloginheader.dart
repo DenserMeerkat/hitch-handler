@@ -18,6 +18,7 @@ class UserLoginHeader extends StatelessWidget {
     this.herotag,
   }) : super(key: key);
 
+  final Size size;
   final Object? herotag;
   final Color shcolor;
   final Function()? press;
@@ -29,7 +30,25 @@ class UserLoginHeader extends StatelessWidget {
   final String title;
   final double fsize;
 
-  final Size size;
+  Widget labelwithicon() {
+    Widget labelicon = LabelWithIcon(
+      bradius: bradius,
+      bgcolor: bgcolor,
+      shcolor: shcolor,
+      fgcolor: fgcolor,
+      icon: icon,
+      title: title,
+      fsize: fsize,
+    );
+    if (herotag != null) {
+      return Hero(
+        tag: herotag!,
+        child: Material(type: MaterialType.transparency, child: labelicon),
+      );
+    } else {
+      return labelicon;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,22 +59,8 @@ class UserLoginHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Hero(
-            tag: herotag!,
-            child: Material(
-              type: MaterialType.transparency,
-              child: LabelWithIcon(
-                bradius: bradius,
-                bgcolor: bgcolor,
-                shcolor: shcolor,
-                fgcolor: fgcolor,
-                icon: icon,
-                title: title,
-                fsize: fsize,
-              ),
-            ),
-          ),
-          Spacer(),
+          labelwithicon(),
+          const Spacer(),
           BackButtonWithColor(
             shcolor: shcolor,
             press: press,

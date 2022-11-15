@@ -34,15 +34,14 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
         scrollPadding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom + 80),
         style: const TextStyle(
-          fontSize: 20.0,
-          letterSpacing: 2,
+          fontSize: 16.0,
+          letterSpacing: 1,
         ),
         cursorColor: fgcolor,
-        cursorHeight: 20.0,
+        cursorHeight: 16.0,
         obscureText: _obscureText,
         enableSuggestions: false,
         autocorrect: false,
-        keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           suffixIcon: GestureDetector(
             onTap: () {
@@ -59,6 +58,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               },
               icon: Icon(
                 _obscureText ? Icons.visibility : Icons.visibility_off,
+                color: fgcolor,
                 size: 18,
               ),
             ),
@@ -66,7 +66,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
           suffixIconColor: fgcolor,
           icon: Container(
             height: 50,
-            width: 60,
+            width: 50,
             decoration: const BoxDecoration(
               color: Color.fromRGBO(20, 20, 20, 1),
               borderRadius: BorderRadius.horizontal(

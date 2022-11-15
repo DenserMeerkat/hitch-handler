@@ -36,10 +36,10 @@ class AuthorityLoginScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
           child: LoginBody(
-        title: title,
-        fgcolor: fgcolor,
         formwidget: LoginForm(
           fgcolor: fgcolor,
+          title: title,
+          icon: icon,
         ),
         footerwidget: LoginSignUpFooter(
           size: size,

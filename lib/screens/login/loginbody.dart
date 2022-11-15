@@ -4,13 +4,9 @@ import '../../constants.dart';
 class LoginBody extends StatelessWidget {
   const LoginBody({
     super.key,
-    required this.fgcolor,
-    required this.title,
     required this.formwidget,
     required this.footerwidget,
   });
-  final Color fgcolor;
-  final String title;
   final Widget formwidget;
   final Widget footerwidget;
   @override
