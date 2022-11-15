@@ -4,14 +4,17 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     required this.fgcolor,
+    this.index = 3,
   });
   final Color fgcolor;
+  final int index;
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState(fgcolor);
+  State<CustomTextField> createState() => _CustomTextFieldState(fgcolor, index);
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
   Color fgcolor;
+  final int index;
   int count = 0;
   String hinttext = "E-mail";
   IconData icondata = Icons.alternate_email;
@@ -25,7 +28,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     Icons.call,
     Icons.badge,
   ];
-  _CustomTextFieldState(this.fgcolor);
+  _CustomTextFieldState(this.fgcolor, this.index);
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +46,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       child: TextFormField(
         style: const TextStyle(
-          fontSize: 20.0,
-          letterSpacing: 2,
+          fontSize: 16.0,
         ),
         cursorColor: fgcolor,
         cursorHeight: 20.0,
-        enableSuggestions: false,
         autocorrect: false,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
@@ -70,7 +71,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               onPressed: () {
                 setState(() {
                   //__________________SET STATE___________
-                  if (count < 2) {
+                  if (count < index - 1) {
                     count += 1;
                   } else {
                     count = 0;
@@ -82,13 +83,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
               icon: Icon(
                 icondata,
                 size: 20.0,
+                color: fgcolor,
               ), //_________________ICON DATA____________
             ),
           ),
           suffixIconColor: fgcolor,
           icon: Container(
             height: 50,
-            width: 60,
+            width: 50,
             decoration: const BoxDecoration(
               color: Color.fromRGBO(20, 20, 20, 1),
               borderRadius: BorderRadius.horizontal(

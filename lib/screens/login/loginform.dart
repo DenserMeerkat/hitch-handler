@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/components/customtextfield.dart';
-
+import '../../constants.dart';
+import '../components/customsubmitbutton.dart';
+import '../components/customtextfield.dart';
+import 'forgot_screen.dart';
 import '../components/custompasswordfield.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
     super.key,
     required this.fgcolor,
+    required this.title,
+    required this.icon,
   });
   final Color fgcolor;
+  final String title;
+  final IconData icon;
   @override
-  State<LoginForm> createState() => _LoginFormState(fgcolor);
+  State<LoginForm> createState() => _LoginFormState(fgcolor, title, icon);
 }
 
 class _LoginFormState extends State<LoginForm> {
-  _LoginFormState(this.fgcolor);
+  _LoginFormState(this.fgcolor, this.title, this.icon);
   final Color fgcolor;
+  final String title;
+  final IconData icon;
   final _formLoginKey = GlobalKey<FormState>();
   final List<String> errors = [];
 
@@ -41,7 +48,18 @@ class _LoginFormState extends State<LoginForm> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return ForgotPage(
+                        fgcolor: fgcolor,
+                        title: title,
+                        icon: icon,
+                      );
+                    }),
+                  );
+                },
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.resolveWith((states) {
                     return Colors.white.withOpacity(0.08);
@@ -75,76 +93,12 @@ class _LoginFormState extends State<LoginForm> {
           CustomSubmitButton(
             size: size,
             bgcolor: kPrimaryColor,
+            msg: "Continue",
+            fsize: 18,
+            width: 0.15,
+            press: () {}, //Todo
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CustomSubmitButton extends StatelessWidget {
-  const CustomSubmitButton({
-    super.key,
-    required this.size,
-    required this.bgcolor,
-  });
-  final Color bgcolor;
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: const [
-            BoxShadow(
-              offset: Offset(2, 2),
-              color: Color.fromRGBO(10, 10, 10, 1),
-            )
-          ]),
-      child: TextButton(
-        onPressed: () {},
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
-            return bgcolor.withOpacity(0.8);
-          }),
-          foregroundColor: MaterialStateProperty.resolveWith((states) {
-            return const Color.fromRGBO(10, 10, 10, 1);
-          }),
-          shadowColor: MaterialStateProperty.resolveWith((states) {
-            return const Color.fromRGBO(10, 10, 10, 1);
-          }),
-          overlayColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.pressed)) {
-              return Colors.white.withOpacity(0.3);
-            }
-          }),
-          shape: MaterialStateProperty.resolveWith((states) {
-            return RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            );
-          }),
-          side: MaterialStateProperty.resolveWith((states) {
-            return BorderSide(
-              width: 2,
-              color: bgcolor,
-            );
-          }),
-          padding: MaterialStateProperty.resolveWith((states) {
-            return EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: size.width * 0.2,
-            );
-          }),
-        ),
-        child: const Text(
-          "Sign In",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1,
-          ),
-        ),
       ),
     );
   }
