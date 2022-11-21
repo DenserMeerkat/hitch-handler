@@ -33,7 +33,15 @@ class LoginContent extends StatelessWidget {
         children: [
           Container(
             height: size.height * 0.670,
-            color: const Color.fromRGBO(30, 30, 30, 1),
+            decoration: const BoxDecoration(
+              color: Color.fromRGBO(30, 30, 30, 1),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0, 3),
+                  color: Colors.black,
+                ),
+              ],
+            ),
             padding: EdgeInsets.only(
               top: 0,
               left: size.width * 0.1,

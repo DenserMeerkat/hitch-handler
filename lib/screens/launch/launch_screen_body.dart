@@ -3,8 +3,8 @@ import '../../constants.dart';
 import '../components/popupmenu.dart';
 import 'buttonscontainer.dart';
 
-class HomeScreenBody extends StatelessWidget {
-  const HomeScreenBody({super.key});
+class LaunchScreenBody extends StatelessWidget {
+  const LaunchScreenBody({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/constants.dart';
 import 'backbuttonwithcolor.dart';
 import 'labelwithicon.dart';
 
 class UserLoginHeader extends StatelessWidget {
   const UserLoginHeader({
     Key? key,
-    required this.size,
-    required this.bradius,
-    required this.bgcolor,
-    required this.shcolor,
+    this.bradius = 30.0,
+    this.bgcolor = kBackgroundColor,
+    this.shcolor = const Color.fromRGBO(10, 10, 10, 1),
+    this.fsize = 16,
+    this.herotag,
+    required this.press,
+    required this.iconbg,
     required this.fgcolor,
     required this.icon,
     required this.title,
-    required this.fsize,
-    required this.press,
-    required this.iconbg,
-    this.herotag,
   }) : super(key: key);
 
-  final Size size;
   final Object? herotag;
   final Color shcolor;
   final Function()? press;
@@ -52,6 +51,7 @@ class UserLoginHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.only(
         left: size.width * 0.075,

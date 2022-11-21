@@ -4,16 +4,19 @@ class CustomPasswordField extends StatefulWidget {
   const CustomPasswordField({
     super.key,
     required this.fgcolor,
+    this.hinttext = "Password",
   });
   final Color fgcolor;
+  final String hinttext;
   @override
   State<CustomPasswordField> createState() =>
-      _CustomPasswordFieldState(fgcolor);
+      _CustomPasswordFieldState(fgcolor, hinttext);
 }
 
 class _CustomPasswordFieldState extends State<CustomPasswordField> {
   final Color fgcolor;
-  _CustomPasswordFieldState(this.fgcolor);
+  final String hinttext;
+  _CustomPasswordFieldState(this.fgcolor, this.hinttext);
   bool _obscureText = true;
 
   @override
@@ -24,9 +27,8 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: const [
           BoxShadow(
-            offset: Offset(1, 1),
-            blurRadius: 1,
-            color: Color.fromRGBO(10, 10, 10, 1),
+            offset: Offset(1, 2),
+            color: Color.fromRGBO(20, 20, 20, 1),
           )
         ],
       ),
@@ -86,11 +88,11 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               color: fgcolor,
             ),
           ),
-          hintText: "Password",
+          hintText: hinttext,
           hintStyle: const TextStyle(
             fontSize: 15.0,
             color: Color.fromRGBO(90, 90, 90, 1),
-            letterSpacing: 1,
+            letterSpacing: 0.5,
           ),
           floatingLabelBehavior: FloatingLabelBehavior.never,
           floatingLabelAlignment: FloatingLabelAlignment.start,

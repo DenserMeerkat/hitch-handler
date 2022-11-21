@@ -38,9 +38,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: const [
           BoxShadow(
-            offset: Offset(1, 1),
-            blurRadius: 1,
-            color: Color.fromRGBO(10, 10, 10, 1),
+            offset: Offset(1, 2),
+            color: Color.fromRGBO(20, 20, 20, 1),
           )
         ],
       ),
@@ -67,7 +66,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               });
             },
             child: IconButton(
-              splashRadius: 50.0,
+              splashRadius: 20.0,
               onPressed: () {
                 setState(() {
                   //__________________SET STATE___________

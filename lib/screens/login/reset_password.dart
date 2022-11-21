@@ -3,8 +3,8 @@ import '../../constants.dart';
 import 'customsigninappbar.dart';
 import 'otpform.dart';
 
-class OtpPage extends StatelessWidget {
-  const OtpPage({
+class ResetPasswordPage extends StatelessWidget {
+  const ResetPasswordPage({
     super.key,
     required this.fgcolor,
     required this.title,
@@ -46,7 +46,7 @@ class OtpPage extends StatelessWidget {
                 height: size.height * 0.02,
               ),
               const Text(
-                "OTP Verification",
+                "Reset Password",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: kTextColor,
@@ -58,7 +58,7 @@ class OtpPage extends StatelessWidget {
               SizedBox(
                 height: size.height * 0.05,
               ),
-              const Text("An OTP has been sent to 91****2345"),
+//              const Text("An OTP has been sent to 91****2345"),
               SizedBox(
                 height: size.height * 0.02,
               ),

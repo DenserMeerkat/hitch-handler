@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'constants.dart';
-import 'screens/home/home_screen.dart';
+import 'screens/launch/launch_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,15 +18,15 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
+      //showPerformanceOverlay: true,
       debugShowCheckedModeBanner: false,
       title: 'Hitch Handler',
       theme: ThemeData(
         scaffoldBackgroundColor: kBackgroundColor,
         primaryColor: kPrimaryColor,
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-        //inputDecorationTheme: InputTheme().theme(),
       ),
-      home: const HomeScreen(),
+      home: const LaunchScreen(),
     );
   }
 }

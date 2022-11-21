@@ -23,7 +23,7 @@ class CustomSubmitButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           boxShadow: const [
             BoxShadow(
-              offset: Offset(2, 2),
+              offset: Offset(1, 2),
               color: Color.fromRGBO(10, 10, 10, 1),
             )
           ]),
