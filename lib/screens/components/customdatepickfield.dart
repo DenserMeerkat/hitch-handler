@@ -1,39 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../string_extensions.dart';
 import '../../constants.dart';
 import 'customerrormsg.dart';
 
-class CustomPasswordField extends StatefulWidget {
-  const CustomPasswordField({
+class CustomDatePickField extends StatefulWidget {
+  const CustomDatePickField({
     super.key,
     required this.fgcolor,
-    this.hinttext = "Password",
+    this.hinttext = "Date of Birth",
   });
   final Color fgcolor;
   final String hinttext;
   @override
-  State<CustomPasswordField> createState() =>
-      _CustomPasswordFieldState(fgcolor, hinttext);
+  State<CustomDatePickField> createState() =>
+      _CustomDatePickFieldState(fgcolor, hinttext);
 }
 
-class _CustomPasswordFieldState extends State<CustomPasswordField> {
+class _CustomDatePickFieldState extends State<CustomDatePickField> {
   final Color fgcolor;
   final String hinttext;
-  _CustomPasswordFieldState(this.fgcolor, this.hinttext);
-  bool _obscureText = true;
+  _CustomDatePickFieldState(this.fgcolor, this.hinttext);
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
 
   void validateField(String? value) {
+    String errormsg = "";
     if (value!.isWhitespace()) {
-      setState(() {
-        errorText = "Password can\'t be empty!";
-      });
-    } else {
-      errorText = "";
+      errormsg = "$hinttext can\'t be empty!";
+    } else if (value.isValidName()) {
+      errormsg = "";
     }
+    setState(() {
+      errorText = errormsg;
+    });
   }
+
+  TextEditingController _textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +57,24 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               ],
             ),
             child: TextFormField(
-              onChanged: (value) {
-                validateField(value);
-              },
               validator: (value) {
                 validateField(value);
               },
+              showCursor: true,
+              readOnly: true,
+              onTap: () async {
+                DateTime? pickeddate = await showCustomDatePicker(context);
+                if (pickeddate != null) {
+                  setState(() {
+                    _textEditingController.text =
+                        DateFormat('dd-MM-yyyy').format(pickeddate);
+                  });
+                }
+              },
+              controller: _textEditingController,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
+              keyboardType: TextInputType.name,
               scrollPadding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom + 80),
               style: const TextStyle(
@@ -67,21 +83,31 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               ),
               cursorColor: fgcolor,
               cursorHeight: 16.0,
-              obscureText: _obscureText,
-              enableSuggestions: false,
-              autocorrect: false,
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    DateTime? pickeddate = await showCustomDatePicker(context);
+                    if (pickeddate != null) {
+                      setState(() {
+                        _textEditingController.text =
+                            DateFormat('dd-MM-yyyy').format(pickeddate);
+                      });
+                    }
+                  },
                   child: IconButton(
                     splashRadius: 50.0,
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
+                    onPressed: () async {
+                      DateTime? pickeddate =
+                          await showCustomDatePicker(context);
+                      if (pickeddate != null) {
+                        setState(() {
+                          _textEditingController.text =
+                              DateFormat('dd-MM-yyyy').format(pickeddate);
+                        });
+                      }
                     },
                     icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                      Icons.edit_calendar_outlined,
                       color: fgcolor,
                       size: 18,
                     ),
@@ -106,7 +132,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                   ),
                   padding: const EdgeInsets.all(10.0),
                   child: Icon(
-                    Icons.password,
+                    Icons.date_range,
                     color: fgcolor,
                   ),
                 ),
@@ -148,5 +174,47 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
         ],
       );
     });
+  }
+
+  Future<DateTime?> showCustomDatePicker(BuildContext context) {
+    return showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1940),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+                onPrimary: kBackgroundColor, // selected text color
+                onSurface: kTextColor, // default text color
+                primary: fgcolor.withOpacity(0.9) // circle color
+                ),
+            dialogBackgroundColor: const Color.fromRGBO(40, 40, 40, 1),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                textStyle: TextStyle(
+                  color: fgcolor,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                  fontSize: 12,
+                ),
+                foregroundColor: kBackgroundColor, // color of button's letters
+                backgroundColor: fgcolor.withOpacity(0.8), // Background color
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: fgcolor,
+                    width: 1,
+                    style: BorderStyle.solid,
+                  ),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
   }
 }

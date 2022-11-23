@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'forgotmodal.dart';
+import '../home/student_home.dart';
 import '../../constants.dart';
 import '../components/customsubmitbutton.dart';
 import '../components/customtextfield.dart';
-import 'forgot_screen.dart';
 import '../components/custompasswordfield.dart';
 
 class LoginForm extends StatefulWidget {
@@ -27,6 +28,24 @@ class _LoginFormState extends State<LoginForm> {
   final _formLoginKey = GlobalKey<FormState>();
   final List<String> errors = [];
 
+  void showBottomSheet() {
+    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+    showModalBottomSheet(
+        backgroundColor: const Color.fromRGBO(30, 30, 30, 1),
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+        context: context,
+        builder: (context) {
+          return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child:
+                  ForgotModalForm(fgcolor: fgcolor, title: title, icon: icon));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -36,29 +55,17 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           CustomTextField(fgcolor: fgcolor),
           SizedBox(
-            height: size.height * 0.05,
+            height: size.height * 0.025,
           ),
           CustomPasswordField(
             fgcolor: fgcolor,
-          ),
-          SizedBox(
-            height: size.height * 0.025,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return ForgotPage(
-                        fgcolor: fgcolor,
-                        title: title,
-                        icon: icon,
-                      );
-                    }),
-                  );
+                  showBottomSheet();
                 },
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.resolveWith((states) {
@@ -96,7 +103,18 @@ class _LoginFormState extends State<LoginForm> {
             msg: "Continue",
             fsize: 18,
             width: 0.15,
-            press: () {}, //Todo
+            press: () {
+              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+              if (_formLoginKey.currentState!.validate()) {
+                _formLoginKey.currentState!.save();
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return const StudentHomeScreen();
+                }),
+              );
+            }, //Todo
           ),
         ],
       ),

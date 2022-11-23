@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
-class LoginBody extends StatelessWidget {
-  const LoginBody({
+class SignupBody extends StatelessWidget {
+  const SignupBody({
     super.key,
     required this.formwidget,
     required this.footerwidget,
@@ -11,18 +11,19 @@ class LoginBody extends StatelessWidget {
   final Widget footerwidget;
   @override
   Widget build(BuildContext context) {
-    return LoginContent(formwidget: formwidget, footerwidget: footerwidget);
+    return SignupContent(formwidget: formwidget, footerwidget: footerwidget);
   }
 }
 
-class LoginContent extends StatelessWidget {
-  const LoginContent({
+class SignupContent extends StatelessWidget {
+  const SignupContent({
     super.key,
     required this.formwidget,
     required this.footerwidget,
   });
   final Widget formwidget;
   final Widget footerwidget;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
@@ -51,7 +52,7 @@ class LoginContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Welcome Back!",
+                  "Create an Account",
                   style: TextStyle(
                     color: kTextColor,
                     fontWeight: FontWeight.bold,
@@ -63,10 +64,11 @@ class LoginContent extends StatelessWidget {
                   height: size.height * 0.02,
                 ),
                 Text(
-                  "Sign In to continue to app.",
+                  "using  E-mail / Mobile No. / Roll Number",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: kTextColor.withOpacity(0.7),
-                    letterSpacing: 0.6,
+                    letterSpacing: 0.5,
                   ),
                 ),
                 SizedBox(height: size.height * 0.075),

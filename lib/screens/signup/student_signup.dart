@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'loginform.dart';
 import '../../constants.dart';
-import '../components/loginsignupfooter.dart';
 import '../components/customsigninappbar.dart';
-import 'loginbody.dart';
+import '../components/loginsignupfooter.dart';
+import 'signupbody.dart';
+import 'signupform.dart';
 
-class AdminLoginScreen extends StatelessWidget {
-  const AdminLoginScreen({
+class StudentSignupScreen extends StatelessWidget {
+  const StudentSignupScreen({
     super.key,
+    required this.herotag,
     required this.fgcolor,
     required this.title,
     required this.icon,
-    this.herotag,
   });
-  final Object? herotag;
+  final Object herotag;
   final Color fgcolor;
   final String title;
   final IconData icon;
@@ -35,18 +35,20 @@ class AdminLoginScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-          child: LoginBody(
-        formwidget: LoginForm(
-          title: title,
+          child: SignupBody(
+        formwidget: SignupForm(
           fgcolor: fgcolor,
+          title: title,
           icon: icon,
         ),
         footerwidget: LoginSignUpFooter(
           size: size,
-          msg: "Contact Support to register as an Authority.",
-          btntext: "Support",
-          fsize: 15,
-          press: () {}, //Todo
+          msg: "Already have an account ?",
+          btntext: "Login",
+          fsize: 16,
+          press: () {
+            Navigator.of(context).pop(context);
+          }, //Todo
         ),
       )),
     );
