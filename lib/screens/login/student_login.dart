@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'loginform.dart';
 import '../../constants.dart';
 import '../components/loginsignupfooter.dart';
-import 'customsigninappbar.dart';
+import '../components/customsigninappbar.dart';
 import 'loginbody.dart';
+import '../signup/student_signup.dart';
 
 class StudentLoginScreen extends StatelessWidget {
   const StudentLoginScreen({
@@ -17,6 +18,7 @@ class StudentLoginScreen extends StatelessWidget {
   final Color fgcolor;
   final String title;
   final IconData icon;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
@@ -46,7 +48,20 @@ class StudentLoginScreen extends StatelessWidget {
           msg: "Don't have an account ?",
           btntext: "Sign Up",
           fsize: 16,
-          press: () {}, //Todo
+          press: () {
+            WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return StudentSignupScreen(
+                  herotag: '',
+                  fgcolor: fgcolor,
+                  title: title,
+                  icon: icon,
+                );
+              }),
+            );
+          }, //Todo
         ),
       )),
     );

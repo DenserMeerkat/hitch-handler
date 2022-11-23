@@ -33,7 +33,7 @@ class ButtonsContainer extends StatelessWidget {
                 fgcolor: kStudentColor,
                 shcolor: const Color.fromRGBO(10, 10, 10, 1),
                 bradius: 40.0,
-                fsize: 14.0,
+                fsize: 15.0,
                 title: "Student / Staff",
                 press: () {
                   Navigator.push(

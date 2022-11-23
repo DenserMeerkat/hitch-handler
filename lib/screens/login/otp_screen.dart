@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
-import 'customsigninappbar.dart';
+import '../components/customsigninappbar.dart';
 import 'otpform.dart';
 
-class OtpPage extends StatelessWidget {
-  const OtpPage({
+class OtpScreen extends StatelessWidget {
+  const OtpScreen({
     super.key,
     required this.fgcolor,
     required this.title,
@@ -40,6 +40,7 @@ class OtpPage extends StatelessWidget {
             right: size.width * 0.1,
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(

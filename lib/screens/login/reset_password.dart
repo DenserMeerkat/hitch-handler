@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
-import 'customsigninappbar.dart';
+import '../components/customsigninappbar.dart';
 import 'otpform.dart';
 
 class ResetPasswordPage extends StatelessWidget {

@@ -83,6 +83,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
   final IconData icon;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
         color: bgcolor,
@@ -96,6 +97,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
       ),
       child: SizedBox(
         height: kDefaultPadding * 2.6,
+        width: kDefaultPadding * 12.5,
         child: Stack(
           children: [
             Row(
@@ -133,7 +135,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 2.0,
+                        letterSpacing: 1.2,
                         fontSize: fsize,
                         color: fgcolor,
                       ),

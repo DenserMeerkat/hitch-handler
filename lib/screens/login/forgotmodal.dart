@@ -26,14 +26,14 @@ class ForgotModalFormState extends State<ForgotModalForm> {
   final Color fgcolor;
   final String title;
   final IconData icon;
-  final _formOTPKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Form(
-      key: _formOTPKey,
+      key: _formKey,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
         child: Column(
@@ -44,7 +44,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               child: Center(
                 child: Container(
                   height: 5,
-                  width: 80,
+                  width: 50,
                   decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(10),
@@ -53,7 +53,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               ),
             ),
             SizedBox(
-              height: size.height * 0.04,
+              height: size.height * 0.025,
             ),
             const Text(
               "Forgot Password ?",
@@ -83,7 +83,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               index: 2,
             ),
             SizedBox(
-              height: size.height * 0.05,
+              height: size.height * 0.030,
             ),
             CustomSubmitButton(
               size: size,
@@ -92,10 +92,14 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               fsize: 18,
               width: 0.08,
               press: () {
+                WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                }
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return OtpPage(
+                    return OtpScreen(
                       fgcolor: fgcolor,
                       title: title,
                       icon: icon,

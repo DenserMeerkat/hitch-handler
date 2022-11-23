@@ -55,13 +55,10 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           CustomTextField(fgcolor: fgcolor),
           SizedBox(
-            height: size.height * 0.05,
+            height: size.height * 0.025,
           ),
           CustomPasswordField(
             fgcolor: fgcolor,
-          ),
-          SizedBox(
-            height: size.height * 0.025,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -69,16 +66,6 @@ class _LoginFormState extends State<LoginForm> {
               TextButton(
                 onPressed: () {
                   showBottomSheet();
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) {
-                  //     return ForgotPage(
-                  //       fgcolor: fgcolor,
-                  //       title: title,
-                  //       icon: icon,
-                  //     );
-                  //   }),
-                  // );
                 },
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.resolveWith((states) {
@@ -117,6 +104,10 @@ class _LoginFormState extends State<LoginForm> {
             fsize: 18,
             width: 0.15,
             press: () {
+              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+              if (_formLoginKey.currentState!.validate()) {
+                _formLoginKey.currentState!.save();
+              }
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {

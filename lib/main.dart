@@ -17,16 +17,21 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp(
-      //showPerformanceOverlay: true,
-      debugShowCheckedModeBanner: false,
-      title: 'Hitch Handler',
-      theme: ThemeData(
-        scaffoldBackgroundColor: kBackgroundColor,
-        primaryColor: kPrimaryColor,
-        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: MaterialApp(
+        //showPerformanceOverlay: true,
+        debugShowCheckedModeBanner: false,
+        title: 'Hitch Handler',
+        theme: ThemeData(
+          scaffoldBackgroundColor: kBackgroundColor,
+          primaryColor: kPrimaryColor,
+          textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+        ),
+        home: const LaunchScreen(),
       ),
-      home: const LaunchScreen(),
     );
   }
 }

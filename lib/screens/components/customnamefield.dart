@@ -1,97 +1,46 @@
 import 'package:flutter/material.dart';
-import '../../constants.dart';
 import '../../string_extensions.dart';
+
+import '../../constants.dart';
 import 'customerrormsg.dart';
 
-class CustomTextField extends StatefulWidget {
-  const CustomTextField({
+class CustomNameField extends StatefulWidget {
+  const CustomNameField({
     super.key,
     required this.fgcolor,
-    this.index = 3,
+    this.hinttext = "Full Name",
   });
   final Color fgcolor;
-  final int index;
+  final String hinttext;
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState(fgcolor, index);
+  State<CustomNameField> createState() =>
+      _CustomNameFieldState(fgcolor, hinttext);
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
-  Color fgcolor;
-  final int index;
-  int count = 0;
-  String hinttext = "E-mail";
-  IconData icondata = Icons.alternate_email;
-  final List<String> hints = [
-    'E-mail',
-    'Phone',
-    'ID Number',
-  ];
-  final List<IconData> icons = [
-    Icons.alternate_email,
-    Icons.call,
-    Icons.badge,
-  ];
-
-  void validateField(String? value, int count) {
-    if (count == 0) {
-      if (value!.isWhitespace()) {
-        errorTextGen(count, 1);
-      } else if (value.isValidEmail()) {
-        errorTextGen(count, 0);
-      } else {
-        errorTextGen(count, 2);
-      }
-    } else if (count == 1) {
-      if (value!.isWhitespace()) {
-        errorTextGen(count, 1);
-      } else if (value.isValidMobile()) {
-        errorTextGen(count, 0);
-      } else {
-        errorTextGen(count, 2);
-      }
-    } else if (count == 2) {
-      if (value!.isWhitespace()) {
-        errorTextGen(count, 1);
-      } else if (value.isValidRoll()) {
-        errorTextGen(count, 0);
-      } else {
-        errorTextGen(count, 2);
-      }
-    }
-  }
-
-  void reset() {
-    setState(() {
-      _textEditingController.clear();
-      errorText = "";
-    });
-  }
-
-  bool errorTextGen(int index, int error) {
-    String type = hints[index];
-    String errormsg;
-    if (error == 1) {
-      errormsg = "$type can\'t be empty!";
-    } else if (error == 2) {
-      errormsg = "Not a valid $type";
-    } else {
-      errormsg = "";
-      setState(() {
-        errorText = errormsg;
-      });
-      return true;
-    }
-    setState(() {
-      errorText = errormsg;
-    });
-    return false;
-  }
+class _CustomNameFieldState extends State<CustomNameField> {
+  final Color fgcolor;
+  final String hinttext;
+  _CustomNameFieldState(this.fgcolor, this.hinttext);
 
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
-  _CustomTextFieldState(this.fgcolor, this.index);
-  final TextEditingController _textEditingController = TextEditingController();
+
+  void validateField(String? value) {
+    String errormsg = "";
+    if (value!.isWhitespace()) {
+      errormsg = "$hinttext can\'t be empty!";
+    } else if (value.isValidName()) {
+      errormsg = "";
+    } else {
+      errormsg = "Valid Characters :  [a-z]  [A-Z]  [ , . - ' ]";
+    }
+    setState(() {
+      errorText = errormsg;
+    });
+  }
+
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return FormField<String>(builder: (FormFieldState<String> state) {
@@ -111,55 +60,35 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
             child: TextFormField(
               onChanged: (value) {
-                validateField(value, count);
+                validateField(value);
               },
-              controller: _textEditingController,
-              validator: (value) {
-                validateField(value, count);
-              },
-              style: const TextStyle(
-                fontSize: 16.0,
-              ),
-              cursorColor: fgcolor,
-              cursorHeight: 20.0,
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.name,
+              scrollPadding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 80),
+              style: const TextStyle(
+                fontSize: 16.0,
+                letterSpacing: 1,
+              ),
+              cursorColor: fgcolor,
+              cursorHeight: 16.0,
+              controller: controller,
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      //__________________SET STATE___________
-                      reset();
-                      if (count < 2) {
-                        count += 1;
-                      } else {
-                        count = 0;
-                      }
-                      icondata = icons[count];
-                      hinttext = hints[count];
-                    });
-                  },
+                  onTap: () {},
                   child: IconButton(
-                    splashRadius: 20.0,
+                    splashRadius: 30.0,
                     onPressed: () {
                       setState(() {
-                        //__________________SET STATE___________
-                        reset();
-                        if (count < index - 1) {
-                          count += 1;
-                        } else {
-                          count = 0;
-                        }
-                        icondata = icons[count];
-                        hinttext = hints[count];
+                        controller.clear();
                       });
                     },
                     icon: Icon(
-                      icondata,
-                      size: 20.0,
+                      Icons.backspace_outlined,
                       color: fgcolor,
-                    ), //_________________ICON DATA____________
+                      size: 18,
+                    ),
                   ),
                 ),
                 suffixIconColor: fgcolor,
@@ -181,15 +110,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   ),
                   padding: const EdgeInsets.all(10.0),
                   child: Icon(
-                    Icons.account_circle,
+                    Icons.text_fields,
                     color: fgcolor,
                   ),
                 ),
-                hintText: hinttext, //_________________HINT TEXT____________
+                hintText: hinttext,
                 hintStyle: const TextStyle(
                   fontSize: 15.0,
                   color: Color.fromRGBO(90, 90, 90, 1),
-                  letterSpacing: 1,
+                  letterSpacing: 0.5,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 floatingLabelAlignment: FloatingLabelAlignment.start,
