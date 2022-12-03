@@ -4,60 +4,90 @@ import '../../constants.dart';
 import 'customerrormsg.dart';
 
 class CustomPasswordField extends StatefulWidget {
-  const CustomPasswordField({
+  final Color fgcolor;
+  final String hinttext;
+  final bool showError;
+  Function(String) onSubmit;
+  CustomPasswordField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Password",
+    required this.onSubmit,
+    this.showError = true,
   });
-  final Color fgcolor;
-  final String hinttext;
   @override
   State<CustomPasswordField> createState() =>
-      _CustomPasswordFieldState(fgcolor, hinttext);
+      _CustomPasswordFieldState(fgcolor, hinttext, onSubmit, showError);
 }
 
 class _CustomPasswordFieldState extends State<CustomPasswordField> {
   final Color fgcolor;
   final String hinttext;
-  _CustomPasswordFieldState(this.fgcolor, this.hinttext);
+  final bool showError;
+  Function(String) onSubmit;
+  _CustomPasswordFieldState(
+      this.fgcolor, this.hinttext, this.onSubmit, this.showError);
   bool _obscureText = true;
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
 
-  void validateField(String? value) {
+  String? validateField(String? value) {
     if (value!.isWhitespace()) {
       setState(() {
-        errorText = "Password can\'t be empty!";
+        errorText = "Password can't be empty!";
       });
     } else {
-      errorText = "";
+      setState(() {
+        errorText = "";
+      });
+      return '';
     }
+    return errorText;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FormField<String>(builder: (FormFieldState<String> state) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(50, 50, 50, 1),
-              borderRadius: BorderRadius.circular(15.0),
-              boxShadow: const [
-                BoxShadow(
-                  offset: Offset(1, 2),
-                  color: Color.fromRGBO(20, 20, 20, 1),
-                )
-              ],
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            Positioned(
+              height: 48,
+              top: 0,
+              right: 0,
+              child: Container(
+                height: 48,
+                width: size.width * 0.8,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(50, 50, 50, 1),
+                  borderRadius: BorderRadius.circular(15.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(1, 2),
+                      color: Color.fromRGBO(20, 20, 20, 1),
+                    )
+                  ],
+                ),
+                child: const SizedBox(
+                  height: 48,
+                ),
+              ),
             ),
-            child: TextFormField(
+            TextFormField(
+              onFieldSubmitted: onSubmit,
               onChanged: (value) {
                 validateField(value);
               },
               validator: (value) {
-                validateField(value);
+                String? val = validateField(value);
+                if (val == "") {
+                  return null;
+                } else {
+                  return val;
+                }
               },
               scrollPadding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom + 80),
@@ -87,6 +117,18 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                     ),
                   ),
                 ),
+                errorStyle: const TextStyle(
+                  height: 0,
+                  color: Colors.transparent,
+                  fontSize: 0,
+                ),
+                isDense: true,
+                helperText: '_',
+                helperStyle: const TextStyle(
+                  height: 0,
+                  color: Colors.transparent,
+                  fontSize: 0,
+                ),
                 suffixIconColor: fgcolor,
                 icon: Container(
                   height: 50,
@@ -108,6 +150,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                   child: Icon(
                     Icons.password,
                     color: fgcolor,
+                    size: 20,
                   ),
                 ),
                 hintText: hinttext,
@@ -138,15 +181,41 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                   borderSide: BorderSide.none,
                   gapPadding: 0,
                 ),
+                errorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
+                  ),
+                  borderSide: BorderSide.none,
+                  gapPadding: 0,
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
+                  ),
+                  borderSide: BorderSide.none,
+                  gapPadding: 0,
+                ),
               ),
             ),
-          ),
-          CustomErrorMsg(
-              errorText: errorText,
-              errorColor: errorColor,
-              errorIcon: errorIcon),
-        ],
-      );
-    });
+          ],
+        ),
+        CustomErrorMsg(
+          errorText: errorTextBool(),
+          errorColor: errorColor,
+          errorIcon: errorIcon,
+          padbottom: 0.0,
+        ),
+      ],
+    );
+  }
+
+  String errorTextBool() {
+    if (showError == true) {
+      return errorText;
+    } else {
+      return "";
+    }
   }
 }

@@ -16,14 +16,13 @@ class LaunchScreenBody extends StatelessWidget {
           decoration: const BoxDecoration(
             color: Color.fromRGBO(30, 30, 30, 1),
             borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20.0),
+              bottom: Radius.circular(15.0),
               top: Radius.circular(0.0),
             ),
             boxShadow: [
               BoxShadow(
-                offset: Offset(0, 1),
-                blurRadius: 5,
-                color: Color.fromRGBO(10, 10, 10, 1),
+                offset: Offset(0, 2),
+                color: Color.fromRGBO(15, 15, 15, 1),
               ),
             ],
           ),

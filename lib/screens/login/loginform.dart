@@ -25,8 +25,7 @@ class _LoginFormState extends State<LoginForm> {
   final Color fgcolor;
   final String title;
   final IconData icon;
-  final _formLoginKey = GlobalKey<FormState>();
-  final List<String> errors = [];
+  final _formKey = GlobalKey<FormState>();
 
   void showBottomSheet() {
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
@@ -50,14 +49,19 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Form(
-      key: _formLoginKey,
+      key: _formKey,
       child: Column(
         children: [
-          CustomTextField(fgcolor: fgcolor),
+          CustomTextField(
+            current: 2,
+            onSubmit: (value) {}, //Todo
+            fgcolor: fgcolor,
+          ),
           SizedBox(
-            height: size.height * 0.025,
+            height: size.height * 0.015,
           ),
           CustomPasswordField(
+            onSubmit: (value) {}, //Todo
             fgcolor: fgcolor,
           ),
           Row(
@@ -105,16 +109,20 @@ class _LoginFormState extends State<LoginForm> {
             width: 0.15,
             press: () {
               WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-              if (_formLoginKey.currentState!.validate()) {
-                _formLoginKey.currentState!.save();
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
+                print("___________________");
+                print(_formKey.currentState!.validate());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return const StudentHomeScreen();
+                  }),
+                );
+              } else {
+                print(">>>>>ERRORS!");
               }
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return const StudentHomeScreen();
-                }),
-              );
-            }, //Todo
+            }, //Todo_Navigation
           ),
         ],
       ),

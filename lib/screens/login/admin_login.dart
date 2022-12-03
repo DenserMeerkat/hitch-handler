@@ -46,7 +46,7 @@ class AdminLoginScreen extends StatelessWidget {
           msg: "Contact Support to register as an Authority.",
           btntext: "Support",
           fsize: 15,
-          press: () {}, //Todo
+          press: () {}, //Todo_Support
         ),
       )),
     );

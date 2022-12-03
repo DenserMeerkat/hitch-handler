@@ -37,14 +37,19 @@ class _SignupFormState extends State<SignupForm> {
       key: _formSignUpKey,
       child: Column(
         children: [
-          CustomTextField(fgcolor: fgcolor),
+          CustomTextField(
+              current: 2,
+              onSubmit: (value) {}, //Todo
+              fgcolor: fgcolor),
           SizedBox(
-            height: size.height * 0.025,
+            height: size.height * 0.015,
           ),
           //CustomNameField(fgcolor: fgcolor),
-          CustomDatePickField(fgcolor: fgcolor),
+          CustomDatePickField(
+              onSubmit: (value) {}, //Todo
+              fgcolor: fgcolor),
           SizedBox(
-            height: size.height * 0.050,
+            height: size.height * 0.030,
           ),
           CustomSubmitButton(
             size: size,
@@ -56,18 +61,21 @@ class _SignupFormState extends State<SignupForm> {
               WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
               if (_formSignUpKey.currentState!.validate()) {
                 _formSignUpKey.currentState!.save();
+                print("____SignUp Form Valid!");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return OtpScreen(
+                      fgcolor: fgcolor,
+                      title: title,
+                      icon: icon,
+                    );
+                  }),
+                );
+              } else {
+                print("____SignUp Form Error!");
               }
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return OtpScreen(
-                    fgcolor: fgcolor,
-                    title: title,
-                    icon: icon,
-                  );
-                }),
-              );
-            }, //Todo
+            }, //Todo_Navigation
           ),
         ],
       ),

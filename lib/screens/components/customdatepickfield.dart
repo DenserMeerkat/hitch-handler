@@ -5,27 +5,30 @@ import '../../constants.dart';
 import 'customerrormsg.dart';
 
 class CustomDatePickField extends StatefulWidget {
-  const CustomDatePickField({
+  final Color fgcolor;
+  final String hinttext;
+  Function(String) onSubmit;
+  CustomDatePickField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Date of Birth",
+    required this.onSubmit,
   });
-  final Color fgcolor;
-  final String hinttext;
   @override
   State<CustomDatePickField> createState() =>
-      _CustomDatePickFieldState(fgcolor, hinttext);
+      _CustomDatePickFieldState(fgcolor, hinttext, onSubmit);
 }
 
 class _CustomDatePickFieldState extends State<CustomDatePickField> {
   final Color fgcolor;
   final String hinttext;
-  _CustomDatePickFieldState(this.fgcolor, this.hinttext);
+  Function(String) onSubmit;
+  _CustomDatePickFieldState(this.fgcolor, this.hinttext, this.onSubmit);
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
 
-  void validateField(String? value) {
+  String? validateField(String? value) {
     String errormsg = "";
     if (value!.isWhitespace()) {
       errormsg = "$hinttext can\'t be empty!";
@@ -35,30 +38,82 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
     setState(() {
       errorText = errormsg;
     });
+    if (errormsg != "") {
+      return "Error!";
+    }
+    return null;
+  }
+
+  String? birthDateValidator(DateTime? value) {
+    final now = DateTime.now();
+    String errormsg = "";
+    if (value == null) {
+      errormsg = "DOB is required";
+    } else if (!value.isBefore(DateTime(now.year, now.month, now.day))) {
+      errormsg = "Time Travellers are banned!";
+    } else if ((DateTime(DateTime.now().year, value.month, value.day)
+                .isAfter(DateTime.now())
+            ? DateTime.now().year - value.year - 1
+            : DateTime.now().year - value.year) <
+        18) {
+      errormsg = "Must be atleast 18 years";
+    } else {
+      errormsg = "";
+    }
+    setState(() {
+      errorText = errormsg;
+    });
+    if (errormsg != "") {
+      return "Error!";
+    }
+    return null;
   }
 
   TextEditingController _textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return FormField<String>(builder: (FormFieldState<String> state) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(50, 50, 50, 1),
-              borderRadius: BorderRadius.circular(15.0),
-              boxShadow: const [
-                BoxShadow(
-                  offset: Offset(1, 2),
-                  color: Color.fromRGBO(20, 20, 20, 1),
-                )
-              ],
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            Positioned(
+              height: 48,
+              top: 0,
+              right: 0,
+              child: Container(
+                height: 48,
+                width: size.width * 0.8,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(50, 50, 50, 1),
+                  borderRadius: BorderRadius.circular(15.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(1, 2),
+                      color: Color.fromRGBO(20, 20, 20, 1),
+                    )
+                  ],
+                ),
+                child: const SizedBox(
+                  height: 48,
+                ),
+              ),
             ),
-            child: TextFormField(
+            TextFormField(
               validator: (value) {
-                validateField(value);
+                if (value != "") {
+                  String? val = birthDateValidator(
+                      DateFormat("dd-MM-yyyy").parse(value!));
+                  if (val == "") {
+                    return null;
+                  } else {
+                    return val;
+                  }
+                } else {
+                  return birthDateValidator(null);
+                }
               },
               showCursor: true,
               readOnly: true,
@@ -113,6 +168,18 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                     ),
                   ),
                 ),
+                errorStyle: const TextStyle(
+                  height: 0,
+                  color: Colors.transparent,
+                  fontSize: 0,
+                ),
+                isDense: true,
+                helperText: '_',
+                helperStyle: const TextStyle(
+                  height: 0,
+                  color: Colors.transparent,
+                  fontSize: 0,
+                ),
                 suffixIconColor: fgcolor,
                 icon: Container(
                   height: 50,
@@ -134,6 +201,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   child: Icon(
                     Icons.date_range,
                     color: fgcolor,
+                    size: 20,
                   ),
                 ),
                 hintText: hinttext,
@@ -164,16 +232,30 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   borderSide: BorderSide.none,
                   gapPadding: 0,
                 ),
+                errorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
+                  ),
+                  borderSide: BorderSide.none,
+                  gapPadding: 0,
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
+                  ),
+                  borderSide: BorderSide.none,
+                  gapPadding: 0,
+                ),
               ),
             ),
-          ),
-          CustomErrorMsg(
-              errorText: errorText,
-              errorColor: errorColor,
-              errorIcon: errorIcon),
-        ],
-      );
-    });
+          ],
+        ),
+        CustomErrorMsg(
+            errorText: errorText, errorColor: errorColor, errorIcon: errorIcon),
+      ],
+    );
   }
 
   Future<DateTime?> showCustomDatePicker(BuildContext context) {
@@ -181,7 +263,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1940),
-      lastDate: DateTime(2100),
+      lastDate: DateTime(DateTime.now().year + 3),
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark().copyWith(
