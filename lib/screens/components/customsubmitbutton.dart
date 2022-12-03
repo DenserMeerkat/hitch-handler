@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomSubmitButton extends StatelessWidget {
+  final Color bgcolor;
+  final Size size;
+  final String msg;
+  final double? fsize;
+  final double width;
+  final Function()? press;
+  final bool? isEnabled;
   const CustomSubmitButton({
     super.key,
     required this.size,
@@ -9,13 +16,8 @@ class CustomSubmitButton extends StatelessWidget {
     this.fsize = 18.0,
     this.width = 0.2,
     required this.press,
+    this.isEnabled = true,
   });
-  final Color bgcolor;
-  final Size size;
-  final String msg;
-  final double? fsize;
-  final double width;
-  final Function()? press;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,13 +34,17 @@ class CustomSubmitButton extends StatelessWidget {
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.disabled)) {
-              return Color.fromRGBO(30, 30, 30, 1);
+              return Color.fromARGB(255, 40, 40, 40);
             } else {
               return bgcolor.withOpacity(0.8);
             }
           }),
           foregroundColor: MaterialStateProperty.resolveWith((states) {
-            return const Color.fromRGBO(10, 10, 10, 1);
+            if (states.contains(MaterialState.disabled)) {
+              return Color.fromARGB(255, 105, 105, 105);
+            } else {
+              return const Color.fromRGBO(10, 10, 10, 1);
+            }
           }),
           shadowColor: MaterialStateProperty.resolveWith((states) {
             return const Color.fromRGBO(10, 10, 10, 1);

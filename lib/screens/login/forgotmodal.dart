@@ -18,6 +18,7 @@ class ForgotModalForm extends StatefulWidget {
   final int? index;
   @override
   State<ForgotModalForm> createState() =>
+      // ignore: no_logic_in_create_state
       ForgotModalFormState(fgcolor, title, icon);
 }
 
@@ -79,11 +80,12 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               height: size.height * 0.05,
             ),
             CustomTextField(
+              onSubmit: (value) {}, //Todo
               fgcolor: fgcolor,
               index: 2,
             ),
             SizedBox(
-              height: size.height * 0.030,
+              height: size.height * 0.010,
             ),
             CustomSubmitButton(
               size: size,
@@ -95,18 +97,21 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  print("____Forgot Form Valid!");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return OtpScreen(
+                        fgcolor: fgcolor,
+                        title: title,
+                        icon: icon,
+                      );
+                    }),
+                  );
+                } else {
+                  print("____Forgot Form Error!");
                 }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return OtpScreen(
-                      fgcolor: fgcolor,
-                      title: title,
-                      icon: icon,
-                    );
-                  }),
-                );
-              },
+              }, //Todo_Navigation
             ),
             SizedBox(
               height: size.height * 0.05,

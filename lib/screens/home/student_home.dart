@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/components/userloginheader.dart';
 import '../components/backbuttonwithcolor.dart';
 import 'home_body.dart';
+import 'add_page.dart';
 import '../../constants.dart';
 
 class StudentHomeScreen extends StatefulWidget {
@@ -12,12 +12,12 @@ class StudentHomeScreen extends StatefulWidget {
 }
 
 class _StudentHomeScreenState extends State<StudentHomeScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   static const List<Widget> _homeTabs = [
     StudentHomeBody(),
     StudentHomeBody(),
-    StudentHomeBody(),
+    AddPage(),
     StudentHomeBody(),
     StudentHomeBody(),
   ];

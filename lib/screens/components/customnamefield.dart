@@ -5,28 +5,31 @@ import '../../constants.dart';
 import 'customerrormsg.dart';
 
 class CustomNameField extends StatefulWidget {
-  const CustomNameField({
+  final Color fgcolor;
+  final String hinttext;
+  Function(String) onSubmit;
+  CustomNameField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Full Name",
+    required this.onSubmit,
   });
-  final Color fgcolor;
-  final String hinttext;
   @override
   State<CustomNameField> createState() =>
-      _CustomNameFieldState(fgcolor, hinttext);
+      _CustomNameFieldState(fgcolor, hinttext, onSubmit);
 }
 
 class _CustomNameFieldState extends State<CustomNameField> {
   final Color fgcolor;
   final String hinttext;
-  _CustomNameFieldState(this.fgcolor, this.hinttext);
+  Function(String) onSubmit;
+  _CustomNameFieldState(this.fgcolor, this.hinttext, this.onSubmit);
 
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
 
-  void validateField(String? value) {
+  String? validateField(String? value) {
     String errormsg = "";
     if (value!.isWhitespace()) {
       errormsg = "$hinttext can\'t be empty!";
@@ -38,32 +41,52 @@ class _CustomNameFieldState extends State<CustomNameField> {
     setState(() {
       errorText = errormsg;
     });
+    if (errormsg != "") {
+      return "Error!";
+    }
+    return null;
   }
 
   final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return FormField<String>(builder: (FormFieldState<String> state) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(50, 50, 50, 1),
-              borderRadius: BorderRadius.circular(15.0),
-              boxShadow: const [
-                BoxShadow(
-                  offset: Offset(1, 2),
-                  color: Color.fromRGBO(20, 20, 20, 1),
-                )
-              ],
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            Positioned(
+              height: 48,
+              top: 0,
+              right: 0,
+              child: Container(
+                height: 48,
+                width: size.width * 0.8,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(50, 50, 50, 1),
+                  borderRadius: BorderRadius.circular(15.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(1, 2),
+                      color: Color.fromRGBO(20, 20, 20, 1),
+                    )
+                  ],
+                ),
+                child: const SizedBox(
+                  height: 48,
+                ),
+              ),
             ),
-            child: TextFormField(
+            TextFormField(
               onChanged: (value) {
                 validateField(value);
               },
               textInputAction: TextInputAction.next,
-              onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
+              onFieldSubmitted: (value) {
+                onSubmit;
+                FocusScope.of(context).nextFocus();
+              },
               keyboardType: TextInputType.name,
               scrollPadding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom + 80),
@@ -91,6 +114,18 @@ class _CustomNameFieldState extends State<CustomNameField> {
                     ),
                   ),
                 ),
+                errorStyle: const TextStyle(
+                  height: 0,
+                  color: Colors.transparent,
+                  fontSize: 0,
+                ),
+                isDense: true,
+                helperText: '_',
+                helperStyle: const TextStyle(
+                  height: 0,
+                  color: Colors.transparent,
+                  fontSize: 0,
+                ),
                 suffixIconColor: fgcolor,
                 icon: Container(
                   height: 50,
@@ -112,6 +147,7 @@ class _CustomNameFieldState extends State<CustomNameField> {
                   child: Icon(
                     Icons.text_fields,
                     color: fgcolor,
+                    size: 20,
                   ),
                 ),
                 hintText: hinttext,
@@ -142,15 +178,29 @@ class _CustomNameFieldState extends State<CustomNameField> {
                   borderSide: BorderSide.none,
                   gapPadding: 0,
                 ),
+                errorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
+                  ),
+                  borderSide: BorderSide.none,
+                  gapPadding: 0,
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
+                  ),
+                  borderSide: BorderSide.none,
+                  gapPadding: 0,
+                ),
               ),
             ),
-          ),
-          CustomErrorMsg(
-              errorText: errorText,
-              errorColor: errorColor,
-              errorIcon: errorIcon),
-        ],
-      );
-    });
+          ],
+        ),
+        CustomErrorMsg(
+            errorText: errorText, errorColor: errorColor, errorIcon: errorIcon),
+      ],
+    );
   }
 }

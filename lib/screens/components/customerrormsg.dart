@@ -7,11 +7,13 @@ class CustomErrorMsg extends StatelessWidget {
     required this.errorText,
     this.errorColor = kErrorColor,
     this.errorIcon = Icons.error,
+    this.padbottom = 10.0,
   });
 
   final String errorText;
   final Color errorColor;
   final IconData errorIcon;
+  final double padbottom;
 
   Widget errorIconGen() {
     if (errorText != "") {
@@ -30,7 +32,7 @@ class CustomErrorMsg extends StatelessWidget {
     return Offstage(
         offstage: false,
         child: Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 30.0),
+            padding: EdgeInsets.only(top: 5.0, bottom: padbottom, left: 30.0),
             child: Row(
               children: [
                 errorIconGen(),

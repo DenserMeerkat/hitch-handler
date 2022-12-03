@@ -11,6 +11,12 @@ extension StringExtensions on String {
         .hasMatch(this);
   }
 
+  bool isValidPassword() {
+    return RegExp(
+            r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]).{8,32}$')
+        .hasMatch(this);
+  }
+
   bool isValidRoll() {
     if (int.tryParse(this) != null && length > 7) {
       return true;
