@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/string_extensions.dart';
+import '../../string_extensions.dart';
 
 import '../../constants.dart';
 import '../components/customsubmitbutton.dart';

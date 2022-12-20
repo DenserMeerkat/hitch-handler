@@ -12,51 +12,10 @@ class LaunchScreenBody extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: size.height * 0.95,
-          decoration: const BoxDecoration(
-            color: Color.fromRGBO(30, 30, 30, 1),
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(15.0),
-              top: Radius.circular(0.0),
-            ),
-            boxShadow: [
-              BoxShadow(
-                offset: Offset(0, 2),
-                color: Color.fromRGBO(15, 15, 15, 1),
-              ),
-            ],
-          ),
+          height: size.height * 0.75,
+          width: size.width * 1,
           child: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                ),
-                height: size.height * 0.10,
-                color: kBackgroundColor,
-                child: SafeArea(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {}, //Todo
-                        child: Icon(
-                          Icons.info_outline,
-                          color: kTextColor.withOpacity(0.6),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: kDefaultPadding / 2,
-                      ),
-                      //PopupMenu(),
-                      const SizedBox(
-                        width: kDefaultPadding,
-                      )
-                    ],
-                  ),
-                ),
-              ),
               LogoContainer(size: size),
               ButtonsContainer(size: size),
             ],
@@ -77,13 +36,14 @@ class BottomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: size.height * 0.04,
+      height: size.height * 0.052,
       child: Center(
         child: Text(
           "CTF PROJECTS",
           style: TextStyle(
-            letterSpacing: 2.0,
+            letterSpacing: 2.2,
             fontSize: 10,
+            fontWeight: FontWeight.bold,
             color: kTextColor.withOpacity(0.4),
           ),
         ),
@@ -103,18 +63,9 @@ class LogoContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height * 0.45,
+      height: size.height * 0.305,
       decoration: const BoxDecoration(
         color: kBackgroundColor,
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(40.0),
-        ),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 5),
-            color: kPrimaryColor,
-          )
-        ],
       ),
     );
   }

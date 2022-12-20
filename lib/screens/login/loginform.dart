@@ -62,10 +62,12 @@ class _LoginFormState extends State<LoginForm> {
           ),
           CustomPasswordField(
             onSubmit: (value) {}, //Todo
+            onChange: (value) {},
             fgcolor: fgcolor,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextButton(
                 onPressed: () {

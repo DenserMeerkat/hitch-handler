@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
-import '../components/customsigninappbar.dart';
 import '../components/confirmpasswordform.dart';
+import '../components/customsigninappbar.dart';
 
-class ResetPasswordPage extends StatelessWidget {
-  const ResetPasswordPage({
+class CreatePasswordPage extends StatelessWidget {
+  const CreatePasswordPage({
     super.key,
     required this.fgcolor,
     required this.title,
@@ -31,8 +31,8 @@ class ResetPasswordPage extends StatelessWidget {
         ),
       ),
       body: ConfirmPasswordBody(
-        title: "Reset Password",
-        subtitle: "Create a new password for your account.",
+        title: "Create Password",
+        subtitle: "Create a password for your account.",
         fgcolor: fgcolor,
         press: () {}, //Todo
       ),

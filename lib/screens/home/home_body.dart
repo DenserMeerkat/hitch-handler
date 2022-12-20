@@ -6,7 +6,7 @@ class StudentHomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromRGBO(30, 30, 30, 1),
-    );
+        //color: const Color.fromRGBO(30, 30, 30, 1),
+        );
   }
 }

@@ -32,14 +32,24 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: size.height * 0.1,
-        elevation: 0,
-        //automaticallyImplyLeading: false,
-        backgroundColor: kBackgroundColor,
+      backgroundColor: kBackgroundColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(size.height * 0.1),
+        child: AppBar(
+          toolbarHeight: size.height * 0.1,
+          elevation: 0,
+          //automaticallyImplyLeading: false,
+          backgroundColor: kBackgroundColor,
+        ),
       ),
-      body: _homeTabs.elementAt(_selectedIndex),
-      extendBody: true,
+      body: Container(
+        height: size.height * 0.724,
+        width: size.width,
+        decoration: const BoxDecoration(
+            //color: Color.fromRGBO(30, 30, 30, 1),
+            ),
+        child: _homeTabs.elementAt(_selectedIndex),
+      ),
       // floatingActionButton: FloatingActionButton.extended(
       //   backgroundColor: kPrimaryColor,
       //   foregroundColor: kBackgroundColor,
@@ -60,24 +70,24 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
       bottomNavigationBar: SafeArea(
         child: NavigationBarTheme(
           data: NavigationBarThemeData(
-              backgroundColor: Color.fromRGBO(15, 15, 15, 1),
+              height: size.height * 0.14,
+              backgroundColor: const Color.fromRGBO(20, 20, 20, 1),
               surfaceTintColor: kTextColor,
               indicatorColor: kPrimaryColor,
               labelTextStyle: MaterialStateProperty.resolveWith((states) {
                 if (states.contains(MaterialState.selected)) {
                   return const TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: kPrimaryColor,
+                    color: kTextColor,
                   );
                 } else {
                   return TextStyle(
-                    color: kTextColor.withOpacity(0.7),
+                    color: kTextColor.withOpacity(0.6),
                   );
                 }
               })),
           child: NavigationBar(
-            height: 80.0,
-            labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+            shadowColor: Colors.black,
             selectedIndex: _selectedIndex,
             animationDuration: const Duration(milliseconds: 700),
             onDestinationSelected: (value) {
@@ -151,93 +161,3 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     );
   }
 }
-
-// class CustomBottomNavBar extends StatelessWidget {
-//   const CustomBottomNavBar({
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.only(top: 5, bottom: 10),
-//       decoration: const BoxDecoration(
-//           color: Color.fromRGBO(20, 20, 20, 1),
-//           borderRadius: BorderRadius.vertical(
-//             top: Radius.circular(8.0),
-//           ),
-//           boxShadow: [
-//             BoxShadow(
-//               offset: Offset(0, -3),
-//               color: kPrimaryColor,
-//             )
-//           ]),
-//       child: SafeArea(
-//         child: NavigationBarTheme(
-//           data: NavigationBarThemeData(
-//               backgroundColor: Colors.transparent,
-//               surfaceTintColor: kTextColor,
-//               indicatorColor: kPrimaryColor,
-//               labelTextStyle: MaterialStateProperty.resolveWith((states) {
-//                 if (states.contains(MaterialState.selected)) {
-//                   return const TextStyle(
-//                     color: kPrimaryColor,
-//                   );
-//                 } else {
-//                   return TextStyle(
-//                     color: kTextColor.withOpacity(0.7),
-//                   );
-//                 }
-//               })),
-//           child: NavigationBar(
-//             height: 80.0,
-//             labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-//             selectedIndex: _selectedIndex,
-//             animationDuration: const Duration(milliseconds: 700),
-//             onDestinationSelected: (value) {
-//               return _tabChange(value);
-//             },
-//             destinations: [
-//               NavigationDestination(
-//                 selectedIcon: const Icon(
-//                   Icons.home_rounded,
-//                   size: 25,
-//                 ),
-//                 icon: Icon(
-//                   Icons.home,
-//                   color: kTextColor.withOpacity(0.4),
-//                   size: 32,
-//                 ),
-//                 label: 'Home',
-//               ),
-//               NavigationDestination(
-//                 selectedIcon: const Icon(
-//                   Icons.search_sharp,
-//                   size: 25,
-//                 ),
-//                 icon: Icon(
-//                   Icons.search_outlined,
-//                   color: kTextColor.withOpacity(0.4),
-//                   size: 32,
-//                 ),
-//                 label: 'Search',
-//               ),
-//               NavigationDestination(
-//                 selectedIcon: const Icon(
-//                   Icons.account_circle,
-//                   size: 25,
-//                 ),
-//                 icon: Icon(
-//                   Icons.account_circle_outlined,
-//                   color: kTextColor.withOpacity(0.4),
-//                   size: 32,
-//                 ),
-//                 label: 'Profile',
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

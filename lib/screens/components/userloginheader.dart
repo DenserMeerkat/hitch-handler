@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/constants.dart';
+import '../../constants.dart';
 import 'backbuttonwithcolor.dart';
 import 'labelwithicon.dart';
 

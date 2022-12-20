@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/components/customdatepickfield.dart';
-import '../components/customnamefield.dart';
-import '../login/otp_screen.dart';
+import '../components/customdatepickfield.dart';
+import 'create_password.dart';
+import '../components/otp_screen.dart';
 import '../../constants.dart';
 import '../components/customsubmitbutton.dart';
 import '../components/customtextfield.dart';
-import '../login/otpform.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({
@@ -27,14 +26,14 @@ class _SignupFormState extends State<SignupForm> {
   final Color fgcolor;
   final String title;
   final IconData icon;
-  final _formSignUpKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Form(
-      key: _formSignUpKey,
+      key: _formKey,
       child: Column(
         children: [
           CustomTextField(
@@ -59,8 +58,8 @@ class _SignupFormState extends State<SignupForm> {
             width: 0.15,
             press: () {
               WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-              if (_formSignUpKey.currentState!.validate()) {
-                _formSignUpKey.currentState!.save();
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
                 print("____SignUp Form Valid!");
                 Navigator.push(
                   context,
@@ -69,6 +68,11 @@ class _SignupFormState extends State<SignupForm> {
                       fgcolor: fgcolor,
                       title: title,
                       icon: icon,
+                      nextPage: CreatePasswordPage(
+                        fgcolor: fgcolor,
+                        title: title,
+                        icon: icon,
+                      ),
                     );
                   }),
                 );

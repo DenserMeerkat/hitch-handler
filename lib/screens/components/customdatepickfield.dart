@@ -45,12 +45,9 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
   }
 
   String? birthDateValidator(DateTime? value) {
-    final now = DateTime.now();
     String errormsg = "";
     if (value == null) {
       errormsg = "DOB is required";
-    } else if (!value.isBefore(DateTime(now.year, now.month, now.day))) {
-      errormsg = "Time Travellers are banned!";
     } else if ((DateTime(DateTime.now().year, value.month, value.day)
                 .isAfter(DateTime.now())
             ? DateTime.now().year - value.year - 1
@@ -102,19 +99,8 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               ),
             ),
             TextFormField(
-              validator: (value) {
-                if (value != "") {
-                  String? val = birthDateValidator(
-                      DateFormat("dd-MM-yyyy").parse(value!));
-                  if (val == "") {
-                    return null;
-                  } else {
-                    return val;
-                  }
-                } else {
-                  return birthDateValidator(null);
-                }
-              },
+              onSaved: validateField,
+              validator: validateDate,
               showCursor: true,
               readOnly: true,
               onTap: () async {
@@ -123,6 +109,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   setState(() {
                     _textEditingController.text =
                         DateFormat('dd-MM-yyyy').format(pickeddate);
+                    validateDate(DateFormat('dd-MM-yyyy').format(pickeddate));
                   });
                 }
               },
@@ -146,6 +133,8 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                       setState(() {
                         _textEditingController.text =
                             DateFormat('dd-MM-yyyy').format(pickeddate);
+                        validateDate(
+                            DateFormat('dd-MM-yyyy').format(pickeddate));
                       });
                     }
                   },
@@ -158,6 +147,8 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                         setState(() {
                           _textEditingController.text =
                               DateFormat('dd-MM-yyyy').format(pickeddate);
+                          validateDate(
+                              DateFormat('dd-MM-yyyy').format(pickeddate));
                         });
                       }
                     },
@@ -253,9 +244,25 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
           ],
         ),
         CustomErrorMsg(
-            errorText: errorText, errorColor: errorColor, errorIcon: errorIcon),
+          errorText: errorText,
+          errorColor: errorColor,
+          errorIcon: errorIcon,
+        ),
       ],
     );
+  }
+
+  String? validateDate(value) {
+    if (value != "") {
+      String? val = birthDateValidator(DateFormat("dd-MM-yyyy").parse(value!));
+      if (val == "") {
+        return null;
+      } else {
+        return val;
+      }
+    } else {
+      return birthDateValidator(null);
+    }
   }
 
   Future<DateTime?> showCustomDatePicker(BuildContext context) {
@@ -263,7 +270,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1940),
-      lastDate: DateTime(DateTime.now().year + 3),
+      lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark().copyWith(
