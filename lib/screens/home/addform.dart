@@ -25,6 +25,7 @@ class _AddFormState extends State<AddForm> {
       child: Form(
         key: _formKey,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               validator: (value) {

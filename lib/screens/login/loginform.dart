@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'forgotmodal.dart';
-import '../home/student_home.dart';
+import '../home/app.dart';
 import '../../constants.dart';
 import '../components/customsubmitbutton.dart';
 import '../components/customtextfield.dart';

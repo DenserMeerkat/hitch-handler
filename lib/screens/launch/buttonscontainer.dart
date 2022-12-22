@@ -27,7 +27,7 @@ class ButtonsContainer extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Color.fromRGBO(30, 30, 30, 1),
         borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(15.0),
+          bottom: Radius.circular(30.0),
           top: Radius.circular(30.0),
         ),
         boxShadow: [

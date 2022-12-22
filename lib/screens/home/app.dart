@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../components/backbuttonwithcolor.dart';
-import 'home_body.dart';
+import 'package:hitch_handler/screens/home/home_page.dart';
+import 'app_body.dart';
 import 'add_page.dart';
 import '../../constants.dart';
 
@@ -12,10 +12,10 @@ class StudentHomeScreen extends StatefulWidget {
 }
 
 class _StudentHomeScreenState extends State<StudentHomeScreen> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
 
   static const List<Widget> _homeTabs = [
-    StudentHomeBody(),
+    HomePage(),
     StudentHomeBody(),
     AddPage(),
     StudentHomeBody(),
@@ -33,17 +33,24 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(size.height * 0.1),
-        child: AppBar(
-          toolbarHeight: size.height * 0.1,
-          elevation: 0,
-          //automaticallyImplyLeading: false,
-          backgroundColor: kBackgroundColor,
-        ),
-      ),
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   toolbarHeight: size.height * 0.05,
+      //   elevation: 0,
+      //   title: Text(
+      //     "HITCH HANDLER",
+      //     style: TextStyle(
+      //       color: kTextColor.withOpacity(0.8),
+      //       fontSize: 10,
+      //       fontWeight: FontWeight.bold,
+      //       letterSpacing: 2.0,
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      //   backgroundColor: kBackgroundColor,
+      // ),
       body: Container(
-        height: size.height * 0.724,
+        height: size.height * 0.88,
         width: size.width,
         decoration: const BoxDecoration(
             //color: Color.fromRGBO(30, 30, 30, 1),

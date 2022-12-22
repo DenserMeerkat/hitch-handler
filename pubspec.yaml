@@ -38,6 +38,7 @@ dependencies:
   otp_text_field:
     git:
       url: https://github.com/AbedrahmanYassen/OTPTextField.git
+  cloud_firestore: ^4.2.0
 
 dev_dependencies:
   flutter_test:
