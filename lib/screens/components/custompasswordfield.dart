@@ -6,27 +6,33 @@ import 'customerrormsg.dart';
 class CustomPasswordField extends StatefulWidget {
   final Color fgcolor;
   final String hinttext;
+  final bool extraError;
   final bool showError;
   Function(String) onSubmit;
+  Function(String) onChange;
   CustomPasswordField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Password",
     required this.onSubmit,
+    required this.onChange,
+    this.extraError = false,
     this.showError = true,
   });
   @override
-  State<CustomPasswordField> createState() =>
-      _CustomPasswordFieldState(fgcolor, hinttext, onSubmit, showError);
+  State<CustomPasswordField> createState() => _CustomPasswordFieldState(
+      fgcolor, hinttext, onSubmit, extraError, showError, onChange);
 }
 
 class _CustomPasswordFieldState extends State<CustomPasswordField> {
   final Color fgcolor;
   final String hinttext;
+  final bool extraError;
   final bool showError;
   Function(String) onSubmit;
-  _CustomPasswordFieldState(
-      this.fgcolor, this.hinttext, this.onSubmit, this.showError);
+  Function(String) onChange;
+  _CustomPasswordFieldState(this.fgcolor, this.hinttext, this.onSubmit,
+      this.extraError, this.showError, this.onChange);
   bool _obscureText = true;
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
@@ -38,10 +44,29 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
         errorText = "Password can't be empty!";
       });
     } else {
-      setState(() {
-        errorText = "";
-      });
-      return '';
+      if (extraError == true) {
+        if (!value.isValidPassword()) {
+          setState(() {
+            errorText = "Not a Valid Password!";
+          });
+        } else {
+          setState(() {
+            errorText = "";
+          });
+          return '';
+        }
+      } else {
+        if (value.length < 8) {
+          setState(() {
+            errorText = "Password is atleast 8 characters";
+          });
+        } else {
+          setState(() {
+            errorText = "";
+          });
+          return '';
+        }
+      }
     }
     return errorText;
   }
@@ -79,6 +104,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             TextFormField(
               onFieldSubmitted: onSubmit,
               onChanged: (value) {
+                onChange(value);
                 validateField(value);
               },
               validator: (value) {
@@ -202,20 +228,20 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
           ],
         ),
         CustomErrorMsg(
-          errorText: errorTextBool(),
+          errorText: showErrorBool(),
           errorColor: errorColor,
           errorIcon: errorIcon,
-          padbottom: 0.0,
+          padBottom: 0.0,
         ),
       ],
     );
   }
 
-  String errorTextBool() {
+  String showErrorBool() {
     if (showError == true) {
       return errorText;
     } else {
-      return "";
+      return '';
     }
   }
 }

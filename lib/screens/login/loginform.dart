@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'forgotmodal.dart';
-import '../home/student_home.dart';
+import '../home/app.dart';
 import '../../constants.dart';
 import '../components/customsubmitbutton.dart';
 import '../components/customtextfield.dart';
@@ -62,10 +62,12 @@ class _LoginFormState extends State<LoginForm> {
           ),
           CustomPasswordField(
             onSubmit: (value) {}, //Todo
+            onChange: (value) {},
             fgcolor: fgcolor,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextButton(
                 onPressed: () {

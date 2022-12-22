@@ -16,11 +16,31 @@ class ButtonsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height * 0.35,
+      height: size.height * 0.44,
+      width: size.width * 0.95,
       padding: EdgeInsets.only(
-          left: size.width * 0.14,
-          right: size.width * 0.14,
-          top: size.height * 0.06),
+        top: size.width * 0.13,
+        right: size.width * 0.10,
+        left: size.width * 0.10,
+        bottom: size.width * 0.08,
+      ),
+      decoration: const BoxDecoration(
+        color: Color.fromRGBO(30, 30, 30, 1),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30.0),
+          top: Radius.circular(30.0),
+        ),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 2.5),
+            color: Color.fromRGBO(15, 15, 15, 1),
+          ),
+          BoxShadow(
+            offset: Offset(0, -5),
+            color: kPrimaryColor,
+          ),
+        ],
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -42,7 +62,7 @@ class ButtonsContainer extends StatelessWidget {
                       return const StudentLoginScreen(
                         herotag: "StudentHero",
                         fgcolor: kStudentColor,
-                        title: "Student/Staff",
+                        title: "Student / Staff",
                         icon: Icons.school,
                       );
                     }),
@@ -53,7 +73,7 @@ class ButtonsContainer extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: size.height * 0.03,
+            height: size.height * 0.035,
           ),
           Hero(
             tag: "AuthorityHero",
@@ -84,7 +104,7 @@ class ButtonsContainer extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: size.height * 0.03,
+            height: size.height * 0.035,
           ),
           Hero(
             tag: "AdminHero",

@@ -3,7 +3,7 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import '../../constants.dart';
-import '../components/customsubmitbutton.dart';
+import 'customsubmitbutton.dart';
 
 class OtpForm extends StatefulWidget {
   const OtpForm({
@@ -11,22 +11,30 @@ class OtpForm extends StatefulWidget {
     required this.fgcolor,
     required this.title,
     required this.icon,
+    required this.nextPage,
     this.index,
   });
   final Color fgcolor;
   final String title;
   final IconData icon;
   final int? index;
+  final Widget nextPage;
   @override
-  State<OtpForm> createState() => OtpFormState(fgcolor, title, icon);
+  State<OtpForm> createState() => OtpFormState(fgcolor, title, icon, nextPage);
 }
 
 class OtpFormState extends State<OtpForm> {
-  OtpFormState(this.fgcolor, this.title, this.icon);
+  OtpFormState(
+    this.fgcolor,
+    this.title,
+    this.icon,
+    this.nextPage,
+  );
   final Color fgcolor;
   final String title;
   final IconData icon;
-  final _formOTPKey = GlobalKey<FormState>();
+  final Widget nextPage;
+  final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
 
   @override
@@ -34,7 +42,7 @@ class OtpFormState extends State<OtpForm> {
     Size size = MediaQuery.of(context).size;
 
     return Form(
-      key: _formOTPKey,
+      key: _formKey,
       child: Column(
         children: [
           OTPTextField(
@@ -42,15 +50,17 @@ class OtpFormState extends State<OtpForm> {
             width: size.width,
             spaceBetween: 0,
             fieldWidth: 50,
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 14.0, horizontal: 4.0),
             otpFieldStyle: OtpFieldStyle(
-              backgroundColor: Color.fromRGBO(25, 25, 25, 1),
-              borderColor: fgcolor.withOpacity(0.3),
+              backgroundColor: const Color.fromRGBO(20, 20, 20, 1),
+              borderColor: kTextColor.withOpacity(0.2),
               focusBorderColor: fgcolor,
               disabledBorderColor: Colors.grey,
-              enabledBorderColor: fgcolor.withOpacity(0.2),
+              enabledBorderColor: kTextColor.withOpacity(0.2),
               errorBorderColor: Colors.red,
             ),
-            style: const TextStyle(fontSize: 24),
+            style: const TextStyle(fontSize: 30),
             textFieldAlignment: MainAxisAlignment.spaceAround,
             outlineBorderRadius: 5.0,
             fieldStyle: FieldStyle.box,
@@ -61,10 +71,7 @@ class OtpFormState extends State<OtpForm> {
             },
           ),
           SizedBox(
-            height: size.height * 0.05,
-          ),
-          SizedBox(
-            height: size.height * 0.01,
+            height: size.height * 0.06,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -83,7 +90,22 @@ class OtpFormState extends State<OtpForm> {
                 msg: "Submit",
                 fsize: 18,
                 width: 0.08,
-                press: () {}, //Todo
+                press: () {
+                  WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    print("___________________");
+                    print(_formKey.currentState!.validate());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return nextPage;
+                      }),
+                    );
+                  } else {
+                    print(">>>>>ERRORS!");
+                  }
+                }, //Todo_Navigation
               ),
             ],
           ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'reset_password.dart';
 import '../../constants.dart';
 import '../components/customtextfield.dart';
 import '../components/customsubmitbutton.dart';
-import 'otp_screen.dart';
+import '../components/otp_screen.dart';
 
 class ForgotModalForm extends StatefulWidget {
   const ForgotModalForm({
@@ -18,7 +19,6 @@ class ForgotModalForm extends StatefulWidget {
   final int? index;
   @override
   State<ForgotModalForm> createState() =>
-      // ignore: no_logic_in_create_state
       ForgotModalFormState(fgcolor, title, icon);
 }
 
@@ -105,6 +105,11 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                         fgcolor: fgcolor,
                         title: title,
                         icon: icon,
+                        nextPage: ResetPasswordPage(
+                          fgcolor: fgcolor,
+                          title: title,
+                          icon: icon,
+                        ),
                       );
                     }),
                   );

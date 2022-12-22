@@ -27,17 +27,19 @@ class LoginContent extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
     return SizedBox(
-      height: size.height * 0.77,
+      height: size.height * 0.772,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            height: size.height * 0.670,
+            height: size.height * 0.67,
+            width: size.height * 0.95,
             decoration: const BoxDecoration(
               color: Color.fromRGBO(30, 30, 30, 1),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0, 3),
+                  offset: Offset(0, 0.5),
+                  blurRadius: 1,
                   color: Colors.black,
                 ),
               ],

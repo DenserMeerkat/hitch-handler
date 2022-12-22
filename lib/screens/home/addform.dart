@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/string_extensions.dart';
+import '../../string_extensions.dart';
 
 import '../../constants.dart';
 import '../components/customsubmitbutton.dart';
@@ -25,6 +25,7 @@ class _AddFormState extends State<AddForm> {
       child: Form(
         key: _formKey,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               validator: (value) {

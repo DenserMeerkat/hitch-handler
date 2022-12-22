@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
-import '../components/customsigninappbar.dart';
+import 'customsigninappbar.dart';
 import 'otpform.dart';
 
 class OtpScreen extends StatelessWidget {
@@ -9,14 +9,17 @@ class OtpScreen extends StatelessWidget {
     required this.fgcolor,
     required this.title,
     required this.icon,
+    required this.nextPage,
   });
   final Color fgcolor;
   final String title;
   final IconData icon;
+  final Widget nextPage;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(30, 30, 30, 1),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: size.height * 0.18,
@@ -99,6 +102,7 @@ class OtpScreen extends StatelessWidget {
                 index: 2,
                 title: title,
                 icon: icon,
+                nextPage: nextPage,
               ),
             ],
           ),

@@ -7,20 +7,24 @@ class CustomErrorMsg extends StatelessWidget {
     required this.errorText,
     this.errorColor = kErrorColor,
     this.errorIcon = Icons.error,
-    this.padbottom = 10.0,
+    this.padBottom = 10.0,
+    this.padLeft = 30.0,
+    this.fsize = 15,
   });
 
   final String errorText;
   final Color errorColor;
   final IconData errorIcon;
-  final double padbottom;
+  final double padBottom;
+  final double padLeft;
+  final double? fsize;
 
   Widget errorIconGen() {
     if (errorText != "") {
       return Icon(
         errorIcon,
         color: errorColor,
-        size: 15,
+        size: fsize,
       );
     } else {
       return const Text("");
@@ -32,8 +36,10 @@ class CustomErrorMsg extends StatelessWidget {
     return Offstage(
         offstage: false,
         child: Padding(
-            padding: EdgeInsets.only(top: 5.0, bottom: padbottom, left: 30.0),
+            padding:
+                EdgeInsets.only(top: 5.0, bottom: padBottom, left: padLeft),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 errorIconGen(),
                 const SizedBox(
@@ -42,7 +48,9 @@ class CustomErrorMsg extends StatelessWidget {
                 Text(
                   errorText,
                   style: TextStyle(
-                      color: errorColor, letterSpacing: 0.4, fontSize: 12),
+                      color: errorColor,
+                      letterSpacing: 0.4,
+                      fontSize: fsize! - 3.0),
                 )
               ],
             )) //CustomErrorMsg(),

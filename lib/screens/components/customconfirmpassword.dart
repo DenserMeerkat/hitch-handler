@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../string_extensions.dart';
+import 'customerrormsg.dart';
 import 'custompasswordfield.dart';
 import '../../constants.dart';
 
@@ -15,8 +17,7 @@ class CustomConfirmPasswordField extends StatefulWidget {
 
   @override
   State<CustomConfirmPasswordField> createState() =>
-      _CustomConfirmPasswordFieldState(
-          this.fgcolor, this.hinttext, this.onSubmit);
+      _CustomConfirmPasswordFieldState(fgcolor, hinttext, onSubmit);
 }
 
 class _CustomConfirmPasswordFieldState
@@ -25,21 +26,117 @@ class _CustomConfirmPasswordFieldState
   final String hinttext;
   Function(String) onSubmit;
   _CustomConfirmPasswordFieldState(this.fgcolor, this.hinttext, this.onSubmit);
-  bool _obscureText = true;
   IconData errorIcon = Icons.error;
-  Color errorColor = kErrorColor;
-  String errorText = "";
+  Color errorColor = kWarnColor;
+  late String errorText = "One or more Fields empty";
+  late IconData iconData = Icons.warning;
+
+  late String password = '';
+  late String confirmPassword = '';
+  void checkPass() {
+    if (!password.isWhitespace() && !confirmPassword.isWhitespace()) {
+      if (password.isValidPassword()) {
+        if (password == confirmPassword) {
+          setState(() {
+            errorText = "Passwords Match";
+            errorColor = kValidColor;
+            iconData = Icons.check_circle;
+          });
+        } else {
+          setState(() {
+            errorText = "Passwords don't Match";
+            errorColor = kErrorColor;
+            iconData = Icons.unpublished;
+          });
+        }
+      } else {
+        setState(() {
+          errorText = "Not a valid Password!";
+          errorColor = kErrorColor;
+          iconData = Icons.error;
+        });
+      }
+    } else if (!password.isValidPassword()) {
+      setState(() {
+        errorText = "Not a valid Password!";
+        errorColor = kErrorColor;
+        iconData = Icons.error;
+      });
+    } else {
+      setState(() {
+        errorText = 'One or more Fields empty';
+        errorColor = kWarnColor;
+        iconData = Icons.warning;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomPasswordField(fgcolor: fgcolor, onSubmit: (value) {}),
-        SizedBox(
-          height: size.height * 0.015,
+        CustomPasswordField(
+          extraError: true,
+          showError: false,
+          hinttext: hinttext,
+          fgcolor: fgcolor,
+          onSubmit: (value) {
+            setState(() {
+              password = value;
+            });
+            checkPass();
+          },
+          onChange: (value) {
+            setState(() {
+              password = value;
+            });
+            checkPass();
+          },
         ),
-        CustomPasswordField(fgcolor: fgcolor, onSubmit: (value) {}),
+        // const SizedBox(
+        //   height: 10.0,
+        // ),
+        CustomPasswordField(
+          extraError: false,
+          showError: false,
+          hinttext: "Confirm Password",
+          fgcolor: fgcolor,
+          onSubmit: (value) {
+            setState(() {
+              confirmPassword = value;
+            });
+            checkPass();
+          },
+          onChange: (value) {
+            setState(() {
+              confirmPassword = value;
+            });
+            checkPass();
+          },
+        ),
+        SizedBox(
+          height: size.height * 0.01,
+        ),
+        Center(
+          child: Container(
+            padding:
+                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(20, 20, 20, 1),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: CustomErrorMsg(
+              padLeft: 0,
+              padBottom: 5,
+              errorText: errorText,
+              errorIcon: iconData,
+              errorColor: errorColor,
+              fsize: 18,
+            ),
+          ),
+        ),
       ],
     );
   }
