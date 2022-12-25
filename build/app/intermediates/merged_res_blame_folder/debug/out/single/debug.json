@@ -1,26 +1,26 @@
 [
     {
-        "merged": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\build\\app\\intermediates\\merged_res\\debug\\drawable-v21_launch_background.xml.flat",
-        "source": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\android\\app\\src\\main\\res\\drawable-v21\\launch_background.xml"
+        "merged": "E:\\git\\AU_Hitch_Handler\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "E:\\git\\AU_Hitch_Handler\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+        "merged": "E:\\git\\AU_Hitch_Handler\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "E:\\git\\AU_Hitch_Handler\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+        "merged": "E:\\git\\AU_Hitch_Handler\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "E:\\git\\AU_Hitch_Handler\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+        "merged": "E:\\git\\AU_Hitch_Handler\\build\\app\\intermediates\\merged_res\\debug\\drawable-v21_launch_background.xml.flat",
+        "source": "E:\\git\\AU_Hitch_Handler\\android\\app\\src\\main\\res\\drawable-v21\\launch_background.xml"
     },
     {
-        "merged": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+        "merged": "E:\\git\\AU_Hitch_Handler\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "E:\\git\\AU_Hitch_Handler\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+        "merged": "E:\\git\\AU_Hitch_Handler\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "E:\\git\\AU_Hitch_Handler\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
     }
 ]

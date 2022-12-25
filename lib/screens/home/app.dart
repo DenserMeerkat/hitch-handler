@@ -94,7 +94,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                 }
               })),
           child: NavigationBar(
-            shadowColor: Colors.black,
+            //shadowColor: Colors.black,
             selectedIndex: _selectedIndex,
             animationDuration: const Duration(milliseconds: 700),
             onDestinationSelected: (value) {

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "outputFile": "E:\\git\\AU_Hitch_Handler\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\mragu\\OneDrive\\Desktop\\Ragul\\Coding\\VsFlutter\\hitch_handler_1\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "E:\\git\\AU_Hitch_Handler\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../components/customdatepickfield.dart';
 import 'create_password.dart';
@@ -5,6 +6,7 @@ import '../components/otp_screen.dart';
 import '../../constants.dart';
 import '../components/customsubmitbutton.dart';
 import '../components/customtextfield.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({
@@ -92,6 +94,12 @@ class _SignupFormState extends State<SignupForm> {
                 );
                 print(myTextFieldController.text);
                 print(myDateFieldController.text);
+                final docUser=FirebaseFirestore.instance.collection('users').doc('user'+user_num.toString());
+                user_num+=1;
+                final json={
+                  'user_id':int.parse(myTextFieldController.text),
+                };
+                docUser.set(json);
               } else {
                 print("____SignUp Form Error!");
               }
