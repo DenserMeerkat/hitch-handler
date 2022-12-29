@@ -7,23 +7,23 @@ import 'customerrormsg.dart';
 class CustomNameField extends StatefulWidget {
   final Color fgcolor;
   final String hinttext;
-  Function(String) onSubmit;
+  TextEditingController controller;
   CustomNameField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Full Name",
-    required this.onSubmit,
+    required this.controller,
   });
   @override
   State<CustomNameField> createState() =>
-      _CustomNameFieldState(fgcolor, hinttext, onSubmit);
+      _CustomNameFieldState(fgcolor, hinttext, controller);
 }
 
 class _CustomNameFieldState extends State<CustomNameField> {
   final Color fgcolor;
   final String hinttext;
-  Function(String) onSubmit;
-  _CustomNameFieldState(this.fgcolor, this.hinttext, this.onSubmit);
+  TextEditingController controller;
+  _CustomNameFieldState(this.fgcolor, this.hinttext, this.controller);
 
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
@@ -47,7 +47,6 @@ class _CustomNameFieldState extends State<CustomNameField> {
     return null;
   }
 
-  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -80,11 +79,17 @@ class _CustomNameFieldState extends State<CustomNameField> {
             ),
             TextFormField(
               onChanged: (value) {
+                controller.text = value;
+                validateField(value);
+              },
+              controller: controller,
+              validator: (value) {
+                controller.text = value!;
                 validateField(value);
               },
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) {
-                onSubmit;
+                controller.text = value;
                 FocusScope.of(context).nextFocus();
               },
               keyboardType: TextInputType.name,
@@ -96,7 +101,6 @@ class _CustomNameFieldState extends State<CustomNameField> {
               ),
               cursorColor: fgcolor,
               cursorHeight: 16.0,
-              controller: controller,
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
                   onTap: () {},

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/home/home_page.dart';
+import 'home_page.dart';
 import 'app_body.dart';
 import 'add_page.dart';
 import '../../constants.dart';
@@ -94,7 +94,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                 }
               })),
           child: NavigationBar(
-            shadowColor: Colors.black,
+            //shadowColor: Colors.black,
             selectedIndex: _selectedIndex,
             animationDuration: const Duration(milliseconds: 700),
             onDestinationSelected: (value) {

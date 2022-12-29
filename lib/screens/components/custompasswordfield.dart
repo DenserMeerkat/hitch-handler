@@ -8,12 +8,14 @@ class CustomPasswordField extends StatefulWidget {
   final String hinttext;
   final bool extraError;
   final bool showError;
+  TextEditingController controller;
   Function(String) onSubmit;
   Function(String) onChange;
   CustomPasswordField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Password",
+    required this.controller,
     required this.onSubmit,
     required this.onChange,
     this.extraError = false,
@@ -21,7 +23,7 @@ class CustomPasswordField extends StatefulWidget {
   });
   @override
   State<CustomPasswordField> createState() => _CustomPasswordFieldState(
-      fgcolor, hinttext, onSubmit, extraError, showError, onChange);
+      fgcolor, hinttext, controller, extraError, showError, onChange, onSubmit);
 }
 
 class _CustomPasswordFieldState extends State<CustomPasswordField> {
@@ -29,10 +31,11 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
   final String hinttext;
   final bool extraError;
   final bool showError;
-  Function(String) onSubmit;
+  TextEditingController controller;
   Function(String) onChange;
-  _CustomPasswordFieldState(this.fgcolor, this.hinttext, this.onSubmit,
-      this.extraError, this.showError, this.onChange);
+  Function(String) onSubmit;
+  _CustomPasswordFieldState(this.fgcolor, this.hinttext, this.controller,
+      this.extraError, this.showError, this.onSubmit, this.onChange);
   bool _obscureText = true;
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
@@ -102,7 +105,11 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               ),
             ),
             TextFormField(
-              onFieldSubmitted: onSubmit,
+              controller: controller,
+              onFieldSubmitted: (value) {
+                onSubmit(value);
+                FocusScope.of(context).nextFocus();
+              },
               onChanged: (value) {
                 onChange(value);
                 validateField(value);
@@ -110,6 +117,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               validator: (value) {
                 String? val = validateField(value);
                 if (val == "") {
+                  controller.text = value!;
                   return null;
                 } else {
                   return val;

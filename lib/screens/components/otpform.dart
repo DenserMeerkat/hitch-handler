@@ -36,7 +36,7 @@ class OtpFormState extends State<OtpForm> {
   final Widget nextPage;
   final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
-
+  String otp = "";
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -68,6 +68,7 @@ class OtpFormState extends State<OtpForm> {
             onChanged: (value) {},
             onCompleted: (pin) {
               print("Completed: " + pin); //Todo
+              otp = pin;
             },
           ),
           SizedBox(
@@ -102,6 +103,7 @@ class OtpFormState extends State<OtpForm> {
                         return nextPage;
                       }),
                     );
+                    print("OTP : " + otp);
                   } else {
                     print(">>>>>ERRORS!");
                   }

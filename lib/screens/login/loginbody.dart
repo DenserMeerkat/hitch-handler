@@ -76,7 +76,10 @@ class LoginContent extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: size.height * 0.1, child: footerwidget)
+          SizedBox(
+            height: size.height * 0.1,
+            child: footerwidget,
+          )
         ],
       ),
     );

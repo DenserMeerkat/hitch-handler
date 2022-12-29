@@ -30,6 +30,14 @@ class ForgotModalFormState extends State<ForgotModalForm> {
   final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
 
+  final myTextFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    myTextFieldController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -80,7 +88,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               height: size.height * 0.05,
             ),
             CustomTextField(
-              onSubmit: (value) {}, //Todo
+              controller: myTextFieldController,
               fgcolor: fgcolor,
               index: 2,
             ),
@@ -113,6 +121,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                       );
                     }),
                   );
+                  print(myTextFieldController.text);
                 } else {
                   print("____Forgot Form Error!");
                 }
