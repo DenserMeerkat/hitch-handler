@@ -92,6 +92,8 @@ class _SignupFormState extends State<SignupForm> {
                     );
                   }),
                 );
+
+
                 print(myTextFieldController.text);
                 print(myDateFieldController.text);
                 final docUser=FirebaseFirestore.instance.collection('users').doc('user'+user_num.toString());
@@ -110,3 +112,15 @@ class _SignupFormState extends State<SignupForm> {
     );
   }
 }
+/*
+void read(){
+  Stream <list<Users>> readUsers()=>FirebaseFirestore.in
+      .collection('users')
+      .snapshots()
+      .map((snapshot) =>
+  snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
+  static user fromJson(Map<number> json) => User();
+  noofusers: json['noofusers']);
+
+}
+ */
