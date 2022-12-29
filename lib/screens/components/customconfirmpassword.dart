@@ -7,25 +7,26 @@ import '../../constants.dart';
 class CustomConfirmPasswordField extends StatefulWidget {
   final Color fgcolor;
   final String hinttext;
-  Function(String) onSubmit;
+  TextEditingController controller;
   CustomConfirmPasswordField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Password",
-    required this.onSubmit,
+    required this.controller,
   });
 
   @override
   State<CustomConfirmPasswordField> createState() =>
-      _CustomConfirmPasswordFieldState(fgcolor, hinttext, onSubmit);
+      _CustomConfirmPasswordFieldState(fgcolor, hinttext, controller);
 }
 
 class _CustomConfirmPasswordFieldState
     extends State<CustomConfirmPasswordField> {
   final Color fgcolor;
   final String hinttext;
-  Function(String) onSubmit;
-  _CustomConfirmPasswordFieldState(this.fgcolor, this.hinttext, this.onSubmit);
+  TextEditingController controller;
+  _CustomConfirmPasswordFieldState(
+      this.fgcolor, this.hinttext, this.controller);
   IconData errorIcon = Icons.error;
   Color errorColor = kWarnColor;
   late String errorText = "One or more Fields empty";
@@ -41,6 +42,7 @@ class _CustomConfirmPasswordFieldState
             errorText = "Passwords Match";
             errorColor = kValidColor;
             iconData = Icons.check_circle;
+            controller.text = password;
           });
         } else {
           setState(() {
@@ -71,6 +73,15 @@ class _CustomConfirmPasswordFieldState
     }
   }
 
+  final myPassFieldController = TextEditingController();
+  final myConfPassFieldController = TextEditingController();
+  @override
+  void dispose() {
+    myPassFieldController.dispose();
+    myConfPassFieldController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -78,6 +89,7 @@ class _CustomConfirmPasswordFieldState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomPasswordField(
+          controller: myPassFieldController,
           extraError: true,
           showError: false,
           hinttext: hinttext,
@@ -99,6 +111,7 @@ class _CustomConfirmPasswordFieldState
         //   height: 10.0,
         // ),
         CustomPasswordField(
+          controller: myConfPassFieldController,
           extraError: false,
           showError: false,
           hinttext: "Confirm Password",

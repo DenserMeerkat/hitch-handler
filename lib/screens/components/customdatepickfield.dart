@@ -7,23 +7,23 @@ import 'customerrormsg.dart';
 class CustomDatePickField extends StatefulWidget {
   final Color fgcolor;
   final String hinttext;
-  Function(String) onSubmit;
+  TextEditingController controller;
   CustomDatePickField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Date of Birth",
-    required this.onSubmit,
+    required this.controller,
   });
   @override
   State<CustomDatePickField> createState() =>
-      _CustomDatePickFieldState(fgcolor, hinttext, onSubmit);
+      _CustomDatePickFieldState(fgcolor, hinttext, controller);
 }
 
 class _CustomDatePickFieldState extends State<CustomDatePickField> {
   final Color fgcolor;
   final String hinttext;
-  Function(String) onSubmit;
-  _CustomDatePickFieldState(this.fgcolor, this.hinttext, this.onSubmit);
+  TextEditingController controller;
+  _CustomDatePickFieldState(this.fgcolor, this.hinttext, this.controller);
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
@@ -66,8 +66,6 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
     return null;
   }
 
-  TextEditingController _textEditingController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -107,13 +105,13 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                 DateTime? pickeddate = await showCustomDatePicker(context);
                 if (pickeddate != null) {
                   setState(() {
-                    _textEditingController.text =
+                    controller.text =
                         DateFormat('dd-MM-yyyy').format(pickeddate);
                     validateDate(DateFormat('dd-MM-yyyy').format(pickeddate));
                   });
                 }
               },
-              controller: _textEditingController,
+              controller: controller,
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
               keyboardType: TextInputType.name,
@@ -131,7 +129,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                     DateTime? pickeddate = await showCustomDatePicker(context);
                     if (pickeddate != null) {
                       setState(() {
-                        _textEditingController.text =
+                        controller.text =
                             DateFormat('dd-MM-yyyy').format(pickeddate);
                         validateDate(
                             DateFormat('dd-MM-yyyy').format(pickeddate));
@@ -145,7 +143,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                           await showCustomDatePicker(context);
                       if (pickeddate != null) {
                         setState(() {
-                          _textEditingController.text =
+                          controller.text =
                               DateFormat('dd-MM-yyyy').format(pickeddate);
                           validateDate(
                               DateFormat('dd-MM-yyyy').format(pickeddate));

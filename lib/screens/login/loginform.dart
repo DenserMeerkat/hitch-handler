@@ -45,6 +45,16 @@ class _LoginFormState extends State<LoginForm> {
         });
   }
 
+  final myTextFieldController = TextEditingController();
+  final myPassFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    myTextFieldController.dispose();
+    myPassFieldController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -54,14 +64,15 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           CustomTextField(
             current: 2,
-            onSubmit: (value) {}, //Todo
+            controller: myTextFieldController,
             fgcolor: fgcolor,
           ),
           SizedBox(
             height: size.height * 0.015,
           ),
           CustomPasswordField(
-            onSubmit: (value) {}, //Todo
+            controller: myPassFieldController,
+            onSubmit: (value) {},
             onChange: (value) {},
             fgcolor: fgcolor,
           ),
@@ -121,6 +132,9 @@ class _LoginFormState extends State<LoginForm> {
                     return const StudentHomeScreen();
                   }),
                 );
+
+                print(myTextFieldController.text);
+                print(myPassFieldController.text);
               } else {
                 print(">>>>>ERRORS!");
               }

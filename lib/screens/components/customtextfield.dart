@@ -7,20 +7,20 @@ class CustomTextField extends StatefulWidget {
   final Color fgcolor;
   final int index;
   final int current;
-  Function(String) onSubmit;
+  TextEditingController controller;
   CustomTextField(
       {super.key,
       required this.fgcolor,
       this.index = 3,
       this.current = 0,
-      required this.onSubmit});
+      required this.controller});
   @override
   State<CustomTextField> createState() =>
-      _CustomTextFieldState(fgcolor, index, onSubmit, current);
+      _CustomTextFieldState(fgcolor, index, controller, current);
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  Function(String) onSubmit;
+  TextEditingController controller;
   Color fgcolor;
   int current;
   final int index;
@@ -78,7 +78,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   void reset() {
     setState(() {
-      _textEditingController.clear();
+      controller.clear();
       errorText = "";
       FocusManager.instance.primaryFocus?.unfocus();
     });
@@ -107,8 +107,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
-  _CustomTextFieldState(this.fgcolor, this.index, this.onSubmit, this.current);
-  final TextEditingController _textEditingController = TextEditingController();
+  _CustomTextFieldState(
+      this.fgcolor, this.index, this.controller, this.current);
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -142,10 +143,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
             onChanged: (value) {
               validateField(value, current);
             },
-            controller: _textEditingController,
+            controller: controller,
             validator: (value) {
               String val = validateField(value, current);
               if (val == "") {
+                setState(() {
+                  controller.text = value!;
+                });
                 return null;
               } else {
                 return val;

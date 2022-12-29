@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../components/customdatepickfield.dart';
 import 'create_password.dart';
@@ -29,6 +31,18 @@ class _SignupFormState extends State<SignupForm> {
   final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
 
+  String rno = "Empty";
+
+  final myTextFieldController = TextEditingController();
+  final myDateFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    myTextFieldController.dispose();
+    myDateFieldController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -37,16 +51,18 @@ class _SignupFormState extends State<SignupForm> {
       child: Column(
         children: [
           CustomTextField(
-              current: 2,
-              onSubmit: (value) {}, //Todo
-              fgcolor: fgcolor),
+            current: 2,
+            controller: myTextFieldController,
+            fgcolor: fgcolor,
+          ),
           SizedBox(
             height: size.height * 0.015,
           ),
           //CustomNameField(fgcolor: fgcolor),
           CustomDatePickField(
-              onSubmit: (value) {}, //Todo
-              fgcolor: fgcolor),
+            controller: myDateFieldController,
+            fgcolor: fgcolor,
+          ),
           SizedBox(
             height: size.height * 0.030,
           ),
@@ -76,6 +92,17 @@ class _SignupFormState extends State<SignupForm> {
                     );
                   }),
                 );
+
+                print(myTextFieldController.text);
+                print(myDateFieldController.text);
+                final docUser = FirebaseFirestore.instance
+                    .collection('users')
+                    .doc('user' + user_num.toString());
+                user_num += 1;
+                final json = {
+                  'user_id': int.parse(myTextFieldController.text),
+                };
+                docUser.set(json);
               } else {
                 print("____SignUp Form Error!");
               }
@@ -86,3 +113,14 @@ class _SignupFormState extends State<SignupForm> {
     );
   }
 }
+/*
+void read(){
+  Stream <list<Users>> readUsers()=>FirebaseFirestore.in
+      .collection('users')
+      .snapshots()
+      .map((snapshot) =>
+  snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
+  static user fromJson(Map<number> json) => User();
+  noofusers: json['noofusers']);
+}
+ */

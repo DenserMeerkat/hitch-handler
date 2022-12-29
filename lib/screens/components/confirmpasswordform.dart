@@ -34,10 +34,12 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
     required this.press,
   });
   final ScrollController scroll = ScrollController();
+  final myPassFieldController = TextEditingController();
 
   @override
   void dispose() {
     scroll.dispose();
+    myPassFieldController.dispose();
     super.dispose();
   }
 
@@ -97,7 +99,9 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                   height: size.height * 0.07,
                 ),
                 CustomConfirmPasswordField(
-                    fgcolor: fgcolor, onSubmit: (value) {}),
+                  fgcolor: fgcolor,
+                  controller: myPassFieldController,
+                ),
                 SizedBox(
                   height: size.height * 0.05,
                 ),
@@ -116,6 +120,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                     } else {
                       print(">>>>>ERRORS!");
                     }
+                    print(myPassFieldController.text);
                   }, //Todo_Navigation,
                 ),
                 SizedBox(
