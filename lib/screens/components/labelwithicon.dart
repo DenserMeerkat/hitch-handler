@@ -60,13 +60,15 @@ class LabelWithIcon extends StatelessWidget {
               top: kDefaultPadding / 2,
               bottom: kDefaultPadding / 2,
             ),
-            child: Text(
-              title,
-              style: TextStyle(
-                  color: fgcolor,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
-                  fontSize: fsize),
+            child: FittedBox(
+              child: Text(
+                title,
+                style: TextStyle(
+                    color: fgcolor,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                    fontSize: fsize),
+              ),
             ),
           ),
         ],

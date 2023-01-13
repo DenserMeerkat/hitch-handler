@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/constants.dart';
 
 class CustomSubmitButton extends StatelessWidget {
   final Color bgcolor;
@@ -26,7 +27,7 @@ class CustomSubmitButton extends StatelessWidget {
           boxShadow: const [
             BoxShadow(
               offset: Offset(1, 2),
-              color: Color.fromRGBO(10, 10, 10, 1),
+              color: kBlack10,
             )
           ]),
       child: TextButton(
@@ -34,20 +35,20 @@ class CustomSubmitButton extends StatelessWidget {
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.disabled)) {
-              return Color.fromARGB(255, 40, 40, 40);
+              return kGrey40;
             } else {
               return bgcolor.withOpacity(0.8);
             }
           }),
           foregroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.disabled)) {
-              return Color.fromARGB(255, 105, 105, 105);
+              return kGrey90;
             } else {
-              return const Color.fromRGBO(10, 10, 10, 1);
+              return kBlack10;
             }
           }),
           shadowColor: MaterialStateProperty.resolveWith((states) {
-            return const Color.fromRGBO(10, 10, 10, 1);
+            return kBlack10;
           }),
           overlayColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
@@ -63,7 +64,7 @@ class CustomSubmitButton extends StatelessWidget {
             if (states.contains(MaterialState.disabled)) {
               return const BorderSide(
                 width: 2,
-                color: Color.fromRGBO(30, 30, 30, 1),
+                color: kGrey30,
               );
             } else {
               return BorderSide(
@@ -79,12 +80,14 @@ class CustomSubmitButton extends StatelessWidget {
             );
           }),
         ),
-        child: Text(
-          msg,
-          style: TextStyle(
-            fontSize: fsize,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1,
+        child: FittedBox(
+          child: Text(
+            msg,
+            style: TextStyle(
+              fontSize: fsize,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1,
+            ),
           ),
         ),
       ),

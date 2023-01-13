@@ -10,24 +10,27 @@ class AddPage extends StatelessWidget {
     Size size = MediaQuery.of(context).size; // Available screen size
     return CustomScrollView(
       slivers: [
-        const SliverAppBar(
-          floating: true,
-          pinned: true,
-          backgroundColor: kBackgroundColor,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text('*Add Page*'),
-          ),
-        ),
+        // const SliverAppBar(
+        //   floating: true,
+        //   pinned: true,
+        //   backgroundColor: kBackgroundColor,
+        //   flexibleSpace: FlexibleSpaceBar(
+        //     title: Text('*Add Page*'),
+        //   ),
+        // ),
         SliverFillRemaining(
-          child: SingleChildScrollView(
-            child: Container(
-              height: size.height * 0.8,
-              color: const Color.fromRGBO(30, 30, 30, 1),
+          child: Container(
+            height: size.height * 0.9,
+            color: kGrey30.withOpacity(0.4),
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: size.height * 0.04,
+                  ),
                   const Text(
-                    "Add Your Problem",
+                    "Add new Problem",
                     style: TextStyle(
                       color: kTextColor,
                       fontWeight: FontWeight.bold,
@@ -45,8 +48,11 @@ class AddPage extends StatelessWidget {
                       letterSpacing: 0.6,
                     ),
                   ),
-                  SizedBox(height: size.height * 0.075),
+                  SizedBox(height: size.height * 0.05),
                   const AddForm(),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
                 ],
               ),
             ),

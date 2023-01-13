@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../string_extensions.dart';
-import '../../constants.dart';
+import '../../../string_extensions.dart';
+import '../../../constants.dart';
 import 'customerrormsg.dart';
 
 class CustomPasswordField extends StatefulWidget {
@@ -22,20 +22,11 @@ class CustomPasswordField extends StatefulWidget {
     this.showError = true,
   });
   @override
-  State<CustomPasswordField> createState() => _CustomPasswordFieldState(
-      fgcolor, hinttext, controller, extraError, showError, onChange, onSubmit);
+  State<CustomPasswordField> createState() => _CustomPasswordFieldState();
 }
 
 class _CustomPasswordFieldState extends State<CustomPasswordField> {
-  final Color fgcolor;
-  final String hinttext;
-  final bool extraError;
-  final bool showError;
-  TextEditingController controller;
-  Function(String) onChange;
-  Function(String) onSubmit;
-  _CustomPasswordFieldState(this.fgcolor, this.hinttext, this.controller,
-      this.extraError, this.showError, this.onSubmit, this.onChange);
+  _CustomPasswordFieldState();
   bool _obscureText = true;
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
@@ -44,13 +35,13 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
   String? validateField(String? value) {
     if (value!.isWhitespace()) {
       setState(() {
-        errorText = "Password can't be empty!";
+        errorText = "Password can't be empty";
       });
     } else {
-      if (extraError == true) {
+      if (widget.extraError == true) {
         if (!value.isValidPassword()) {
           setState(() {
-            errorText = "Not a Valid Password!";
+            errorText = "Not a Valid Password";
           });
         } else {
           setState(() {
@@ -77,6 +68,13 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    const outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(10.0),
+      ),
+      borderSide: BorderSide.none,
+      gapPadding: 0,
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -90,12 +88,13 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                 height: 48,
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(50, 50, 50, 1),
-                  borderRadius: BorderRadius.circular(15.0),
-                  boxShadow: const [
-                    BoxShadow(
+                  color: kGrey50,
+                  borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: [
+                    errorIndicator(),
+                    const BoxShadow(
                       offset: Offset(1, 2),
-                      color: Color.fromRGBO(20, 20, 20, 1),
+                      color: kBlack20,
                     )
                   ],
                 ),
@@ -105,19 +104,19 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               ),
             ),
             TextFormField(
-              controller: controller,
+              controller: widget.controller,
               onFieldSubmitted: (value) {
-                onSubmit(value);
+                widget.onSubmit(value);
                 FocusScope.of(context).nextFocus();
               },
               onChanged: (value) {
-                onChange(value);
+                widget.onChange(value);
                 validateField(value);
               },
               validator: (value) {
                 String? val = validateField(value);
                 if (val == "") {
-                  controller.text = value!;
+                  widget.controller.text = value!;
                   return null;
                 } else {
                   return val;
@@ -129,7 +128,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                 fontSize: 16.0,
                 letterSpacing: 1,
               ),
-              cursorColor: fgcolor,
+              cursorColor: widget.fgcolor,
               cursorHeight: 16.0,
               obscureText: _obscureText,
               enableSuggestions: false,
@@ -146,7 +145,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                     },
                     icon: Icon(
                       _obscureText ? Icons.visibility : Icons.visibility_off,
-                      color: fgcolor,
+                      color: widget.fgcolor,
                       size: 18,
                     ),
                   ),
@@ -163,34 +162,34 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                   color: Colors.transparent,
                   fontSize: 0,
                 ),
-                suffixIconColor: fgcolor,
+                suffixIconColor: widget.fgcolor,
                 icon: Container(
                   height: 50,
                   width: 50,
                   decoration: const BoxDecoration(
-                    color: Color.fromRGBO(20, 20, 20, 1),
+                    color: kBlack20,
                     borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(15.0),
+                      left: Radius.circular(10.0),
                     ),
                     boxShadow: [
                       BoxShadow(
                         offset: Offset(1, 1),
                         blurRadius: 1,
-                        color: Color.fromRGBO(10, 10, 10, 1),
+                        color: kBlack10,
                       )
                     ],
                   ),
                   padding: const EdgeInsets.all(10.0),
                   child: Icon(
                     Icons.password,
-                    color: fgcolor,
+                    color: widget.fgcolor,
                     size: 20,
                   ),
                 ),
-                hintText: hinttext,
+                hintText: widget.hinttext,
                 hintStyle: const TextStyle(
                   fontSize: 15.0,
-                  color: Color.fromRGBO(90, 90, 90, 1),
+                  color: kGrey90,
                   letterSpacing: 0.5,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -199,38 +198,10 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                   horizontal: 0,
                   vertical: 0,
                 ),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0),
-                  ),
-                  borderSide: BorderSide.none,
-                  gapPadding: 0,
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0),
-                  ),
-                  borderSide: BorderSide.none,
-                  gapPadding: 0,
-                ),
-                errorBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0),
-                  ),
-                  borderSide: BorderSide.none,
-                  gapPadding: 0,
-                ),
-                focusedErrorBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0),
-                  ),
-                  borderSide: BorderSide.none,
-                  gapPadding: 0,
-                ),
+                enabledBorder: outlineInputBorder,
+                focusedBorder: outlineInputBorder,
+                errorBorder: outlineInputBorder,
+                focusedErrorBorder: outlineInputBorder,
               ),
             ),
           ],
@@ -246,10 +217,24 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
   }
 
   String showErrorBool() {
-    if (showError == true) {
+    if (widget.showError == true) {
       return errorText;
     } else {
       return '';
+    }
+  }
+
+  BoxShadow errorIndicator() {
+    if (errorText != '') {
+      return const BoxShadow(
+        offset: Offset(1, 3.5),
+        color: kErrorColor,
+      );
+    } else {
+      return const BoxShadow(
+        offset: Offset(0, 0),
+        color: Colors.transparent,
+      );
     }
   }
 }

@@ -8,7 +8,7 @@ class UserLoginHeader extends StatelessWidget {
     Key? key,
     this.bradius = 30.0,
     this.bgcolor = kBackgroundColor,
-    this.shcolor = const Color.fromRGBO(10, 10, 10, 1),
+    this.shcolor = kBlack10,
     this.fsize = 16,
     this.herotag,
     required this.press,

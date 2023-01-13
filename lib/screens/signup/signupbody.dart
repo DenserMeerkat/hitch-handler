@@ -5,54 +5,32 @@ class SignupBody extends StatelessWidget {
   const SignupBody({
     super.key,
     required this.formwidget,
-    required this.footerwidget,
   });
   final Widget formwidget;
-  final Widget footerwidget;
-  @override
-  Widget build(BuildContext context) {
-    return SignupContent(formwidget: formwidget, footerwidget: footerwidget);
-  }
-}
-
-class SignupContent extends StatelessWidget {
-  const SignupContent({
-    super.key,
-    required this.formwidget,
-    required this.footerwidget,
-  });
-  final Widget formwidget;
-  final Widget footerwidget;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
-    return SizedBox(
-      height: size.height * 0.772,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            height: size.height * 0.67,
-            decoration: const BoxDecoration(
-              color: Color.fromRGBO(30, 30, 30, 1),
-              boxShadow: [
-                BoxShadow(
-                  offset: Offset(0, 0.5),
-                  blurRadius: 1,
-                  color: Colors.black,
-                ),
-              ],
-            ),
-            padding: EdgeInsets.only(
-              top: 0,
-              left: size.width * 0.1,
-              right: size.width * 0.1,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
+    return Theme(
+      data: Theme.of(context).copyWith(
+        accentColor: kStudentColor,
+        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+      ),
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: size.width * 0.1,
+          ),
+          decoration: const BoxDecoration(
+            color: kGrey30,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: size.height * 0.05,
+              ),
+              const FittedBox(
+                child: Text(
                   "Create an Account",
                   style: TextStyle(
                     color: kTextColor,
@@ -61,10 +39,12 @@ class SignupContent extends StatelessWidget {
                     fontSize: 35,
                   ),
                 ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                Text(
+              ),
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              FittedBox(
+                child: Text(
                   "using  E-mail / Mobile No. / Roll Number",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -72,13 +52,12 @@ class SignupContent extends StatelessWidget {
                     letterSpacing: 0.5,
                   ),
                 ),
-                SizedBox(height: size.height * 0.075),
-                formwidget,
-              ],
-            ),
+              ),
+              SizedBox(height: size.height * 0.075),
+              formwidget,
+            ],
           ),
-          SizedBox(height: size.height * 0.1, child: footerwidget)
-        ],
+        ),
       ),
     );
   }

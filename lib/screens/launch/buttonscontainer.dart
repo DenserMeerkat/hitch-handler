@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../args_class.dart';
 import '../../constants.dart';
-import '../components/customelevatedbutton.dart';
+import '../components/customfields/customelevatedbutton.dart';
 import '../login/admin_login.dart';
 import '../login/student_login.dart';
 import '../login/authority_login.dart';
@@ -25,7 +26,7 @@ class ButtonsContainer extends StatelessWidget {
         bottom: size.width * 0.08,
       ),
       decoration: const BoxDecoration(
-        color: Color.fromRGBO(30, 30, 30, 1),
+        color: kGrey30,
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(30.0),
           top: Radius.circular(30.0),
@@ -33,7 +34,7 @@ class ButtonsContainer extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             offset: Offset(0, 2.5),
-            color: Color.fromRGBO(15, 15, 15, 1),
+            color: kBlack15,
           ),
           BoxShadow(
             offset: Offset(0, -5),
@@ -49,26 +50,26 @@ class ButtonsContainer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: CustomElevatedButtonWithIcon(
-                bgcolor: const Color.fromRGBO(20, 20, 20, 1),
+                bgcolor: kBlack20,
                 fgcolor: kStudentColor,
-                shcolor: const Color.fromRGBO(10, 10, 10, 1),
+                shcolor: kBlack10,
                 bradius: 40.0,
                 fsize: 15.0,
                 title: "Student / Staff",
+                icon: Icons.school,
                 press: () {
-                  Navigator.push(
+                  LoginSignUpArguments args = LoginSignUpArguments(
+                    "StudentHero",
+                    kStudentColor,
+                    "Student / Staff",
+                    Icons.school,
+                  );
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(builder: (context) {
-                      return const StudentLoginScreen(
-                        herotag: "StudentHero",
-                        fgcolor: kStudentColor,
-                        title: "Student / Staff",
-                        icon: Icons.school,
-                      );
-                    }),
+                    StudentLoginScreen.routeName,
+                    arguments: args,
                   );
                 },
-                icon: Icons.school,
               ),
             ),
           ),
@@ -80,26 +81,27 @@ class ButtonsContainer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: CustomElevatedButtonWithIcon(
-                bgcolor: const Color.fromRGBO(20, 20, 20, 1),
+                bgcolor: kBlack20,
                 fgcolor: kAuthorityColor,
-                shcolor: const Color.fromRGBO(10, 10, 10, 1),
+                shcolor: kBlack10,
                 bradius: 40.0,
                 fsize: 16.0,
                 title: "Authority",
+                icon: Icons.work,
                 press: () {
-                  Navigator.push(
+                  LoginSignUpArguments args = LoginSignUpArguments(
+                    "AuthorityHero",
+                    kAuthorityColor,
+                    "Authority",
+                    Icons.work,
+                  );
+
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(builder: (context) {
-                      return const AuthorityLoginScreen(
-                        herotag: "AuthorityHero",
-                        fgcolor: kAuthorityColor,
-                        title: "Authority",
-                        icon: Icons.work,
-                      );
-                    }),
+                    AuthorityLoginScreen.routeName,
+                    arguments: args,
                   );
                 },
-                icon: Icons.work,
               ),
             ),
           ),
@@ -111,26 +113,27 @@ class ButtonsContainer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: CustomElevatedButtonWithIcon(
-                bgcolor: const Color.fromRGBO(20, 20, 20, 1),
+                bgcolor: kBlack20,
                 fgcolor: kAdminColor,
-                shcolor: const Color.fromRGBO(10, 10, 10, 1),
+                shcolor: kBlack10,
                 bradius: 40.0,
                 fsize: 16.0,
                 title: "Admin",
+                icon: Icons.key,
                 press: () {
-                  Navigator.push(
+                  LoginSignUpArguments args = LoginSignUpArguments(
+                    "AdminHero",
+                    kAdminColor,
+                    "Admin",
+                    Icons.key,
+                  );
+
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(builder: (context) {
-                      return const AdminLoginScreen(
-                        fgcolor: kAdminColor,
-                        title: "Admin",
-                        icon: Icons.key,
-                        herotag: "AdminHero",
-                      );
-                    }),
+                    AdminLoginScreen.routeName,
+                    arguments: args,
                   );
                 },
-                icon: Icons.key,
               ),
             ),
           ),
