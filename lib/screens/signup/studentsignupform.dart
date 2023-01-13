@@ -1,94 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../../args_class.dart';
-import 'reset_password.dart';
-import '../../constants.dart';
-import '../components/customfields/custommultifield.dart';
-import '../components/customfields/customsubmitbutton.dart';
+import '../components/customfields/customdatepickfield.dart';
+import 'create_password.dart';
 import '../components/otp_screen.dart';
+import '../../constants.dart';
+import '../components/customfields/customsubmitbutton.dart';
+import '../components/customfields/custommultifield.dart';
 
-class ForgotModalForm extends StatefulWidget {
-  const ForgotModalForm({
+class StudentSignupForm extends StatefulWidget {
+  const StudentSignupForm({
     super.key,
     required this.fgcolor,
     required this.title,
     required this.icon,
     required this.homeroute,
-    this.index,
   });
   final Color fgcolor;
   final String title;
   final IconData icon;
   final String homeroute;
-  final int? index;
+
   @override
-  State<ForgotModalForm> createState() => ForgotModalFormState();
+  State<StudentSignupForm> createState() => _StudentSignupFormState();
 }
 
-class ForgotModalFormState extends State<ForgotModalForm> {
-  ForgotModalFormState();
+class _StudentSignupFormState extends State<StudentSignupForm> {
+  _StudentSignupFormState();
   final _formKey = GlobalKey<FormState>();
 
+  String rno = "Empty";
+
   final myTextFieldController = TextEditingController();
+  final myDateFieldController = TextEditingController();
 
   @override
   void dispose() {
     myTextFieldController.dispose();
+    myDateFieldController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+    return Center(
+      child: Form(
+        key: _formKey,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              height: size.height * 0.06,
-              child: Center(
-                child: Container(
-                  height: 5,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.025,
-            ),
-            const FittedBox(
-              child: Text(
-                "Forgot Password ?",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: kTextColor,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
-                  fontSize: 28,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            FittedBox(
-              child: Text(
-                "Enter registered Email ID / Mobile Number.",
-                style: TextStyle(
-                  color: kTextColor.withOpacity(0.7),
-                  letterSpacing: 0.6,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
             CustomMultiField(
               controller: myTextFieldController,
               fgcolor: widget.fgcolor,
@@ -110,24 +71,43 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               ],
             ),
             SizedBox(
-              height: size.height * 0.010,
+              height: size.height * 0.01,
+            ),
+            CustomDatePickField(
+              controller: myDateFieldController,
+              fgcolor: widget.fgcolor,
+            ),
+            SizedBox(
+              height: size.height * 0.02,
             ),
             CustomSubmitButton(
               size: size,
               bgcolor: kPrimaryColor,
-              msg: "Send Code",
+              msg: "Continue",
               fsize: 18,
-              width: 0.08,
+              width: 0.15,
               press: () {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  print("____Forgot Form Valid!");
+                  print("____SignUp Form Valid!");
+
+                  print(myTextFieldController.text);
+                  print(myDateFieldController.text);
+                  final docUser = FirebaseFirestore.instance
+                      .collection('users')
+                      .doc('user' + user_num.toString());
+                  user_num += 1;
+                  final json = {
+                    'user_id': int.parse(myTextFieldController.text),
+                  };
+                  docUser.set(json);
+
                   OTPArguments args = OTPArguments(
                     widget.fgcolor,
                     widget.title,
                     widget.icon,
-                    ResetPasswordPage(
+                    CreatePasswordPage(
                       fgcolor: widget.fgcolor,
                       title: widget.title,
                       icon: widget.icon,
@@ -140,14 +120,10 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                     OtpScreen.routeName,
                     arguments: args,
                   );
-                  print(myTextFieldController.text);
                 } else {
-                  print("____Forgot Form Error!");
+                  print("____SignUp Form Error!");
                 }
               }, //Todo_Navigation
-            ),
-            SizedBox(
-              height: size.height * 0.05,
             ),
           ],
         ),
@@ -155,3 +131,14 @@ class ForgotModalFormState extends State<ForgotModalForm> {
     );
   }
 }
+/*
+void read(){
+  Stream <list<Users>> readUsers()=>FirebaseFirestore.in
+      .collection('users')
+      .snapshots()
+      .map((snapshot) =>
+  snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
+  static user fromJson(Map<number> json) => User();
+  noofusers: json['noofusers']);
+}
+ */

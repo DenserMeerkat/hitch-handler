@@ -1,65 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants.dart';
-
-class CustomElevatedButton extends StatelessWidget {
-  const CustomElevatedButton({
-    Key? key,
-    required this.bgcolor,
-    this.fgcolor,
-    this.shcolor,
-    required this.bradius,
-    required this.fsize,
-    required this.title,
-    required this.press,
-    this.padding = kDefaultPadding,
-  }) : super(key: key);
-  final Color bgcolor;
-  final Color? fgcolor;
-  final Color? shcolor;
-  final double bradius;
-  final double fsize;
-  final double padding;
-  final String title;
-  final Function()? press;
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.pressed)) {
-            return bgcolor.withOpacity(0.9);
-          }
-          return bgcolor;
-        }),
-        foregroundColor: MaterialStateProperty.resolveWith((states) {
-          return fgcolor;
-        }),
-        shadowColor: MaterialStateProperty.resolveWith((states) {
-          return shcolor;
-        }),
-        shape: MaterialStateProperty.resolveWith((states) {
-          return RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(bradius),
-          );
-        }),
-        padding: MaterialStateProperty.resolveWith((states) {
-          return EdgeInsets.symmetric(
-            vertical: padding / 1.25,
-            horizontal: padding * 2,
-          );
-        }),
-      ),
-      onPressed: press,
-      child: Text(
-        title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: fsize,
-        ),
-      ),
-    );
-  }
-}
+import '../../../constants.dart';
 
 class CustomElevatedButtonWithIcon extends StatelessWidget {
   const CustomElevatedButtonWithIcon({
@@ -136,7 +76,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.2,
-                        fontSize: fsize,
+                        fontSize: fsize < 18 ? fsize : 18,
                         color: fgcolor,
                       ),
                     ),
@@ -147,6 +87,10 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
             Material(
               type: MaterialType.transparency,
               child: InkWell(
+                splashColor: kTextColor.withOpacity(0.1),
+                focusColor: kTextColor.withOpacity(0.1),
+                hoverColor: kTextColor.withOpacity(0.1),
+                highlightColor: kTextColor.withOpacity(0.1),
                 onTap: press,
                 borderRadius: BorderRadius.circular(bradius),
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../string_extensions.dart';
-import '../../constants.dart';
+import '../../../string_extensions.dart';
+import '../../../constants.dart';
 import 'customerrormsg.dart';
 
 class CustomDatePickField extends StatefulWidget {
@@ -15,15 +15,11 @@ class CustomDatePickField extends StatefulWidget {
     required this.controller,
   });
   @override
-  State<CustomDatePickField> createState() =>
-      _CustomDatePickFieldState(fgcolor, hinttext, controller);
+  State<CustomDatePickField> createState() => _CustomDatePickFieldState();
 }
 
 class _CustomDatePickFieldState extends State<CustomDatePickField> {
-  final Color fgcolor;
-  final String hinttext;
-  TextEditingController controller;
-  _CustomDatePickFieldState(this.fgcolor, this.hinttext, this.controller);
+  _CustomDatePickFieldState();
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
@@ -31,7 +27,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
   String? validateField(String? value) {
     String errormsg = "";
     if (value!.isWhitespace()) {
-      errormsg = "$hinttext can\'t be empty!";
+      errormsg = "${widget.hinttext} can\'t be empty";
     } else if (value.isValidName()) {
       errormsg = "";
     }
@@ -69,6 +65,14 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    const outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(10.0),
+      ),
+      borderSide: BorderSide.none,
+      gapPadding: 0,
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -82,12 +86,13 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                 height: 48,
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(50, 50, 50, 1),
-                  borderRadius: BorderRadius.circular(15.0),
-                  boxShadow: const [
-                    BoxShadow(
+                  color: kGrey50,
+                  borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: [
+                    errorIndicator(),
+                    const BoxShadow(
                       offset: Offset(1, 2),
-                      color: Color.fromRGBO(20, 20, 20, 1),
+                      color: kBlack20,
                     )
                   ],
                 ),
@@ -105,13 +110,13 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                 DateTime? pickeddate = await showCustomDatePicker(context);
                 if (pickeddate != null) {
                   setState(() {
-                    controller.text =
+                    widget.controller.text =
                         DateFormat('dd-MM-yyyy').format(pickeddate);
                     validateDate(DateFormat('dd-MM-yyyy').format(pickeddate));
                   });
                 }
               },
-              controller: controller,
+              controller: widget.controller,
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
               keyboardType: TextInputType.name,
@@ -121,7 +126,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                 fontSize: 16.0,
                 letterSpacing: 1,
               ),
-              cursorColor: fgcolor,
+              cursorColor: widget.fgcolor,
               cursorHeight: 16.0,
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
@@ -129,7 +134,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                     DateTime? pickeddate = await showCustomDatePicker(context);
                     if (pickeddate != null) {
                       setState(() {
-                        controller.text =
+                        widget.controller.text =
                             DateFormat('dd-MM-yyyy').format(pickeddate);
                         validateDate(
                             DateFormat('dd-MM-yyyy').format(pickeddate));
@@ -143,7 +148,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                           await showCustomDatePicker(context);
                       if (pickeddate != null) {
                         setState(() {
-                          controller.text =
+                          widget.controller.text =
                               DateFormat('dd-MM-yyyy').format(pickeddate);
                           validateDate(
                               DateFormat('dd-MM-yyyy').format(pickeddate));
@@ -152,7 +157,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                     },
                     icon: Icon(
                       Icons.edit_calendar_outlined,
-                      color: fgcolor,
+                      color: widget.fgcolor,
                       size: 18,
                     ),
                   ),
@@ -169,34 +174,34 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   color: Colors.transparent,
                   fontSize: 0,
                 ),
-                suffixIconColor: fgcolor,
+                suffixIconColor: widget.fgcolor,
                 icon: Container(
                   height: 50,
                   width: 50,
                   decoration: const BoxDecoration(
-                    color: Color.fromRGBO(20, 20, 20, 1),
+                    color: kBlack20,
                     borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(15.0),
+                      left: Radius.circular(10.0),
                     ),
                     boxShadow: [
                       BoxShadow(
                         offset: Offset(1, 1),
                         blurRadius: 1,
-                        color: Color.fromRGBO(10, 10, 10, 1),
+                        color: kBlack10,
                       )
                     ],
                   ),
                   padding: const EdgeInsets.all(10.0),
                   child: Icon(
                     Icons.date_range,
-                    color: fgcolor,
+                    color: widget.fgcolor,
                     size: 20,
                   ),
                 ),
-                hintText: hinttext,
+                hintText: widget.hinttext,
                 hintStyle: const TextStyle(
                   fontSize: 15.0,
-                  color: Color.fromRGBO(90, 90, 90, 1),
+                  color: kGrey90,
                   letterSpacing: 0.5,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -205,38 +210,10 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   horizontal: 0,
                   vertical: 0,
                 ),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0),
-                  ),
-                  borderSide: BorderSide.none,
-                  gapPadding: 0,
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0),
-                  ),
-                  borderSide: BorderSide.none,
-                  gapPadding: 0,
-                ),
-                errorBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0),
-                  ),
-                  borderSide: BorderSide.none,
-                  gapPadding: 0,
-                ),
-                focusedErrorBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0),
-                  ),
-                  borderSide: BorderSide.none,
-                  gapPadding: 0,
-                ),
+                enabledBorder: outlineInputBorder,
+                focusedBorder: outlineInputBorder,
+                errorBorder: outlineInputBorder,
+                focusedErrorBorder: outlineInputBorder,
               ),
             ),
           ],
@@ -275,22 +252,23 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
             colorScheme: ColorScheme.dark(
                 onPrimary: kBackgroundColor, // selected text color
                 onSurface: kTextColor, // default text color
-                primary: fgcolor.withOpacity(0.9) // circle color
+                primary: widget.fgcolor.withOpacity(0.9) // circle color
                 ),
-            dialogBackgroundColor: const Color.fromRGBO(40, 40, 40, 1),
+            dialogBackgroundColor: kGrey40,
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 textStyle: TextStyle(
-                  color: fgcolor,
+                  color: widget.fgcolor,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.5,
                   fontSize: 12,
                 ),
                 foregroundColor: kBackgroundColor, // color of button's letters
-                backgroundColor: fgcolor.withOpacity(0.8), // Background color
+                backgroundColor:
+                    widget.fgcolor.withOpacity(0.8), // Background color
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
-                    color: fgcolor,
+                    color: widget.fgcolor,
                     width: 1,
                     style: BorderStyle.solid,
                   ),
@@ -303,5 +281,19 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
         );
       },
     );
+  }
+
+  BoxShadow errorIndicator() {
+    if (errorText != '') {
+      return const BoxShadow(
+        offset: Offset(1, 3.5),
+        color: kErrorColor,
+      );
+    } else {
+      return const BoxShadow(
+        offset: Offset(0, 0),
+        color: Colors.transparent,
+      );
+    }
   }
 }

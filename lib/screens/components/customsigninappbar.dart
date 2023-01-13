@@ -9,6 +9,7 @@ class CustomSignInAppBar extends StatelessWidget {
     required this.fgcolor,
     required this.title,
     required this.icon,
+    required this.press,
     this.herotag,
   });
   final Object? herotag;
@@ -16,6 +17,7 @@ class CustomSignInAppBar extends StatelessWidget {
   final Color fgcolor;
   final String title;
   final IconData icon;
+  final Function() press;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class CustomSignInAppBar extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: size.height * 0.015),
             decoration: BoxDecoration(
-              color: const Color.fromRGBO(30, 30, 30, 1),
+              color: kGrey30,
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(40.0),
               ),
@@ -58,14 +60,12 @@ class CustomSignInAppBar extends StatelessWidget {
                 herotag: herotag,
                 bradius: 30.0,
                 bgcolor: kBackgroundColor,
-                shcolor: const Color.fromRGBO(10, 10, 10, 1),
+                shcolor: kBlack10,
                 fgcolor: fgcolor,
                 icon: icon,
                 title: title,
                 fsize: 16,
-                press: () {
-                  Navigator.pop(context);
-                },
+                press: press,
                 iconbg: kPrimaryColor,
               ),
             ),

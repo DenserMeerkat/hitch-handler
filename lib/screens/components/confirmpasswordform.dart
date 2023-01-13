@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
-import 'customconfirmpassword.dart';
-import 'customsubmitbutton.dart';
+import 'customfields/customconfirmpassword.dart';
+import 'customfields/customsubmitbutton.dart';
 import 'validpassword.dart';
 
 class ConfirmPasswordBody extends StatefulWidget {
@@ -18,21 +18,11 @@ class ConfirmPasswordBody extends StatefulWidget {
   });
 
   @override
-  State<ConfirmPasswordBody> createState() => _ConfirmPasswordBodyState(
-      fgcolor: fgcolor, press: press, title: title, subtitle: subtitle);
+  State<ConfirmPasswordBody> createState() => _ConfirmPasswordBodyState();
 }
 
 class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
-  final Color fgcolor;
-  final String title;
-  final String subtitle;
-  final Function() press;
-  _ConfirmPasswordBodyState({
-    required this.fgcolor,
-    required this.title,
-    required this.subtitle,
-    required this.press,
-  });
+  _ConfirmPasswordBodyState();
   final ScrollController scroll = ScrollController();
   final myPassFieldController = TextEditingController();
 
@@ -57,7 +47,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
     return Container(
       height: size.height * 0.78,
       width: size.width,
-      color: const Color.fromRGBO(30, 30, 30, 1),
+      color: kGrey30,
       child: SingleChildScrollView(
         controller: scroll,
         child: Form(
@@ -75,31 +65,35 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                 SizedBox(
                   height: size.height * 0.03,
                 ),
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: kTextColor,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                    fontSize: 32,
+                FittedBox(
+                  child: Text(
+                    widget.title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: kTextColor,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                      fontSize: 32,
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: size.height * 0.015,
                 ),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    color: kTextColor.withOpacity(0.7),
-                    letterSpacing: 0.6,
+                FittedBox(
+                  child: Text(
+                    widget.subtitle,
+                    style: TextStyle(
+                      color: kTextColor.withOpacity(0.7),
+                      letterSpacing: 0.6,
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: size.height * 0.07,
                 ),
                 CustomConfirmPasswordField(
-                  fgcolor: fgcolor,
+                  fgcolor: widget.fgcolor,
                   controller: myPassFieldController,
                 ),
                 SizedBox(
@@ -116,7 +110,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                       _formKey.currentState!.save();
                       print("___________________");
                       print(_formKey.currentState!.validate());
-                      press();
+                      widget.press();
                     } else {
                       print(">>>>>ERRORS!");
                     }
@@ -127,7 +121,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                   height: size.height * 0.05,
                 ),
                 ValidPassExpansionTile(
-                  fgcolor: fgcolor,
+                  fgcolor: widget.fgcolor,
                   scroll: (value) {
                     if (value == true) {
                       scrollDown(size.height * 0.01);

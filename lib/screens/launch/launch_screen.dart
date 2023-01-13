@@ -3,6 +3,7 @@ import '../../constants.dart';
 import 'launch_screen_body.dart';
 
 class LaunchScreen extends StatelessWidget {
+  static String routeName = '/launch';
   const LaunchScreen({super.key});
 
   @override

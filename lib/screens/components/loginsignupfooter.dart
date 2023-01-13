@@ -71,11 +71,13 @@ class LoginSignUpFooter extends StatelessWidget {
                       ),
                     ),
                     child: Center(
-                      child: Text(
-                        btntext,
-                        style: const TextStyle(
-                          color: kTextColor,
-                          letterSpacing: 1,
+                      child: FittedBox(
+                        child: Text(
+                          btntext,
+                          style: const TextStyle(
+                            color: kTextColor,
+                            letterSpacing: 1,
+                          ),
                         ),
                       ),
                     ),

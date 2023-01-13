@@ -18,7 +18,7 @@ class PopupMenu extends StatelessWidget {
           Icons.more_vert,
           color: kTextColor.withOpacity(0.6),
         ),
-        color: Color.fromRGBO(30, 30, 30, 1),
+        color: kGrey30,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

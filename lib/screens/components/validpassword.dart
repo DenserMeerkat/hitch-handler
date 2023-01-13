@@ -12,20 +12,13 @@ class ValidPassExpansionTile extends StatefulWidget {
   Function(bool) scroll;
 
   @override
-  State<ValidPassExpansionTile> createState() =>
-      _ValidPassExpansionTileState(fgcolor, scroll);
+  State<ValidPassExpansionTile> createState() => _ValidPassExpansionTileState();
 }
 
 class _ValidPassExpansionTileState extends State<ValidPassExpansionTile> {
-  _ValidPassExpansionTileState(
-    this.fgcolor,
-    this.scroll,
-  );
-  bool _customTileExpanded = true;
+  _ValidPassExpansionTileState();
 
   final String bullet = "\u2022 ";
-  final Color fgcolor;
-  Function(bool) scroll;
   @override
   Widget build(BuildContext context) {
     var textStyle = TextStyle(fontSize: 13, color: kTextColor.withOpacity(0.7));
@@ -35,12 +28,12 @@ class _ValidPassExpansionTileState extends State<ValidPassExpansionTile> {
         dense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: ExpansionTile(
-          textColor: fgcolor,
-          collapsedTextColor: fgcolor,
-          iconColor: fgcolor,
-          collapsedIconColor: fgcolor,
-          backgroundColor: const Color.fromRGBO(20, 20, 20, 1),
-          collapsedBackgroundColor: const Color.fromRGBO(20, 20, 20, 1),
+          textColor: widget.fgcolor,
+          collapsedTextColor: widget.fgcolor,
+          iconColor: widget.fgcolor,
+          collapsedIconColor: widget.fgcolor,
+          backgroundColor: kBlack20,
+          collapsedBackgroundColor: kBlack20,
           title: const Text(
             'Password Requirements',
             style: TextStyle(
@@ -103,8 +96,7 @@ class _ValidPassExpansionTileState extends State<ValidPassExpansionTile> {
           ],
           onExpansionChanged: (bool expanded) {
             setState(() {
-              _customTileExpanded = expanded;
-              scroll(expanded);
+              widget.scroll(expanded);
             });
           },
         ),

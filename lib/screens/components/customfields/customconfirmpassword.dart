@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../string_extensions.dart';
+import '../../../string_extensions.dart';
 import 'customerrormsg.dart';
 import 'custompasswordfield.dart';
-import '../../constants.dart';
+import '../../../constants.dart';
 
 class CustomConfirmPasswordField extends StatefulWidget {
   final Color fgcolor;
@@ -17,16 +17,12 @@ class CustomConfirmPasswordField extends StatefulWidget {
 
   @override
   State<CustomConfirmPasswordField> createState() =>
-      _CustomConfirmPasswordFieldState(fgcolor, hinttext, controller);
+      _CustomConfirmPasswordFieldState();
 }
 
 class _CustomConfirmPasswordFieldState
     extends State<CustomConfirmPasswordField> {
-  final Color fgcolor;
-  final String hinttext;
-  TextEditingController controller;
-  _CustomConfirmPasswordFieldState(
-      this.fgcolor, this.hinttext, this.controller);
+  _CustomConfirmPasswordFieldState();
   IconData errorIcon = Icons.error;
   Color errorColor = kWarnColor;
   late String errorText = "One or more Fields empty";
@@ -42,7 +38,7 @@ class _CustomConfirmPasswordFieldState
             errorText = "Passwords Match";
             errorColor = kValidColor;
             iconData = Icons.check_circle;
-            controller.text = password;
+            widget.controller.text = password;
           });
         } else {
           setState(() {
@@ -92,8 +88,8 @@ class _CustomConfirmPasswordFieldState
           controller: myPassFieldController,
           extraError: true,
           showError: false,
-          hinttext: hinttext,
-          fgcolor: fgcolor,
+          hinttext: widget.hinttext,
+          fgcolor: widget.fgcolor,
           onSubmit: (value) {
             setState(() {
               password = value;
@@ -115,7 +111,7 @@ class _CustomConfirmPasswordFieldState
           extraError: false,
           showError: false,
           hinttext: "Confirm Password",
-          fgcolor: fgcolor,
+          fgcolor: widget.fgcolor,
           onSubmit: (value) {
             setState(() {
               confirmPassword = value;
@@ -135,22 +131,46 @@ class _CustomConfirmPasswordFieldState
         Center(
           child: Container(
             padding:
-                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
+                const EdgeInsets.symmetric(vertical: 12.0, horizontal: 14.0),
             decoration: BoxDecoration(
-              color: const Color.fromRGBO(20, 20, 20, 1),
+              color: kBlack20,
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: CustomErrorMsg(
-              padLeft: 0,
-              padBottom: 5,
-              errorText: errorText,
-              errorIcon: iconData,
-              errorColor: errorColor,
-              fsize: 18,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                errorIconGen(),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  errorText,
+                  style: TextStyle(
+                      color: errorColor,
+                      letterSpacing: 0.4,
+                      fontSize: 18 - 3.0),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+              ],
             ),
           ),
         ),
       ],
     );
+  }
+
+  Widget errorIconGen() {
+    if (errorText != "") {
+      return Icon(
+        errorIcon,
+        color: errorColor,
+        size: 15,
+      );
+    } else {
+      return const Text("");
+    }
   }
 }

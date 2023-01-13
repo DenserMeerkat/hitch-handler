@@ -1,47 +1,35 @@
 import 'package:flutter/material.dart';
-import '../../constants.dart';
-import '../../string_extensions.dart';
+import '../../../constants.dart';
+import '../../../string_extensions.dart';
 import 'customerrormsg.dart';
 
-class CustomTextField extends StatefulWidget {
+class CustomMultiField extends StatefulWidget {
   final Color fgcolor;
   final int index;
-  final int current;
+  int current;
+  final List<String> hints;
+  final List<IconData> icons;
+  final List<TextInputType> keyboards;
   TextEditingController controller;
-  CustomTextField(
-      {super.key,
-      required this.fgcolor,
-      this.index = 3,
-      this.current = 0,
-      required this.controller});
+  CustomMultiField({
+    super.key,
+    required this.fgcolor,
+    this.index = 1,
+    this.current = 0,
+    required this.controller,
+    required this.hints,
+    required this.icons,
+    required this.keyboards,
+  });
   @override
-  State<CustomTextField> createState() =>
-      _CustomTextFieldState(fgcolor, index, controller, current);
+  State<CustomMultiField> createState() => _CustomMultiFieldState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
-  TextEditingController controller;
-  Color fgcolor;
-  int current;
-  final int index;
-  late String hinttext = hints[current];
-  late IconData icondata = icons[current];
-  late TextInputType keyboardtype = keyboards[current];
-  final List<String> hints = [
-    'E-mail',
-    'Phone',
-    'ID Number',
-  ];
-  final List<IconData> icons = [
-    Icons.alternate_email,
-    Icons.call,
-    Icons.badge,
-  ];
-  final List<TextInputType> keyboards = [
-    TextInputType.emailAddress,
-    TextInputType.phone,
-    TextInputType.number,
-  ];
+class _CustomMultiFieldState extends State<CustomMultiField> {
+  _CustomMultiFieldState();
+  late String hinttext = widget.hints[widget.current];
+  late IconData icondata = widget.icons[widget.current];
+  late TextInputType keyboardtype = widget.keyboards[widget.current];
 
   String validateField(String? value, int current) {
     String val = "";
@@ -78,17 +66,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   void reset() {
     setState(() {
-      controller.clear();
+      widget.controller.clear();
       errorText = "";
       FocusManager.instance.primaryFocus?.unfocus();
     });
   }
 
   String errorTextGen(int index, int error) {
-    String type = hints[index];
+    String type = widget.hints[index];
     String errormsg;
     if (error == 1) {
-      errormsg = "$type can\'t be empty!";
+      errormsg = "$type can\'t be empty";
     } else if (error == 2) {
       errormsg = "Not a valid $type";
     } else {
@@ -107,12 +95,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
-  _CustomTextFieldState(
-      this.fgcolor, this.index, this.controller, this.current);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    const outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(10.0),
+      ),
+      borderSide: BorderSide.none,
+      gapPadding: 0,
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -125,13 +118,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
               height: 48,
               width: size.width * 0.8,
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(50, 50, 50, 1),
-                borderRadius: BorderRadius.circular(15.0),
-                boxShadow: const [
-                  BoxShadow(
+                color: kGrey50,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  errorIndicator(),
+                  const BoxShadow(
                     offset: Offset(1, 2),
-                    color: Color.fromRGBO(20, 20, 20, 1),
-                  )
+                    color: kBlack20,
+                  ),
                 ],
               ),
               child: const SizedBox(
@@ -141,14 +135,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
           TextFormField(
             onChanged: (value) {
-              validateField(value, current);
+              validateField(value, widget.current);
             },
-            controller: controller,
+            controller: widget.controller,
             validator: (value) {
-              String val = validateField(value, current);
+              String val = validateField(value, widget.current);
               if (val == "") {
                 setState(() {
-                  controller.text = value!;
+                  widget.controller.text = value!;
                 });
                 return null;
               } else {
@@ -158,7 +152,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             style: const TextStyle(
               fontSize: 16.0,
             ),
-            cursorColor: fgcolor,
+            cursorColor: widget.fgcolor,
             cursorHeight: 20.0,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
@@ -170,14 +164,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   setState(() {
                     //__________________SET STATE___________
                     reset();
-                    if (current < 2) {
-                      current += 1;
+                    if (widget.current < 2) {
+                      widget.current += 1;
                     } else {
-                      current = 0;
+                      widget.current = 0;
                     }
-                    icondata = icons[current];
-                    hinttext = hints[current];
-                    keyboardtype = keyboards[current];
+                    icondata = widget.icons[widget.current];
+                    hinttext = widget.hints[widget.current];
+                    keyboardtype = widget.keyboards[widget.current];
                   });
                 },
                 child: IconButton(
@@ -186,20 +180,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     setState(() {
                       //__________________SET STATE___________
                       reset();
-                      if (current < index - 1) {
-                        current += 1;
+                      if (widget.current < widget.index - 1) {
+                        widget.current += 1;
                       } else {
-                        current = 0;
+                        widget.current = 0;
                       }
-                      icondata = icons[current];
-                      hinttext = hints[current];
-                      keyboardtype = keyboards[current];
+                      icondata = widget.icons[widget.current];
+                      hinttext = widget.hints[widget.current];
+                      keyboardtype = widget.keyboards[widget.current];
                     });
                   },
                   icon: Icon(
                     icondata,
                     size: 20.0,
-                    color: fgcolor,
+                    color: widget.fgcolor,
                   ), //_________________ICON DATA____________
                 ),
               ),
@@ -215,34 +209,34 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 color: Colors.transparent,
                 fontSize: 0,
               ),
-              suffixIconColor: fgcolor,
+              suffixIconColor: widget.fgcolor,
               icon: Container(
                 height: 49,
                 width: 50,
                 decoration: const BoxDecoration(
-                  color: Color.fromRGBO(20, 20, 20, 1),
+                  color: kBlack20,
                   borderRadius: BorderRadius.horizontal(
-                    left: Radius.circular(15.0),
+                    left: Radius.circular(10.0),
                   ),
                   boxShadow: [
                     BoxShadow(
                       offset: Offset(1, 1),
                       blurRadius: 1,
-                      color: Color.fromRGBO(10, 10, 10, 1),
+                      color: kBlack10,
                     )
                   ],
                 ),
                 padding: const EdgeInsets.all(10.0),
                 child: Icon(
                   Icons.account_circle,
-                  color: fgcolor,
+                  color: widget.fgcolor,
                   size: 20,
                 ),
               ),
               hintText: hinttext, //_________________HINT TEXT____________
               hintStyle: const TextStyle(
                 fontSize: 15.0,
-                color: Color.fromRGBO(90, 90, 90, 1),
+                color: kGrey90,
                 letterSpacing: 1,
               ),
               floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -251,38 +245,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 horizontal: 0,
                 vertical: 0,
               ),
-              enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15.0),
-                  bottomRight: Radius.circular(15.0),
-                ),
-                borderSide: BorderSide.none,
-                gapPadding: 0,
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15.0),
-                  bottomRight: Radius.circular(15.0),
-                ),
-                borderSide: BorderSide.none,
-                gapPadding: 0,
-              ),
-              errorBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15.0),
-                  bottomRight: Radius.circular(15.0),
-                ),
-                borderSide: BorderSide.none,
-                gapPadding: 0,
-              ),
-              focusedErrorBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15.0),
-                  bottomRight: Radius.circular(15.0),
-                ),
-                borderSide: BorderSide.none,
-                gapPadding: 0,
-              ),
+              enabledBorder: outlineInputBorder,
+              focusedBorder: outlineInputBorder,
+              errorBorder: outlineInputBorder,
+              focusedErrorBorder: outlineInputBorder,
             ),
           ),
         ]),
@@ -290,5 +256,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
             errorText: errorText, errorColor: errorColor, errorIcon: errorIcon),
       ],
     );
+  }
+
+  BoxShadow errorIndicator() {
+    if (errorText != '') {
+      return const BoxShadow(
+        offset: Offset(1, 3.5),
+        color: kErrorColor,
+      );
+    } else {
+      return const BoxShadow(
+        offset: Offset(0, 0),
+        color: Colors.transparent,
+      );
+    }
   }
 }
