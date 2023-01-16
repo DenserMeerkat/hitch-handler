@@ -4,14 +4,16 @@ import '../../../constants.dart';
 class CustomElevatedButtonWithIcon extends StatelessWidget {
   const CustomElevatedButtonWithIcon({
     Key? key,
-    required this.bgcolor,
+    this.bgcolor = kBackgroundColor,
     required this.fgcolor,
-    required this.shcolor,
-    required this.bradius,
-    required this.fsize,
+    this.shcolor = kBlack20,
+    this.bradius = 50,
+    this.fsize = 14,
     required this.title,
     required this.press,
     required this.icon,
+    this.height = kDefaultPadding * 2.4,
+    this.width = kDefaultPadding * 12,
   }) : super(key: key);
   final Color bgcolor;
   final Color fgcolor;
@@ -21,6 +23,8 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
   final String title;
   final Function()? press;
   final IconData icon;
+  final double height;
+  final double width;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -35,16 +39,18 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
           )
         ],
       ),
-      child: SizedBox(
-        height: kDefaultPadding * 2.6,
-        width: kDefaultPadding * 12.5,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: height,
+          maxWidth: width,
+        ),
         child: Stack(
           children: [
             Row(
               children: <Widget>[
                 Container(
-                  height: kDefaultPadding * 2.6,
-                  width: kDefaultPadding * 4,
+                  height: height,
+                  width: width / 3 > 30 ? width / 3 : 30,
                   alignment: Alignment.centerLeft,
                   decoration: BoxDecoration(
                     color: fgcolor.withOpacity(0.9),
@@ -61,26 +67,31 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                     ],
                   ),
                   child: Center(
-                    child: Icon(
-                      icon,
-                      color: bgcolor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FittedBox(
+                        child: Icon(
+                          icon,
+                          color: bgcolor,
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.only(right: kDefaultPadding),
-                    child: Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
-                        fontSize: fsize < 18 ? fsize : 18,
-                        color: fgcolor,
-                      ),
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                      fontSize: fsize < 18 ? fsize : 18,
+                      color: fgcolor,
                     ),
                   ),
+                ),
+                const SizedBox(
+                  width: 10,
                 ),
               ],
             ),
@@ -96,6 +107,70 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ElevatedButtonWithIcon extends StatelessWidget {
+  void Function()? onPressed;
+  String label;
+  IconData icon;
+  Color activeColor;
+  Color borderColor;
+  double borderRadius;
+  ElevatedButtonWithIcon({
+    super.key,
+    required this.onPressed,
+    required this.label,
+    required this.icon,
+    required this.activeColor,
+    this.borderColor = Colors.transparent,
+    this.borderRadius = 5,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(
+        icon,
+        size: 18,
+      ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return kGrey30;
+          }
+          return activeColor;
+        }),
+        foregroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return kTextColor.withOpacity(0.5);
+          }
+          return kBlack10;
+        }),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            side: BorderSide(color: borderColor),
+          ),
+        ),
+        padding: MaterialStateProperty.resolveWith((states) {
+          return const EdgeInsets.only(
+            top: 5,
+            bottom: 5,
+            left: 10,
+            right: 12,
+          );
+        }),
+      ),
+      label: Text(
+        label,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
         ),
       ),
     );

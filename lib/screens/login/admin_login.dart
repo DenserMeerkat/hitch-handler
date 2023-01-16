@@ -25,7 +25,7 @@ class AdminLoginScreen extends StatelessWidget {
         backgroundColor: kGrey30,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: size.height * 0.18,
+          toolbarHeight: 140,
           backgroundColor: kBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
@@ -64,7 +64,7 @@ class AdminLoginScreen extends StatelessWidget {
               ),
             ],
           ),
-          height: size.height * 0.1,
+          height: 80,
           child: Center(
             child: LoginSignUpFooter(
               size: size,

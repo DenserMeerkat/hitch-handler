@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../string_extensions.dart';
 import '../../../constants.dart';
+import '../pickers&dialogs/datetimepicker.dart';
 import 'customerrormsg.dart';
 
 class CustomDatePickField extends StatefulWidget {
@@ -107,7 +108,11 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               showCursor: true,
               readOnly: true,
               onTap: () async {
-                DateTime? pickeddate = await showCustomDatePicker(context);
+                DateTime? pickeddate = await showCustomDatePicker(
+                  context,
+                  kPrimaryColor,
+                  DateTime.now(),
+                );
                 if (pickeddate != null) {
                   setState(() {
                     widget.controller.text =
@@ -119,7 +124,6 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               controller: widget.controller,
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
-              keyboardType: TextInputType.name,
               scrollPadding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom + 80),
               style: const TextStyle(
@@ -131,7 +135,11 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
                   onTap: () async {
-                    DateTime? pickeddate = await showCustomDatePicker(context);
+                    DateTime? pickeddate = await showCustomDatePicker(
+                      context,
+                      kPrimaryColor,
+                      DateTime.now(),
+                    );
                     if (pickeddate != null) {
                       setState(() {
                         widget.controller.text =
@@ -144,8 +152,11 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   child: IconButton(
                     splashRadius: 50.0,
                     onPressed: () async {
-                      DateTime? pickeddate =
-                          await showCustomDatePicker(context);
+                      DateTime? pickeddate = await showCustomDatePicker(
+                        context,
+                        kPrimaryColor,
+                        DateTime.now(),
+                      );
                       if (pickeddate != null) {
                         setState(() {
                           widget.controller.text =
@@ -238,49 +249,6 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
     } else {
       return birthDateValidator(null);
     }
-  }
-
-  Future<DateTime?> showCustomDatePicker(BuildContext context) {
-    return showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1940),
-      lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
-                onPrimary: kBackgroundColor, // selected text color
-                onSurface: kTextColor, // default text color
-                primary: widget.fgcolor.withOpacity(0.9) // circle color
-                ),
-            dialogBackgroundColor: kGrey40,
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                textStyle: TextStyle(
-                  color: widget.fgcolor,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
-                  fontSize: 12,
-                ),
-                foregroundColor: kBackgroundColor, // color of button's letters
-                backgroundColor:
-                    widget.fgcolor.withOpacity(0.8), // Background color
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: widget.fgcolor,
-                    width: 1,
-                    style: BorderStyle.solid,
-                  ),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
   }
 
   BoxShadow errorIndicator() {

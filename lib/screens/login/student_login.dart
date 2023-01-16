@@ -27,7 +27,7 @@ class StudentLoginScreen extends StatelessWidget {
         backgroundColor: kGrey30,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: size.height * 0.18,
+          toolbarHeight: 140,
           backgroundColor: kBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
@@ -44,16 +44,12 @@ class StudentLoginScreen extends StatelessWidget {
             },
           ),
         ),
-        body: SizedBox(
-          height: size.height * 0.67,
-          width: size.height * 0.95,
-          child: LoginBody(
-            formwidget: LoginForm(
-              fgcolor: arguments.fgcolor,
-              title: arguments.title,
-              icon: arguments.icon,
-              homeroute: StudentLoginScreen.routeName,
-            ),
+        body: LoginBody(
+          formwidget: LoginForm(
+            fgcolor: arguments.fgcolor,
+            title: arguments.title,
+            icon: arguments.icon,
+            homeroute: StudentLoginScreen.routeName,
           ),
         ),
         bottomNavigationBar: Container(
@@ -66,7 +62,7 @@ class StudentLoginScreen extends StatelessWidget {
               ),
             ],
           ),
-          height: size.height * 0.1,
+          height: 70,
           child: Center(
             child: LoginSignUpFooter(
               size: size,

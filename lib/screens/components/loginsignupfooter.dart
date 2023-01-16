@@ -20,9 +20,9 @@ class LoginSignUpFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: size.width * 0.05,
-        vertical: size.height * 0.01,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 5,
       ),
       decoration: BoxDecoration(
         color: kBackgroundColor.withOpacity(0),
@@ -49,9 +49,7 @@ class LoginSignUpFooter extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: size.height * 0.001,
-                    horizontal: size.width * 0.005),
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.005),
                 child: TextButton(
                   style: ButtonStyle(
                     overlayColor: MaterialStateProperty.resolveWith((states) {

@@ -42,7 +42,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
         backgroundColor: kGrey30,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: size.height * 0.18,
+          toolbarHeight: 140,
           backgroundColor: kBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
@@ -66,10 +66,10 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   padding: EdgeInsets.only(
-                    top: 20.0,
+                    top: 15.0,
                     left: size.width * 0.25,
                     right: size.width * 0.25,
-                    bottom: 5.0,
+                    bottom: 15.0,
                   ),
                   child: Center(
                     child:
@@ -248,13 +248,13 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
               ),
             ],
           ),
-          height: size.height * 0.1,
+          height: 70,
           child: Center(
             child: LoginSignUpFooter(
               size: size,
               msg: "Already have an account ?",
               btntext: "Login",
-              fsize: 16,
+              fsize: 15,
               press: () {
                 Navigator.of(context).pop(context);
               }, //Todo_navigation

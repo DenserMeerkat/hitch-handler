@@ -22,7 +22,7 @@ class CustomSignInAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: size.height * 0.01),
+      margin: EdgeInsets.only(top: 10),
       color: kBackgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -37,11 +37,11 @@ class CustomSignInAppBar extends StatelessWidget {
               wordSpacing: 5,
             ),
           ),
-          SizedBox(
-            height: size.height * 0.03,
+          const SizedBox(
+            height: 20,
           ),
           Container(
-            padding: EdgeInsets.only(top: size.height * 0.015),
+            padding: EdgeInsets.only(top: 10),
             decoration: BoxDecoration(
               color: kGrey30,
               borderRadius: const BorderRadius.vertical(
@@ -55,7 +55,7 @@ class CustomSignInAppBar extends StatelessWidget {
               ],
             ),
             child: SizedBox(
-              height: size.height * 0.1,
+              height: 80,
               child: UserLoginHeader(
                 herotag: herotag,
                 bradius: 30.0,

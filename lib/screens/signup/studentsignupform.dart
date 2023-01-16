@@ -78,7 +78,7 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
               fgcolor: widget.fgcolor,
             ),
             SizedBox(
-              height: size.height * 0.02,
+              height: size.height * 0.04,
             ),
             CustomSubmitButton(
               size: size,

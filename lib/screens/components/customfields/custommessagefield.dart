@@ -9,7 +9,12 @@ class CustomMessageField extends StatefulWidget {
   final String hintText;
   final String title;
   final int length;
+  String errorText;
   TextEditingController controller;
+
+  static bool hasError = false;
+  static bool focusState = false;
+
   CustomMessageField({
     super.key,
     required this.fgcolor,
@@ -17,6 +22,7 @@ class CustomMessageField extends StatefulWidget {
     this.title = "Title",
     this.length = 30,
     required this.controller,
+    this.errorText = '',
   });
   @override
   State<CustomMessageField> createState() => _CustomMessageFieldState();
@@ -25,27 +31,23 @@ class CustomMessageField extends StatefulWidget {
 class _CustomMessageFieldState extends State<CustomMessageField> {
   _CustomMessageFieldState();
 
-  bool hasError = false;
-  bool focusState = false;
-
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
-  String errorText = "";
   Color fieldBorderColor = kBlack20;
 
   String validateField(String? value) {
     if (value!.isWhitespace()) {
       setState(() {
-        hasError = true;
-        errorText = "${widget.title} can\'t be empty";
-        fieldState();
+        CustomMessageField.hasError = true;
+        widget.errorText = "${widget.title} can\'t be empty";
+        fieldBorderColor = fieldState();
       });
       return "Error!";
     } else {
       setState(() {
-        hasError = false;
-        errorText = "";
-        fieldState();
+        CustomMessageField.hasError = false;
+        widget.errorText = "";
+        fieldBorderColor = fieldState();
       });
       return "";
     }
@@ -97,8 +99,9 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      offset: const Offset(0, 3),
-                      color: fieldBorderColor,
+                      offset: const Offset(0, 2.5),
+                      color:
+                          widget.errorText == '' ? fieldState() : fieldState(),
                     ),
                   ],
                 ),
@@ -106,7 +109,7 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
               Focus(
                 onFocusChange: (focus) {
                   setState(() {
-                    focusState = focus;
+                    CustomMessageField.focusState = focus;
                     fieldState();
                   });
                 },
@@ -175,7 +178,8 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
                       focusedBorder: enabledBorder,
                       errorBorder: enabledBorder,
                       focusedErrorBorder: enabledBorder,
-                      contentPadding: EdgeInsets.all(16)),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10)),
                 ),
               ),
             ],
@@ -184,7 +188,7 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
         CustomErrorMsg(
           padLeft: 5.0,
           padTop: 0,
-          errorText: errorText,
+          errorText: widget.errorText,
           errorColor: errorColor,
           errorIcon: errorIcon,
         ),
@@ -192,37 +196,15 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
     );
   }
 
-  void fieldState() {
-    if (hasError) {
-      setState(() {
-        fieldBorderColor = kErrorColor;
-      });
-    } else if (focusState) {
-      setState(() {
-        fieldBorderColor = kStudentColor.withOpacity(0.9);
-      });
-    } else if (widget.controller.text != "" && !hasError) {
-      setState(() {
-        fieldBorderColor = kPrimaryColor.withOpacity(0.8);
-      });
+  Color fieldState() {
+    if (CustomMessageField.hasError) {
+      return kErrorColor;
+    } else if (CustomMessageField.focusState) {
+      return kStudentColor.withOpacity(0.9);
+    } else if (widget.controller.text != "" && !CustomMessageField.hasError) {
+      return kPrimaryColor.withOpacity(0.8);
     } else {
-      setState(() {
-        fieldBorderColor = kBlack20;
-      });
-    }
-  }
-
-  BoxShadow errorIndicator() {
-    if (errorText != '') {
-      return const BoxShadow(
-        offset: Offset(1, 3.5),
-        color: kErrorColor,
-      );
-    } else {
-      return const BoxShadow(
-        offset: Offset(0, 0),
-        color: Colors.transparent,
-      );
+      return kBlack20;
     }
   }
 }
