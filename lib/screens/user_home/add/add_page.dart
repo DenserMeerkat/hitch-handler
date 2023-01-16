@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'addform.dart';
-import '../../constants.dart';
+import '../../../constants.dart';
 
 class AddPage extends StatelessWidget {
+  static String routeName = '/add_page';
   const AddPage({super.key});
 
   @override
@@ -21,7 +22,7 @@ class AddPage extends StatelessWidget {
         SliverFillRemaining(
           child: Container(
             height: size.height * 0.9,
-            color: kGrey30.withOpacity(0.4),
+            color: kGrey30.withOpacity(0.7),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

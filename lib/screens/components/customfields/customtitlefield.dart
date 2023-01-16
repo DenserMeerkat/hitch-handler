@@ -9,7 +9,12 @@ class CustomTitleField extends StatefulWidget {
   final String hintText;
   final String title;
   final int length;
+  String errorText;
   TextEditingController controller;
+
+  static bool hasError = false;
+  static bool focusState = false;
+
   CustomTitleField({
     super.key,
     required this.fgcolor,
@@ -17,6 +22,7 @@ class CustomTitleField extends StatefulWidget {
     this.title = "Title",
     this.length = 30,
     required this.controller,
+    this.errorText = '',
   });
   @override
   State<CustomTitleField> createState() => _CustomTitleFieldState();
@@ -25,27 +31,23 @@ class CustomTitleField extends StatefulWidget {
 class _CustomTitleFieldState extends State<CustomTitleField> {
   _CustomTitleFieldState();
 
-  bool hasError = false;
-  bool focusState = false;
-
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
-  String errorText = "";
   Color fieldBorderColor = kBlack20;
 
   String validateField(String? value) {
     if (value!.isWhitespace()) {
       setState(() {
-        hasError = true;
-        errorText = "${widget.title} can't be empty";
-        fieldState();
+        CustomTitleField.hasError = true;
+        widget.errorText = "${widget.title} can't be empty";
+        fieldBorderColor = fieldState();
       });
       return "Error!";
     } else {
       setState(() {
-        hasError = false;
-        errorText = "";
-        fieldState();
+        CustomTitleField.hasError = false;
+        widget.errorText = "";
+        fieldBorderColor = fieldState();
       });
       return "";
     }
@@ -86,7 +88,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
           child: Stack(
             children: [
               Container(
-                height: 42,
+                height: 44,
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
                   color: kGrey50,
@@ -97,8 +99,9 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      offset: Offset(0, 3),
-                      color: fieldBorderColor,
+                      offset: const Offset(0, 2.5),
+                      color:
+                          widget.errorText == '' ? fieldState() : fieldState(),
                     ),
                   ],
                 ),
@@ -106,7 +109,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
               Focus(
                 onFocusChange: (focus) {
                   setState(() {
-                    focusState = focus;
+                    CustomTitleField.focusState = focus;
                     fieldState();
                   });
                 },
@@ -167,7 +170,6 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
                         color: Colors.transparent,
                         fontSize: 0,
                       ),
-                      //label: FieldLabel(fgcolor: fgcolor),
                       floatingLabelAlignment: FloatingLabelAlignment.start,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       border: const OutlineInputBorder(),
@@ -175,7 +177,8 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
                       focusedBorder: enabledBorder,
                       errorBorder: enabledBorder,
                       focusedErrorBorder: enabledBorder,
-                      contentPadding: EdgeInsets.all(16)),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16)),
                 ),
               ),
             ],
@@ -184,7 +187,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
         CustomErrorMsg(
           padLeft: 5.0,
           padTop: 0,
-          errorText: errorText,
+          errorText: widget.errorText,
           errorColor: errorColor,
           errorIcon: errorIcon,
         ),
@@ -192,37 +195,15 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
     );
   }
 
-  void fieldState() {
-    if (hasError) {
-      setState(() {
-        fieldBorderColor = kErrorColor;
-      });
-    } else if (focusState) {
-      setState(() {
-        fieldBorderColor = kStudentColor.withOpacity(0.9);
-      });
-    } else if (widget.controller.text != "" && !hasError) {
-      setState(() {
-        fieldBorderColor = kPrimaryColor;
-      });
+  Color fieldState() {
+    if (CustomTitleField.hasError) {
+      return kErrorColor;
+    } else if (CustomTitleField.focusState) {
+      return kStudentColor.withOpacity(0.9);
+    } else if (widget.controller.text != "" && !CustomTitleField.hasError) {
+      return kPrimaryColor.withOpacity(0.8);
     } else {
-      setState(() {
-        fieldBorderColor = kBlack20;
-      });
-    }
-  }
-
-  BoxShadow errorIndicator() {
-    if (errorText != '') {
-      return const BoxShadow(
-        offset: Offset(1, 3.5),
-        color: kErrorColor,
-      );
-    } else {
-      return const BoxShadow(
-        offset: Offset(0, 0),
-        color: Colors.transparent,
-      );
+      return kBlack20;
     }
   }
 }

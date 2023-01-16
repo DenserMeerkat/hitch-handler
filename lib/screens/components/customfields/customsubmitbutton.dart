@@ -27,7 +27,7 @@ class CustomSubmitButton extends StatelessWidget {
           boxShadow: const [
             BoxShadow(
               offset: Offset(1, 2),
-              color: kBlack10,
+              color: kBlack15,
             )
           ]),
       child: TextButton(
@@ -52,7 +52,7 @@ class CustomSubmitButton extends StatelessWidget {
           }),
           overlayColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
-              return Colors.white.withOpacity(0.3);
+              return kTextColor.withOpacity(0.3);
             }
           }),
           shape: MaterialStateProperty.resolveWith((states) {
@@ -75,7 +75,7 @@ class CustomSubmitButton extends StatelessWidget {
           }),
           padding: MaterialStateProperty.resolveWith((states) {
             return EdgeInsets.symmetric(
-              vertical: 15,
+              vertical: 12,
               horizontal: size.width * width,
             );
           }),
@@ -85,7 +85,7 @@ class CustomSubmitButton extends StatelessWidget {
             msg,
             style: TextStyle(
               fontSize: fsize,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w800,
               letterSpacing: 1,
             ),
           ),

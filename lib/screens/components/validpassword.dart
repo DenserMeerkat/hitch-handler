@@ -6,9 +6,11 @@ class ValidPassExpansionTile extends StatefulWidget {
     super.key,
     required this.fgcolor,
     required this.scroll,
+    this.textStyle = const TextStyle(fontSize: 13, color: kGrey90),
   });
   final String bullet = "\u2022 ";
   final Color fgcolor;
+  final TextStyle textStyle;
   Function(bool) scroll;
 
   @override
@@ -19,9 +21,10 @@ class _ValidPassExpansionTileState extends State<ValidPassExpansionTile> {
   _ValidPassExpansionTileState();
 
   final String bullet = "\u2022 ";
+  TextStyle textStyle =
+      TextStyle(fontSize: 13, color: kTextColor.withOpacity(0.7));
   @override
   Widget build(BuildContext context) {
-    var textStyle = TextStyle(fontSize: 13, color: kTextColor.withOpacity(0.7));
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: ListTileTheme(

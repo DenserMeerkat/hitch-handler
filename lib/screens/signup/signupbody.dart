@@ -27,7 +27,7 @@ class SignupBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.04,
               ),
               const FittedBox(
                 child: Text(
@@ -53,8 +53,11 @@ class SignupBody extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: size.height * 0.075),
+              SizedBox(height: size.height * 0.07),
               formwidget,
+              const SizedBox(
+                height: 15,
+              ),
             ],
           ),
         ),

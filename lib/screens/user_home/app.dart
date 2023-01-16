@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/launch/launch_screen.dart';
 import 'home_page.dart';
-import 'app_body.dart';
-import 'add_page.dart';
+import 'add/add_page.dart';
 import '../../constants.dart';
 
 class AppScreen extends StatefulWidget {
@@ -21,6 +19,10 @@ class _AppScreenState extends State<AppScreen> {
     AddPage(),
     HomePage(),
   ];
+
+/*______ADD__POST_______*/
+
+/*______ADD__POST_______*/
 
   void _tabChange(int index) {
     setState(() {
@@ -118,7 +120,7 @@ class _AppScreenState extends State<AppScreen> {
         bottomNavigationBar: SafeArea(
           child: NavigationBarTheme(
             data: NavigationBarThemeData(
-                height: size.height * 0.1,
+                height: 70,
                 backgroundColor: kBackgroundColor,
                 surfaceTintColor: kTextColor,
                 indicatorColor: kPrimaryColor,

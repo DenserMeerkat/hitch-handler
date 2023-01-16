@@ -8,24 +8,35 @@ class LaunchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; // Available screen size
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: size.height * 0.15,
+        toolbarHeight: 52,
         backgroundColor: kBackgroundColor,
-        // title: Text(
-        //   "Hitch Handler",
-        //   style: TextStyle(
-        //     fontSize: 28.0,
-        //     letterSpacing: 1.0,
-        //   ),
-        // ),
-        //flexibleSpace: ,
-        elevation: 1,
+        elevation: 0,
       ),
-      body: LaunchScreenBody(),
+      body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        print(constraints.maxHeight);
+        return LaunchScreenBody(
+          maxHeight: constraints.maxHeight,
+        );
+      }),
+      bottomNavigationBar: SizedBox(
+        height: 30,
+        child: Center(
+          child: Text(
+            "CTF PROJECTS",
+            style: TextStyle(
+              letterSpacing: 2.2,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+              color: kTextColor.withOpacity(0.4),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

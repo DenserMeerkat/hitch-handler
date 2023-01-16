@@ -26,8 +26,8 @@ class AuthorityLoginScreen extends StatelessWidget {
         backgroundColor: kGrey30,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: size.height * 0.18,
           backgroundColor: kBackgroundColor,
+          toolbarHeight: 140,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
             herotag: arguments.herotag,
@@ -65,7 +65,7 @@ class AuthorityLoginScreen extends StatelessWidget {
               ),
             ],
           ),
-          height: size.height * 0.1,
+          height: 80,
           child: LoginSignUpFooter(
             size: size,
             msg: "Contact Support to register as an Admin.",

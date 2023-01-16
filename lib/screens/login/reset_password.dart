@@ -31,7 +31,7 @@ class ResetPasswordPage extends StatelessWidget {
           backgroundColor: kGrey30,
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            toolbarHeight: size.height * 0.18,
+            toolbarHeight: 140,
             backgroundColor: kBackgroundColor,
             elevation: 0,
             flexibleSpace: CustomSignInAppBar(

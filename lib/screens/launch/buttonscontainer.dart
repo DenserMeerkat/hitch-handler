@@ -17,13 +17,13 @@ class ButtonsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height * 0.44,
+      height: 300,
       width: size.width * 0.95,
       padding: EdgeInsets.only(
-        top: size.width * 0.13,
+        top: 20,
         right: size.width * 0.10,
         left: size.width * 0.10,
-        bottom: size.width * 0.08,
+        bottom: 15,
       ),
       decoration: const BoxDecoration(
         color: kGrey30,
@@ -73,8 +73,8 @@ class ButtonsContainer extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            height: size.height * 0.035,
+          const SizedBox(
+            height: 25,
           ),
           Hero(
             tag: "AuthorityHero",
@@ -105,8 +105,8 @@ class ButtonsContainer extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            height: size.height * 0.035,
+          const SizedBox(
+            height: 25,
           ),
           Hero(
             tag: "AdminHero",

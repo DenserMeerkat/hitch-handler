@@ -1,53 +1,31 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
-import '../components/popupmenu.dart';
 import 'buttonscontainer.dart';
 
 class LaunchScreenBody extends StatelessWidget {
-  const LaunchScreenBody({super.key});
-
+  LaunchScreenBody({super.key, required this.maxHeight});
+  double maxHeight;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
-    return Column(
+    return ListView(
       children: [
-        Container(
-          height: size.height * 0.75,
-          width: size.width * 1,
-          child: Column(
-            children: [
-              LogoContainer(size: size),
-              ButtonsContainer(size: size),
-            ],
-          ),
+        SizedBox(
+          height: maxHeight * 0.005,
         ),
-        BottomText(size: size),
+        LogoContainer(size: size),
+        SizedBox(
+          height: maxHeight * 0.095,
+        ),
+        Padding(
+          padding:
+              EdgeInsets.symmetric(vertical: 10, horizontal: size.width * 0.03),
+          child: ButtonsContainer(size: size),
+        ),
+        SizedBox(
+          height: maxHeight * 0.005,
+        ),
       ],
-    );
-  }
-}
-
-class BottomText extends StatelessWidget {
-  const BottomText({
-    Key? key,
-    required this.size,
-  }) : super(key: key);
-  final Size size;
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: size.height * 0.052,
-      child: Center(
-        child: Text(
-          "CTF PROJECTS",
-          style: TextStyle(
-            letterSpacing: 2.2,
-            fontSize: 10,
-            fontWeight: FontWeight.bold,
-            color: kTextColor.withOpacity(0.4),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -63,9 +41,13 @@ class LogoContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height * 0.305,
-      decoration: const BoxDecoration(
-        color: kBackgroundColor,
+      constraints: const BoxConstraints(minHeight: 200),
+      height: size.height * 0.3,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Placeholder(
+          color: kTextColor.withOpacity(0.1),
+        ),
       ),
     );
   }
