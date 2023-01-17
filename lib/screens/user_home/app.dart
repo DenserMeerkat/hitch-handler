@@ -138,7 +138,7 @@ class _AppScreenState extends State<AppScreen> {
                   }
                 })),
             child: NavigationBar(
-              shadowColor: Colors.black,
+              //shadowColor: Colors.black,
               selectedIndex: _selectedIndex,
               animationDuration: const Duration(milliseconds: 700),
               onDestinationSelected: (value) {

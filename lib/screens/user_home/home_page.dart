@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final userRef=FirebaseFirestore.instance.collection('users');
+final complaintRef=FirebaseFirestore.instance.collection('Complaints');
+final countRef=FirebaseFirestore.instance.collection('count');
 
 class HomePage extends StatefulWidget {
+
   const HomePage({super.key});
 
   @override
@@ -9,9 +16,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
+    userRef.get().then((QuerySnapshot snapshot){
+      snapshot.docs.forEach((DocumentSnapshot doc) {
+      print(doc.data());
+      });
+    });
+    complaintRef.get().then((QuerySnapshot snapshot){
+      snapshot.docs.forEach((DocumentSnapshot doc1) {
+        print(doc1.data());
+      });
+    });
+    countRef.doc('users').get().then((DocumentSnapshot doc2) {
+      print(doc2.data());
+    });
     const outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(50),

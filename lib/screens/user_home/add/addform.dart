@@ -8,6 +8,9 @@ import '../../components/customfields/customtypeaheadfield.dart';
 import 'addimages.dart';
 import 'addpostbrain.dart';
 import 'moredetails.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class AddForm extends StatefulWidget {
   const AddForm({
@@ -149,6 +152,28 @@ class _AddFormState extends State<AddForm> {
                         WidgetsBinding.instance.focusManager.primaryFocus
                             ?.unfocus();
                         debugPrint("________");
+
+                        String formattedDate = DateFormat('dd-MM-yyyy').format(myDateController);
+                        String formattedTime = DateFormat('HH-mm-ss').format(myDateController);
+                        final docUser = FirebaseFirestore.instance
+                            .collection('Complaints')
+                            .doc('Complaint' + complaint_num.toString());
+
+                        final json = {
+                          'compaint_id': complaint_num,
+                          'title':myTitleFieldController.text,
+                          'description':myMsgFieldController.text,
+                          'date':formattedDate,
+                          'time':formattedTime,
+                          'location':myLocFieldController.text,
+                          'anonymous':_anon,
+                          'in_department':_dept,
+                          'domain':"",
+                        };
+                        complaint_num += 1;
+                        print(formattedDate);
+                        print(formattedTime);
+                        docUser.set(json);
                       } else {
                         debugPrint(">>>>>ERRORS!");
                       }

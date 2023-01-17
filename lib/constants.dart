@@ -21,3 +21,4 @@ const kWarnColor = Color.fromARGB(255, 241, 217, 95);
 const double kDefaultPadding = 20.0;
 
 int user_num = 1;
+int complaint_num=1;
