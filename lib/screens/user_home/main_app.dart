@@ -11,6 +11,7 @@ import 'home_page.dart';
 import 'add_page.dart';
 import '../../constants.dart';
 import '../../models/user.dart' as model;
+import 'search_page.dart';
 
 class AppScreen extends StatefulWidget {
   static String routeName = '/app_screen';
@@ -27,10 +28,10 @@ class _AppScreenState extends State<AppScreen> {
   String mobno = "";
   static const List<Widget> _homeTabs = [
     HomePage(),
-    HomePage(),
+    SearchPage(),
     AddPage(),
-    HomePage(),
-    HomePage(),
+    SearchPage(),
+    SearchPage(),
   ];
 
   addData() async {
@@ -143,10 +144,10 @@ class _AppScreenState extends State<AppScreen> {
                     title: "Logout",
                     message: "Are you sure you want to logout ?",
                     icon: Icons.exit_to_app_rounded,
-                    iconBackgroundColor: kPrimaryColor.withOpacity(0.7),
+                    iconBackgroundColor: kErrorColor.withOpacity(0.7),
                     primaryButtonLabel: "Logout",
                     primaryButtonColor: kGrey150,
-                    secondaryButtonColor: kPrimaryColor.withOpacity(0.7),
+                    secondaryButtonColor: kErrorColor.withOpacity(0.7),
                     primaryFunction: () async {
                       final navigator = Navigator.of(context);
                       final scaffold = ScaffoldMessenger.of(context);

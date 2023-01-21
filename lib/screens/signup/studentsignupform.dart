@@ -18,7 +18,6 @@ Future<int> getCount() async {
   return count;
 }
 
-
 class StudentSignupForm extends StatefulWidget {
   const StudentSignupForm({
     super.key,
@@ -40,18 +39,10 @@ class StudentSignupForm extends StatefulWidget {
 class _StudentSignupFormState extends State<StudentSignupForm> {
   _StudentSignupFormState();
   final _formKey = GlobalKey<FormState>();
-  //final Map countObj=countRef.get().then((DocumentSnapshot doc1) {
-    //doc1.data();
-  //});
 
   final myTextFieldController = TextEditingController();
   final myDateFieldController = TextEditingController();
-  @override
-  void setState(VoidCallback fn) {
-    // TODO: implement setState
-    user_num=getCount();
-    super.setState(fn);
-  }
+
   @override
   void dispose() {
     myTextFieldController.dispose();
@@ -62,7 +53,6 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    //print(Map['count']);
     return Center(
       child: Form(
         key: _formKey,
@@ -149,7 +139,7 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
                     arguments: args,
                   );
                 } else {
-                  final snackBar = customSnackBar(
+                  final snackBar = showCustomSnackBar(
                     "One or more Fields have Errors",
                     "Ok",
                     () {},

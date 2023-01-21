@@ -38,7 +38,6 @@ class PostInfo extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 12.0),
                   child: Text(
                     location != "" ? location : "Location",
-                    softWrap: true,
                   ),
                 ),
                 const Text("•"),

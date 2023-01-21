@@ -32,9 +32,7 @@ class _SearchPageState extends State<SearchPage> {
         child: SizedBox(
           height: 50,
           width: 500,
-          child: Container(
-            color: Colors.red,
-          ),
+          child: Container(),
           // child: TypeAheadField(
           //   minCharsForSuggestions: 1,
           //   hideOnEmpty: true,

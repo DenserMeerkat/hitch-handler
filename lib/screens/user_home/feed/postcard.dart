@@ -42,6 +42,7 @@ class _PostCardState extends State<PostCard> {
 
   @override
   void initState() {
+    scaleController.scaleState = PhotoViewScaleState.covering;
     location = widget.snap['location'];
     date = widget.snap['date'];
     time = widget.snap['time'];
@@ -50,6 +51,35 @@ class _PostCardState extends State<PostCard> {
         widget.snap['datePublished'].microsecondsSinceEpoch);
     timeAgo = timeago.format(tempDate);
     super.initState();
+  }
+
+  PhotoViewScaleState customScaleStateCycle(PhotoViewScaleState actual) {
+    switch (actual) {
+      case PhotoViewScaleState.initial:
+        return PhotoViewScaleState.covering;
+      case PhotoViewScaleState.covering:
+        return PhotoViewScaleState.initial;
+      case PhotoViewScaleState.originalSize:
+        return PhotoViewScaleState.initial;
+      case PhotoViewScaleState.zoomedIn:
+      case PhotoViewScaleState.zoomedOut:
+        return PhotoViewScaleState.initial;
+      default:
+        return PhotoViewScaleState.covering;
+    }
+    // switch (actual) {
+    //   case PhotoViewScaleState.initial:
+    //     return PhotoViewScaleState.covering;
+    //   case PhotoViewScaleState.covering:
+    //     return PhotoViewScaleState.originalSize;
+    //   case PhotoViewScaleState.originalSize:
+    //     return PhotoViewScaleState.initial;
+    //   case PhotoViewScaleState.zoomedIn:
+    //   case PhotoViewScaleState.zoomedOut:
+    //     return PhotoViewScaleState.initial;
+    //   default:
+    //     return PhotoViewScaleState.initial;
+    // }
   }
 
   @override
@@ -83,8 +113,12 @@ class _PostCardState extends State<PostCard> {
                       children: [
                         PhotoViewGallery.builder(
                           wantKeepAlive: true,
-                          backgroundDecoration:
-                              const BoxDecoration(color: Colors.black),
+                          // scaleStateChangedCallback: (value) {
+                          //   debugPrint("$value");
+                          // },
+                          backgroundDecoration: const BoxDecoration(
+                            color: Colors.black87,
+                          ),
                           pageController: pageController,
                           itemCount: imgList.length,
                           loadingBuilder: (BuildContext context,
@@ -113,13 +147,14 @@ class _PostCardState extends State<PostCard> {
                               initialScale: PhotoViewComputedScale.contained,
                               minScale: PhotoViewComputedScale.contained,
                               maxScale: PhotoViewComputedScale.covered * 3,
+                              scaleStateCycle: customScaleStateCycle,
                             );
                           },
                           onPageChanged: (index) => setState(() {
+                            // scaleController.scaleState =
+                            //     PhotoViewScaleState.covering;
                             currIndex = index;
                           }),
-                          // scaleStateChangedCallback: (value) =>
-                          //     debugPrint(value.toString()),
                         ),
                         imgList.length > 1
                             ? Container(
@@ -171,7 +206,7 @@ class _PostCardState extends State<PostCard> {
     debugPrint(scaleController.scaleState.toString());
     setState(() {
       scaleController.scaleState =
-          defaultScaleStateCycle(scaleController.scaleState);
+          customScaleStateCycle(scaleController.scaleState);
     });
   }
 }
