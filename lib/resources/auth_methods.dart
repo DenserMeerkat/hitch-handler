@@ -48,7 +48,7 @@ class AuthMethods {
             .collection('users')
             .doc(cred.user!.uid)
             .set(user.toJson());
-        res = "SignUpSuccess";
+        res = "success";
       }
     } catch (err) {
       res = err.toString();
@@ -68,7 +68,7 @@ class AuthMethods {
             email: email, password: password);
         debugPrint(cred.user!.uid);
 
-        res = "LoginSuccess";
+        res = "success";
       }
     } catch (err) {
       res = err.toString();

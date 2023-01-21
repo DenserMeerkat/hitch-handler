@@ -585,4 +585,3 @@ packages:
 sdks:
   dart: ">=2.19.0-345.0.dev <4.0.0"
   flutter: ">=3.0.0"
-

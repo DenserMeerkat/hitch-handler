@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 // class Location {
@@ -60,7 +59,7 @@ class UploadFileList {
     if (_lenth < 5) {
       _uploadFileList.add(image);
       _lenth += 1;
-      return "Successfully added";
+      return "success";
     } else {
       return "Error : Overflow";
     }
@@ -82,7 +81,7 @@ class UploadFileList {
     if (index >= 0 && index <= 5) {
       _uploadFileList.removeAt(index);
       _lenth -= 1;
-      return "Successfully removed";
+      return "success";
     } else {
       return "Error in removing";
     }
@@ -92,7 +91,7 @@ class UploadFileList {
     try {
       _uploadFileList.clear();
       _lenth = 0;
-      return "Successfully cleared";
+      return "success";
     } on Exception catch (e) {
       return "Error: ran into exception - $e";
     }

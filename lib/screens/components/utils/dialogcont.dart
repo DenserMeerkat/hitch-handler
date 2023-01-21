@@ -200,6 +200,8 @@ class DialogCont extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
+                showSecondary(showSecondaryButton),
+                showSized(showSecondaryButton),
                 Expanded(
                   child: ElevatedButtonWithoutIcon(
                     onPressed: primaryFunction,
@@ -207,8 +209,6 @@ class DialogCont extends StatelessWidget {
                     activeColor: primaryButtonColor!,
                   ),
                 ),
-                showSized(showSecondaryButton),
-                showSecondary(showSecondaryButton),
                 const SizedBox(
                   width: 5,
                 ),

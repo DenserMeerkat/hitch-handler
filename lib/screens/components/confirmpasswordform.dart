@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'utils/customdialog.dart';
 import '../../args_class.dart';
 import '../../resources/auth_methods.dart';
 import '../../constants.dart';
 import 'customfields/customconfirmpassword.dart';
 import 'customfields/customsubmitbutton.dart';
+import 'utils/dialogcont.dart';
 import 'validpassword.dart';
 
 class ConfirmPasswordBody extends StatefulWidget {
@@ -45,6 +47,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
   }
 
   Future<String> performAuthentication(UserData user) async {
+    final navigator = Navigator.of(context);
     String res = "UnknownError";
     if (widget.authentication == 1) {
       res = await AuthMethods().signUpUser(
@@ -54,6 +57,11 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
         password: user.password,
         dob: user.dob,
       );
+      if (res != "success") {
+        showCustomSnackBar(res, "Ok", () {
+          navigator.pop();
+        });
+      }
     } else if (widget.authentication == 2) {
       res = "Not yet done";
     }
@@ -132,6 +140,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                       debugPrint("${_formKey.currentState!.validate()}");
                       widget.user.password = myPassFieldController.text;
                       String res = await performAuthentication(widget.user);
+                      if (res == "success") {}
                       debugPrint(res);
                     } else {
                       debugPrint(">>>>>ERRORS!");

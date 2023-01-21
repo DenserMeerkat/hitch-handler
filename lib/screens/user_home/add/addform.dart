@@ -69,18 +69,29 @@ class _AddFormState extends State<AddForm> {
         UploadFileList.retrieveFileList(),
       );
 
-      if (res == "PostUploadSuccess") {
+      if (res == "success") {
         setState(() {
           _isLoading = false;
+        });
+        clearFields();
+        showCustomSnackBar("Posted Successfully", "Ok", () {
+          Navigator.pop(context);
         });
         debugPrint(res); //Todo
       } else {
         setState(() {
           _isLoading = false;
         });
+        showCustomSnackBar(res, "Ok", () {
+          Navigator.pop(context);
+        });
         debugPrint(res);
       }
     } catch (e) {
+      res = "$e";
+      showCustomSnackBar(res, "Ok", () {
+        Navigator.pop(context);
+      });
       debugPrint(res);
     }
   }
@@ -108,203 +119,209 @@ class _AddFormState extends State<AddForm> {
     super.dispose();
   }
 
+  void clearFields() {
+    debugPrint(UploadFileList.clearFileList());
+    setState(() {
+      myTitleFieldController.clear();
+      titleErrorText = '';
+      myMsgFieldController.clear();
+      msgErrorText = '';
+      myLocFieldController.clear();
+      locErrorText = '';
+      CustomMessageField.hasError = false;
+      CustomTitleField.hasError = false;
+      _addImageEnabled = UploadFileList.currLength() < 5 ? true : false;
+      _viewImagesEnabled = UploadFileList.currLength() > 0 ? true : false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
     Size size = MediaQuery.of(context).size;
-    return SizedBox(
-      width: size.width * 0.8,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            //_isLoading ? const LinearProgressIndicator() : Container(),
-            CustomTitleField(
-              fgcolor: kPrimaryColor,
-              controller: myTitleFieldController,
-              hintText: "Suitable title ",
-              title: "Title",
-              length: 50,
-              errorText: titleErrorText,
-            ),
-            CustomMessageField(
-              fgcolor: kPrimaryColor,
-              controller: myMsgFieldController,
-              hintText: "Explain your problem briefly ",
-              title: "Description",
-              length: 250,
-              errorText: msgErrorText,
-            ),
-            AddImages(
-                addImageEnabled: _addImageEnabled,
-                viewImagesEnabled: _viewImagesEnabled),
-            const SizedBox(
-              height: 40,
-            ),
-            NotificationListener<DateTimeChanged>(
-              child: const CustomDateTime(),
-              onNotification: (n) {
-                setState(() {
-                  myDateController = n.date;
-                  myTimeController = n.time;
-                });
-                return true;
-              },
-            ),
-            const SizedBox(
-              height: 36,
-            ),
-            CustomTypeAheadField(
-              fgcolor: kPrimaryColor,
-              controller: myLocFieldController,
-              hintText: "Location",
-              title: "Location",
-              length: 50,
-              errorText: locErrorText,
-            ),
-            NotificationListener<SwitchChanged>(
-              child: const MoreDetails(),
-              onNotification: (n) {
-                setState(() {
-                  isAnon = n.anon;
-                  isDept = n.dept;
-                });
-                return true;
-              },
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
+      children: [
+        SizedBox(
+          width: size.width * 0.8,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(
-                  width: 5,
+                //_isLoading ? const LinearProgressIndicator() : Container(),
+                CustomTitleField(
+                  fgcolor: kPrimaryColor,
+                  controller: myTitleFieldController,
+                  hintText: "Suitable title ",
+                  title: "Title",
+                  length: 50,
+                  errorText: titleErrorText,
                 ),
-                Expanded(
-                  child: CustomSubmitButton(
-                    size: size,
-                    bgcolor: kSecButtonColor,
-                    msg: "Reset",
-                    fsize: 16,
-                    press: () {
-                      debugPrint(getTime(myTimeController));
-                      debugPrint("$myDateController");
-                      WidgetsBinding.instance.focusManager.primaryFocus
-                          ?.unfocus();
-                      showConfirmDialog(
-                        context,
-                        DialogCont(
-                          title: "Reset Fields",
-                          message:
-                              "Are you sure you want to reset all fields ?",
-                          icon: Icons.restore_page_rounded,
-                          iconBackgroundColor: kSecButtonColor.withOpacity(0.7),
-                          secondaryButtonColor:
-                              kSecButtonColor.withOpacity(0.7),
-                          primaryButtonLabel: "Reset",
-                          primaryButtonColor: kGrey150,
-                          primaryFunction: () {
-                            debugPrint(UploadFileList.clearFileList());
-                            setState(() {
-                              myTitleFieldController.clear();
-                              titleErrorText = '';
-                              myMsgFieldController.clear();
-                              msgErrorText = '';
-                              myLocFieldController.clear();
-                              locErrorText = '';
-                              CustomMessageField.hasError = false;
-                              CustomTitleField.hasError = false;
-                              _addImageEnabled = UploadFileList.currLength() < 5
-                                  ? true
-                                  : false;
-                              _viewImagesEnabled =
-                                  UploadFileList.currLength() > 0
-                                      ? true
-                                      : false;
-                            });
-                            Navigator.pop(context);
-                          },
-                          secondaryFunction: () {
-                            Navigator.pop(context);
-                          },
-                          borderRadius: 10,
-                          //showSecondaryButton: false,
-                        ),
-                        borderRadius: 10,
-                      );
-                    }, //Todo Dialog
-                  ),
+                CustomMessageField(
+                  fgcolor: kPrimaryColor,
+                  controller: myMsgFieldController,
+                  hintText: "Explain your problem briefly ",
+                  title: "Description",
+                  length: 250,
+                  errorText: msgErrorText,
+                ),
+                AddImages(
+                    addImageEnabled: _addImageEnabled,
+                    viewImagesEnabled: _viewImagesEnabled),
+                const SizedBox(
+                  height: 40,
+                ),
+                NotificationListener<DateTimeChanged>(
+                  child: const CustomDateTime(),
+                  onNotification: (n) {
+                    setState(() {
+                      myDateController = n.date;
+                      myTimeController = n.time;
+                    });
+                    return true;
+                  },
                 ),
                 const SizedBox(
-                  width: 30,
+                  height: 36,
                 ),
-                Expanded(
-                  child: CustomSubmitButton(
-                    size: size,
-                    bgcolor: kPrimaryColor,
-                    msg: "Done",
-                    fsize: 16,
-                    press: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        WidgetsBinding.instance.focusManager.primaryFocus
-                            ?.unfocus();
-                        debugPrint("________");
-                        addPost(user.uid);
-                        // String formattedDate =
-                        //     DateFormat('dd-MM-yyyy').format(myDateController);
-                        // String formattedTime =
-                        //     DateFormat('HH-mm-ss').format(myDateController);
-                        // final docUser = FirebaseFirestore.instance
-                        //     .collection('Complaints')
-                        //     .doc('Complaint' + complaint_num.toString());
-
-                        // final json = {
-                        //   'compaint_id': complaint_num,
-                        //   'title': myTitleFieldController.text,
-                        //   'description': myMsgFieldController.text,
-                        //   'date': formattedDate,
-                        //   'time': formattedTime,
-                        //   'location': myLocFieldController.text,
-                        //   'anonymous': _anon,
-                        //   'in_department': _dept,
-                        //   'domain': "",
-                        // };
-                        // complaint_num += 1;
-                        // print(formattedDate);
-                        // print(formattedTime);
-                        // docUser.set(json);
-                      } else {
-                        AddPage.scrollController.animateTo(0,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn);
-                        debugPrint("Hi");
-                        final snackBar = customSnackBar(
-                            "One or more Fields have Errors", "Ok", () {},
-                            backgroundColor: kGrey30);
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(snackBar)
-                            .closed
-                            .then((value) =>
-                                ScaffoldMessenger.of(context).clearSnackBars());
-                        debugPrint(">>>>>ERRORS!");
-                      }
-                    }, //Todo_Navigation
-                  ),
+                CustomTypeAheadField(
+                  fgcolor: kPrimaryColor,
+                  controller: myLocFieldController,
+                  hintText: "Location",
+                  title: "Location",
+                  length: 50,
+                  errorText: locErrorText,
+                ),
+                NotificationListener<SwitchChanged>(
+                  child: const MoreDetails(),
+                  onNotification: (n) {
+                    setState(() {
+                      isAnon = n.anon;
+                      isDept = n.dept;
+                    });
+                    return true;
+                  },
                 ),
                 const SizedBox(
-                  width: 5,
+                  height: 50,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: CustomSubmitButton(
+                        size: size,
+                        bgcolor: kSecButtonColor,
+                        msg: "Reset",
+                        fsize: 16,
+                        press: () {
+                          debugPrint(getTime(myTimeController));
+                          debugPrint("$myDateController");
+                          WidgetsBinding.instance.focusManager.primaryFocus
+                              ?.unfocus();
+                          showConfirmDialog(
+                            context,
+                            DialogCont(
+                              title: "Reset Fields",
+                              message:
+                                  "Are you sure you want to reset all fields ?",
+                              icon: Icons.restore_page_rounded,
+                              iconBackgroundColor:
+                                  kSecButtonColor.withOpacity(1),
+                              secondaryButtonColor:
+                                  kSecButtonColor.withOpacity(1),
+                              primaryButtonLabel: "Reset",
+                              primaryButtonColor: kGrey150,
+                              primaryFunction: () {
+                                debugPrint(UploadFileList.clearFileList());
+                                clearFields();
+                                Navigator.pop(context);
+                              },
+                              secondaryFunction: () {
+                                Navigator.pop(context);
+                              },
+                              borderRadius: 10,
+                              //showSecondaryButton: false,
+                            ),
+                            borderRadius: 10,
+                          );
+                        }, //Todo Dialog
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    Expanded(
+                      child: CustomSubmitButton(
+                        size: size,
+                        bgcolor: kPrimaryColor,
+                        msg: "Done",
+                        fsize: 16,
+                        press: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            WidgetsBinding.instance.focusManager.primaryFocus
+                                ?.unfocus();
+                            debugPrint("________");
+                            showConfirmDialog(
+                              context,
+                              DialogCont(
+                                title: "Confirm Post",
+                                message:
+                                    "Looks good!, Click 'Confirm' to add complaint",
+                                icon: Icons.check_box_rounded,
+                                iconBackgroundColor:
+                                    kPrimaryColor.withOpacity(0.7),
+                                secondaryButtonColor: kGrey150,
+                                primaryButtonLabel: "Confirm",
+                                primaryButtonColor:
+                                    kPrimaryColor.withOpacity(0.7),
+                                primaryFunction: () {
+                                  addPost(user.uid);
+                                  Navigator.pop(context);
+                                },
+                                secondaryFunction: () {
+                                  Navigator.pop(context);
+                                },
+                                borderRadius: 10,
+                                //showSecondaryButton: false,
+                              ),
+                              borderRadius: 10,
+                            );
+                          } else {
+                            AddPage.scrollController.animateTo(0,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeIn);
+                            debugPrint("Hi");
+                            final snackBar = showCustomSnackBar(
+                                "One or more Fields have Errors", "Ok", () {},
+                                backgroundColor: kGrey30);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar)
+                                .closed
+                                .then((value) => ScaffoldMessenger.of(context)
+                                    .clearSnackBars());
+                            debugPrint(">>>>>ERRORS!");
+                          }
+                        }, //Todo_Navigation
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

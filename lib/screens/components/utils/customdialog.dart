@@ -23,7 +23,7 @@ void showConfirmDialog(BuildContext context, Widget dialogCont,
       });
 }
 
-SnackBar customSnackBar(final String text, final String actionLabel,
+SnackBar showCustomSnackBar(final String text, final String actionLabel,
     final void Function() onPressed,
     {Color backgroundColor = kGrey40,
     Color textColor = kTextColor,

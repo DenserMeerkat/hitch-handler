@@ -173,7 +173,7 @@ class _LoginFormState extends State<LoginForm> {
                   email = myTextFieldController.text;
                   loginAuthentication(email, myPassFieldController.text);
                 } else {
-                  final snackBar = customSnackBar(
+                  final snackBar = showCustomSnackBar(
                     "One or more Fields have Errors",
                     "Ok",
                     () {},
