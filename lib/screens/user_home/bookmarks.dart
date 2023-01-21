@@ -1,23 +1,53 @@
-import 'package:flutter/material.dart';
-import 'feed/postcard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/user_provider.dart';
+import 'feed/postcard.dart';
+import '../../constants.dart';
+import '../../models/user.dart' as model;
 
-class HomePage extends StatefulWidget {
-
-  const HomePage({super.key});
+class BookmarkPage extends StatefulWidget {
+  const BookmarkPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<BookmarkPage> createState() => _BookmarkPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BookmarkPageState extends State<BookmarkPage> {
+  var userData = {};
+  late model.User user;
+  late List postList = [];
+  late List bookmarkList = [];
+  @override
+  void initState() {
+    user = Provider.of<UserProvider>(context).getUser;
+    postList = user.posts;
+    bookmarkList = user.bookmarks;
+    getData();
+    super.initState();
+  }
+
+  getData() async {
+    try {
+      var snap = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('postId', whereIn: postList)
+          .snapshots();
+      setState(() {});
+    } catch (err) {
+      debugPrint("$err");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
 
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('posts')
+          .where('postId', arrayContains: postList)
+          .snapshots(),
       builder: (context,
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

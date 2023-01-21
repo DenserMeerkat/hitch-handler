@@ -3,20 +3,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../../args_class.dart';
 import '../components/customfields/customdatepickfield.dart';
+import '../components/utils/customdialog.dart';
 import 'create_password.dart';
 import '../components/otp_screen.dart';
 import '../../constants.dart';
 import '../components/customfields/customsubmitbutton.dart';
 import '../components/customfields/custommultifield.dart';
 
-final countRef=FirebaseFirestore.instance.collection('count').doc('users');
+final countRef = FirebaseFirestore.instance.collection('count').doc('users');
 
 Future<int> getCount() async {
-  var userCount= await countRef.get();
-  int count=userCount['count'];
+  var userCount = await countRef.get();
+  int count = userCount['count'];
   return count;
 }
-
 
 
 class StudentSignupForm extends StatefulWidget {
@@ -31,7 +31,7 @@ class StudentSignupForm extends StatefulWidget {
   final String title;
   final IconData icon;
   final String homeroute;
-  final user_num=0;
+  final user_num = 0;
 
   @override
   State<StudentSignupForm> createState() => _StudentSignupFormState();
@@ -43,8 +43,6 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
   //final Map countObj=countRef.get().then((DocumentSnapshot doc1) {
     //doc1.data();
   //});
-
-  String rno = "Empty";
 
   final myTextFieldController = TextEditingController();
   final myDateFieldController = TextEditingController();
@@ -105,24 +103,31 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
               bgcolor: kPrimaryColor,
               msg: "Continue",
               fsize: 18,
-              width: 0.15,
               press: () {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   print("____SignUp Form Valid!");
 
+                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  UserData user = UserData(
+                    myTextFieldController.text,
+                    '0000000000', //Todo UserData
+                    '2021000000', //Todo UserData
+                    '**********', //Todo UserData
+                    myDateFieldController.text,
+                  );
                   print(myTextFieldController.text);
                   print(myDateFieldController.text);
-                  final docUser = FirebaseFirestore.instance
-                      .collection('users')
-                      .doc('user' + user_num.toString());
-                  user_num += 1;
-                  final json = {
-                    'user_id': myTextFieldController.text,
-                    'dob':myDateFieldController.text,
-                  };
-                  docUser.set(json);
+                  // final docUser = FirebaseFirestore.instance
+                  //     .collection('users')
+                  //     .doc('user' + getCount.toString());
+                  // //user_num += 1;
+                  // final json = {
+                  //   'user_id': myTextFieldController.text,
+                  //   'dob': myDateFieldController.text,
+                  // };
+                  // docUser.set(json);
 
                   OTPArguments args = OTPArguments(
                     widget.fgcolor,
@@ -133,8 +138,10 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
                       title: widget.title,
                       icon: widget.icon,
                       homeroute: widget.homeroute,
+                      user: user,
                     ),
                     widget.homeroute,
+                    user,
                   );
                   Navigator.pushNamed(
                     context,
@@ -142,6 +149,16 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
                     arguments: args,
                   );
                 } else {
+                  final snackBar = customSnackBar(
+                    "One or more Fields have Errors",
+                    "Ok",
+                    () {},
+                  );
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(snackBar)
+                      .closed
+                      .then((value) =>
+                          ScaffoldMessenger.of(context).clearSnackBars());
                   print("____SignUp Form Error!");
                 }
               }, //Todo_Navigation

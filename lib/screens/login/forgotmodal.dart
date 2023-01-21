@@ -117,12 +117,21 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               bgcolor: kPrimaryColor,
               msg: "Send Code",
               fsize: 18,
-              width: 0.08,
+              width: 2,
               press: () {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   print("____Forgot Form Valid!");
+
+                  UserData user = UserData(
+                    myTextFieldController.text,
+                    '0000000000', //Todo UserData
+                    '2021000000', //Todo UserData
+                    '**********', //Todo UserData
+                    '00-00-0000', //Todo UserData
+                  );
+
                   OTPArguments args = OTPArguments(
                     widget.fgcolor,
                     widget.title,
@@ -132,8 +141,10 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                       title: widget.title,
                       icon: widget.icon,
                       homeroute: widget.homeroute,
+                      user: user,
                     ),
                     widget.homeroute,
+                    user,
                   );
                   Navigator.pushNamed(
                     context,

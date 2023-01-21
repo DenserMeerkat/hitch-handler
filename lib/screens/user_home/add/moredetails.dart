@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/screens/user_home/add/notifiers.dart';
 import '../../components/customfields/fieldlabel.dart';
 import '../../../constants.dart';
 
 class MoreDetails extends StatefulWidget {
-  bool anon;
-  bool dept;
-  MoreDetails({
+  const MoreDetails({
     super.key,
-    required this.anon,
-    required this.dept,
   });
   @override
   State<MoreDetails> createState() => _MoreDetailsState();
 }
 
 class _MoreDetailsState extends State<MoreDetails> {
+  bool anon = false;
+  bool dept = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,10 +62,11 @@ class _MoreDetailsState extends State<MoreDetails> {
                 inactiveThumbColor: kGrey90,
                 inactiveTrackColor: kBlack20,
                 tileColor: kGrey40,
-                value: widget.anon,
+                value: anon,
                 onChanged: (bool value) {
                   setState(() {
-                    widget.anon = value;
+                    anon = !anon;
+                    SwitchChanged(anon, dept).dispatch(context);
                   });
                 },
               ),
@@ -82,10 +88,11 @@ class _MoreDetailsState extends State<MoreDetails> {
                 inactiveThumbColor: kGrey90,
                 inactiveTrackColor: kBlack20,
                 tileColor: kGrey40,
-                value: widget.dept,
+                value: dept,
                 onChanged: (bool value) {
                   setState(() {
-                    widget.dept = value;
+                    dept = !dept;
+                    SwitchChanged(anon, dept).dispatch(context);
                   });
                 },
               ),

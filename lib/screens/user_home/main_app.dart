@@ -1,7 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/resources/auth_methods.dart';
+import '../../providers/user_provider.dart';
+import 'package:provider/provider.dart';
+import '../components/utils/customdialog.dart';
+import '../components/utils/dialogcont.dart';
+import '../launch/launch_screen.dart';
+import 'bookmarks.dart';
 import 'home_page.dart';
-import 'add/add_page.dart';
+import 'add_page.dart';
 import '../../constants.dart';
+import '../../models/user.dart' as model;
 
 class AppScreen extends StatefulWidget {
   static String routeName = '/app_screen';
@@ -13,25 +22,38 @@ class AppScreen extends StatefulWidget {
 
 class _AppScreenState extends State<AppScreen> {
   int _selectedIndex = 0;
-
+  String email = "";
+  String rollno = "";
+  String mobno = "";
   static const List<Widget> _homeTabs = [
+    HomePage(),
     HomePage(),
     AddPage(),
     HomePage(),
+    HomePage(),
   ];
 
-/*______ADD__POST_______*/
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
+  }
 
-/*______ADD__POST_______*/
+  @override
+  void initState() {
+    addData();
+    super.initState();
+  }
 
   void _tabChange(int index) {
     setState(() {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
       _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
@@ -51,7 +73,7 @@ class _AppScreenState extends State<AppScreen> {
               ),
               ListTile(
                 tileColor: kGrey30,
-                title: const Text('Item 1'),
+                title: Text(user.email),
                 onTap: () {
                   // Update the state of the app.
                   // ...
@@ -59,7 +81,15 @@ class _AppScreenState extends State<AppScreen> {
               ),
               ListTile(
                 tileColor: kGrey30,
-                title: const Text('Item 2'),
+                title: Text(user.rollno),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              ListTile(
+                tileColor: kGrey30,
+                title: Text(user.mobno),
                 onTap: () {
                   // Update the state of the app.
                   // ...
@@ -68,6 +98,7 @@ class _AppScreenState extends State<AppScreen> {
             ],
           ),
         ),
+        drawerEdgeDragWidth: size.width * 0.25,
         backgroundColor: kBackgroundColor,
         appBar: AppBar(
           elevation: 0,
@@ -86,11 +117,14 @@ class _AppScreenState extends State<AppScreen> {
             builder: (BuildContext context) {
               return IconButton(
                 splashRadius: 20.0,
-                icon: const Icon(Icons.menu),
+                icon: const Icon(
+                  Icons.account_box_outlined,
+                  color: kTextColor,
+                ),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
                 },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                tooltip: "Account",
               );
             },
           ),
@@ -99,11 +133,35 @@ class _AppScreenState extends State<AppScreen> {
               splashRadius: 20.0,
               //splashColor: Colors.transparent,
               icon: const Icon(
-                Icons.logout_rounded,
+                Icons.exit_to_app_rounded,
                 color: kTextColor,
               ),
               onPressed: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                showConfirmDialog(
+                  context,
+                  DialogCont(
+                    title: "Logout",
+                    message: "Are you sure you want to logout ?",
+                    icon: Icons.exit_to_app_rounded,
+                    iconBackgroundColor: kPrimaryColor.withOpacity(0.7),
+                    primaryButtonLabel: "Logout",
+                    primaryButtonColor: kGrey150,
+                    secondaryButtonColor: kPrimaryColor.withOpacity(0.7),
+                    primaryFunction: () async {
+                      final navigator = Navigator.of(context);
+                      final scaffold = ScaffoldMessenger.of(context);
+                      await AuthMethods().signOut();
+                      scaffold.removeCurrentSnackBar();
+                      navigator.pushReplacementNamed(LaunchScreen.routeName);
+                    },
+                    secondaryFunction: () {
+                      Navigator.pop(context);
+                    },
+                    borderRadius: 10,
+                    //showSecondaryButton: false,
+                  ),
+                  borderRadius: 10,
+                );
               },
               tooltip: "Logout",
             )
@@ -125,14 +183,17 @@ class _AppScreenState extends State<AppScreen> {
                 surfaceTintColor: kTextColor,
                 indicatorColor: kPrimaryColor,
                 elevation: 5,
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
                 labelTextStyle: MaterialStateProperty.resolveWith((states) {
                   if (states.contains(MaterialState.selected)) {
                     return const TextStyle(
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: kTextColor,
                     );
                   } else {
                     return TextStyle(
+                      fontSize: 12,
                       color: kTextColor.withOpacity(0.6),
                     );
                   }
@@ -157,18 +218,18 @@ class _AppScreenState extends State<AppScreen> {
                   ),
                   label: 'Home',
                 ),
-                // NavigationDestination(
-                //   selectedIcon: const Icon(
-                //     Icons.manage_search_rounded,
-                //     size: 25,
-                //   ),
-                //   icon: Icon(
-                //     Icons.manage_search_outlined,
-                //     color: kTextColor.withOpacity(0.4),
-                //     size: 32,
-                //   ),
-                //   label: 'Search',
-                // ),
+                NavigationDestination(
+                  selectedIcon: const Icon(
+                    Icons.pageview_rounded,
+                    size: 28,
+                  ),
+                  icon: Icon(
+                    Icons.pageview_outlined,
+                    color: kTextColor.withOpacity(0.4),
+                    size: 30,
+                  ),
+                  label: 'Search',
+                ),
                 NavigationDestination(
                   selectedIcon: const Icon(
                     Icons.add_box_rounded,
@@ -193,18 +254,18 @@ class _AppScreenState extends State<AppScreen> {
                   ),
                   label: 'Saved',
                 ),
-                // NavigationDestination(
-                //   selectedIcon: const Icon(
-                //     Icons.account_circle,
-                //     size: 25,
-                //   ),
-                //   icon: Icon(
-                //     Icons.account_circle_outlined,
-                //     color: kTextColor.withOpacity(0.4),
-                //     size: 32,
-                //   ),
-                //   label: 'Profile',
-                // ),
+                NavigationDestination(
+                  selectedIcon: const Icon(
+                    Icons.account_box,
+                    size: 28,
+                  ),
+                  icon: Icon(
+                    Icons.account_box_outlined,
+                    color: kTextColor.withOpacity(0.4),
+                    size: 30,
+                  ),
+                  label: 'Profile',
+                ),
               ],
             ),
           ),

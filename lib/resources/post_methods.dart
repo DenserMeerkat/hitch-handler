@@ -1,3 +1,4 @@
+
 import 'dart:io';
 
 // class Location {
@@ -12,6 +13,13 @@ import 'dart:io';
 
 class LocationList {
   static List<String> locationsList = [
+    "Main Gallery",
+    "Mini Gallery",
+    "Sports Ground",
+    "Student Amenicities Centre",
+    "Co-operative Society",
+    "University Library",
+    "Ramanujam Computing Centre",
     "Red Building",
     "Knowledge Park",
     "Manufacturing Dept.",
@@ -21,6 +29,9 @@ class LocationList {
     "ECE Dept.",
     "Printing Dept.",
     "IT Dept.",
+    "Coffee Hut",
+    "CEG Canteen",
+    "ACTech Canteen",
   ];
   static List<String> getSuggestionLocations(String query) {
     List<String> matchList = [];
@@ -61,6 +72,10 @@ class UploadFileList {
 
   static File retrieveFile(int index) {
     return _uploadFileList[index];
+  }
+
+  static List<File> retrieveFileList() {
+    return _uploadFileList;
   }
 
   static String deleteFile(int index) {

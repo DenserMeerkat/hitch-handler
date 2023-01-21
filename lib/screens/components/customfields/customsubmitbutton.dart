@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/constants.dart';
+import '../../../constants.dart';
 
 class CustomSubmitButton extends StatelessWidget {
   final Color bgcolor;
   final Size size;
   final String msg;
   final double? fsize;
+  final double height;
   final double width;
+  final double borderRadius;
   final Function()? press;
   final bool? isEnabled;
   const CustomSubmitButton({
@@ -15,15 +17,18 @@ class CustomSubmitButton extends StatelessWidget {
     required this.bgcolor,
     required this.msg,
     this.fsize = 18.0,
-    this.width = 0.2,
+    this.height = 0.6,
+    this.width = 2,
+    this.borderRadius = 50,
     required this.press,
     this.isEnabled = true,
   });
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 2 * kDefaultPadding * height + fsize! + 2,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(borderRadius),
           boxShadow: const [
             BoxShadow(
               offset: Offset(1, 2),
@@ -57,7 +62,7 @@ class CustomSubmitButton extends StatelessWidget {
           }),
           shape: MaterialStateProperty.resolveWith((states) {
             return RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(borderRadius),
             );
           }),
           side: MaterialStateProperty.resolveWith((states) {
@@ -75,8 +80,8 @@ class CustomSubmitButton extends StatelessWidget {
           }),
           padding: MaterialStateProperty.resolveWith((states) {
             return EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: size.width * width,
+              vertical: kDefaultPadding * height,
+              horizontal: kDefaultPadding * width,
             );
           }),
         ),

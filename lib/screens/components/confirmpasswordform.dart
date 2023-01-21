@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../args_class.dart';
+import '../../resources/auth_methods.dart';
 import '../../constants.dart';
 import 'customfields/customconfirmpassword.dart';
 import 'customfields/customsubmitbutton.dart';
@@ -8,13 +10,15 @@ class ConfirmPasswordBody extends StatefulWidget {
   final Color fgcolor;
   final String title;
   final String subtitle;
-  final Function() press;
+  final UserData user;
+  final int authentication;
   const ConfirmPasswordBody({
     super.key,
     required this.fgcolor,
     required this.title,
-    required this.press,
     required this.subtitle,
+    required this.user,
+    required this.authentication,
   });
 
   @override
@@ -38,6 +42,22 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
       scroll.animateTo(scroll.position.maxScrollExtent + height,
           duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
     });
+  }
+
+  Future<String> performAuthentication(UserData user) async {
+    String res = "UnknownError";
+    if (widget.authentication == 1) {
+      res = await AuthMethods().signUpUser(
+        email: user.email,
+        mobno: user.mobno,
+        rollno: user.rollno,
+        password: user.password,
+        dob: user.dob,
+      );
+    } else if (widget.authentication == 2) {
+      res = "Not yet done";
+    }
+    return res;
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -103,18 +123,19 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                   size: size,
                   bgcolor: kPrimaryColor,
                   msg: "Continue",
-                  press: () {
+                  press: () async {
                     WidgetsBinding.instance.focusManager.primaryFocus
                         ?.unfocus();
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      print("___________________");
-                      print(_formKey.currentState!.validate());
-                      widget.press();
+                      debugPrint("___________________");
+                      debugPrint("${_formKey.currentState!.validate()}");
+                      widget.user.password = myPassFieldController.text;
+                      String res = await performAuthentication(widget.user);
+                      debugPrint(res);
                     } else {
-                      print(">>>>>ERRORS!");
+                      debugPrint(">>>>>ERRORS!");
                     }
-                    print(myPassFieldController.text);
                   }, //Todo_Navigation,
                 ),
                 SizedBox(

@@ -13,6 +13,7 @@ const kGrey30 = Color.fromARGB(255, 30, 30, 30);
 const kGrey40 = Color.fromARGB(255, 40, 40, 40);
 const kGrey50 = Color.fromARGB(255, 50, 50, 50);
 const kGrey90 = Color.fromARGB(255, 90, 90, 90);
+const kGrey150 = Color.fromARGB(255, 150, 150, 150);
 const kSecButtonColor = Color.fromARGB(255, 255, 189, 128);
 
 const kErrorColor = Color.fromARGB(255, 201, 69, 69);
@@ -21,4 +22,4 @@ const kWarnColor = Color.fromARGB(255, 241, 217, 95);
 const double kDefaultPadding = 20.0;
 
 int user_num = 1;
-int complaint_num=1;
+int complaint_num = 1;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../args_class.dart';
+import '../launch/launch_screen.dart';
 import 'loginform.dart';
 import '../../constants.dart';
 import '../components/loginsignupfooter.dart';
@@ -35,10 +36,8 @@ class AdminLoginScreen extends StatelessWidget {
             title: arguments.title,
             icon: arguments.icon,
             press: () {
-              Navigator.popUntil(
-                context,
-                (route) => route.isFirst,
-              );
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              Navigator.pushReplacementNamed(context, LaunchScreen.routeName);
             },
           ),
         ),

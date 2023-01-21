@@ -1,6 +1,4 @@
-import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import '../../constants.dart';
 import '../components/customsigninappbar.dart';
 import '../components/loginsignupfooter.dart';
@@ -52,6 +50,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
             title: arguments.title,
             icon: arguments.icon,
             press: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
               Navigator.of(context).pop(context);
             },
           ),
@@ -72,62 +71,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                     bottom: 15.0,
                   ),
                   child: Center(
-                    child:
-                        // CustomSlidingSegmentedControl<int>(
-                        //   initialValue: 0,
-                        //   children: {
-                        //     0: Text(
-                        //       'Student',
-                        //       style: TextStyle(
-                        //         color: stackIndex == 0
-                        //             ? kBackgroundColor
-                        //             : kTextColor.withOpacity(0.8),
-                        //         fontWeight: FontWeight.bold,
-                        //         letterSpacing: 0.5,
-                        //         fontSize: 13,
-                        //       ),
-                        //     ),
-                        //     1: Text(
-                        //       'Staff',
-                        //       style: TextStyle(
-                        //         color: stackIndex == 1
-                        //             ? kBackgroundColor
-                        //             : kTextColor.withOpacity(0.8),
-                        //         fontWeight: FontWeight.bold,
-                        //         letterSpacing: 0.3,
-                        //         fontSize: 13,
-                        //       ),
-                        //     ),
-                        //   },
-                        //   fixedWidth: size.width * 0.25,
-                        //   isStretch: false,
-                        //   decoration: BoxDecoration(
-                        //     color: kBackgroundColor,
-                        //     borderRadius: BorderRadius.circular(30.0),
-                        //     boxShadow: const [
-                        //       BoxShadow(
-                        //         color: kBlack10,
-                        //         offset: Offset(1, 1),
-                        //       )
-                        //     ],
-                        //   ),
-                        //   thumbDecoration: BoxDecoration(
-                        //     color: kPrimaryColor.withOpacity(0.9),
-                        //     border: Border.all(
-                        //       color: kPrimaryColor,
-                        //       width: 2.0,
-                        //     ),
-                        //     borderRadius: BorderRadius.circular(30.0),
-                        //   ),
-                        //   duration: const Duration(milliseconds: 400),
-                        //   curve: Curves.easeInOutCubic,
-                        //   onValueChanged: (v) {
-                        //     setState(() {
-                        //       stackIndex = v;
-                        //     });
-                        //   },
-                        // ),
-                        Container(
+                    child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         boxShadow: const [
@@ -180,38 +124,10 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
               ),
             ),
             SliverFillRemaining(
-              child:
-                  // IndexedStack(
-                  //   index: stackIndex,
-                  //   children: [
-                  //     Container(
-                  //       height: size.height * 0.6,
-                  //       child: SignupBody(
-                  //         formwidget: StudentSignupForm(
-                  //           fgcolor: arguments.fgcolor,
-                  //           title: arguments.title,
-                  //           icon: arguments.icon,
-                  //           homeroute: UserSignUpScreen.routeName,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     Container(
-                  //       height: size.height * 0.6,
-                  //       child: SignupBody(
-                  //         formwidget: StudentSignupForm(
-                  //           fgcolor: kAuthorityColor,
-                  //           title: arguments.title,
-                  //           icon: arguments.icon,
-                  //           homeroute: UserSignUpScreen.routeName,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  TabBarView(
+              child: TabBarView(
                 controller: _tabController,
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     height: size.height * 0.6,
                     child: SignupBody(
                       formwidget: StudentSignupForm(
@@ -222,7 +138,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: size.height * 0.6,
                     child: SignupBody(
                       formwidget: StudentSignupForm(
@@ -256,6 +172,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
               btntext: "Login",
               fsize: 15,
               press: () {
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 Navigator.of(context).pop(context);
               }, //Todo_navigation
             ),

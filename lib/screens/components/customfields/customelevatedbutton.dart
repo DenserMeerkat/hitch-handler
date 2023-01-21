@@ -115,17 +115,21 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
 
 class ElevatedButtonWithIcon extends StatelessWidget {
   void Function()? onPressed;
-  String label;
-  IconData icon;
-  Color activeColor;
-  Color borderColor;
-  double borderRadius;
+  final String label;
+  final IconData icon;
+  final Color activeColor;
+  final Color borderColor;
+  final double borderRadius;
+  final double leftPad;
+  final double rightPad;
   ElevatedButtonWithIcon({
     super.key,
     required this.onPressed,
     required this.label,
     required this.icon,
     required this.activeColor,
+    this.rightPad = 8.0,
+    this.leftPad = 8.0,
     this.borderColor = Colors.transparent,
     this.borderRadius = 5,
   });
@@ -166,11 +170,79 @@ class ElevatedButtonWithIcon extends StatelessWidget {
           );
         }),
       ),
-      label: Text(
-        label,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 15,
+      label: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        child: FittedBox(
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ElevatedButtonWithoutIcon extends StatelessWidget {
+  void Function()? onPressed;
+  final String label;
+  final Color activeColor;
+  final Color borderColor;
+  final double borderRadius;
+  final double horizontalPad;
+  ElevatedButtonWithoutIcon({
+    super.key,
+    required this.onPressed,
+    required this.label,
+    required this.activeColor,
+    this.horizontalPad = 8.0,
+    this.borderColor = Colors.transparent,
+    this.borderRadius = 5,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return kGrey30;
+          }
+          return activeColor;
+        }),
+        foregroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return kTextColor.withOpacity(0.5);
+          }
+          return kBlack10;
+        }),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            side: BorderSide(color: borderColor),
+          ),
+        ),
+        padding: MaterialStateProperty.resolveWith((states) {
+          return const EdgeInsets.only(
+            top: 5,
+            bottom: 5,
+            left: 10,
+            right: 12,
+          );
+        }),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Text(
+          label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+          ),
         ),
       ),
     );

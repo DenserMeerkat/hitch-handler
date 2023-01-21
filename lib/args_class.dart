@@ -1,5 +1,20 @@
 import 'package:flutter/material.dart';
 
+class UserData {
+  String email;
+  String mobno;
+  String rollno;
+  String password;
+  String dob;
+  UserData(
+    this.email,
+    this.mobno,
+    this.rollno,
+    this.password,
+    this.dob,
+  );
+}
+
 class LoginSignUpArguments {
   final Object herotag;
   final Color fgcolor;
@@ -20,6 +35,7 @@ class OTPArguments {
   final IconData icon;
   final Widget nextPage;
   final String homeroute;
+  final UserData user;
 
   OTPArguments(
     this.fgcolor,
@@ -27,19 +43,22 @@ class OTPArguments {
     this.icon,
     this.nextPage,
     this.homeroute,
+    this.user,
   );
 }
 
-class PasswordArguments {
-  final Color fgcolor;
-  final String title;
-  final IconData icon;
-  final String homeroute;
+// class PasswordArguments {
+//   final Color fgcolor;
+//   final String title;
+//   final IconData icon;
+//   final String homeroute;
+//   final UserData user;
 
-  PasswordArguments(
-    this.fgcolor,
-    this.title,
-    this.icon,
-    this.homeroute,
-  );
-}
+//   PasswordArguments(
+//     this.fgcolor,
+//     this.title,
+//     this.icon,
+//     this.homeroute,
+//     this.user,
+//   );
+// }
