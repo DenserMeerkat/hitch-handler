@@ -11,11 +11,11 @@ class LaunchScreenBody extends StatelessWidget {
     return ListView(
       children: [
         SizedBox(
-          height: maxHeight * 0.005,
+          height: maxHeight * 0.015, //0.005
         ),
         LogoContainer(size: size),
         SizedBox(
-          height: maxHeight * 0.095,
+          height: maxHeight * 0.14,
         ),
         Padding(
           padding:

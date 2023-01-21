@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'addform.dart';
-import '../../../constants.dart';
+import 'add/addform.dart';
+import '../../constants.dart';
 
 class AddPage extends StatelessWidget {
   static String routeName = '/add_page';
+  static ScrollController scrollController = ScrollController();
   const AddPage({super.key});
 
   @override
@@ -24,6 +25,7 @@ class AddPage extends StatelessWidget {
             height: size.height * 0.9,
             color: kGrey30.withOpacity(0.7),
             child: SingleChildScrollView(
+              controller: scrollController,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -50,7 +52,9 @@ class AddPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: size.height * 0.05),
-                  const AddForm(),
+                  AddForm(
+                    scrollController: scrollController,
+                  ),
                   SizedBox(
                     height: size.height * 0.03,
                   ),

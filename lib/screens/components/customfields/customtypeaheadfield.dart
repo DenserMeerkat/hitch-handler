@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../../string_extensions.dart';
 import '../../../constants.dart';
-import '../../user_home/add/addpostbrain.dart';
+import '../../../resources/post_methods.dart';
 import 'customerrormsg.dart';
 import 'fieldlabel.dart';
 

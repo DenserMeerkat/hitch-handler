@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'utils/customdialog.dart';
+import 'utils/dialogcont.dart';
 import '../../args_class.dart';
 import '../../constants.dart';
-import '../login/admin_login.dart';
-import '../login/authority_login.dart';
-import '../login/student_login.dart';
-import '../signup/user_signup.dart';
 import 'customsigninappbar.dart';
 import 'otpform.dart';
 
@@ -20,7 +18,30 @@ class OtpScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size; // Available screen size
     return WillPopScope(
       onWillPop: () async {
-        Navigator.popUntil(context, ModalRoute.withName(arguments.homeroute));
+        showConfirmDialog(
+          context,
+          DialogCont(
+            title: "Exit Process",
+            message:
+                "Are you sure you want to go back? You have an ongoing process ",
+            icon: Icons.arrow_back,
+            iconBackgroundColor: arguments.fgcolor.withOpacity(0.7),
+            primaryButtonLabel: "Exit",
+            primaryButtonColor: kGrey150,
+            secondaryButtonColor: arguments.fgcolor.withOpacity(0.7),
+            primaryFunction: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              Navigator.popUntil(
+                  context, ModalRoute.withName(arguments.homeroute));
+            },
+            secondaryFunction: () {
+              Navigator.pop(context);
+            },
+            borderRadius: 10,
+          ),
+          borderRadius: 10,
+          barrierColor: kBlack10,
+        );
         return false;
       },
       child: Theme(
@@ -41,8 +62,30 @@ class OtpScreen extends StatelessWidget {
               title: arguments.title,
               icon: arguments.icon,
               press: () {
-                Navigator.popUntil(
-                    context, ModalRoute.withName(arguments.homeroute));
+                showConfirmDialog(
+                  context,
+                  DialogCont(
+                    title: "Exit Process",
+                    message:
+                        "Are you sure you want to go back? You have an ongoing process ",
+                    icon: Icons.arrow_back,
+                    iconBackgroundColor: arguments.fgcolor.withOpacity(0.7),
+                    primaryButtonLabel: "Exit",
+                    primaryButtonColor: kGrey150,
+                    secondaryButtonColor: arguments.fgcolor.withOpacity(0.7),
+                    primaryFunction: () {
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                      Navigator.popUntil(
+                          context, ModalRoute.withName(arguments.homeroute));
+                    },
+                    secondaryFunction: () {
+                      Navigator.pop(context);
+                    },
+                    borderRadius: 10,
+                  ),
+                  borderRadius: 10,
+                  barrierColor: kBlack10,
+                );
               },
             ),
           ),

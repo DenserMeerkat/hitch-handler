@@ -5,7 +5,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../../components/customfields/customelevatedbutton.dart';
 import '../../components/customfields/fieldlabel.dart';
 import '../../../constants.dart';
-import 'addpostbrain.dart';
+import '../../../resources/post_methods.dart';
 import 'imagesource.dart';
 
 class AddImages extends StatefulWidget {
@@ -289,8 +289,24 @@ class _GalleryWidgetState extends State<GalleryWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kGrey40,
       appBar: AppBar(
-        backgroundColor: kGrey30,
+        backgroundColor: kBackgroundColor,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              splashRadius: 20.0,
+              icon: const Icon(
+                Icons.arrow_back,
+                color: kTextColor,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              tooltip: "Account",
+            );
+          },
+        ),
         title: Text(
           "Image  [ ${currIndex + 1}/${widget.imageList.length} ]",
           style: const TextStyle(
@@ -323,63 +339,41 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         ],
       ),
       bottomNavigationBar: Container(
-        color: kGrey30,
         padding:
             const EdgeInsets.only(top: 10, left: 10, bottom: 15.0, right: 10),
+        decoration: const BoxDecoration(color: kBackgroundColor, boxShadow: [
+          BoxShadow(offset: Offset(0, -2), color: kBlack10, blurRadius: 5)
+        ]),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: kGrey50,
-              ),
-              child: Material(
-                type: MaterialType.transparency,
-                child: IconButton(
-                    splashRadius: 40,
-                    color: kTextColor,
-                    disabledColor: kBlack20,
-                    onPressed: currIndex != 0
-                        ? () {
-                            widget.pageController.previousPage(
-                                duration: const Duration(microseconds: 10),
-                                curve: Curves.bounceInOut);
-                          }
-                        : null,
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                    )),
-              ),
+            imgControlButtons(
+              currIndex != 0 ? kGrey40 : kGrey30,
+              currIndex != 0
+                  ? () {
+                      widget.pageController.previousPage(
+                          duration: const Duration(microseconds: 10),
+                          curve: Curves.bounceInOut);
+                    }
+                  : null,
+              Icons.arrow_back_ios_new_rounded,
             ),
             widget.editMode
                 ? deleteBox(context)
                 : const SizedBox(
                     height: 0,
                   ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: kGrey50,
-              ),
-              child: Material(
-                type: MaterialType.transparency,
-                child: IconButton(
-                    splashRadius: 40,
-                    color: kTextColor,
-                    disabledColor: kBlack20,
-                    onPressed: currIndex != widget.imageList.length - 1
-                        ? () {
-                            widget.pageController.nextPage(
-                                duration: const Duration(microseconds: 100),
-                                curve: Curves.bounceInOut);
-                          }
-                        : null,
-                    icon: const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                    )),
-              ),
+            imgControlButtons(
+              currIndex != widget.imageList.length - 1 ? kGrey40 : kGrey30,
+              currIndex != widget.imageList.length - 1
+                  ? () {
+                      widget.pageController.nextPage(
+                          duration: const Duration(microseconds: 100),
+                          curve: Curves.bounceInOut);
+                    }
+                  : null,
+              Icons.arrow_forward_ios_rounded,
             ),
           ],
         ),
@@ -387,22 +381,40 @@ class _GalleryWidgetState extends State<GalleryWidget> {
     );
   }
 
-  Container deleteBox(BuildContext context) {
+  Container imgControlButtons(Color bg, void Function()? op, IconData icon) {
     return Container(
-      child: ElevatedButtonWithIcon(
-        onPressed: () {
-          setState(() {
-            debugPrint(UploadFileList.deleteFile(currIndex));
-            widget.imageList.remove(currIndex);
-            Navigator.pop(context);
-          });
-        },
-        label: 'Delete',
-        icon: Icons.delete_forever_rounded,
-        activeColor: kErrorColor,
-        borderColor: Colors.transparent,
-        borderRadius: 5,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: bg,
       ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: IconButton(
+            splashRadius: 33,
+            color: kTextColor,
+            disabledColor: kGrey50,
+            onPressed: op,
+            icon: Icon(
+              icon,
+            )),
+      ),
+    );
+  }
+
+  Widget deleteBox(BuildContext context) {
+    return ElevatedButtonWithIcon(
+      onPressed: () {
+        setState(() {
+          debugPrint(UploadFileList.deleteFile(currIndex));
+          widget.imageList.remove(currIndex);
+          Navigator.pop(context);
+        });
+      },
+      label: 'Delete',
+      icon: Icons.delete_forever_rounded,
+      activeColor: kErrorColor.withOpacity(0.8),
+      borderColor: Colors.transparent,
+      borderRadius: 5,
     );
   }
 }

@@ -1,25 +1,25 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/screens/user_home/add/notifiers.dart';
 import '../../components/customfields/fieldlabel.dart';
 import '../../../constants.dart';
-import '../pickers&dialogs/datetimepicker.dart';
+import '../utils/datetimepicker.dart';
 
 class CustomDateTime extends StatefulWidget {
-  DateTime dateController;
-  TimeOfDay timeController;
-  CustomDateTime({
+  const CustomDateTime({
     super.key,
-    required this.dateController,
-    required this.timeController,
   });
   @override
   State<CustomDateTime> createState() => _CustomDateTimeState();
 }
 
 class _CustomDateTimeState extends State<CustomDateTime> {
-  late String day;
-  late String mon;
-  late String year;
+  DateTime myDateController = DateTime.now();
+  TimeOfDay myTimeController = const TimeOfDay(hour: 0, minute: 0);
+
+  late String day = DateTime.now.toString().substring(8, 10);
+  late String mon = DateTime.now.toString().substring(5, 7);
+  late String year = DateTime.now.toString().substring(0, 4);
 
   late String hour;
   late String min;
@@ -34,15 +34,15 @@ class _CustomDateTimeState extends State<CustomDateTime> {
 
   void updateDate() {
     setState(() {
-      day = widget.dateController.toString().substring(8, 10);
-      mon = widget.dateController.toString().substring(5, 7);
-      year = widget.dateController.toString().substring(0, 4);
+      day = myDateController.toString().substring(8, 10);
+      mon = myDateController.toString().substring(5, 7);
+      year = myDateController.toString().substring(0, 4);
     });
   }
 
   void updateTime() {
     String hrStr;
-    int hrInt = int.parse(widget.timeController.toString().substring(10, 12));
+    int hrInt = int.parse(myTimeController.toString().substring(10, 12));
     if (hrInt > 12) {
       hrStr = (hrInt - 12).toString();
       if (hrStr.length == 1) {
@@ -56,8 +56,8 @@ class _CustomDateTimeState extends State<CustomDateTime> {
     }
     setState(() {
       hour = hrStr;
-      min = widget.timeController.toString().substring(13, 15);
-      ampm = int.parse(widget.timeController.toString().substring(10, 12)) >= 12
+      min = myTimeController.toString().substring(13, 15);
+      ampm = int.parse(myTimeController.toString().substring(10, 12)) >= 12
           ? "pm"
           : "am";
     });
@@ -81,11 +81,12 @@ class _CustomDateTimeState extends State<CustomDateTime> {
       DateTime? pickeddate = await showCustomDatePicker(
         context,
         kPrimaryColor,
-        widget.dateController,
+        myDateController,
       );
       if (pickeddate != null) {
         setState(() {
-          widget.dateController = pickeddate;
+          myDateController = pickeddate;
+          DateTimeChanged(myDateController, myTimeController).dispatch(context);
         });
       }
       updateDate();
@@ -95,11 +96,12 @@ class _CustomDateTimeState extends State<CustomDateTime> {
       TimeOfDay? pickedtime = await selectTime(
         context,
         kPrimaryColor,
-        widget.timeController,
+        myTimeController,
       );
-      if (pickedtime != null && pickedtime != widget.timeController) {
+      if (pickedtime != null && pickedtime != myTimeController) {
         setState(() {
-          widget.timeController = pickedtime;
+          myTimeController = pickedtime;
+          DateTimeChanged(myDateController, myTimeController).dispatch(context);
         });
       }
       updateTime();

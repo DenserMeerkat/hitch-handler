@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/screens/launch/launch_screen.dart';
 import '../../args_class.dart';
 import 'loginform.dart';
 import '../../constants.dart';
@@ -37,10 +38,8 @@ class StudentLoginScreen extends StatelessWidget {
             title: arguments.title,
             icon: arguments.icon,
             press: () {
-              Navigator.popUntil(
-                context,
-                (route) => route.isFirst,
-              );
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              Navigator.pushReplacementNamed(context, LaunchScreen.routeName);
             },
           ),
         ),
@@ -70,6 +69,7 @@ class StudentLoginScreen extends StatelessWidget {
               btntext: "Sign Up",
               fsize: 16,
               press: () {
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 LoginSignUpArguments args = LoginSignUpArguments(
                   "",

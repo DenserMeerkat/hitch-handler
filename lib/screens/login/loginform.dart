@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:overlay_support/overlay_support.dart';
+import '../../resources/auth_methods.dart';
+import '../components/utils/customdialog.dart';
 import 'forgotmodal.dart';
-import '../user_home/app.dart';
+import '../user_home/main_app.dart';
 import '../../constants.dart';
 import '../components/customfields/customsubmitbutton.dart';
 import '../components/customfields/custommultifield.dart';
@@ -30,33 +31,54 @@ class _LoginFormState extends State<LoginForm> {
   void showBottomSheet() {
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
     showModalBottomSheet(
-        backgroundColor: kGrey30,
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
-        context: context,
-        builder: (context) {
-          return Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: ForgotModalForm(
-                fgcolor: widget.fgcolor,
-                title: widget.title,
-                icon: widget.icon,
-                homeroute: widget.homeroute,
-              ));
-        });
+      backgroundColor: kGrey30,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: ForgotModalForm(
+            fgcolor: widget.fgcolor,
+            title: widget.title,
+            icon: widget.icon,
+            homeroute: widget.homeroute,
+          ),
+        );
+      },
+    );
   }
 
   final myTextFieldController = TextEditingController();
   final myPassFieldController = TextEditingController();
+
+  String email = "email";
 
   @override
   void dispose() {
     myTextFieldController.dispose();
     myPassFieldController.dispose();
     super.dispose();
+  }
+
+  void loginAuthentication(String email, String pass) async {
+    String res = "UnknownError";
+    final navigator = Navigator.of(context);
+    res = await AuthMethods().loginUser(
+      email: email,
+      password: myPassFieldController.text,
+    );
+    if (res == "LoginSuccess") {
+      debugPrint(res);
+      navigator.pushNamed(
+        AppScreen.routeName,
+      );
+    } else {
+      debugPrint("Error in Login");
+    }
   }
 
   @override
@@ -102,6 +124,7 @@ class _LoginFormState extends State<LoginForm> {
               children: [
                 TextButton(
                   onPressed: () {
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
                     showBottomSheet();
                   },
                   style: ButtonStyle(
@@ -139,42 +162,28 @@ class _LoginFormState extends State<LoginForm> {
               bgcolor: kPrimaryColor,
               msg: "Continue",
               fsize: 18,
-              width: 0.15,
+              width: 2,
               press: () {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-                if (!_formKey.currentState!.validate()) {
+                if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  print("___________________");
-                  print(_formKey.currentState!.validate());
+                  debugPrint("___________________");
+                  debugPrint("${_formKey.currentState!.validate()}");
 
-                  Navigator.pushNamed(
-                    context,
-                    AppScreen.routeName,
-                  );
-
-                  print(myTextFieldController.text);
-                  print(myPassFieldController.text);
+                  email = myTextFieldController.text;
+                  loginAuthentication(email, myPassFieldController.text);
                 } else {
-                  showSimpleNotification(
-                      Container(
-                        decoration: BoxDecoration(
-                            color: kBackgroundColor,
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(color: kErrorColor, width: 2)),
-                        child: const ListTile(
-                          leading: Icon(
-                            Icons.error_outline,
-                            size: 25,
-                          ),
-                          title: Text(
-                            "One or more fields have Errors",
-                          ),
-                        ),
-                      ),
-                      background: Colors.transparent,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                      position: NotificationPosition.top);
-                  print(">>>>>ERRORS!");
+                  final snackBar = customSnackBar(
+                    "One or more Fields have Errors",
+                    "Ok",
+                    () {},
+                  );
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(snackBar)
+                      .closed
+                      .then((value) =>
+                          ScaffoldMessenger.of(context).clearSnackBars());
+                  debugPrint(">>>>>ERRORS!");
                 }
               }, //Todo_Navigation
             ),
