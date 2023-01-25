@@ -18,7 +18,7 @@ import '../add_page.dart';
 import 'addimages.dart';
 import '../../../resources/post_methods.dart';
 import 'moredetails.dart';
-import 'notifiers.dart';
+import '../notifiers.dart';
 
 class AddForm extends StatefulWidget {
   final ScrollController scrollController;
@@ -51,11 +51,14 @@ class _AddFormState extends State<AddForm> {
   bool _viewImagesEnabled = UploadFileList.currLength() > 0 ? true : false;
 
   void addPost(String uid) async {
-    setState(() {
-      _isLoading = true;
-    });
+    final scaffoldContext = ScaffoldMessenger.of(context);
+
     String res = "Error in adding Post";
     try {
+      setState(() {
+        _isLoading = true;
+        IsLoading(_isLoading).dispatch(context);
+      });
       res = await FirestoreMethods().uploadPost(
         uid,
         myTitleFieldController.text,
@@ -72,26 +75,45 @@ class _AddFormState extends State<AddForm> {
       if (res == "success") {
         setState(() {
           _isLoading = false;
+          IsLoading(_isLoading).dispatch(context);
         });
         clearFields();
-        showCustomSnackBar("Posted Successfully", "Ok", () {
-          Navigator.pop(context);
-        });
+        const snackBar = SnackBar(
+          content: Text("Posted Successfully"),
+        );
+        scaffoldContext
+            .showSnackBar(snackBar)
+            .closed
+            .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
         debugPrint(res); //Todo
       } else {
         setState(() {
           _isLoading = false;
+          IsLoading(_isLoading).dispatch(context);
         });
-        showCustomSnackBar(res, "Ok", () {
-          Navigator.pop(context);
-        });
+        final snackBar = SnackBar(
+          content: Text(res.toString()),
+        );
+        scaffoldContext
+            .showSnackBar(snackBar)
+            .closed
+            .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
         debugPrint(res);
       }
     } catch (e) {
       res = "$e";
-      showCustomSnackBar(res, "Ok", () {
-        Navigator.pop(context);
+      setState(() {
+        _isLoading = false;
+        IsLoading(_isLoading).dispatch(context);
       });
+      final snackBar = SnackBar(
+        content: Text(res.toString()),
+      );
+      scaffoldContext
+          .showSnackBar(snackBar)
+          .closed
+          .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
+      debugPrint(res);
       debugPrint(res);
     }
   }

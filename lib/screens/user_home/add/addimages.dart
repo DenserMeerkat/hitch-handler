@@ -50,10 +50,16 @@ class _AddImagesState extends State<AddImages> {
     int lent = UploadFileList.currLength();
     List<Widget> list = List<Widget>.filled(
         5,
-        const Icon(
-          Icons.image,
-          color: kBlack20,
-          size: 90,
+        GestureDetector(
+          onTap: () async {
+            final bool? shouldRefresh = await showImageSources();
+            updateButtons();
+          },
+          child: const Icon(
+            Icons.image,
+            color: kBlack20,
+            size: 90,
+          ),
         ),
         growable: false);
     for (var i = 0; i < lent; i++) {
@@ -303,7 +309,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              tooltip: "Account",
+              tooltip: "Back",
             );
           },
         ),

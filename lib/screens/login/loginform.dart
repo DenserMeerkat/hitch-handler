@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../resources/auth_methods.dart';
 import '../components/utils/customdialog.dart';
+import '../user_home/notifiers.dart';
 import 'forgotmodal.dart';
 import '../user_home/main_app.dart';
 import '../../constants.dart';
@@ -54,6 +55,7 @@ class _LoginFormState extends State<LoginForm> {
 
   final myTextFieldController = TextEditingController();
   final myPassFieldController = TextEditingController();
+  bool isLoading = false;
 
   String email = "email";
 
@@ -67,18 +69,34 @@ class _LoginFormState extends State<LoginForm> {
   void loginAuthentication(String email, String pass) async {
     String res = "UnknownError";
     final navigator = Navigator.of(context);
+    final scaffoldContext = ScaffoldMessenger.of(context);
+    setState(() {
+      isLoading = true;
+      IsLoading(isLoading).dispatch(context);
+    });
     res = await AuthMethods().loginUser(
       email: email,
       password: myPassFieldController.text,
     );
-    if (res == "LoginSuccess") {
+    if (res == "success") {
       debugPrint(res);
       navigator.pushNamed(
         AppScreen.routeName,
       );
     } else {
+      final snackBar = SnackBar(
+        content: Text(res.toString()),
+      );
+      scaffoldContext
+          .showSnackBar(snackBar)
+          .closed
+          .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
       debugPrint("Error in Login");
     }
+    setState(() {
+      isLoading = false;
+      IsLoading(isLoading).dispatch(context);
+    });
   }
 
   @override

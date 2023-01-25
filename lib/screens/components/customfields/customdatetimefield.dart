@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/user_home/add/notifiers.dart';
+import '../../user_home/notifiers.dart';
 import '../../components/customfields/fieldlabel.dart';
 import '../../../constants.dart';
 import '../utils/datetimepicker.dart';

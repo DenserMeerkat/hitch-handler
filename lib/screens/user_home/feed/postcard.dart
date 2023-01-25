@@ -90,10 +90,13 @@ class _PostCardState extends State<PostCard> {
       constraints: const BoxConstraints(
         minHeight: 200,
       ),
-      padding: const EdgeInsets.only(top: 2, bottom: 2),
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: const BoxDecoration(
-        color: kGrey30,
+      margin: const EdgeInsets.only(bottom: 20),
+      decoration: BoxDecoration(
+        color: kGrey30.withOpacity(0.5),
+        border: const Border(
+          top: BorderSide(color: kGrey40),
+          bottom: BorderSide(color: kGrey40),
+        ),
         //borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: Column(
@@ -102,93 +105,89 @@ class _PostCardState extends State<PostCard> {
           PostTop(timeAgo: timeAgo),
           PostTitle(widget: widget),
           imgList.isNotEmpty
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Container(
-                    constraints: BoxConstraints(maxHeight: size.height * 0.38),
-                    width: double.infinity,
-                    color: Colors.black,
-                    child: Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        PhotoViewGallery.builder(
-                          wantKeepAlive: true,
-                          // scaleStateChangedCallback: (value) {
-                          //   debugPrint("$value");
-                          // },
-                          backgroundDecoration: const BoxDecoration(
-                            color: Colors.black87,
-                          ),
-                          pageController: pageController,
-                          itemCount: imgList.length,
-                          loadingBuilder: (BuildContext context,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return Container();
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: kPrimaryColor,
-                                backgroundColor: kGrey30,
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                          builder: (context, index) {
-                            final image = imgList[index];
-                            return PhotoViewGalleryPageOptions(
-                              scaleStateController: scaleController,
-                              filterQuality: FilterQuality.high,
-                              imageProvider: NetworkImage(image),
-                              initialScale: PhotoViewComputedScale.contained,
-                              minScale: PhotoViewComputedScale.contained,
-                              maxScale: PhotoViewComputedScale.covered * 3,
-                              scaleStateCycle: customScaleStateCycle,
-                            );
-                          },
-                          onPageChanged: (index) => setState(() {
-                            // scaleController.scaleState =
-                            //     PhotoViewScaleState.covering;
-                            currIndex = index;
-                          }),
+              ? Container(
+                  constraints: BoxConstraints(maxHeight: size.height * 0.38),
+                  width: double.infinity,
+                  color: Colors.black,
+                  child: Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      PhotoViewGallery.builder(
+                        wantKeepAlive: true,
+                        // scaleStateChangedCallback: (value) {
+                        //   debugPrint("$value");
+                        // },
+                        backgroundDecoration: const BoxDecoration(
+                          color: Colors.black87,
                         ),
-                        imgList.length > 1
-                            ? Container(
-                                margin: const EdgeInsets.all(10),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 6, horizontal: 10),
-                                decoration: BoxDecoration(
-                                    color: kGrey30.withOpacity(0.8),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Text(
-                                    "${currIndex + 1} / ${imgList.length}"),
-                              )
-                            : const SizedBox(),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: InkWell(
-                            onTap: changeScaleState,
-                            child: Container(
+                        pageController: pageController,
+                        itemCount: imgList.length,
+                        loadingBuilder: (BuildContext context,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return Container();
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: kPrimaryColor,
+                              backgroundColor: kGrey30,
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                        builder: (context, index) {
+                          final image = imgList[index];
+                          return PhotoViewGalleryPageOptions(
+                            scaleStateController: scaleController,
+                            filterQuality: FilterQuality.high,
+                            imageProvider: NetworkImage(image),
+                            initialScale: PhotoViewComputedScale.contained,
+                            minScale: PhotoViewComputedScale.contained,
+                            maxScale: PhotoViewComputedScale.covered * 3,
+                            scaleStateCycle: customScaleStateCycle,
+                          );
+                        },
+                        onPageChanged: (index) => setState(() {
+                          // scaleController.scaleState =
+                          //     PhotoViewScaleState.covering;
+                          currIndex = index;
+                        }),
+                      ),
+                      imgList.length > 1
+                          ? Container(
                               margin: const EdgeInsets.all(10),
                               padding: const EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 10),
                               decoration: BoxDecoration(
                                   color: kGrey30.withOpacity(0.8),
                                   borderRadius: BorderRadius.circular(5)),
-                              child: const Icon(
-                                Icons.fullscreen,
-                                color: kTextColor,
-                              ),
+                              child:
+                                  Text("${currIndex + 1} / ${imgList.length}"),
+                            )
+                          : const SizedBox(),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: InkWell(
+                          onTap: changeScaleState,
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 10),
+                            decoration: BoxDecoration(
+                                color: kGrey30.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: const Icon(
+                              Icons.fullscreen,
+                              color: kTextColor,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 )
               : const SizedBox(),
@@ -197,6 +196,18 @@ class _PostCardState extends State<PostCard> {
             user: user,
           ),
           PostInfo(location: location, date: date, time: time, widget: widget),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+            child: Text(
+              "$timeAgo",
+              style: TextStyle(
+                fontSize: 11,
+                //letterSpacing: 0.1,
+                //fontWeight: FontWeight.bold,
+                color: kTextColor.withOpacity(0.6),
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -13,7 +13,7 @@ class PostTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 20, right: 30, bottom: 2),
+      padding: const EdgeInsets.only(left: 20, right: 30, bottom: 10),
       child: Text(
         widget.snap['title'],
         textAlign: TextAlign.left,

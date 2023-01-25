@@ -75,6 +75,7 @@ class _MyAppState extends State<MyApp> {
             title: 'Hitch Handler',
             navigatorKey: _navigatorKey,
             theme: ThemeData(
+              //useMaterial3: true,
               scaffoldBackgroundColor: kBackgroundColor,
               accentColor: kPrimaryColor,
               textTheme:

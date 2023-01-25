@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/screens/login/student_login.dart';
 import '../../constants.dart';
 import '../components/customsigninappbar.dart';
 import '../components/loginsignupfooter.dart';
@@ -17,7 +18,6 @@ class UserSignUpScreen extends StatefulWidget {
 
 class _UserSignUpScreenState extends State<UserSignUpScreen>
     with TickerProviderStateMixin {
-  int? stackIndex = 0;
   late TabController _tabController;
   @override
   void initState() {
@@ -51,7 +51,14 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
             icon: arguments.icon,
             press: () {
               ScaffoldMessenger.of(context).removeCurrentSnackBar();
-              Navigator.of(context).pop(context);
+              Navigator.pushReplacementNamed(
+                  context, StudentLoginScreen.routeName,
+                  arguments: LoginSignUpArguments(
+                    "StudentHero",
+                    kStudentColor,
+                    "Student / Staff",
+                    Icons.school,
+                  ));
             },
           ),
         ),
@@ -86,6 +93,9 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                         child: Container(
                           color: kBlack15,
                           child: TabBar(
+                            dividerColor: kBlack20,
+                            indicatorWeight: 0,
+                            indicatorSize: TabBarIndicatorSize.tab,
                             labelColor: kBlack10,
                             unselectedLabelColor: kTextColor.withOpacity(0.8),
                             labelStyle: const TextStyle(
@@ -173,7 +183,14 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
               fsize: 15,
               press: () {
                 ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                Navigator.of(context).pop(context);
+                Navigator.pushReplacementNamed(
+                    context, StudentLoginScreen.routeName,
+                    arguments: LoginSignUpArguments(
+                      "StudentHero",
+                      kStudentColor,
+                      "Student / Staff",
+                      Icons.school,
+                    ));
               }, //Todo_navigation
             ),
           ),

@@ -39,22 +39,19 @@ SnackBar showCustomSnackBar(final String text, final String actionLabel,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              color: iconColor,
-              size: fsize + 5,
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            FittedBox(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: fsize,
-                ),
+            // Icon(
+            //   icon,
+            //   color: iconColor,
+            //   size: fsize + 5,
+            // ),
+            // const SizedBox(
+            //   width: 15,
+            // ),
+            Text(
+              text,
+              style: TextStyle(
+                color: textColor,
+                fontSize: fsize,
               ),
             ),
           ],
