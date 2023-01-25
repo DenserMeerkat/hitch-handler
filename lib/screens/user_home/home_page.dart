@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/screens/user_home/search_page.dart';
+import '../../constants.dart';
 import 'feed/postcard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
-
   const HomePage({super.key});
 
   @override
@@ -11,7 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
@@ -22,14 +22,92 @@ class _HomePageState extends State<HomePage> {
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              backgroundColor: kBlack20,
+              color: kPrimaryColor,
+            ),
           );
         }
-        return ListView.builder(
-          itemCount: snapshot.data!.docs.length,
-          itemBuilder: (context, index) => PostCard(
-            snap: snapshot.data!.docs[index].data(),
-          ),
+        return CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              snap: true,
+              //pinned: true,
+              floating: true,
+              automaticallyImplyLeading: false,
+              backgroundColor: kBackgroundColor,
+              elevation: 0,
+              expandedHeight: 60,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: kGrey40))),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const SearchPage(),
+                          transitionDuration: const Duration(milliseconds: 300),
+                          reverseTransitionDuration:
+                              const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Hero(
+                          tag: "search",
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: Container(
+                              width: 120,
+                              height: double.infinity,
+                              //color: Colors.green,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: kGrey40),
+                                color: kGrey40.withOpacity(0.6),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: const [
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    Icons.search,
+                                    color: kTextColor,
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text("Search"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                ((context, index) {
+                  return PostCard(
+                    snap: snapshot.data!.docs[index].data(),
+                  );
+                }),
+                childCount: snapshot.data!.docs.length,
+              ),
+            ),
+          ],
         );
       },
     );

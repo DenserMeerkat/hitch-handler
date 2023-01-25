@@ -1,31 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
 import 'add/addform.dart';
 import '../../constants.dart';
 
-class AddPage extends StatelessWidget {
+class AddPage extends StatefulWidget {
   static String routeName = '/add_page';
   static ScrollController scrollController = ScrollController();
   const AddPage({super.key});
 
   @override
+  State<AddPage> createState() => _AddPageState();
+}
+
+class _AddPageState extends State<AddPage> {
+  bool loading = false;
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
     return CustomScrollView(
       slivers: [
-        // const SliverAppBar(
-        //   floating: true,
-        //   pinned: true,
-        //   backgroundColor: kBackgroundColor,
-        //   flexibleSpace: FlexibleSpaceBar(
-        //     title: Text('*Add Page*'),
-        //   ),
-        // ),
+        SliverToBoxAdapter(
+          child: loading
+              ? const LinearProgressIndicator(
+                  backgroundColor: kBlack20,
+                  color: kPrimaryColor,
+                )
+              : Container(),
+        ),
         SliverFillRemaining(
           child: Container(
             height: size.height * 0.9,
             color: kGrey30.withOpacity(0.7),
             child: SingleChildScrollView(
-              controller: scrollController,
+              controller: AddPage.scrollController,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -52,8 +59,16 @@ class AddPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: size.height * 0.05),
-                  AddForm(
-                    scrollController: scrollController,
+                  NotificationListener<IsLoading>(
+                    child: AddForm(
+                      scrollController: AddPage.scrollController,
+                    ),
+                    onNotification: (n) {
+                      setState(() {
+                        loading = n.isLoading;
+                      });
+                      return true;
+                    },
                   ),
                   SizedBox(
                     height: size.height * 0.03,

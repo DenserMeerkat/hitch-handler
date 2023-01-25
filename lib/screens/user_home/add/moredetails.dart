@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/user_home/add/notifiers.dart';
+import '../notifiers.dart';
 import '../../components/customfields/fieldlabel.dart';
 import '../../../constants.dart';
 
@@ -61,7 +61,6 @@ class _MoreDetailsState extends State<MoreDetails> {
                 activeTrackColor: kBlack20,
                 inactiveThumbColor: kGrey90,
                 inactiveTrackColor: kBlack20,
-                tileColor: kGrey40,
                 value: anon,
                 onChanged: (bool value) {
                   setState(() {
@@ -87,7 +86,6 @@ class _MoreDetailsState extends State<MoreDetails> {
                 activeTrackColor: kBlack20,
                 inactiveThumbColor: kGrey90,
                 inactiveTrackColor: kBlack20,
-                tileColor: kGrey40,
                 value: dept,
                 onChanged: (bool value) {
                   setState(() {

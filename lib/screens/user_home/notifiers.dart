@@ -17,3 +17,10 @@ class DateTimeChanged extends Notification {
     this.time,
   );
 }
+
+class IsLoading extends Notification {
+  final bool isLoading;
+  IsLoading(
+    this.isLoading,
+  );
+}
