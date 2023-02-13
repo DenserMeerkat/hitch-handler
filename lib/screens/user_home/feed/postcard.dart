@@ -84,6 +84,7 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
     model.User user = Provider.of<UserProvider>(context).getUser;
     return Container(
@@ -92,10 +93,10 @@ class _PostCardState extends State<PostCard> {
       ),
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: kGrey30.withOpacity(0.5),
-        border: const Border(
-          top: BorderSide(color: kGrey40),
-          bottom: BorderSide(color: kGrey40),
+        color: isDark ? kGrey30.withOpacity(0.5) : kLBackgroundColor,
+        border: Border(
+          top: BorderSide(color: isDark ? kGrey40 : kLGrey40),
+          bottom: BorderSide(color: isDark ? kGrey40 : kLGrey40),
         ),
         //borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
@@ -108,7 +109,7 @@ class _PostCardState extends State<PostCard> {
               ? Container(
                   constraints: BoxConstraints(maxHeight: size.height * 0.38),
                   width: double.infinity,
-                  color: Colors.black,
+                  color: isDark ? Colors.black : kLBackgroundColor,
                   child: Stack(
                     alignment: Alignment.topRight,
                     children: [
@@ -164,8 +165,10 @@ class _PostCardState extends State<PostCard> {
                               decoration: BoxDecoration(
                                   color: kGrey30.withOpacity(0.8),
                                   borderRadius: BorderRadius.circular(5)),
-                              child:
-                                  Text("${currIndex + 1} / ${imgList.length}"),
+                              child: Text(
+                                "${currIndex + 1} / ${imgList.length}",
+                                style: const TextStyle(color: kTextColor),
+                              ),
                             )
                           : const SizedBox(),
                       Positioned(

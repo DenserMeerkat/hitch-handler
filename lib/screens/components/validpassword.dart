@@ -21,32 +21,34 @@ class _ValidPassExpansionTileState extends State<ValidPassExpansionTile> {
   _ValidPassExpansionTileState();
 
   final String bullet = "\u2022 ";
-  TextStyle textStyle =
-      TextStyle(fontSize: 13, color: kTextColor.withOpacity(0.7));
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    TextStyle textStyle = TextStyle(
+        fontSize: 13,
+        color: isDark ? kTextColor.withOpacity(0.7) : kLTextColor);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: ListTileTheme(
         dense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: ExpansionTile(
-          textColor: widget.fgcolor,
-          collapsedTextColor: widget.fgcolor,
-          iconColor: widget.fgcolor,
-          collapsedIconColor: widget.fgcolor,
-          backgroundColor: kBlack20,
-          collapsedBackgroundColor: kBlack20,
-          title: const Text(
+          textColor: isDark ? widget.fgcolor : kLTextColor,
+          collapsedTextColor: isDark ? widget.fgcolor : kLTextColor,
+          iconColor: isDark ? widget.fgcolor : kLTextColor,
+          collapsedIconColor: isDark ? widget.fgcolor : kLTextColor,
+          backgroundColor: isDark ? kBlack20 : kLGrey40,
+          collapsedBackgroundColor: isDark ? kBlack20 : kLGrey40,
+          title: Text(
             'Password Requirements',
             style: TextStyle(
-              fontSize: 17.0,
-            ),
+                fontSize: 17.0,
+                fontWeight: isDark ? FontWeight.w500 : FontWeight.bold),
           ),
           subtitle: Text(
             'Password must contain ...',
             style: TextStyle(
-              color: kTextColor.withOpacity(0.8),
+              color: isDark ? kTextColor.withOpacity(0.8) : kLTextColor,
               letterSpacing: 1,
             ),
           ),

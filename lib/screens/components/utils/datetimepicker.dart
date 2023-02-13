@@ -3,6 +3,7 @@ import '../../../constants.dart';
 
 Future<DateTime?> showCustomDatePicker(
     BuildContext context, Color fgcolor, DateTime initialDate) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
   return showDatePicker(
     context: context,
     initialDate: initialDate,
@@ -10,16 +11,27 @@ Future<DateTime?> showCustomDatePicker(
     lastDate: DateTime.now(),
     builder: (context, child) {
       return Theme(
-        data: ThemeData.dark().copyWith(
-          dialogBackgroundColor: kGrey30,
-          colorScheme: ColorScheme.dark(
-            primary: fgcolor,
-            onSurface: kTextColor,
-          ),
-          buttonTheme: const ButtonThemeData(
-            colorScheme: ColorScheme.dark(),
-          ),
-        ),
+        data: isDark
+            ? ThemeData.dark().copyWith(
+                dialogBackgroundColor: kGrey30,
+                colorScheme: ColorScheme.dark(
+                  primary: fgcolor,
+                  onSurface: kTextColor,
+                ),
+                buttonTheme: const ButtonThemeData(
+                  colorScheme: ColorScheme.dark(),
+                ),
+              )
+            : ThemeData.light().copyWith(
+                dialogBackgroundColor: kLGrey30,
+                colorScheme: const ColorScheme.light(
+                  primary: kBlack20,
+                  onSurface: kLTextColor,
+                ),
+                buttonTheme: const ButtonThemeData(
+                  colorScheme: ColorScheme.light(),
+                ),
+              ),
         child: child!,
       );
     },

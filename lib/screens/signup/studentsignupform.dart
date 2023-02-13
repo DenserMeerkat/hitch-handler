@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../../args_class.dart';
 import '../components/customfields/customdatepickfield.dart';
@@ -9,14 +7,6 @@ import '../components/otp_screen.dart';
 import '../../constants.dart';
 import '../components/customfields/customsubmitbutton.dart';
 import '../components/customfields/custommultifield.dart';
-
-final countRef = FirebaseFirestore.instance.collection('count').doc('users');
-
-Future<int> getCount() async {
-  var userCount = await countRef.get();
-  int count = userCount['count'];
-  return count;
-}
 
 class StudentSignupForm extends StatefulWidget {
   const StudentSignupForm({
@@ -30,7 +20,6 @@ class StudentSignupForm extends StatefulWidget {
   final String title;
   final IconData icon;
   final String homeroute;
-  final user_num = 0;
 
   @override
   State<StudentSignupForm> createState() => _StudentSignupFormState();
@@ -52,6 +41,7 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
     return Center(
       child: Form(
@@ -90,14 +80,15 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
             ),
             CustomSubmitButton(
               size: size,
-              bgcolor: kPrimaryColor,
+              bgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
               msg: "Continue",
-              fsize: 18,
+              fsize: 20,
+              width: 2.5,
               press: () {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  print("____SignUp Form Valid!");
+                  debugPrint("____SignUp Form Valid!");
 
                   ScaffoldMessenger.of(context).removeCurrentSnackBar();
                   UserData user = UserData(
@@ -107,17 +98,6 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
                     '**********', //Todo UserData
                     myDateFieldController.text,
                   );
-                  print(myTextFieldController.text);
-                  print(myDateFieldController.text);
-                  // final docUser = FirebaseFirestore.instance
-                  //     .collection('users')
-                  //     .doc('user' + getCount.toString());
-                  // //user_num += 1;
-                  // final json = {
-                  //   'user_id': myTextFieldController.text,
-                  //   'dob': myDateFieldController.text,
-                  // };
-                  // docUser.set(json);
 
                   OTPArguments args = OTPArguments(
                     widget.fgcolor,
@@ -140,6 +120,7 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
                   );
                 } else {
                   final snackBar = showCustomSnackBar(
+                    context,
                     "One or more Fields have Errors",
                     "Ok",
                     () {},
@@ -149,7 +130,7 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
                       .closed
                       .then((value) =>
                           ScaffoldMessenger.of(context).clearSnackBars());
-                  print("____SignUp Form Error!");
+                  debugPrint("____SignUp Form Error!");
                 }
               }, //Todo_Navigation
             ),

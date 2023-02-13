@@ -25,7 +25,7 @@ import 'screens/components/otp_screen.dart';
 import 'screens/user_home/main_app.dart';
 
 final Map<String, WidgetBuilder> routes = {
-  LaunchScreen.routeName: (context) => const LaunchScreen(),
+  LaunchScreen.routeName: (context) => LaunchScreen(),
   StudentLoginScreen.routeName: (context) => const StudentLoginScreen(),
   AuthorityLoginScreen.routeName: (context) => const AuthorityLoginScreen(),
   AdminLoginScreen.routeName: (context) => const AdminLoginScreen(),

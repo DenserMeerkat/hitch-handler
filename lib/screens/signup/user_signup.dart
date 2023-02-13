@@ -27,21 +27,29 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final arguments =
         ModalRoute.of(context)?.settings.arguments as LoginSignUpArguments;
     Size size = MediaQuery.of(context).size; // Available screen size
 
-    return Theme(
-      data: ThemeData(
-        accentColor: kStudentColor,
-        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-      ),
+    return WillPopScope(
+      onWillPop: () async {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        Navigator.pushReplacementNamed(context, StudentLoginScreen.routeName,
+            arguments: LoginSignUpArguments(
+              "StudentHero",
+              isDark ? kStudentColor : kLStudentColor,
+              "Student / Staff",
+              Icons.school,
+            ));
+        return true;
+      },
       child: Scaffold(
-        backgroundColor: kGrey30,
+        backgroundColor: isDark ? kGrey30 : kLGrey30,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 140,
-          backgroundColor: kBackgroundColor,
+          toolbarHeight: kHeaderHeight,
+          backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
             herotag: arguments.herotag,
@@ -55,7 +63,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                   context, StudentLoginScreen.routeName,
                   arguments: LoginSignUpArguments(
                     "StudentHero",
-                    kStudentColor,
+                    isDark ? kStudentColor : kLStudentColor,
                     "Student / Staff",
                     Icons.school,
                   ));
@@ -68,7 +76,9 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
               snap: true,
               floating: true,
               automaticallyImplyLeading: false,
-              backgroundColor: kGrey30,
+              elevation: 0,
+              surfaceTintColor: isDark ? Colors.white10 : Colors.black12,
+              backgroundColor: isDark ? kGrey30 : kLGrey30,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   padding: EdgeInsets.only(
@@ -81,19 +91,19 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        boxShadow: const [
+                        boxShadow: [
                           BoxShadow(
-                            offset: Offset(0, 2),
-                            color: kBlack10,
+                            offset: const Offset(0, 2),
+                            color: isDark ? kBlack10 : kGrey50,
                           )
                         ],
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: Container(
-                          color: kBlack15,
+                          color: isDark ? kBlack15 : kGrey30,
                           child: TabBar(
-                            dividerColor: kBlack20,
+                            dividerColor: isDark ? kBlack15 : kGrey30,
                             indicatorWeight: 0,
                             indicatorSize: TabBarIndicatorSize.tab,
                             labelColor: kBlack10,
@@ -111,9 +121,12 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                             splashBorderRadius: BorderRadius.circular(50),
                             indicator: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                color: kPrimaryColor.withOpacity(0.9),
+                                color: isDark
+                                    ? kPrimaryColor.withOpacity(0.9)
+                                    : kLPrimaryColor.withOpacity(0.9),
                                 border: Border.all(
-                                  color: kPrimaryColor,
+                                  color:
+                                      isDark ? kPrimaryColor : kLPrimaryColor,
                                   width: 2,
                                 )),
                             controller: _tabController,
@@ -165,12 +178,12 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
           ],
         ),
         bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            color: kBackgroundColor,
+          decoration: BoxDecoration(
+            color: isDark ? kBackgroundColor : kLBackgroundColor,
             boxShadow: [
               BoxShadow(
-                offset: Offset(0, -2),
-                color: kBlack15,
+                offset: const Offset(0, -2),
+                color: isDark ? kBlack15 : kLGrey50,
               ),
             ],
           ),

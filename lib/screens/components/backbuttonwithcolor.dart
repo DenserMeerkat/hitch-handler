@@ -17,6 +17,7 @@ class BackButtonWithColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
         decoration: BoxDecoration(
             color: iconbg.withOpacity(0.9),
@@ -32,15 +33,18 @@ class BackButtonWithColor extends StatelessWidget {
               color: iconbg,
             )),
         child: Material(
-          color: Colors.transparent,
+          type: MaterialType.transparency,
           shape: const CircleBorder(),
           clipBehavior: Clip.hardEdge,
           child: IconButton(
             splashRadius: 50.0,
-            splashColor: Colors.white.withOpacity(0.2),
+            splashColor: isDark
+                ? kTextColor.withOpacity(0.1)
+                : kLTextColor.withOpacity(0.1),
             onPressed: press,
             icon: Icon(
               Icons.arrow_back,
+              color: isDark ? kBlack20 : kBlack20,
               shadows: [
                 Shadow(
                   offset: const Offset(1, 1),

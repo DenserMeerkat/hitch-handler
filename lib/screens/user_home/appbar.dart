@@ -14,26 +14,30 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppBar(
       elevation: 0,
       title: Text(
         "HITCH HANDLER",
         style: TextStyle(
-          color: kTextColor.withOpacity(0.8),
+          color: isDark
+              ? kTextColor.withOpacity(0.8)
+              : kLTextColor.withOpacity(0.8),
           fontSize: 12,
           fontWeight: FontWeight.bold,
           letterSpacing: 2.0,
         ),
       ),
       centerTitle: true,
-      backgroundColor: kBackgroundColor,
+      backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
+      surfaceTintColor: isDark ? kBackgroundColor : kLBackgroundColor,
       leading: Builder(
         builder: (BuildContext context) {
           return IconButton(
             splashRadius: 20.0,
-            icon: const Icon(
+            icon: Icon(
               Icons.account_box_outlined,
-              color: kTextColor,
+              color: isDark ? kTextColor : kLTextColor,
             ),
             onPressed: () {
               Scaffold.of(context).openDrawer();
@@ -46,9 +50,9 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
         IconButton(
           splashRadius: 20.0,
           //splashColor: Colors.transparent,
-          icon: const Icon(
+          icon: Icon(
             Icons.exit_to_app_rounded,
-            color: kTextColor,
+            color: isDark ? kTextColor : kLTextColor,
           ),
           onPressed: () {
             showConfirmDialog(
@@ -66,7 +70,8 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
                   final scaffold = ScaffoldMessenger.of(context);
                   await AuthMethods().signOut();
                   scaffold.removeCurrentSnackBar();
-                  navigator.pushReplacementNamed(LaunchScreen.routeName);
+                  navigator.pushNamedAndRemoveUntil(
+                      LaunchScreen.routeName, (Route<dynamic> route) => false);
                 },
                 secondaryFunction: () {
                   Navigator.pop(context);

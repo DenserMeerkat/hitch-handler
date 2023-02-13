@@ -27,12 +27,14 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   _LoginFormState();
+
   final _formKey = GlobalKey<FormState>();
 
   void showBottomSheet() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
     showModalBottomSheet(
-      backgroundColor: kGrey30,
+      backgroundColor: isDark ? kGrey30 : kLGrey30,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
@@ -101,6 +103,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
     return Center(
       child: Form(
@@ -147,11 +150,13 @@ class _LoginFormState extends State<LoginForm> {
                   },
                   style: ButtonStyle(
                     overlayColor: MaterialStateProperty.resolveWith((states) {
-                      return Colors.white.withOpacity(0.08);
+                      return isDark
+                          ? kTextColor.withOpacity(0.08)
+                          : kLTextColor.withOpacity(0.1);
                     }),
                     shape: MaterialStateProperty.resolveWith((states) {
                       return RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       );
                     }),
                     padding: MaterialStateProperty.resolveWith((states) {
@@ -166,7 +171,7 @@ class _LoginFormState extends State<LoginForm> {
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
                       letterSpacing: 0.6,
-                      color: widget.fgcolor,
+                      color: isDark ? widget.fgcolor : kLTextColor,
                     ),
                   ),
                 ),
@@ -177,10 +182,10 @@ class _LoginFormState extends State<LoginForm> {
             ),
             CustomSubmitButton(
               size: size,
-              bgcolor: kPrimaryColor,
+              bgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
               msg: "Continue",
-              fsize: 18,
-              width: 2,
+              fsize: 20,
+              width: 2.5,
               press: () {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 if (_formKey.currentState!.validate()) {
@@ -192,6 +197,7 @@ class _LoginFormState extends State<LoginForm> {
                   loginAuthentication(email, myPassFieldController.text);
                 } else {
                   final snackBar = showCustomSnackBar(
+                    context,
                     "One or more Fields have Errors",
                     "Ok",
                     () {},

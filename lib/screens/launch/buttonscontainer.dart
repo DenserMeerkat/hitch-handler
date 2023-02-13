@@ -13,9 +13,9 @@ class ButtonsContainer extends StatelessWidget {
   }) : super(key: key);
 
   final Size size;
-
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 300,
       width: size.width * 0.95,
@@ -25,20 +25,20 @@ class ButtonsContainer extends StatelessWidget {
         left: size.width * 0.10,
         bottom: 15,
       ),
-      decoration: const BoxDecoration(
-        color: kGrey30,
-        borderRadius: BorderRadius.vertical(
+      decoration: BoxDecoration(
+        color: isDark ? kGrey30 : kLGrey30,
+        borderRadius: const BorderRadius.vertical(
           bottom: Radius.circular(30.0),
           top: Radius.circular(30.0),
         ),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 2.5),
-            color: kBlack15,
+            offset: const Offset(0, 2.5),
+            color: isDark ? kBlack15 : kGrey150,
           ),
           BoxShadow(
-            offset: Offset(0, -5),
-            color: kPrimaryColor,
+            offset: const Offset(0, -5),
+            color: isDark ? kPrimaryColor : kLPrimaryColor,
           ),
         ],
       ),
@@ -50,9 +50,11 @@ class ButtonsContainer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: CustomElevatedButtonWithIcon(
-                bgcolor: kBlack20,
-                fgcolor: kStudentColor,
-                shcolor: kBlack10,
+                bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
+                iconcolor: isDark ? kBlack20 : kBlack20,
+                fgcolor: isDark ? kStudentColor : kLStudentColor,
+                shcolor: isDark ? kBlack10 : kLGrey50,
+                textcolor: isDark ? kStudentColor : kBlack20,
                 bradius: 40.0,
                 fsize: 15.0,
                 title: "Student / Staff",
@@ -60,7 +62,7 @@ class ButtonsContainer extends StatelessWidget {
                 press: () {
                   LoginSignUpArguments args = LoginSignUpArguments(
                     "StudentHero",
-                    kStudentColor,
+                    isDark ? kStudentColor : kLStudentColor,
                     "Student / Staff",
                     Icons.school,
                   );
@@ -81,9 +83,11 @@ class ButtonsContainer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: CustomElevatedButtonWithIcon(
-                bgcolor: kBlack20,
-                fgcolor: kAuthorityColor,
-                shcolor: kBlack10,
+                bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
+                iconcolor: kBlack20,
+                fgcolor: isDark ? kAuthorityColor : kLAuthorityColor,
+                shcolor: isDark ? kBlack10 : kLGrey50,
+                textcolor: isDark ? kAuthorityColor : kBlack20,
                 bradius: 40.0,
                 fsize: 16.0,
                 title: "Authority",
@@ -91,7 +95,7 @@ class ButtonsContainer extends StatelessWidget {
                 press: () {
                   LoginSignUpArguments args = LoginSignUpArguments(
                     "AuthorityHero",
-                    kAuthorityColor,
+                    isDark ? kAuthorityColor : kLAuthorityColor,
                     "Authority",
                     Icons.work,
                   );
@@ -113,9 +117,11 @@ class ButtonsContainer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: CustomElevatedButtonWithIcon(
-                bgcolor: kBlack20,
-                fgcolor: kAdminColor,
-                shcolor: kBlack10,
+                bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
+                iconcolor: kBlack20,
+                fgcolor: isDark ? kAdminColor : kLAdminColor,
+                shcolor: isDark ? kBlack10 : kLGrey50,
+                textcolor: isDark ? kAdminColor : kBlack20,
                 bradius: 40.0,
                 fsize: 16.0,
                 title: "Admin",
@@ -123,7 +129,7 @@ class ButtonsContainer extends StatelessWidget {
                 press: () {
                   LoginSignUpArguments args = LoginSignUpArguments(
                     "AdminHero",
-                    kAdminColor,
+                    isDark ? kAdminColor : kLAdminColor,
                     "Admin",
                     Icons.key,
                   );

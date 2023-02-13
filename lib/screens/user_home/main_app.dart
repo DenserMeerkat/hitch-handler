@@ -55,6 +55,7 @@ class _AppScreenState extends State<AppScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     model.User user = Provider.of<UserProvider>(context).getUser;
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
@@ -63,18 +64,20 @@ class _AppScreenState extends State<AppScreen> {
       },
       child: Scaffold(
         drawer: Drawer(
-          backgroundColor: kBackgroundColor,
+          backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
+              DrawerHeader(
                 decoration: BoxDecoration(
-                  color: kGrey50,
+                  color: isDark ? kGrey50 : kLGrey50,
                 ),
                 child: Text(''),
               ),
               ListTile(
-                tileColor: kGrey30,
+                splashColor: isDark ? kGrey50 : kLGrey50,
+                focusColor: isDark ? kGrey50 : kLGrey50,
+                tileColor: isDark ? kGrey30 : kLGrey30,
                 title: Text(user.email),
                 onTap: () {
                   // Update the state of the app.
@@ -82,7 +85,9 @@ class _AppScreenState extends State<AppScreen> {
                 },
               ),
               ListTile(
-                tileColor: kGrey30,
+                splashColor: isDark ? kGrey50 : kLGrey50,
+                focusColor: isDark ? kGrey50 : kLGrey50,
+                tileColor: isDark ? kGrey30 : kLGrey30,
                 title: Text(user.rollno),
                 onTap: () {
                   // Update the state of the app.
@@ -90,7 +95,9 @@ class _AppScreenState extends State<AppScreen> {
                 },
               ),
               ListTile(
-                tileColor: kGrey30,
+                splashColor: isDark ? kGrey50 : kLGrey50,
+                focusColor: isDark ? kGrey50 : kLGrey50,
+                tileColor: isDark ? kGrey30 : kLGrey30,
                 title: Text(user.mobno),
                 onTap: () {
                   // Update the state of the app.
@@ -101,7 +108,7 @@ class _AppScreenState extends State<AppScreen> {
           ),
         ),
         drawerEdgeDragWidth: size.width * 0.25,
-        backgroundColor: kBackgroundColor,
+        backgroundColor: isDark ? kBackgroundColor : kLGrey30,
         appBar: const MainAppBar(),
         body: Container(
           height: size.height * 0.9,
@@ -113,30 +120,35 @@ class _AppScreenState extends State<AppScreen> {
         ),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.only(top: 2),
-          color: kGrey30,
+          color: isDark ? kGrey30 : kLGrey30,
           child: SafeArea(
             child: NavigationBarTheme(
               data: NavigationBarThemeData(
-                  height: 70,
-                  shadowColor: kBlack10,
-                  backgroundColor: kBackgroundColor,
-                  surfaceTintColor: kBackgroundColor,
-                  indicatorColor: kPrimaryColor,
-                  labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-                  labelTextStyle: MaterialStateProperty.resolveWith((states) {
+                height: 70,
+                shadowColor: kBlack10,
+                backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
+                surfaceTintColor: isDark ? kBackgroundColor : kLBackgroundColor,
+                indicatorColor: isDark ? kPrimaryColor : kLPrimaryColor,
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+                labelTextStyle: MaterialStateProperty.resolveWith(
+                  (states) {
                     if (states.contains(MaterialState.selected)) {
-                      return const TextStyle(
+                      return TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: kTextColor,
+                        color: isDark ? kTextColor : kLTextColor,
                       );
                     } else {
                       return TextStyle(
                         fontSize: 12,
-                        color: kTextColor.withOpacity(0.6),
+                        color: isDark
+                            ? kTextColor.withOpacity(0.6)
+                            : kLTextColor.withOpacity(0.6),
                       );
                     }
-                  })),
+                  },
+                ),
+              ),
               child: NavigationBar(
                 selectedIndex: _selectedIndex,
                 animationDuration: const Duration(milliseconds: 500),
@@ -146,36 +158,30 @@ class _AppScreenState extends State<AppScreen> {
                 destinations: [
                   NavigationDestination(
                     selectedIcon: const Icon(
+                      color: kBackgroundColor,
                       Icons.home_rounded,
                       size: 25,
                     ),
                     icon: Icon(
                       Icons.home_outlined,
-                      color: kTextColor.withOpacity(0.4),
+                      color: isDark
+                          ? kTextColor.withOpacity(0.4)
+                          : kLTextColor.withOpacity(0.6),
                       size: 28,
                     ),
                     label: 'Home',
                   ),
-                  // NavigationDestination(
-                  //   selectedIcon: const Icon(
-                  //     Icons.pageview_rounded,
-                  //     size: 28,
-                  //   ),
-                  //   icon: Icon(
-                  //     Icons.pageview_outlined,
-                  //     color: kTextColor.withOpacity(0.4),
-                  //     size: 30,
-                  //   ),
-                  //   label: 'Search',
-                  // ),
                   NavigationDestination(
                     selectedIcon: const Icon(
                       Icons.add_box_rounded,
+                      color: kBackgroundColor,
                       size: 25,
                     ),
                     icon: Icon(
                       Icons.add_box_outlined,
-                      color: kTextColor.withOpacity(0.4),
+                      color: isDark
+                          ? kTextColor.withOpacity(0.4)
+                          : kLTextColor.withOpacity(0.6),
                       size: 28,
                     ),
                     label: 'Add',
@@ -183,27 +189,18 @@ class _AppScreenState extends State<AppScreen> {
                   NavigationDestination(
                     selectedIcon: const Icon(
                       Icons.archive_rounded,
+                      color: kBackgroundColor,
                       size: 25,
                     ),
                     icon: Icon(
                       Icons.archive_outlined,
-                      color: kTextColor.withOpacity(0.4),
+                      color: isDark
+                          ? kTextColor.withOpacity(0.4)
+                          : kLTextColor.withOpacity(0.6),
                       size: 28,
                     ),
                     label: 'Archives',
                   ),
-                  // NavigationDestination(
-                  //   selectedIcon: const Icon(
-                  //     Icons.account_box,
-                  //     size: 28,
-                  //   ),
-                  //   icon: Icon(
-                  //     Icons.account_box_outlined,
-                  //     color: kTextColor.withOpacity(0.4),
-                  //     size: 30,
-                  //   ),
-                  //   label: 'Profile',
-                  // ),
                 ],
               ),
             ),

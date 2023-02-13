@@ -65,6 +65,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
 
     const outlineInputBorder = OutlineInputBorder(
@@ -87,13 +88,13 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                 height: 48,
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
-                  color: kGrey50,
+                  color: isDark ? kGrey50 : kLGrey40,
                   borderRadius: BorderRadius.circular(10.0),
                   boxShadow: [
                     errorIndicator(),
-                    const BoxShadow(
-                      offset: Offset(1, 2),
-                      color: kBlack20,
+                    BoxShadow(
+                      offset: const Offset(1, 2),
+                      color: isDark ? kBlack20 : kGrey90,
                     )
                   ],
                 ),
@@ -110,7 +111,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               onTap: () async {
                 DateTime? pickeddate = await showCustomDatePicker(
                   context,
-                  kPrimaryColor,
+                  isDark ? kPrimaryColor : kLPrimaryColor,
                   DateTime.now(),
                 );
                 if (pickeddate != null) {
@@ -170,6 +171,12 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                       Icons.edit_calendar_outlined,
                       color: widget.fgcolor,
                       size: 18,
+                      shadows: [
+                        BoxShadow(
+                          offset: const Offset(1, 1),
+                          color: isDark ? kBlack20 : kGrey30,
+                        )
+                      ],
                     ),
                   ),
                 ),

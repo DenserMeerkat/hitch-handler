@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import '../../constants.dart';
 import 'buttonscontainer.dart';
 
@@ -11,11 +12,11 @@ class LaunchScreenBody extends StatelessWidget {
     return ListView(
       children: [
         SizedBox(
-          height: maxHeight * 0.015, //0.005
+          height: (maxHeight - 100) * 0.005, //0.005
         ),
         LogoContainer(size: size),
         SizedBox(
-          height: maxHeight * 0.14,
+          height: (maxHeight - 100) * 0.12,
         ),
         Padding(
           padding:
@@ -31,7 +32,7 @@ class LaunchScreenBody extends StatelessWidget {
 }
 
 class LogoContainer extends StatelessWidget {
-  const LogoContainer({
+  LogoContainer({
     Key? key,
     required this.size,
   }) : super(key: key);
@@ -40,13 +41,18 @@ class LogoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode =
+        SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark;
     return Container(
       constraints: const BoxConstraints(minHeight: 200),
       height: size.height * 0.3,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Placeholder(
-          color: kTextColor.withOpacity(0.1),
+          color: isDarkMode
+              ? kTextColor.withOpacity(0.1)
+              : kLTextColor.withOpacity(0.1),
         ),
       ),
     );

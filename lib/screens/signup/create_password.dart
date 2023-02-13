@@ -24,6 +24,8 @@ class CreatePasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
+
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
         showConfirmDialog(
@@ -51,57 +53,51 @@ class CreatePasswordPage extends StatelessWidget {
         );
         return true;
       },
-      child: Theme(
-        data: ThemeData(
-          accentColor: fgcolor,
-          textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-        ),
-        child: Scaffold(
-          backgroundColor: kGrey30,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            toolbarHeight: 140,
-            backgroundColor: kBackgroundColor,
-            elevation: 0,
-            flexibleSpace: CustomSignInAppBar(
-                size: size,
-                fgcolor: fgcolor,
-                title: title,
-                icon: icon,
-                press: () {
-                  showConfirmDialog(
-                    context,
-                    DialogCont(
-                      title: "Exit Process",
-                      message:
-                          "Are you sure you want to go back? You have an ongoing process ",
-                      icon: Icons.arrow_back,
-                      iconBackgroundColor: fgcolor.withOpacity(0.7),
-                      primaryButtonLabel: "Exit",
-                      primaryButtonColor: kGrey150,
-                      secondaryButtonColor: fgcolor.withOpacity(0.7),
-                      primaryFunction: () {
-                        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                        Navigator.popUntil(
-                            context, ModalRoute.withName(homeroute));
-                      },
-                      secondaryFunction: () {
-                        Navigator.pop(context);
-                      },
-                      borderRadius: 10,
-                    ),
+      child: Scaffold(
+        backgroundColor: isDark ? kGrey30 : kLGrey30,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          toolbarHeight: kHeaderHeight,
+          backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
+          elevation: 0,
+          flexibleSpace: CustomSignInAppBar(
+              size: size,
+              fgcolor: fgcolor,
+              title: title,
+              icon: icon,
+              press: () {
+                showConfirmDialog(
+                  context,
+                  DialogCont(
+                    title: "Exit Process",
+                    message:
+                        "Are you sure you want to go back? You have an ongoing process ",
+                    icon: Icons.arrow_back,
+                    iconBackgroundColor: fgcolor.withOpacity(0.7),
+                    primaryButtonLabel: "Exit",
+                    primaryButtonColor: kGrey150,
+                    secondaryButtonColor: fgcolor.withOpacity(0.7),
+                    primaryFunction: () {
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                      Navigator.popUntil(
+                          context, ModalRoute.withName(homeroute));
+                    },
+                    secondaryFunction: () {
+                      Navigator.pop(context);
+                    },
                     borderRadius: 10,
-                    barrierColor: kBlack10,
-                  );
-                }),
-          ),
-          body: ConfirmPasswordBody(
-            title: "Create Password",
-            subtitle: "Create a password for your account.",
-            fgcolor: fgcolor,
-            user: user,
-            authentication: 1, //Todo
-          ),
+                  ),
+                  borderRadius: 10,
+                  barrierColor: kBlack10,
+                );
+              }),
+        ),
+        body: ConfirmPasswordBody(
+          title: "Create Password",
+          subtitle: "Create a password for your account.",
+          fgcolor: fgcolor,
+          user: user,
+          authentication: 1, //Todo
         ),
       ),
     );

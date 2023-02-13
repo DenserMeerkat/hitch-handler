@@ -21,29 +21,32 @@ class CustomSignInAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      color: kBackgroundColor,
+      //margin: const EdgeInsets.only(top: 10),
+      color: isDark ? kBackgroundColor : kLBackgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
             "HITCH HANDLER",
             style: TextStyle(
-              color: kTextColor.withOpacity(0.7),
+              color: isDark
+                  ? kTextColor.withOpacity(0.7)
+                  : kLTextColor.withOpacity(0.7),
               fontWeight: FontWeight.bold,
-              fontSize: 12,
+              fontSize: 11,
               letterSpacing: 2,
               wordSpacing: 5,
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 15,
           ),
           Container(
-            padding: EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 5),
             decoration: BoxDecoration(
-              color: kGrey30,
+              color: isDark ? kGrey30 : kLGrey30,
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(40.0),
               ),
@@ -59,14 +62,16 @@ class CustomSignInAppBar extends StatelessWidget {
               child: UserLoginHeader(
                 herotag: herotag,
                 bradius: 30.0,
-                bgcolor: kBackgroundColor,
-                shcolor: kBlack10,
+                bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
+                shcolor: isDark ? kBlack10 : kGrey90,
                 fgcolor: fgcolor,
                 icon: icon,
                 title: title,
                 fsize: 16,
                 press: press,
-                iconbg: kPrimaryColor,
+                iconbg: isDark ? kPrimaryColor : kLPrimaryColor,
+                iconcolor: isDark ? kBlack20 : kBlack20,
+                textcolor: isDark ? fgcolor : kBlack20,
               ),
             ),
           ),

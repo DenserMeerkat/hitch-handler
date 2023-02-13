@@ -48,6 +48,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
 
   Future<String> performAuthentication(UserData user) async {
     final navigator = Navigator.of(context);
+    final BuildContext contexT = context;
     String res = "UnknownError";
     if (widget.authentication == 1) {
       res = await AuthMethods().signUpUser(
@@ -58,7 +59,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
         dob: user.dob,
       );
       if (res != "success") {
-        showCustomSnackBar(res, "Ok", () {
+        showCustomSnackBar(contexT, res, "Ok", () {
           navigator.pop();
         });
       }
@@ -71,11 +72,12 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size; // Available screen size
     return Container(
       height: size.height * 0.78,
       width: size.width,
-      color: kGrey30,
+      color: isDark ? kGrey30 : kLGrey30,
       child: SingleChildScrollView(
         controller: scroll,
         child: Form(
@@ -97,8 +99,8 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                   child: Text(
                     widget.title,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: kTextColor,
+                    style: TextStyle(
+                      color: isDark ? kTextColor : kLTextColor,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1,
                       fontSize: 32,
@@ -112,7 +114,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                   child: Text(
                     widget.subtitle,
                     style: TextStyle(
-                      color: kTextColor.withOpacity(0.7),
+                      color: isDark ? kTextColor.withOpacity(0.7) : kLTextColor,
                       letterSpacing: 0.6,
                     ),
                   ),

@@ -32,6 +32,7 @@ class OtpFormState extends State<OtpForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -46,11 +47,12 @@ class OtpFormState extends State<OtpForm> {
               contentPadding:
                   EdgeInsets.symmetric(vertical: 14.0, horizontal: 4.0),
               otpFieldStyle: OtpFieldStyle(
-                backgroundColor: kBlack20,
-                borderColor: kTextColor.withOpacity(0.2),
+                backgroundColor: isDark ? kBlack20 : kLGrey40,
+                borderColor: isDark ? kTextColor.withOpacity(0.2) : kLTextColor,
                 focusBorderColor: widget.fgcolor,
                 disabledBorderColor: Colors.grey,
-                enabledBorderColor: kTextColor.withOpacity(0.2),
+                enabledBorderColor:
+                    isDark ? kTextColor.withOpacity(0.2) : kLTextColor,
                 errorBorderColor: Colors.red,
               ),
               style: const TextStyle(fontSize: 30),

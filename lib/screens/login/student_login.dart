@@ -16,20 +16,22 @@ class StudentLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final arguments =
         ModalRoute.of(context)?.settings.arguments as LoginSignUpArguments;
     Size size = MediaQuery.of(context).size; // Available screen size
-    return Theme(
-      data: ThemeData(
-        accentColor: kStudentColor,
-        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-      ),
+    return WillPopScope(
+      onWillPop: () async {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        Navigator.pushReplacementNamed(context, LaunchScreen.routeName);
+        return true;
+      },
       child: Scaffold(
-        backgroundColor: kGrey30,
+        backgroundColor: isDark ? kGrey30 : kLGrey30,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 140,
-          backgroundColor: kBackgroundColor,
+          toolbarHeight: kHeaderHeight,
+          backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
             herotag: arguments.herotag,
@@ -39,7 +41,8 @@ class StudentLoginScreen extends StatelessWidget {
             icon: arguments.icon,
             press: () {
               ScaffoldMessenger.of(context).removeCurrentSnackBar();
-              Navigator.pushReplacementNamed(context, LaunchScreen.routeName);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  LaunchScreen.routeName, (Route<dynamic> route) => false);
             },
           ),
         ),
@@ -52,12 +55,12 @@ class StudentLoginScreen extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            color: kBackgroundColor,
+          decoration: BoxDecoration(
+            color: isDark ? kBackgroundColor : kLBackgroundColor,
             boxShadow: [
               BoxShadow(
-                offset: Offset(0, -2),
-                color: kBlack15,
+                offset: const Offset(0, -2),
+                color: isDark ? kBlack15 : kLGrey50,
               ),
             ],
           ),

@@ -25,6 +25,7 @@ class CustomSubmitButton extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 2 * kDefaultPadding * height + fsize! + 2,
       decoration: BoxDecoration(
@@ -42,7 +43,9 @@ class CustomSubmitButton extends StatelessWidget {
             if (states.contains(MaterialState.disabled)) {
               return kGrey40;
             } else {
-              return bgcolor.withOpacity(0.8);
+              return isDark
+                  ? bgcolor.withOpacity(0.8)
+                  : bgcolor.withOpacity(0.9);
             }
           }),
           foregroundColor: MaterialStateProperty.resolveWith((states) {

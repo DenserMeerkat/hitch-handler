@@ -38,6 +38,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
@@ -53,7 +54,9 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                   height: 5,
                   width: 50,
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: isDark
+                        ? kTextColor.withOpacity(0.5)
+                        : kLTextColor.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -62,16 +65,11 @@ class ForgotModalFormState extends State<ForgotModalForm> {
             SizedBox(
               height: size.height * 0.025,
             ),
-            const FittedBox(
+            FittedBox(
               child: Text(
                 "Forgot Password ?",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: kTextColor,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
-                  fontSize: 28,
-                ),
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
             ),
             SizedBox(
@@ -80,10 +78,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
             FittedBox(
               child: Text(
                 "Enter registered Email ID / Mobile Number.",
-                style: TextStyle(
-                  color: kTextColor.withOpacity(0.7),
-                  letterSpacing: 0.6,
-                ),
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
             SizedBox(
@@ -114,10 +109,10 @@ class ForgotModalFormState extends State<ForgotModalForm> {
             ),
             CustomSubmitButton(
               size: size,
-              bgcolor: kPrimaryColor,
+              bgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
               msg: "Send Code",
-              fsize: 18,
-              width: 2,
+              fsize: 20,
+              width: 2.5,
               press: () {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 if (_formKey.currentState!.validate()) {
