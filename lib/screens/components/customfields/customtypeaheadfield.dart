@@ -150,7 +150,12 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
                 ),
               ),
               suggestionsCallback: (pattern) async {
-                return LocationList.getSuggestionLocations(pattern);
+                if (widget.title == "Location") {
+                  return LocationList.getSuggestions(pattern);
+                } else if (widget.title == "Domain") {
+                  return DomainList.getSuggestions(pattern);
+                }
+                return LocationList.getSuggestions(pattern);
               },
               itemBuilder: (context, suggestion) {
                 return ListTile(
@@ -158,7 +163,9 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
                   iconColor: kPrimaryColor,
                   title: Row(
                     children: [
-                      const Icon(Icons.location_on_outlined),
+                      Icon(widget.title == "Location"
+                          ? Icons.location_on_outlined
+                          : Icons.domain_outlined),
                       const SizedBox(
                         width: 10,
                       ),

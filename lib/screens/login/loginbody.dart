@@ -18,6 +18,7 @@ class _LoginBodyState extends State<LoginBody> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size; // Available screen size
     return SingleChildScrollView(
       child: Column(
@@ -29,8 +30,8 @@ class _LoginBodyState extends State<LoginBody> {
                 )
               : Container(),
           Container(
-            decoration: const BoxDecoration(
-              color: kGrey30,
+            decoration: BoxDecoration(
+              color: isDark ? kGrey30 : kLGrey30,
             ),
             padding: EdgeInsets.only(
               left: size.width * 0.1,
@@ -41,15 +42,10 @@ class _LoginBodyState extends State<LoginBody> {
                 SizedBox(
                   height: size.height * 0.05,
                 ),
-                const FittedBox(
+                FittedBox(
                   child: Text(
                     "Welcome Back!",
-                    style: TextStyle(
-                      color: kTextColor,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
-                      fontSize: 35,
-                    ),
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
                 SizedBox(
@@ -58,10 +54,7 @@ class _LoginBodyState extends State<LoginBody> {
                 FittedBox(
                   child: Text(
                     "Sign In to continue to app.",
-                    style: TextStyle(
-                      color: kTextColor.withOpacity(0.7),
-                      letterSpacing: 0.6,
-                    ),
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ),
                 SizedBox(height: size.height * 0.075),

@@ -16,6 +16,8 @@ class UserLoginHeader extends StatelessWidget {
     required this.fgcolor,
     required this.icon,
     required this.title,
+    required this.iconcolor,
+    required this.textcolor,
   }) : super(key: key);
 
   final Object? herotag;
@@ -23,6 +25,8 @@ class UserLoginHeader extends StatelessWidget {
   final Function()? press;
   final Color bgcolor;
   final Color iconbg;
+  final Color iconcolor;
+  final Color textcolor;
   final double bradius;
   final Color fgcolor;
   final IconData icon;
@@ -38,6 +42,8 @@ class UserLoginHeader extends StatelessWidget {
       icon: icon,
       title: title,
       fsize: fsize,
+      iconcolor: iconcolor,
+      textcolor: textcolor,
     );
     if (herotag != null) {
       return Hero(

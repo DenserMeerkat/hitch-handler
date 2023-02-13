@@ -16,8 +16,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('posts')
+          .orderBy("datePublished", descending: true)
+          .snapshots(),
       builder: (context,
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -35,15 +39,18 @@ class _HomePageState extends State<HomePage> {
               //pinned: true,
               floating: true,
               automaticallyImplyLeading: false,
-              backgroundColor: kBackgroundColor,
+              backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
+              surfaceTintColor: isDark ? kBackgroundColor : kLBackgroundColor,
               elevation: 0,
               expandedHeight: 60,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: kGrey40))),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom:
+                              BorderSide(color: isDark ? kGrey40 : kLGrey40))),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(
@@ -68,24 +75,26 @@ class _HomePageState extends State<HomePage> {
                               //color: Colors.green,
                               decoration: BoxDecoration(
                                 border: Border.all(color: kGrey40),
-                                color: kGrey40.withOpacity(0.6),
+                                color: isDark
+                                    ? kGrey40.withOpacity(0.6)
+                                    : kLGrey30,
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: const [
-                                  SizedBox(
+                                children: [
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Icon(
                                     Icons.search,
-                                    color: kTextColor,
+                                    color: isDark ? kTextColor : kLTextColor,
                                     size: 20,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
-                                  Text("Search"),
+                                  const Text("Search"),
                                 ],
                               ),
                             ),

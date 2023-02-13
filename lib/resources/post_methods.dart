@@ -1,14 +1,33 @@
 import 'dart:io';
 
-// class Location {
-//   late String name;
-//   late List<String> searchTerms;
-
-//   Location({required String name, required List<String> searchTerms}) {
-//     this.name;
-//     this.searchTerms;
-//   }
-// }
+class DomainList {
+  static List<String> domainsList = [
+    "Administration",
+    "Examination",
+    "Cleanliness & Sanitation",
+    "Department Issues",
+    "Hostel or Mess",
+    "Wifi Connection",
+    "Placement/Internship Issues",
+    "Student Exchange Program",
+    "Infrastructural/Logistics",
+    "Faculty’s Issues",
+    "Project/ Startup Issues",
+    "Admission Issues",
+    "Sports Issues",
+    "Affiliated College Issues",
+    "Research related Issues",
+    "Common student Issues",
+    "Amenities ",
+  ];
+  static List<String> getSuggestions(String query) {
+    List<String> matchList = [];
+    domainsList.forEach((element) =>
+        matchList.contains(element) ? null : matchList.add(element));
+    matchList.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    return matchList;
+  }
+}
 
 class LocationList {
   static List<String> locationsList = [
@@ -32,7 +51,7 @@ class LocationList {
     "CEG Canteen",
     "ACTech Canteen",
   ];
-  static List<String> getSuggestionLocations(String query) {
+  static List<String> getSuggestions(String query) {
     List<String> matchList = [];
     locationsList.forEach((element) =>
         matchList.contains(element) ? null : matchList.add(element));

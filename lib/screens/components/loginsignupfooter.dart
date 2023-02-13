@@ -19,13 +19,11 @@ class LoginSignUpFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
         vertical: 5,
-      ),
-      decoration: BoxDecoration(
-        color: kBackgroundColor.withOpacity(0),
       ),
       child: Center(
         child: Row(
@@ -40,7 +38,7 @@ class LoginSignUpFooter extends StatelessWidget {
                     style: TextStyle(
                       fontSize: fsize,
                       letterSpacing: 1,
-                      color: kTextColor.withOpacity(0.8),
+                      color: isDark ? kTextColor.withOpacity(0.8) : kLTextColor,
                     ),
                   ),
                 ),
@@ -52,9 +50,14 @@ class LoginSignUpFooter extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.005),
                 child: TextButton(
                   style: ButtonStyle(
+                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    )),
                     overlayColor: MaterialStateProperty.resolveWith((states) {
                       if (states.contains(MaterialState.pressed)) {
-                        return Colors.white.withOpacity(0.1);
+                        return isDark
+                            ? kTextColor.withOpacity(0.1)
+                            : kLTextColor.withOpacity(0.1);
                       }
                       return null;
                     }),
@@ -65,15 +68,17 @@ class LoginSignUpFooter extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(
                         width: 2.0,
-                        color: kTextColor.withOpacity(0.7),
+                        color: isDark
+                            ? kTextColor.withOpacity(0.7)
+                            : kLTextColor.withOpacity(0.7),
                       ),
                     ),
                     child: Center(
                       child: FittedBox(
                         child: Text(
                           btntext,
-                          style: const TextStyle(
-                            color: kTextColor,
+                          style: TextStyle(
+                            color: isDark ? kTextColor : kLTextColor,
                             letterSpacing: 1,
                           ),
                         ),

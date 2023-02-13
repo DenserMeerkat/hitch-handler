@@ -187,6 +187,14 @@ class _AddFormState extends State<AddForm> {
                   length: 250,
                   errorText: msgErrorText,
                 ),
+                CustomTypeAheadField(
+                  fgcolor: kPrimaryColor,
+                  controller: myLocFieldController,
+                  hintText: "Domain",
+                  title: "Domain",
+                  length: 50,
+                  errorText: locErrorText,
+                ),
                 AddImages(
                     addImageEnabled: _addImageEnabled,
                     viewImagesEnabled: _viewImagesEnabled),
@@ -319,8 +327,11 @@ class _AddFormState extends State<AddForm> {
                                 curve: Curves.easeIn);
                             debugPrint("Hi");
                             final snackBar = showCustomSnackBar(
-                                "One or more Fields have Errors", "Ok", () {},
-                                backgroundColor: kGrey30);
+                              context,
+                              "One or more Fields have Errors",
+                              "Ok",
+                              () {},
+                            );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar)
                                 .closed

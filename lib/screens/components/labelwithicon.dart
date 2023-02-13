@@ -11,12 +11,16 @@ class LabelWithIcon extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.fsize,
+    required this.iconcolor,
+    required this.textcolor,
   }) : super(key: key);
 
   final double bradius;
   final Color bgcolor;
   final Color shcolor;
   final Color fgcolor;
+  final Color iconcolor;
+  final Color textcolor;
   final IconData icon;
   final String title;
   final double fsize;
@@ -41,16 +45,21 @@ class LabelWithIcon extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 vertical: kDefaultPadding / 2, horizontal: kDefaultPadding),
             decoration: BoxDecoration(
-              color: fgcolor.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(bradius),
-              border: Border.all(
-                width: 3.0,
-                color: fgcolor,
-              ),
-            ),
+                color: fgcolor.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(bradius),
+                border: Border.all(
+                  width: 3.0,
+                  color: fgcolor,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(0.5, 1),
+                    color: shcolor,
+                  ),
+                ]),
             child: Icon(
               icon,
-              color: bgcolor,
+              color: iconcolor,
             ),
           ),
           Container(
@@ -64,7 +73,7 @@ class LabelWithIcon extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStyle(
-                    color: fgcolor,
+                    color: textcolor,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
                     fontSize: fsize),

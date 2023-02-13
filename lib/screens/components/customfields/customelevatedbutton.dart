@@ -6,6 +6,8 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
     Key? key,
     this.bgcolor = kBackgroundColor,
     required this.fgcolor,
+    required this.iconcolor,
+    required this.textcolor,
     this.shcolor = kBlack20,
     this.bradius = 50,
     this.fsize = 14,
@@ -18,6 +20,8 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
   final Color bgcolor;
   final Color fgcolor;
   final Color shcolor;
+  final Color iconcolor;
+  final Color textcolor;
   final double bradius;
   final double fsize;
   final String title;
@@ -72,7 +76,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                       child: FittedBox(
                         child: Icon(
                           icon,
-                          color: bgcolor,
+                          color: iconcolor,
                         ),
                       ),
                     ),
@@ -86,7 +90,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.2,
                       fontSize: fsize < 18 ? fsize : 18,
-                      color: fgcolor,
+                      color: textcolor,
                     ),
                   ),
                 ),
@@ -98,10 +102,18 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
             Material(
               type: MaterialType.transparency,
               child: InkWell(
-                splashColor: kTextColor.withOpacity(0.1),
-                focusColor: kTextColor.withOpacity(0.1),
-                hoverColor: kTextColor.withOpacity(0.1),
-                highlightColor: kTextColor.withOpacity(0.1),
+                splashColor: Theme.of(context).brightness == Brightness.dark
+                    ? kTextColor.withOpacity(0.1)
+                    : kLTextColor.withOpacity(0.1),
+                focusColor: Theme.of(context).brightness == Brightness.dark
+                    ? kTextColor.withOpacity(0.1)
+                    : kLTextColor.withOpacity(0.1),
+                hoverColor: Theme.of(context).brightness == Brightness.dark
+                    ? kTextColor.withOpacity(0.1)
+                    : kLTextColor.withOpacity(0.1),
+                highlightColor: Theme.of(context).brightness == Brightness.dark
+                    ? kTextColor.withOpacity(0.1)
+                    : kLTextColor.withOpacity(0.1),
                 onTap: press,
                 borderRadius: BorderRadius.circular(bradius),
               ),

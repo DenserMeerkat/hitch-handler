@@ -37,6 +37,7 @@ class PostTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.only(
         left: 12,
@@ -49,7 +50,7 @@ class PostTop extends StatelessWidget {
               fontSize: 14,
               //letterSpacing: 0.1,
               //fontWeight: FontWeight.bold,
-              color: kTextColor.withOpacity(0.6),
+              color: isDark ? kTextColor.withOpacity(0.6) : kLTextColor,
             ),
           ),
           const Spacer(),
@@ -62,7 +63,7 @@ class PostTop extends StatelessWidget {
             child: Text(
               "In \tReview",
               style: TextStyle(
-                color: kTextColor.withOpacity(0.9),
+                color: isDark ? kTextColor.withOpacity(0.9) : kLTextColor,
                 fontSize: 12,
                 fontWeight: FontWeight.w900,
               ),
@@ -72,9 +73,9 @@ class PostTop extends StatelessWidget {
             type: MaterialType.transparency,
             child: IconButton(
               splashRadius: 20,
-              icon: const Icon(
+              icon: Icon(
                 Icons.more_vert_rounded,
-                color: kTextColor,
+                color: isDark ? kTextColor : kLTextColor,
               ),
               onPressed: () {},
             ),

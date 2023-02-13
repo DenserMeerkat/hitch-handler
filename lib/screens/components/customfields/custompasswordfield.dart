@@ -67,6 +67,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
     const outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.vertical(
@@ -88,13 +89,13 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                 height: 48,
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
-                  color: kGrey50,
+                  color: isDark ? kGrey50 : kLGrey40,
                   borderRadius: BorderRadius.circular(10.0),
                   boxShadow: [
                     errorIndicator(),
-                    const BoxShadow(
-                      offset: Offset(1, 2),
-                      color: kBlack20,
+                    BoxShadow(
+                      offset: const Offset(1, 2),
+                      color: isDark ? kBlack20 : kGrey90,
                     )
                   ],
                 ),
@@ -147,6 +148,12 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                       _obscureText ? Icons.visibility : Icons.visibility_off,
                       color: widget.fgcolor,
                       size: 18,
+                      shadows: [
+                        BoxShadow(
+                          offset: const Offset(1, 1),
+                          color: isDark ? kBlack20 : kGrey30,
+                        )
+                      ],
                     ),
                   ),
                 ),
@@ -166,12 +173,12 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                 icon: Container(
                   height: 50,
                   width: 50,
-                  decoration: const BoxDecoration(
-                    color: kBlack20,
-                    borderRadius: BorderRadius.horizontal(
+                  decoration: BoxDecoration(
+                    color: isDark ? kBlack20 : kGrey30,
+                    borderRadius: const BorderRadius.horizontal(
                       left: Radius.circular(10.0),
                     ),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         offset: Offset(1, 1),
                         blurRadius: 1,

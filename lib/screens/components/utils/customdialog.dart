@@ -23,34 +23,32 @@ void showConfirmDialog(BuildContext context, Widget dialogCont,
       });
 }
 
-SnackBar showCustomSnackBar(final String text, final String actionLabel,
-    final void Function() onPressed,
-    {Color backgroundColor = kGrey40,
-    Color textColor = kTextColor,
+SnackBar showCustomSnackBar(BuildContext context, final String text,
+    final String actionLabel, final void Function() onPressed,
+    {Color? backgroundColor,
+    Color? textColor,
     IconData icon = Icons.error,
     double fsize = 13,
     Color iconColor = kErrorColor,
     Color actionColor = kErrorColor}) {
+  bool isDark = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+          .platformBrightness ==
+      Brightness.dark;
+  Size size = MediaQuery.of(context).size;
   return SnackBar(
-    backgroundColor: backgroundColor,
+    backgroundColor: backgroundColor ?? (isDark ? kGrey40 : kGrey40),
+    behavior: SnackBarBehavior.floating,
+    margin: EdgeInsets.symmetric(horizontal: size.width * 0.1, vertical: 10),
     content: Container(
-        color: backgroundColor,
+        color: backgroundColor ?? (isDark ? kGrey40 : kGrey40),
         height: 20,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Icon(
-            //   icon,
-            //   color: iconColor,
-            //   size: fsize + 5,
-            // ),
-            // const SizedBox(
-            //   width: 15,
-            // ),
             Text(
               text,
               style: TextStyle(
-                color: textColor,
+                color: textColor ?? (isDark ? kTextColor : kTextColor),
                 fontSize: fsize,
               ),
             ),
