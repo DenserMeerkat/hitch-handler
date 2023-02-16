@@ -67,7 +67,22 @@ class AuthorityLoginScreen extends StatelessWidget {
           msg: "Contact Support to register as an Admin.",
           btntext: "Support",
           fsize: 15,
-          press: () {}, //Todo_Support
+          press: () {
+ 		ScaffoldMessenger.of(context).removeCurrentSnackBa();
+WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+                LoginSignUpArguments args = LoginSignUpArguments(
+                  "",
+                  arguments.fgcolor,
+                  arguments.title,
+                  arguments.icon,
+                );
+
+                Navigator.pushNamed(
+                  context,
+                  UserSignUpScreen.routeName,
+                  arguments: args,
+                );
+              }, //Todo_Navigation}
         ),
       ),
     );
