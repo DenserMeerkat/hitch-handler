@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../resources/auth_methods.dart';
 import '../../args_class.dart';
 import '../../constants.dart';
@@ -25,7 +27,7 @@ class CreatePasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
         showConfirmDialog(
@@ -57,7 +59,7 @@ class CreatePasswordPage extends StatelessWidget {
         backgroundColor: isDark ? kGrey30 : kLGrey30,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: kHeaderHeight,
+          toolbarHeight: kHeaderHeight.h,
           backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(

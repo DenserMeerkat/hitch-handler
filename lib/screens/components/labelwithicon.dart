@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LabelWithIcon extends StatelessWidget {
   const LabelWithIcon({
@@ -28,32 +28,33 @@ class LabelWithIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0.0),
+      constraints: BoxConstraints(maxHeight: 40.h, maxWidth: 300.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(bradius),
+        borderRadius: BorderRadius.circular(bradius.r),
         color: bgcolor,
         boxShadow: [
           BoxShadow(
-            offset: const Offset(0, 2),
+            offset: Offset(0.w, 2.h),
             color: shcolor,
           ),
         ],
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(
-                vertical: kDefaultPadding / 2, horizontal: kDefaultPadding),
+            width: 70.w,
+            height: 40.h,
             decoration: BoxDecoration(
                 color: fgcolor.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(bradius),
+                borderRadius: BorderRadius.circular(bradius.r),
                 border: Border.all(
                   width: 3.0,
                   color: fgcolor,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    offset: const Offset(0.5, 1),
+                    offset: Offset(0.5.w, 1.h),
                     color: shcolor,
                   ),
                 ]),
@@ -63,20 +64,22 @@ class LabelWithIcon extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(
-              left: kDefaultPadding * 0.75,
-              right: kDefaultPadding * 1.5,
-              top: kDefaultPadding / 2,
-              bottom: kDefaultPadding / 2,
+            constraints: BoxConstraints(minWidth: 120.w),
+            padding: EdgeInsets.only(
+              left: 14.w,
+              right: 24.w,
+              top: 10.h,
+              bottom: 10.h,
             ),
-            child: FittedBox(
+            child: Center(
               child: Text(
                 title,
                 style: TextStyle(
-                    color: textcolor,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                    fontSize: fsize),
+                  color: textcolor,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1,
+                  fontSize: fsize,
+                ),
               ),
             ),
           ),

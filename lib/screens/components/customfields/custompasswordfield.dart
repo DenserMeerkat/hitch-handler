@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../string_extensions.dart';
 import '../../../constants.dart';
 import 'customerrormsg.dart';
@@ -8,10 +10,10 @@ class CustomPasswordField extends StatefulWidget {
   final String hinttext;
   final bool extraError;
   final bool showError;
-  TextEditingController controller;
-  Function(String) onSubmit;
-  Function(String) onChange;
-  CustomPasswordField({
+  final TextEditingController controller;
+  final Function(String) onSubmit;
+  final Function(String) onChange;
+  const CustomPasswordField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Password",
@@ -67,7 +69,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
     const outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.vertical(
@@ -87,7 +89,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               right: 0,
               child: Container(
                 height: 48,
-                width: size.width * 0.8,
+                width: 300.w,
                 decoration: BoxDecoration(
                   color: isDark ? kGrey50 : kLGrey40,
                   borderRadius: BorderRadius.circular(10.0),
@@ -125,12 +127,13 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               },
               scrollPadding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom + 80),
-              style: const TextStyle(
-                fontSize: 16.0,
-                letterSpacing: 1,
+              style: TextStyle(
+                fontSize: 16.0.sp,
+                letterSpacing: 1.w,
+                color: isDark ? kTextColor : kLTextColor,
               ),
               cursorColor: widget.fgcolor,
-              cursorHeight: 16.0,
+              cursorHeight: 20.0.sp,
               obscureText: _obscureText,
               enableSuggestions: false,
               autocorrect: false,
@@ -194,10 +197,10 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                   ),
                 ),
                 hintText: widget.hinttext,
-                hintStyle: const TextStyle(
-                  fontSize: 15.0,
-                  color: kGrey90,
-                  letterSpacing: 0.5,
+                hintStyle: TextStyle(
+                  fontSize: 15.0.sp,
+                  color: isDark ? kGrey90 : kGrey90,
+                  letterSpacing: 0.5.sp,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 floatingLabelAlignment: FloatingLabelAlignment.start,

@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'utils/customdialog.dart';
 import 'utils/dialogcont.dart';
 import '../../args_class.dart';
@@ -17,7 +19,7 @@ class OtpScreen extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as OTPArguments;
     Size size = MediaQuery.of(context).size; // Available screen size
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
         showConfirmDialog(
@@ -50,7 +52,7 @@ class OtpScreen extends StatelessWidget {
         backgroundColor: isDark ? kGrey30 : kLGrey30,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: kHeaderHeight,
+          toolbarHeight: kHeaderHeight.h,
           backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
@@ -92,16 +94,16 @@ class OtpScreen extends StatelessWidget {
             width: size.width,
             color: isDark ? kGrey30 : kLGrey30,
             padding: EdgeInsets.only(
-              top: size.height * 0.05,
-              left: size.width * 0.1,
-              right: size.width * 0.1,
+              top: 30.h,
+              left: 30.w,
+              right: 30.w,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: size.height * 0.02,
+                  height: 15.h,
                 ),
                 FittedBox(
                   child: Text(
@@ -111,17 +113,21 @@ class OtpScreen extends StatelessWidget {
                       color: isDark ? kTextColor : kLTextColor,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1,
-                      fontSize: 32,
+                      fontSize: 32.sp,
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.05,
+                  height: 20.h,
                 ),
-                const FittedBox(
-                    child: Text("An OTP has been sent to 91****2345")),
+                FittedBox(
+                  child: Text(
+                    "An OTP has been sent to 91****2345",
+                    style: AdaptiveTheme.of(context).theme.textTheme.bodySmall,
+                  ),
+                ),
                 SizedBox(
-                  height: size.height * 0.02,
+                  height: 14.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -135,8 +141,8 @@ class OtpScreen extends StatelessWidget {
                         letterSpacing: 0.6,
                       ),
                     ),
-                    const SizedBox(
-                      width: 4.0,
+                    SizedBox(
+                      width: 4.0.w,
                     ),
                     TweenAnimationBuilder(
                         tween: Tween(begin: 60.0, end: 0),
@@ -149,12 +155,27 @@ class OtpScreen extends StatelessWidget {
                           } else {
                             counter = value.toString();
                           }
-                          return Text("00:$counter");
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 3, horizontal: 6),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: isDark
+                                    ? kPrimaryColor.withOpacity(0.3)
+                                    : kLPrimaryColor.withOpacity(0.3),
+                                border:
+                                    Border.all(color: kLTextColor, width: 0.2)),
+                            child: Text("00:$counter",
+                                style: AdaptiveTheme.of(context)
+                                    .theme
+                                    .textTheme
+                                    .labelMedium),
+                          );
                         }),
                   ],
                 ),
                 SizedBox(
-                  height: size.height * 0.05,
+                  height: 40.h,
                 ),
                 OtpForm(
                   fgcolor: arguments.fgcolor,

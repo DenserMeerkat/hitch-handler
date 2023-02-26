@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../args_class.dart';
 import '../launch/launch_screen.dart';
 import 'loginform.dart';
@@ -14,7 +16,7 @@ class AdminLoginScreen extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     final arguments =
         ModalRoute.of(context)?.settings.arguments as LoginSignUpArguments;
     Size size = MediaQuery.of(context).size; // Available screen size
@@ -22,7 +24,7 @@ class AdminLoginScreen extends StatelessWidget {
       backgroundColor: isDark ? kGrey30 : kLGrey30,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: kHeaderHeight,
+        toolbarHeight: kHeaderHeight.h,
         backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
         elevation: 0,
         flexibleSpace: CustomSignInAppBar(
@@ -38,16 +40,13 @@ class AdminLoginScreen extends StatelessWidget {
           },
         ),
       ),
-      body: SizedBox(
-        height: size.height * 0.67,
-        width: size.height * 0.95,
-        child: LoginBody(
-          formwidget: LoginForm(
-            fgcolor: arguments.fgcolor,
-            title: arguments.title,
-            icon: arguments.icon,
-            homeroute: AdminLoginScreen.routeName,
-          ),
+      body: LoginBody(
+        formwidget: LoginForm(
+          userIndex: 2,
+          fgcolor: arguments.fgcolor,
+          title: arguments.title,
+          icon: arguments.icon,
+          homeroute: AdminLoginScreen.routeName,
         ),
       ),
       bottomNavigationBar: Container(
@@ -55,12 +54,12 @@ class AdminLoginScreen extends StatelessWidget {
           color: isDark ? kBackgroundColor : kLBackgroundColor,
           boxShadow: [
             BoxShadow(
-              offset: const Offset(0, -2),
+              offset: Offset(0.w, -2.h),
               color: isDark ? kBlack15 : kLGrey50,
             ),
           ],
         ),
-        height: 80,
+        height: 70.h,
         child: Center(
           child: LoginSignUpFooter(
             size: size,

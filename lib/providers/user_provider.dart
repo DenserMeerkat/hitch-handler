@@ -5,13 +5,15 @@ import '../models/user.dart';
 
 class UserProvider extends ChangeNotifier {
   User _user = const User(
-      bookmarks: [],
-      dob: '01-01-2000',
-      email: 'guest@email.com',
-      mobno: '9000001234',
-      posts: [],
-      rollno: '2000000000',
-      uid: 'baskdhqwehnasndkl');
+    bookmarks: [],
+    dob: '01-01-2000',
+    email: 'guest@email.com',
+    mobno: '9000001234',
+    rollno: '2000000000',
+    uid: 'baskdhqwehnasndkl',
+    domain: '',
+    userType: 'user',
+  );
   final AuthMethods _authMethods = AuthMethods();
 
   User get getUser => _user;

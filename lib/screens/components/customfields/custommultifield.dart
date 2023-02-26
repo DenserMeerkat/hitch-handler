@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constants.dart';
 import '../../../string_extensions.dart';
 import 'customerrormsg.dart';
@@ -6,12 +8,12 @@ import 'customerrormsg.dart';
 class CustomMultiField extends StatefulWidget {
   final Color fgcolor;
   final int index;
-  int current;
+  final int current;
   final List<String> hints;
   final List<IconData> icons;
   final List<TextInputType> keyboards;
-  TextEditingController controller;
-  CustomMultiField({
+  final TextEditingController controller;
+  const CustomMultiField({
     super.key,
     required this.fgcolor,
     this.index = 1,
@@ -27,9 +29,10 @@ class CustomMultiField extends StatefulWidget {
 
 class _CustomMultiFieldState extends State<CustomMultiField> {
   _CustomMultiFieldState();
-  late String hinttext = widget.hints[widget.current];
-  late IconData icondata = widget.icons[widget.current];
-  late TextInputType keyboardtype = widget.keyboards[widget.current];
+  late int current = widget.current;
+  late String hinttext = widget.hints[current];
+  late IconData icondata = widget.icons[current];
+  late TextInputType keyboardtype = widget.keyboards[current];
 
   String validateField(String? value, int current) {
     String val = "";
@@ -98,11 +101,10 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    Size size = MediaQuery.of(context).size;
-    const outlineInputBorder = OutlineInputBorder(
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    OutlineInputBorder outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.vertical(
-        top: Radius.circular(10.0),
+        top: Radius.circular(10.0.r),
       ),
       borderSide: BorderSide.none,
       gapPadding: 0,
@@ -117,10 +119,10 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
             right: 0,
             child: Container(
               height: 48,
-              width: size.width * 0.8,
+              width: 300.w,
               decoration: BoxDecoration(
                 color: isDark ? kGrey50 : kLGrey40,
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(10.0.r),
                 boxShadow: [
                   errorIndicator(),
                   BoxShadow(
@@ -136,11 +138,11 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
           ),
           TextFormField(
             onChanged: (value) {
-              validateField(value, widget.current);
+              validateField(value, current);
             },
             controller: widget.controller,
             validator: (value) {
-              String val = validateField(value, widget.current);
+              String val = validateField(value, current);
               if (val == "") {
                 setState(() {
                   widget.controller.text = value!;
@@ -150,11 +152,12 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
                 return val;
               }
             },
-            style: const TextStyle(
-              fontSize: 16.0,
+            style: TextStyle(
+              fontSize: 16.0.sp,
+              color: isDark ? kTextColor : kLTextColor,
             ),
             cursorColor: widget.fgcolor,
-            cursorHeight: 20.0,
+            cursorHeight: 20.0.sp,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
             keyboardType: keyboardtype,
@@ -164,14 +167,14 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
                   setState(() {
                     //__________________SET STATE___________
                     reset();
-                    if (widget.current < 2) {
-                      widget.current += 1;
+                    if (current < 2) {
+                      current += 1;
                     } else {
-                      widget.current = 0;
+                      current = 0;
                     }
-                    icondata = widget.icons[widget.current];
-                    hinttext = widget.hints[widget.current];
-                    keyboardtype = widget.keyboards[widget.current];
+                    icondata = widget.icons[current];
+                    hinttext = widget.hints[current];
+                    keyboardtype = widget.keyboards[current];
                   });
                 },
                 child: IconButton(
@@ -180,14 +183,14 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
                     setState(() {
                       //__________________SET STATE___________
                       reset();
-                      if (widget.current < widget.index - 1) {
-                        widget.current += 1;
+                      if (current < widget.index - 1) {
+                        current += 1;
                       } else {
-                        widget.current = 0;
+                        current = 0;
                       }
-                      icondata = widget.icons[widget.current];
-                      hinttext = widget.hints[widget.current];
-                      keyboardtype = widget.keyboards[widget.current];
+                      icondata = widget.icons[current];
+                      hinttext = widget.hints[current];
+                      keyboardtype = widget.keyboards[current];
                     });
                   },
                   icon: Icon(
@@ -241,9 +244,9 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
               ),
               hintText: hinttext, //_________________HINT TEXT____________
               hintStyle: TextStyle(
-                fontSize: 15.0,
+                fontSize: 15.0.sp,
                 color: isDark ? kGrey90 : kGrey90,
-                letterSpacing: 1,
+                letterSpacing: 0.5.sp,
               ),
               floatingLabelBehavior: FloatingLabelBehavior.never,
               floatingLabelAlignment: FloatingLabelAlignment.start,

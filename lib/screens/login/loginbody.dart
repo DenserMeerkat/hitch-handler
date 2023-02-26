@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../constants.dart';
 import '../user_home/notifiers.dart';
 
@@ -18,8 +20,7 @@ class _LoginBodyState extends State<LoginBody> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    Size size = MediaQuery.of(context).size; // Available screen size
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -34,30 +35,31 @@ class _LoginBodyState extends State<LoginBody> {
               color: isDark ? kGrey30 : kLGrey30,
             ),
             padding: EdgeInsets.only(
-              left: size.width * 0.1,
-              right: size.width * 0.1,
+              left: 30.w,
+              right: 30.w,
             ),
             child: Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.05,
+                  height: 20.h,
                 ),
                 FittedBox(
                   child: Text(
                     "Welcome Back!",
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    style:
+                        AdaptiveTheme.of(context).theme.textTheme.headlineLarge,
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.02,
+                  height: 10.h,
                 ),
                 FittedBox(
                   child: Text(
                     "Sign In to continue to app.",
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: AdaptiveTheme.of(context).theme.textTheme.titleSmall,
                   ),
                 ),
-                SizedBox(height: size.height * 0.075),
+                SizedBox(height: 45.h),
                 NotificationListener<IsLoading>(
                   child: widget.formwidget,
                   onNotification: (n) {

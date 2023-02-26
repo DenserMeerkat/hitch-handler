@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constants.dart';
 
 class CustomElevatedButtonWithIcon extends StatelessWidget {
@@ -14,8 +15,9 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
     required this.title,
     required this.press,
     required this.icon,
-    this.height = kDefaultPadding * 2.4,
+    this.height = kDefaultPadding * 2,
     this.width = kDefaultPadding * 12,
+    this.isButton = true,
   }) : super(key: key);
   final Color bgcolor;
   final Color fgcolor;
@@ -29,13 +31,14 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
   final IconData icon;
   final double height;
   final double width;
+  final bool isButton;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
         color: bgcolor,
-        borderRadius: BorderRadius.circular(bradius),
+        borderRadius: BorderRadius.circular(bradius.r),
         boxShadow: [
           BoxShadow(
             color: shcolor,
@@ -45,27 +48,31 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: height,
-          maxWidth: width,
+          maxHeight: 40.h,
+          maxWidth: size.width < 360 ? 240.w : 250,
         ),
         child: Stack(
           children: [
             Row(
               children: <Widget>[
                 Container(
-                  height: height,
-                  width: width / 3 > 30 ? width / 3 : 30,
+                  constraints: BoxConstraints(
+                    minWidth: 75.w,
+                    maxWidth: 75.w,
+                  ),
+                  height: height.h,
+                  width: 70.w,
                   alignment: Alignment.centerLeft,
                   decoration: BoxDecoration(
                     color: fgcolor.withOpacity(0.9),
                     border: Border.all(
-                      width: 3.0,
+                      width: 3.0.w,
                       color: fgcolor,
                     ),
-                    borderRadius: BorderRadius.circular(bradius),
+                    borderRadius: BorderRadius.circular(bradius.r),
                     boxShadow: [
                       BoxShadow(
-                        offset: const Offset(1, 0),
+                        offset: Offset(1.w, 0.h),
                         color: shcolor,
                       )
                     ],
@@ -77,6 +84,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                         child: Icon(
                           icon,
                           color: iconcolor,
+                          size: 24.sp,
                         ),
                       ),
                     ),
@@ -88,14 +96,14 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2,
-                      fontSize: fsize < 18 ? fsize : 18,
+                      letterSpacing: 1.2.sp,
+                      fontSize: fsize.sp,
                       color: textcolor,
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: 10.w,
                 ),
               ],
             ),
@@ -103,19 +111,35 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
               type: MaterialType.transparency,
               child: InkWell(
                 splashColor: Theme.of(context).brightness == Brightness.dark
-                    ? kTextColor.withOpacity(0.1)
-                    : kLTextColor.withOpacity(0.1),
+                    ? isButton
+                        ? kTextColor.withOpacity(0.1)
+                        : Colors.transparent
+                    : isButton
+                        ? kLTextColor.withOpacity(0.1)
+                        : Colors.transparent,
                 focusColor: Theme.of(context).brightness == Brightness.dark
-                    ? kTextColor.withOpacity(0.1)
-                    : kLTextColor.withOpacity(0.1),
+                    ? isButton
+                        ? kTextColor.withOpacity(0.1)
+                        : Colors.transparent
+                    : isButton
+                        ? kLTextColor.withOpacity(0.1)
+                        : Colors.transparent,
                 hoverColor: Theme.of(context).brightness == Brightness.dark
-                    ? kTextColor.withOpacity(0.1)
-                    : kLTextColor.withOpacity(0.1),
+                    ? isButton
+                        ? kTextColor.withOpacity(0.1)
+                        : Colors.transparent
+                    : isButton
+                        ? kLTextColor.withOpacity(0.1)
+                        : Colors.transparent,
                 highlightColor: Theme.of(context).brightness == Brightness.dark
-                    ? kTextColor.withOpacity(0.1)
-                    : kLTextColor.withOpacity(0.1),
+                    ? isButton
+                        ? kTextColor.withOpacity(0.1)
+                        : Colors.transparent
+                    : isButton
+                        ? kLTextColor.withOpacity(0.1)
+                        : Colors.transparent,
                 onTap: press,
-                borderRadius: BorderRadius.circular(bradius),
+                borderRadius: BorderRadius.circular(bradius.r),
               ),
             ),
           ],
@@ -126,7 +150,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
 }
 
 class ElevatedButtonWithIcon extends StatelessWidget {
-  void Function()? onPressed;
+  final void Function()? onPressed;
   final String label;
   final IconData icon;
   final Color activeColor;
@@ -134,7 +158,7 @@ class ElevatedButtonWithIcon extends StatelessWidget {
   final double borderRadius;
   final double leftPad;
   final double rightPad;
-  ElevatedButtonWithIcon({
+  const ElevatedButtonWithIcon({
     super.key,
     required this.onPressed,
     required this.label,
@@ -152,7 +176,7 @@ class ElevatedButtonWithIcon extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(
         icon,
-        size: 18,
+        size: 18.sp,
       ),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith((states) {
@@ -169,27 +193,27 @@ class ElevatedButtonWithIcon extends StatelessWidget {
         }),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
+            borderRadius: BorderRadius.circular(borderRadius.r),
             side: BorderSide(color: borderColor),
           ),
         ),
         padding: MaterialStateProperty.resolveWith((states) {
-          return const EdgeInsets.only(
-            top: 5,
-            bottom: 5,
-            left: 10,
-            right: 12,
+          return EdgeInsets.only(
+            top: 5.h,
+            bottom: 5.h,
+            left: 10.w,
+            right: 12.w,
           );
         }),
       ),
       label: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        padding: EdgeInsets.only(left: leftPad.w, right: rightPad.w),
         child: FittedBox(
           child: Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 15.sp,
             ),
           ),
         ),
@@ -199,13 +223,13 @@ class ElevatedButtonWithIcon extends StatelessWidget {
 }
 
 class ElevatedButtonWithoutIcon extends StatelessWidget {
-  void Function()? onPressed;
+  final void Function()? onPressed;
   final String label;
   final Color activeColor;
   final Color borderColor;
   final double borderRadius;
   final double horizontalPad;
-  ElevatedButtonWithoutIcon({
+  const ElevatedButtonWithoutIcon({
     super.key,
     required this.onPressed,
     required this.label,
@@ -251,9 +275,9 @@ class ElevatedButtonWithoutIcon extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 15.sp,
           ),
         ),
       ),

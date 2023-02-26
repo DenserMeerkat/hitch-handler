@@ -14,21 +14,24 @@ class Post {
   final String isDept;
   final List imgList;
   final List upVotes;
+  final int upVoteCount;
 
-  const Post(
-      {required this.postId,
-      required this.uid,
-      required this.title,
-      required this.description,
-      required this.location,
-      required this.domain,
-      required this.date,
-      required this.datePublished,
-      required this.time,
-      required this.isAnon,
-      required this.isDept,
-      required this.imgList,
-      required this.upVotes});
+  const Post({
+    required this.postId,
+    required this.uid,
+    required this.title,
+    required this.description,
+    required this.location,
+    required this.domain,
+    required this.date,
+    required this.datePublished,
+    required this.time,
+    required this.isAnon,
+    required this.isDept,
+    required this.imgList,
+    required this.upVotes,
+    required this.upVoteCount,
+  });
 
   Map<String, dynamic> toJson() => {
         "postId": postId,
@@ -43,24 +46,27 @@ class Post {
         "isAnon": isAnon,
         "isDept": isDept,
         "imgList": imgList,
-        "upVotes": upVotes
+        "upVotes": upVotes,
+        "upVoteCount": upVoteCount,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Post(
-        postId: snapshot["postId"],
-        uid: snapshot["uid"],
-        title: snapshot["title"],
-        description: snapshot["description"],
-        location: snapshot["location"],
-        domain: snapshot["domain"],
-        date: snapshot["date"],
-        datePublished: snapshot["datePublished"],
-        time: snapshot["time"],
-        isAnon: snapshot["isAnon"],
-        isDept: snapshot["isDept"],
-        imgList: snapshot["imgList"],
-        upVotes: snapshot["upVotes"]);
+      postId: snapshot["postId"],
+      uid: snapshot["uid"],
+      title: snapshot["title"],
+      description: snapshot["description"],
+      location: snapshot["location"],
+      domain: snapshot["domain"],
+      date: snapshot["date"],
+      datePublished: snapshot["datePublished"],
+      time: snapshot["time"],
+      isAnon: snapshot["isAnon"],
+      isDept: snapshot["isDept"],
+      imgList: snapshot["imgList"],
+      upVotes: snapshot["upVotes"],
+      upVoteCount: snapshot["upVoteCount"],
+    );
   }
 }

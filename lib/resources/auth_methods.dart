@@ -15,13 +15,16 @@ class AuthMethods {
     return model.User.fromSnap(snap);
   }
 
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
   //Sign up user
   Future<String> signUpUser({
+    required String userType,
     required String email,
     required String mobno,
     required String rollno,
     required String password,
     required String dob,
+    required String domain,
   }) async {
     String res = "Some error occurred";
     try {
@@ -37,21 +40,23 @@ class AuthMethods {
 
         //add user to database
         model.User user = model.User(
-            email: email,
-            mobno: mobno,
-            rollno: rollno,
-            uid: cred.user!.uid,
-            dob: dob,
-            posts: [],
-            bookmarks: []);
+          userType: userType,
+          email: email,
+          mobno: mobno,
+          rollno: rollno,
+          uid: cred.user!.uid,
+          dob: dob,
+          domain: domain,
+          bookmarks: [],
+        );
         await _firestore
             .collection('users')
             .doc(cred.user!.uid)
             .set(user.toJson());
         res = "success";
       }
-    } catch (err) {
-      res = err.toString();
+    } on FirebaseAuthException catch (err) {
+      res = err.message!;
     }
     return res;
   }
@@ -70,13 +75,15 @@ class AuthMethods {
 
         res = "success";
       }
-    } catch (err) {
-      res = err.toString();
+    } on FirebaseAuthException catch (err) {
+      res = err.message!;
+      debugPrint(res);
     }
     return res;
   }
 
   Future<void> signOut() async {
     await _auth.signOut();
+    debugPrint("Signed out!");
   }
 }
