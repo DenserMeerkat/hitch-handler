@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import '../../user_home/notifiers.dart';
 import '../../components/customfields/fieldlabel.dart';
@@ -65,16 +66,19 @@ class _CustomDateTimeState extends State<CustomDateTime> {
 
   @override
   Widget build(BuildContext context) {
-    const textStyle = TextStyle(
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+
+    TextStyle textStyle =
+        AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.copyWith(
       fontWeight: FontWeight.bold,
       fontFeatures: [FontFeature.oldstyleFigures()],
     );
     BoxDecoration boxDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(5),
-      color: kGrey30.withOpacity(0.8),
+      color: isDark ? kGrey30.withOpacity(0.8) : kLGrey40.withOpacity(0.4),
       border: Border.all(
         width: 1.2,
-        color: kGrey30,
+        color: isDark ? kGrey30 : kLGrey50.withOpacity(0.5),
       ),
     );
     void launchDate() async {
@@ -110,24 +114,24 @@ class _CustomDateTimeState extends State<CustomDateTime> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const FieldLabel(
-            fgcolor: kPrimaryColor,
+        FieldLabel(
+            fgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
             title: "Date & Time",
-            bgcolor: kBlack15,
+            bgcolor: isDark ? kBlack15 : kGrey30,
             tooltip: 'tooltip'),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
-          decoration: const BoxDecoration(
-              color: kGrey50,
-              borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+              color: isDark ? kGrey50 : kLBlack10,
+              borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(5.0),
                 bottomRight: Radius.circular(5.0),
                 bottomLeft: Radius.circular(5.0),
               ),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0, 3),
-                  color: kBlack20,
+                  offset: const Offset(0, 3),
+                  color: isDark ? kBlack20 : kGrey150,
                 )
               ]),
           child: Column(
@@ -139,7 +143,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: kBlack20,
+                      color: isDark ? kBlack20 : kGrey40,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: const Icon(
@@ -147,7 +151,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                     ),
                   ),
                 ),
-                iconColor: kPrimaryColor,
+                iconColor: isDark ? kPrimaryColor : kLPrimaryColor,
                 title: Row(
                   children: [
                     GestureDetector(
@@ -167,11 +171,14 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
+                            SizedBox(
                               width: 10,
                               child: Center(
                                 child: FittedBox(
-                                  child: Text("-"),
+                                  child: Text(
+                                    "-",
+                                    style: textStyle,
+                                  ),
                                 ),
                               ),
                             ),
@@ -185,11 +192,14 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
+                            SizedBox(
                               width: 10,
                               child: Center(
                                 child: FittedBox(
-                                  child: Text("-"),
+                                  child: Text(
+                                    "-",
+                                    style: textStyle,
+                                  ),
                                 ),
                               ),
                             ),
@@ -210,9 +220,9 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                   ],
                 ),
               ),
-              const Divider(
+              Divider(
                 thickness: 1.0,
-                color: kBlack20,
+                color: isDark ? kBlack20 : kLGrey30,
               ),
               ListTile(
                 trailing: GestureDetector(
@@ -220,7 +230,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: kBlack20,
+                      color: isDark ? kBlack20 : kGrey40,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: const Icon(
@@ -228,7 +238,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                     ),
                   ),
                 ),
-                iconColor: kPrimaryColor,
+                iconColor: isDark ? kPrimaryColor : kLPrimaryColor,
                 title: GestureDetector(
                   onTap: launchTime,
                   child: Row(
@@ -253,9 +263,12 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                                 vertical: 10,
                                 horizontal: 2,
                               ),
-                              child: const Center(
+                              child: Center(
                                 child: FittedBox(
-                                  child: Text(":"),
+                                  child: Text(
+                                    ":",
+                                    style: textStyle,
+                                  ),
                                 ),
                               ),
                             ),
@@ -282,8 +295,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                         child: FittedBox(
                           child: Text(
                             ampm,
-                            style: textStyle.copyWith(
-                                color: kTextColor.withOpacity(0.8)),
+                            style: textStyle,
                           ),
                         ),
                       ),

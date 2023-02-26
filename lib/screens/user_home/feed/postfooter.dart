@@ -1,5 +1,7 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../../resources/firestore_methods.dart';
@@ -22,14 +24,21 @@ class PostInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    var bodyMedium2 =
+        AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.copyWith(
+              fontSize: 12,
+              letterSpacing: 0.8,
+              fontWeight: FontWeight.w500,
+              color: isDark
+                  ? kTextColor.withOpacity(0.8)
+                  : kLTextColor.withOpacity(0.8),
+            );
     return Container(
-      padding: const EdgeInsets.only(top: 0, left: 16, right: 20, bottom: 10),
+      padding: const EdgeInsets.only(top: 0, left: 16, right: 20, bottom: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Divider(
-            color: kTextColor.withOpacity(0.1),
-          ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -38,43 +47,30 @@ class PostInfo extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 12.0),
                   child: Text(
                     location != "" ? location : "Location",
+                    style: bodyMedium2,
                   ),
                 ),
                 const Text("•"),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Text(date),
+                  child: Text(
+                    date,
+                    style: bodyMedium2,
+                  ),
                 ),
                 const Text("•"),
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
-                  child: Text(time),
+                  child: Text(
+                    time,
+                    style: bodyMedium2,
+                  ),
                 ),
               ],
             ),
           ),
-          Divider(
-            color: kTextColor.withOpacity(0.1),
-          ),
           const SizedBox(
             height: 5,
-          ),
-          ExpandableText(
-            widget.snap['description'],
-            style: TextStyle(
-              fontSize: 14,
-              color: kTextColor.withOpacity(0.7),
-            ),
-            expandOnTextTap: true,
-            collapseOnTextTap: true,
-            expandText: 'show more',
-            collapseText: ' \tshow less',
-            maxLines: 2,
-            linkColor: Colors.white,
-            linkStyle: const TextStyle(
-              fontSize: 14,
-              letterSpacing: 0.5,
-            ),
           ),
         ],
       ),
@@ -83,8 +79,8 @@ class PostInfo extends StatelessWidget {
 }
 
 class ActionButtons extends StatefulWidget {
-  final snap;
-  final user;
+  final dynamic snap;
+  final dynamic user;
   const ActionButtons({
     super.key,
     required this.snap,
@@ -96,14 +92,6 @@ class ActionButtons extends StatefulWidget {
 }
 
 class _ActionButtonsState extends State<ActionButtons> {
-  Widget commentCount() {
-    //Todo
-    return Text(
-      "0",
-      style: TextStyle(color: Colors.blueGrey[400]),
-    );
-  }
-
   bool isUpVoted = false;
   int upVoteCount = 0;
 
@@ -151,89 +139,143 @@ class _ActionButtonsState extends State<ActionButtons> {
       return success ? !isLiked : isLiked;
     }
 
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    Widget commentCount() {
+      //Todo
+      return Text(
+        "0",
+        style: TextStyle(
+          color: isDark
+              ? kTextColor.withOpacity(0.8)
+              : kLTextColor.withOpacity(0.8),
+        ),
+      );
+    }
+
     return Container(
-      padding: const EdgeInsets.only(left: 12, right: 10),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          LikeButton(
-            size: 30,
-            likeCountPadding: const EdgeInsets.only(left: 6, right: 8),
-            likeCountAnimationDuration: const Duration(milliseconds: 200),
-            circleColor:
-                const CircleColor(start: Color(0xff0099cc), end: kPrimaryColor),
-            bubblesColor: const BubblesColor(
-              dotPrimaryColor: kPrimaryColor,
-              dotSecondaryColor: Color(0xff0099cc),
-            ),
-            isLiked: isUpVoted,
-            likeBuilder: (bool isUpVoted) {
-              return Icon(
-                isUpVoted
-                    ? MdiIcons.fromString("arrow-up-bold")
-                    : MdiIcons.fromString("arrow-up-bold-outline"),
-                color: isUpVoted ? kPrimaryColor : kTextColor.withOpacity(0.8),
-                size: isUpVoted ? 30 : 25,
-              );
-            },
-            likeCount: upVoteCount,
-            countBuilder: (likeCount, isLiked, text) {
-              return Text(
-                "$likeCount",
-                style: TextStyle(color: isLiked ? kPrimaryColor : kTextColor),
-              );
-            },
-            // countDecoration: (count, likeCount) {
-            //   return Text(
-            //     "$likeCount",
-            //     style: TextStyle(color: isUpVoted ? kPrimaryColor : kTextColor),
-            //   );
-            // },
-            onTap: onLikeButtonTapped,
-          ),
           Container(
-            padding: const EdgeInsets.only(
-              left: 10.0,
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            decoration: BoxDecoration(
+              color: isDark ? kGrey30 : kLBlack20,
+              borderRadius: BorderRadius.circular(50.r),
+              border: Border.all(color: isDark ? kGrey40 : kLGrey30),
             ),
-            child: InkWell(
-              onTap: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.chat_outlined,
-                      color: Colors.blueGrey[400],
-                      size: 25,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    commentCount(),
-                  ],
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                LikeButton(
+                  size: 20.sp,
+                  countPostion: CountPostion.right,
+                  likeCountPadding: EdgeInsets.only(left: 6.w, right: 6.w),
+                  animationDuration: const Duration(milliseconds: 500),
+                  likeCountAnimationDuration: const Duration(milliseconds: 500),
+                  circleColor: const CircleColor(
+                      start: Color(0xff0099cc), end: kPrimaryColor),
+                  bubblesColor: const BubblesColor(
+                    dotPrimaryColor: kPrimaryColor,
+                    dotSecondaryColor: Color(0xff0099cc),
+                  ),
+                  isLiked: isUpVoted,
+                  likeBuilder: (bool isUpVoted) {
+                    return Icon(
+                      isUpVoted
+                          ? MdiIcons.fromString("arrow-up-bold")
+                          : MdiIcons.fromString("arrow-up-bold-outline"),
+                      color: isUpVoted
+                          ? kPrimaryColor
+                          : isDark
+                              ? kTextColor.withOpacity(0.7)
+                              : kLTextColor.withOpacity(0.7),
+                      // shadows: [
+                      //   BoxShadow(
+                      //       offset: const Offset(1, 1),
+                      //       color: isDark ? Colors.transparent : kLGrey30,
+                      //       blurRadius: 5)
+                      // ],
+                      size: isUpVoted ? 22.sp : 20.sp,
+                    );
+                  },
+                  likeCount: upVoteCount,
+                  countBuilder: (likeCount, isLiked, text) {
+                    return Text(
+                      "$likeCount",
+                      style: TextStyle(
+                        color: isLiked
+                            ? kPrimaryColor
+                            : isDark
+                                ? kTextColor.withOpacity(0.7)
+                                : kLTextColor.withOpacity(0.7),
+                      ),
+                    );
+                  },
+                  onTap: onLikeButtonTapped,
                 ),
-              ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(6, 0, 2, 0),
+                  height: 33,
+                  width: 1,
+                  color: isDark ? kGrey50 : kLGrey30,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 4),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.chat_outlined,
+                          color: isDark
+                              ? kTextColor.withOpacity(0.7)
+                              : kLTextColor.withOpacity(0.7),
+                          size: 20.sp,
+                          // shadows: [
+                          //   BoxShadow(
+                          //       offset: const Offset(1, 1),
+                          //       color: isDark ? Colors.transparent : kLGrey30,
+                          //       blurRadius: 5)
+                          // ],
+                        ),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        commentCount(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.only(
-              left: 10.0,
-            ),
-            child: InkWell(
-              onTap: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.open_in_new,
-                  color: Colors.lightBlue[200],
-                  size: 23,
-                ),
+          SizedBox(width: 8.w),
+          InkWell(
+            onTap: () {},
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+              child: Icon(
+                Icons.open_in_new,
+                color: isDark
+                    ? kTextColor.withOpacity(0.7)
+                    : kLTextColor.withOpacity(0.7),
+                size: 20.sp,
+                // shadows: [
+                //   BoxShadow(
+                //       offset: const Offset(1, 1),
+                //       color: isDark ? Colors.transparent : kLGrey30,
+                //       blurRadius: 5)
+                // ],
               ),
             ),
           ),
           const Spacer(),
           LikeButton(
-            size: 25,
-            likeCountAnimationDuration: const Duration(milliseconds: 200),
+            size: 20.sp,
+            animationDuration: const Duration(milliseconds: 300),
+            likeCountAnimationDuration: const Duration(milliseconds: 300),
             circleColor:
                 const CircleColor(start: Color(0xff00ddff), end: kErrorColor),
             bubblesColor: const BubblesColor(
@@ -244,11 +286,55 @@ class _ActionButtonsState extends State<ActionButtons> {
             onTap: onBookmarkTapped,
             likeBuilder: (bool isBookmarked) {
               return Icon(
-                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                color: isBookmarked ? kErrorColor : kErrorColor,
-                size: 25,
+                isBookmarked ? Icons.bookmark : Icons.bookmark_add_outlined,
+                color: isBookmarked
+                    ? kErrorColor
+                    : isDark
+                        ? kTextColor.withOpacity(0.7)
+                        : kLTextColor.withOpacity(0.7),
+                size: 20.sp,
+                // shadows: [
+                //   BoxShadow(
+                //       offset: const Offset(1, 1),
+                //       color: isDark ? Colors.transparent : kLGrey40,
+                //       blurRadius: 5)
+                // ],
               );
             },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PostTimeAgo extends StatelessWidget {
+  const PostTimeAgo({
+    super.key,
+    required this.timeAgo,
+    required this.isDark,
+  });
+
+  final String timeAgo;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 16.0.w, right: 16.0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            "Posted $timeAgo",
+            style:
+                AdaptiveTheme.of(context).theme.textTheme.bodySmall!.copyWith(
+                      color: isDark
+                          ? kTextColor.withOpacity(0.5)
+                          : kLTextColor.withOpacity(0.8),
+                      fontSize: 11.sp,
+                      letterSpacing: 0.5,
+                    ),
           ),
         ],
       ),

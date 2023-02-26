@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,7 +20,6 @@ class ImageSourceSelect extends StatefulWidget {
 
 class _ImageSourceSelectState extends State<ImageSourceSelect> {
   File? imageFile;
-
   List<File>? imageList;
   Future pickImage(ImageSource source) async {
     try {
@@ -27,7 +27,7 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
           source: source, maxHeight: 1080, maxWidth: 1920, imageQuality: 100);
 
       if (file == null) {
-        print('Image pick using $source : Failed!');
+        debugPrint('Image pick using $source : Failed!');
         return; //Todo Dialog
       }
 
@@ -74,16 +74,20 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
   }
 
   final String bullet = "\u2022 ";
-  TextStyle textStyle = TextStyle(
-    fontSize: 13,
-    fontFeatures: const [
-      FontFeature.tabularFigures(),
-      FontFeature.oldstyleFigures()
-    ],
-    color: kTextColor.withOpacity(0.7),
-  );
+
   @override
   Widget build(BuildContext context) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    TextStyle textStyle =
+        AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.copyWith(
+      color: kTextColor,
+      //fontWeight: isDark ? FontWeight.normal : FontWeight.w500,
+      fontSize: 13,
+      fontFeatures: const [
+        FontFeature.tabularFigures(),
+        FontFeature.oldstyleFigures()
+      ],
+    );
     return Padding(
       padding: EdgeInsets.only(
         left: 20,
@@ -104,7 +108,9 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
                   height: 5,
                   width: 50,
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: isDark
+                        ? kTextColor.withOpacity(0.4)
+                        : kLTextColor.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -113,12 +119,12 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
             const SizedBox(
               height: 20,
             ),
-            const FittedBox(
+            FittedBox(
               child: Text(
                 "Select Image source :",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: kTextColor,
+                  color: isDark ? kTextColor : kLTextColor,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1,
                   fontSize: 18,
@@ -167,80 +173,84 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: ListTileTheme(
-                  dense: true,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: ExpansionTile(
-                    initiallyExpanded: true,
-                    // leading: const Icon(
-                    //   Icons.info_outline,
-                    //   size: 18,
-                    // ),
-                    textColor: kPrimaryColor,
-                    collapsedIconColor: kTextColor,
-                    iconColor: kPrimaryColor,
-                    backgroundColor: kBlack20,
-                    collapsedBackgroundColor: kBlack20,
-                    title: Row(
-                      children: const [
-                        Icon(
-                          Icons.info_outline_rounded,
-                          size: 18,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Note',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                    children: <Widget>[
-                      ListTile(
-                        dense: true,
-                        title: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "$bullet Max Image count \t-\t 5.",
-                              style: textStyle,
-                            ),
-                            const SizedBox(
-                              height: 5.0,
-                            ),
-                            Text(
-                              "$bullet Max Resolution \t-\t 1920 x 1080.",
-                              style: textStyle,
-                            ),
-                            const SizedBox(
-                              height: 5.0,
-                            ),
-                            Text(
-                              "$bullet Camera \t:\t Capture single image.",
-                              style: textStyle,
-                            ),
-                            const SizedBox(
-                              height: 5.0,
-                            ),
-                            Text(
-                              "$bullet Gallery \t:\t Select multiple images.",
-                              style: textStyle,
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                          ],
+              child: Theme(
+                data: ThemeData(
+                  splashColor: Colors.transparent,
+                  brightness: Brightness.dark,
+                ),
+                child: ExpansionTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  collapsedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  initiallyExpanded: true,
+                  textColor: kTextColor,
+                  collapsedTextColor: kTextColor.withOpacity(0.8),
+                  iconColor: kTextColor,
+                  collapsedIconColor: kTextColor.withOpacity(0.8),
+                  backgroundColor: isDark ? kBlack20 : kGrey30,
+                  collapsedBackgroundColor: isDark ? kBlack20 : kGrey30,
+                  title: Row(
+                    children: [
+                      const Icon(
+                        Icons.info_outline_rounded,
+                        size: 18,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Note',
+                        style: TextStyle(
+                          fontWeight:
+                              isDark ? FontWeight.normal : FontWeight.bold,
+                          fontSize: 16.0,
                         ),
                       ),
                     ],
                   ),
+                  children: <Widget>[
+                    ListTile(
+                      dense: true,
+                      title: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "$bullet Max Image count \t-\t 5.",
+                            style: textStyle,
+                          ),
+                          const SizedBox(
+                            height: 5.0,
+                          ),
+                          Text(
+                            "$bullet Max Resolution \t-\t 1920 x 1080.",
+                            style: textStyle,
+                          ),
+                          const SizedBox(
+                            height: 5.0,
+                          ),
+                          Text(
+                            "$bullet Camera \t:\t Capture single image.",
+                            style: textStyle,
+                          ),
+                          const SizedBox(
+                            height: 5.0,
+                          ),
+                          Text(
+                            "$bullet Gallery \t:\t Select multiple images.",
+                            style: textStyle,
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

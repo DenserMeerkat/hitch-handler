@@ -1,16 +1,22 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_exit_app/flutter_exit_app.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../constants.dart';
+import '../components/popupmenu.dart';
 import '../components/utils/customdialog.dart';
 import '../components/utils/dialogcont.dart';
 import 'launch_screen_body.dart';
 
-class LaunchScreen extends StatelessWidget {
+class LaunchScreen extends StatefulWidget {
   static String routeName = '/launch';
-  LaunchScreen({super.key});
+  const LaunchScreen({super.key});
 
+  @override
+  State<LaunchScreen> createState() => _LaunchScreenState();
+}
+
+class _LaunchScreenState extends State<LaunchScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -37,40 +43,59 @@ class LaunchScreen extends StatelessWidget {
             secondaryFunction: () {
               Navigator.pop(context);
             },
-            borderRadius: 10,
+            borderRadius: 10.r,
             //showSecondaryButton: false,
           ),
-          borderRadius: 10,
+          borderRadius: 10.r,
         );
         return false;
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-        ),
-        body: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-          //debugPrint("$constraints.maxHeight");
-          return LaunchScreenBody(
-            maxHeight: constraints.maxHeight,
-          );
-        }),
-        bottomNavigationBar: SizedBox(
-          height: 30,
-          child: Center(
-            child: Text(
-              "CTF PROJECTS",
-              style: TextStyle(
-                letterSpacing: 2.2,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).brightness == Brightness.light
-                    ? kLTextColor.withOpacity(0.5)
-                    : kTextColor.withOpacity(0.5),
+      child: AnimatedTheme(
+        duration: const Duration(seconds: 1),
+        data: Theme.of(context),
+        child: Scaffold(
+          backgroundColor:
+              AdaptiveTheme.of(context).brightness == Brightness.dark
+                  ? kBackgroundColor
+                  : kLBackgroundColor,
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor:
+                AdaptiveTheme.of(context).brightness == Brightness.dark
+                    ? kBackgroundColor
+                    : kLBackgroundColor,
+            surfaceTintColor:
+                AdaptiveTheme.of(context).brightness == Brightness.dark
+                    ? kBackgroundColor
+                    : kLBackgroundColor,
+            elevation: 0,
+            actions: [
+              const PopupMenu(),
+              SizedBox(
+                width: 12.w,
+              )
+            ],
+          ),
+          body: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            //debugPrint("$constraints.maxHeight");
+            //debugPrint("$constraints.maxWidth");
+            return const LaunchScreenBody();
+          }),
+          bottomNavigationBar: SizedBox(
+            height: 30.h,
+            child: Center(
+              child: Text(
+                "CTF PROJECTS",
+                style: TextStyle(
+                  letterSpacing: 2.2.sp,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AdaptiveTheme.of(context).brightness == Brightness.dark
+                      ? kTextColor.withOpacity(0.5)
+                      : kLTextColor.withOpacity(0.5),
+                ),
               ),
             ),
           ),

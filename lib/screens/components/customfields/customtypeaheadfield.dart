@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../../string_extensions.dart';
@@ -11,13 +12,14 @@ class CustomTypeAheadField extends StatefulWidget {
   final String hintText;
   final String title;
   final int length;
-  String errorText;
-  TextEditingController controller;
+  final bool showErrors;
+  final String errorText;
+  final TextEditingController controller;
 
   static bool hasError = false;
   static bool focusState = false;
 
-  CustomTypeAheadField({
+  const CustomTypeAheadField({
     super.key,
     required this.fgcolor,
     this.hintText = "HintText",
@@ -25,6 +27,7 @@ class CustomTypeAheadField extends StatefulWidget {
     this.length = 30,
     required this.controller,
     this.errorText = '',
+    required this.showErrors,
   });
   @override
   State<CustomTypeAheadField> createState() => _CustomTypeAheadFieldState();
@@ -35,21 +38,30 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
 
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
-  Color fieldBorderColor = kBlack20;
-
+  late String errorText = widget.errorText;
   String validateField(String? value) {
+    List list;
+    if (widget.title == "Location") {
+      list = LocationList.locationsList;
+    } else {
+      list = DomainList.domainsList;
+    }
     if (value!.isWhitespace()) {
       setState(() {
         CustomTypeAheadField.hasError = true;
-        widget.errorText = "${widget.title} can't be empty";
-        fieldBorderColor = fieldState();
+        errorText = "${widget.title} can't be empty";
+      });
+      return "Error!";
+    } else if (!list.contains(value)) {
+      setState(() {
+        CustomTypeAheadField.hasError = true;
+        errorText = "Choose a valid ${widget.title}";
       });
       return "Error!";
     } else {
       setState(() {
         CustomTypeAheadField.hasError = false;
-        widget.errorText = "";
-        fieldBorderColor = fieldState();
+        errorText = "";
       });
       return "";
     }
@@ -67,6 +79,7 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
         ),
         borderSide: BorderSide.none);
 
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -78,16 +91,16 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
               FieldLabel(
                 fgcolor: widget.fgcolor,
                 title: widget.title,
-                bgcolor: kBlack20,
+                bgcolor: isDark ? kBlack20 : kGrey30,
                 tooltip: "tooltip",
               ),
             ],
           ),
         ),
         Container(
-          height: 50,
+          height: 44,
           decoration: BoxDecoration(
-            color: kGrey50,
+            color: isDark ? kGrey50 : kLBlack10,
             borderRadius: const BorderRadius.only(
               topRight: Radius.circular(5.0),
               bottomRight: Radius.circular(5.0),
@@ -96,7 +109,7 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
             boxShadow: [
               BoxShadow(
                 offset: const Offset(0, 2.5),
-                color: widget.errorText == '' ? fieldState() : fieldState(),
+                color: errorText == '' ? fieldState() : fieldState(),
               ),
             ],
           ),
@@ -107,40 +120,75 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
                 fieldState();
               });
             },
-            child: TypeAheadField(
+            child: TypeAheadFormField(
+              validator: (value) {
+                if (widget.showErrors) {
+                  validateField(value);
+                  String val = validateField(value);
+                  if (val == "") {
+                    setState(() {
+                      widget.controller.text = value!;
+                    });
+                    return null;
+                  } else {
+                    return val;
+                  }
+                }
+                return null;
+              },
               minCharsForSuggestions: 1,
               hideOnEmpty: true,
               hideSuggestionsOnKeyboardHide: true,
               direction: AxisDirection.down,
               suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                elevation: 3,
                 borderRadius: BorderRadius.circular(5),
-                color: kBlack20,
+                color: isDark ? kBlack20 : kLBlack10,
                 shadowColor: kGrey30,
               ),
               textFieldConfiguration: TextFieldConfiguration(
+                style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
+                onChanged: (value) {
+                  if (widget.showErrors) {
+                    validateField(value);
+                  }
+                },
+                onSubmitted: (value) {
+                  if (widget.showErrors) {
+                    validateField(value);
+                  }
+                },
                 scrollPadding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom + 180),
-                onSubmitted: (value) {
-                  widget.controller.text = value;
-                },
                 controller: widget.controller,
                 autofocus: false,
                 cursorColor: widget.fgcolor,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                  helperText: "_",
+                  helperStyle: const TextStyle(
+                    height: 0,
+                    color: Colors.transparent,
+                    fontSize: 0,
+                  ),
+                  errorStyle: const TextStyle(
+                    height: 0,
+                    color: Colors.transparent,
+                    fontSize: 0,
+                  ),
                   hintText: widget.hintText,
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 15.0,
-                    color: kGrey90,
+                    color: isDark ? kGrey90 : kLGrey50,
                     letterSpacing: 1,
                   ),
                   border: enabledBorder,
                 ),
               ),
-              noItemsFoundBuilder: (context) => ListTile(
+              noItemsFoundBuilder: (context) => const ListTile(
                 iconColor: kPrimaryColor,
                 title: Row(
-                  children: const [
+                  children: [
                     Icon(Icons.location_on_outlined),
                     SizedBox(
                       width: 10,
@@ -160,6 +208,10 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
               itemBuilder: (context, suggestion) {
                 return ListTile(
                   dense: true,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  tileColor: Colors.transparent,
+                  splashColor: isDark ? Colors.white24 : Colors.black45,
                   iconColor: kPrimaryColor,
                   title: Row(
                     children: [
@@ -172,7 +224,9 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
                       Text(
                         suggestion,
                         style: TextStyle(
-                            color: kTextColor.withOpacity(0.7),
+                            color: isDark
+                                ? kTextColor.withOpacity(0.7)
+                                : kLTextColor.withOpacity(0.7),
                             letterSpacing: 1),
                       ),
                     ],
@@ -181,6 +235,9 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
               },
               onSuggestionSelected: (suggestion) {
                 widget.controller.text = suggestion;
+                if (widget.showErrors) {
+                  validateField(suggestion);
+                }
               },
             ),
           ),
@@ -188,7 +245,7 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
         CustomErrorMsg(
           padLeft: 5.0,
           padTop: 10,
-          errorText: widget.errorText,
+          errorText: errorText,
           errorColor: errorColor,
           errorIcon: errorIcon,
         ),
@@ -197,14 +254,15 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
   }
 
   Color fieldState() {
-    if (CustomTypeAheadField.hasError) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    if (CustomTypeAheadField.hasError && widget.title != "Location") {
       return kErrorColor;
     } else if (CustomTypeAheadField.focusState) {
-      return kStudentColor.withOpacity(0.9);
+      return isDark ? kLPrimaryColor.withOpacity(0.9) : kStudentColor;
     } else if (widget.controller.text != "" && !CustomTypeAheadField.hasError) {
       return kPrimaryColor.withOpacity(0.8);
     } else {
-      return kBlack20;
+      return isDark ? kBlack20 : kGrey150;
     }
   }
 }

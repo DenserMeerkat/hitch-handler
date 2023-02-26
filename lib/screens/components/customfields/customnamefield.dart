@@ -7,8 +7,8 @@ import 'customerrormsg.dart';
 class CustomNameField extends StatefulWidget {
   final Color fgcolor;
   final String hinttext;
-  TextEditingController controller;
-  CustomNameField({
+  final TextEditingController controller;
+  const CustomNameField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Full Name",

@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/screens/login/student_login.dart';
 import '../../constants.dart';
 import '../components/customsigninappbar.dart';
@@ -27,7 +29,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     final arguments =
         ModalRoute.of(context)?.settings.arguments as LoginSignUpArguments;
     Size size = MediaQuery.of(context).size; // Available screen size
@@ -48,7 +50,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
         backgroundColor: isDark ? kGrey30 : kLGrey30,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: kHeaderHeight,
+          toolbarHeight: kHeaderHeight.h,
           backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
@@ -77,15 +79,15 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
               floating: true,
               automaticallyImplyLeading: false,
               elevation: 0,
-              surfaceTintColor: isDark ? Colors.white10 : Colors.black12,
+              surfaceTintColor: isDark ? kGrey30 : kLGrey30,
               backgroundColor: isDark ? kGrey30 : kLGrey30,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   padding: EdgeInsets.only(
-                    top: 15.0,
+                    top: 12.0.h,
                     left: size.width * 0.25,
                     right: size.width * 0.25,
-                    bottom: 15.0,
+                    bottom: 14.0.h,
                   ),
                   child: Center(
                     child: Container(
@@ -94,41 +96,41 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                         boxShadow: [
                           BoxShadow(
                             offset: const Offset(0, 2),
-                            color: isDark ? kBlack10 : kGrey50,
+                            color: isDark ? kBlack10 : kLGrey70,
                           )
                         ],
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: Container(
-                          color: isDark ? kBlack15 : kGrey30,
+                          color: isDark ? kBlack20 : kLBlack10,
                           child: TabBar(
-                            dividerColor: isDark ? kBlack15 : kGrey30,
+                            dividerColor: isDark ? kBlack20 : kLBlack10,
                             indicatorWeight: 0,
                             indicatorSize: TabBarIndicatorSize.tab,
                             labelColor: kBlack10,
-                            unselectedLabelColor: kTextColor.withOpacity(0.8),
-                            labelStyle: const TextStyle(
+                            unselectedLabelColor: isDark
+                                ? kTextColor.withOpacity(0.8)
+                                : kLTextColor.withOpacity(0.8),
+                            labelStyle: TextStyle(
                               fontWeight: FontWeight.w800,
-                              fontSize: 14,
+                              fontSize: 12.sp,
                               letterSpacing: 0.5,
                             ),
-                            unselectedLabelStyle: const TextStyle(
+                            unselectedLabelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              fontSize: 12.sp,
                               letterSpacing: 0.5,
                             ),
-                            splashBorderRadius: BorderRadius.circular(50),
+                            splashBorderRadius: BorderRadius.circular(50.r),
                             indicator: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: isDark
-                                    ? kPrimaryColor.withOpacity(0.9)
-                                    : kLPrimaryColor.withOpacity(0.9),
-                                border: Border.all(
-                                  color:
-                                      isDark ? kPrimaryColor : kLPrimaryColor,
-                                  width: 2,
-                                )),
+                              borderRadius: BorderRadius.circular(50.r),
+                              color: kPrimaryColor.withOpacity(0.9),
+                              border: Border.all(
+                                color: kPrimaryColor,
+                                width: 2,
+                              ),
+                            ),
                             controller: _tabController,
                             tabs: const <Widget>[
                               Tab(
@@ -151,7 +153,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                 controller: _tabController,
                 children: <Widget>[
                   SizedBox(
-                    height: size.height * 0.6,
+                    height: 400.h,
                     child: SignupBody(
                       formwidget: StudentSignupForm(
                         fgcolor: arguments.fgcolor,
@@ -162,7 +164,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                     ),
                   ),
                   SizedBox(
-                    height: size.height * 0.6,
+                    height: 400.h,
                     child: SignupBody(
                       formwidget: StudentSignupForm(
                         fgcolor: kAuthorityColor,
@@ -187,7 +189,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
               ),
             ],
           ),
-          height: 70,
+          height: 70.h,
           child: Center(
             child: LoginSignUpFooter(
               size: size,

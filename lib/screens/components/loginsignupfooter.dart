@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../constants.dart';
 
 class LoginSignUpFooter extends StatelessWidget {
@@ -19,11 +21,11 @@ class LoginSignUpFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 5,
+      padding: EdgeInsets.symmetric(
+        horizontal: 10.w,
+        vertical: 5.h,
       ),
       child: Center(
         child: Row(
@@ -32,12 +34,12 @@ class LoginSignUpFooter extends StatelessWidget {
               flex: 5,
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: EdgeInsets.symmetric(horizontal: 5.0.h),
                   child: Text(
                     msg,
                     style: TextStyle(
-                      fontSize: fsize,
-                      letterSpacing: 1,
+                      fontSize: fsize.sp,
+                      letterSpacing: 1.sp,
                       color: isDark ? kTextColor.withOpacity(0.8) : kLTextColor,
                     ),
                   ),
@@ -47,11 +49,11 @@ class LoginSignUpFooter extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.005),
+                padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 0.w),
                 child: TextButton(
                   style: ButtonStyle(
                     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(15.r),
                     )),
                     overlayColor: MaterialStateProperty.resolveWith((states) {
                       if (states.contains(MaterialState.pressed)) {
@@ -65,9 +67,9 @@ class LoginSignUpFooter extends StatelessWidget {
                   onPressed: press, //todo,
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(10.0.r),
                       border: Border.all(
-                        width: 2.0,
+                        width: 2.0.w,
                         color: isDark
                             ? kTextColor.withOpacity(0.7)
                             : kLTextColor.withOpacity(0.7),
@@ -79,7 +81,7 @@ class LoginSignUpFooter extends StatelessWidget {
                           btntext,
                           style: TextStyle(
                             color: isDark ? kTextColor : kLTextColor,
-                            letterSpacing: 1,
+                            letterSpacing: 1.sp,
                           ),
                         ),
                       ),

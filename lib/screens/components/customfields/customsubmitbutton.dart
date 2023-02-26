@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
@@ -25,7 +26,7 @@ class CustomSubmitButton extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Container(
       height: 2 * kDefaultPadding * height + fsize! + 2,
       decoration: BoxDecoration(
@@ -59,9 +60,7 @@ class CustomSubmitButton extends StatelessWidget {
             return kBlack10;
           }),
           overlayColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.pressed)) {
-              return kTextColor.withOpacity(0.3);
-            }
+            return kTextColor.withOpacity(0.3);
           }),
           shape: MaterialStateProperty.resolveWith((states) {
             return RoundedRectangleBorder(

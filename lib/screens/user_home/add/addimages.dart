@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -9,9 +10,9 @@ import '../../../resources/post_methods.dart';
 import 'imagesource.dart';
 
 class AddImages extends StatefulWidget {
-  bool addImageEnabled;
-  bool viewImagesEnabled;
-  AddImages({
+  final bool addImageEnabled;
+  final bool viewImagesEnabled;
+  const AddImages({
     super.key,
     required this.addImageEnabled,
     required this.viewImagesEnabled,
@@ -23,11 +24,13 @@ class AddImages extends StatefulWidget {
 
 class _AddImagesState extends State<AddImages> {
   late List<File> galleryList = gengallList();
-
+  late bool addImageEnabled = widget.addImageEnabled;
+  late bool viewImagesEnabled = widget.viewImagesEnabled;
   Future<bool?> showImageSources() async {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
     return await showModalBottomSheet<bool>(
-        backgroundColor: kGrey30,
+        backgroundColor: isDark ? kGrey30 : kLBlack15,
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
@@ -47,6 +50,7 @@ class _AddImagesState extends State<AddImages> {
   }
 
   List<Widget> genList() {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     int lent = UploadFileList.currLength();
     List<Widget> list = List<Widget>.filled(
         5,
@@ -55,9 +59,9 @@ class _AddImagesState extends State<AddImages> {
             final bool? shouldRefresh = await showImageSources();
             updateButtons();
           },
-          child: const Icon(
+          child: Icon(
             Icons.image,
-            color: kBlack20,
+            color: isDark ? kBlack20 : kGrey50,
             size: 90,
           ),
         ),
@@ -89,41 +93,42 @@ class _AddImagesState extends State<AddImages> {
     setState(() {
       galleryList = gengallList();
       if (UploadFileList.currLength() > 0) {
-        widget.viewImagesEnabled = true;
+        viewImagesEnabled = true;
       } else {
-        widget.viewImagesEnabled = false;
+        viewImagesEnabled = false;
       }
       if (UploadFileList.currLength() < 5) {
-        widget.addImageEnabled = true;
+        addImageEnabled = true;
       } else {
-        widget.addImageEnabled = false;
+        addImageEnabled = false;
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const FieldLabel(
-            fgcolor: kPrimaryColor,
+        FieldLabel(
+            fgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
             title: "Add Image",
-            bgcolor: kBlack15,
+            bgcolor: isDark ? kBlack15 : kGrey30,
             tooltip: 'tooltip'),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15.0),
-          decoration: const BoxDecoration(
-              color: kGrey50,
-              borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+              color: isDark ? kGrey50 : kLBlack10,
+              borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(5.0),
                 bottomRight: Radius.circular(5.0),
                 bottomLeft: Radius.circular(5.0),
               ),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0, 3),
-                  color: kBlack20,
+                  offset: const Offset(0, 3),
+                  color: isDark ? kBlack20 : kGrey150,
                 )
               ]),
           child: Column(
@@ -137,11 +142,11 @@ class _AddImagesState extends State<AddImages> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: kGrey40,
-                    boxShadow: const [
+                    color: isDark ? kGrey40 : kLBlack20,
+                    boxShadow: [
                       BoxShadow(
-                        offset: Offset(0, 2),
-                        color: kGrey30,
+                        offset: const Offset(0, 2),
+                        color: isDark ? kGrey30 : kLGrey50,
                       )
                     ]),
                 child: SingleChildScrollView(
@@ -168,7 +173,7 @@ class _AddImagesState extends State<AddImages> {
                     ),
                     Expanded(
                       child: ElevatedButtonWithIcon(
-                        onPressed: widget.addImageEnabled
+                        onPressed: addImageEnabled
                             ? () async {
                                 final bool? shouldRefresh =
                                     await showImageSources();
@@ -185,7 +190,7 @@ class _AddImagesState extends State<AddImages> {
                     ),
                     Expanded(
                       child: ElevatedButtonWithIcon(
-                        onPressed: widget.viewImagesEnabled
+                        onPressed: viewImagesEnabled
                             ? () {
                                 Navigator.of(context)
                                     .push(MaterialPageRoute(
@@ -233,22 +238,16 @@ class ImageThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void openGallery() => Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => GalleryWidget(
-            editMode: false,
-            imageList: galleryList,
-            index: index,
-          ),
-        ));
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            offset: Offset(2, 2),
+            offset: const Offset(2, 2),
             blurRadius: 5,
-            color: kBlack20,
+            color: isDark ? kBlack20 : kGrey50,
           ),
         ],
       ),
@@ -272,7 +271,7 @@ class GalleryWidget extends StatefulWidget {
   final PageController pageController;
   final List<File> imageList;
   final int index;
-  bool editMode;
+  final bool editMode;
   GalleryWidget({
     super.key,
     required this.imageList,
@@ -294,17 +293,19 @@ class _GalleryWidgetState extends State<GalleryWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: kGrey40,
+      backgroundColor: isDark ? kGrey40 : kLGrey40,
       appBar: AppBar(
-        backgroundColor: kBackgroundColor,
+        backgroundColor: isDark ? kBackgroundColor : kLBlack20,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
+              style: AdaptiveTheme.of(context).theme.iconButtonTheme.style,
               splashRadius: 20.0,
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back,
-                color: kTextColor,
+                color: isDark ? kTextColor : kLTextColor,
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -315,8 +316,8 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         ),
         title: Text(
           "Image  [ ${currIndex + 1}/${widget.imageList.length} ]",
-          style: const TextStyle(
-            color: kTextColor,
+          style: TextStyle(
+            color: isDark ? kTextColor : kLTextColor,
             fontWeight: FontWeight.bold,
             fontSize: 15,
           ),
@@ -327,7 +328,8 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         alignment: Alignment.bottomCenter,
         children: [
           PhotoViewGallery.builder(
-            backgroundDecoration: const BoxDecoration(color: kBackgroundColor),
+            backgroundDecoration: BoxDecoration(
+                color: isDark ? kBackgroundColor : kLBackgroundColor),
             pageController: widget.pageController,
             itemCount: widget.imageList.length,
             builder: (context, index) {
@@ -347,15 +349,28 @@ class _GalleryWidgetState extends State<GalleryWidget> {
       bottomNavigationBar: Container(
         padding:
             const EdgeInsets.only(top: 10, left: 10, bottom: 15.0, right: 10),
-        decoration: const BoxDecoration(color: kBackgroundColor, boxShadow: [
-          BoxShadow(offset: Offset(0, -2), color: kBlack10, blurRadius: 5)
-        ]),
+        decoration: BoxDecoration(
+          color: isDark ? kBackgroundColor : kLBlack20,
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, -2),
+              color: isDark ? kBlack10 : kLGrey40,
+              blurRadius: 5,
+            )
+          ],
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             imgControlButtons(
-              currIndex != 0 ? kGrey40 : kGrey30,
+              currIndex != 0
+                  ? isDark
+                      ? kGrey40
+                      : kLGrey40
+                  : isDark
+                      ? kGrey30
+                      : kLGrey30,
               currIndex != 0
                   ? () {
                       widget.pageController.previousPage(
@@ -371,7 +386,13 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                     height: 0,
                   ),
             imgControlButtons(
-              currIndex != widget.imageList.length - 1 ? kGrey40 : kGrey30,
+              currIndex != 0
+                  ? isDark
+                      ? kGrey40
+                      : kLGrey40
+                  : isDark
+                      ? kGrey30
+                      : kLGrey30,
               currIndex != widget.imageList.length - 1
                   ? () {
                       widget.pageController.nextPage(
@@ -388,6 +409,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
   }
 
   Container imgControlButtons(Color bg, void Function()? op, IconData icon) {
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
@@ -397,8 +419,8 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         type: MaterialType.transparency,
         child: IconButton(
             splashRadius: 33,
-            color: kTextColor,
-            disabledColor: kGrey50,
+            color: isDark ? kTextColor : kLTextColor,
+            disabledColor: isDark ? kGrey50 : kLGrey70,
             onPressed: op,
             icon: Icon(
               icon,
@@ -412,7 +434,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
       onPressed: () {
         setState(() {
           debugPrint(UploadFileList.deleteFile(currIndex));
-          widget.imageList.remove(currIndex);
+          widget.imageList.remove(widget.imageList[currIndex]);
           Navigator.pop(context);
         });
       },

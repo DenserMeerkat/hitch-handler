@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import '../notifiers.dart';
 import '../../components/customfields/fieldlabel.dart';
@@ -22,27 +23,28 @@ class _MoreDetailsState extends State<MoreDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const FieldLabel(
-            fgcolor: kPrimaryColor,
+        FieldLabel(
+            fgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
             title: "More Details",
-            bgcolor: kBlack15,
+            bgcolor: isDark ? kBlack15 : kGrey30,
             tooltip: 'tooltip'),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
-          decoration: const BoxDecoration(
-              color: kGrey50,
-              borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+              color: isDark ? kGrey50 : kLBlack10,
+              borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(5.0),
                 bottomRight: Radius.circular(5.0),
                 bottomLeft: Radius.circular(5.0),
               ),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0, 3),
-                  color: kBlack20,
+                  offset: const Offset(0, 3),
+                  color: isDark ? kBlack20 : kGrey150,
                 )
               ]),
           child: Column(
@@ -53,14 +55,16 @@ class _MoreDetailsState extends State<MoreDetails> {
                   'Do you want this to be an Anonymous entry?',
                   style: TextStyle(
                     fontSize: 15,
-                    color: kTextColor.withOpacity(0.8),
+                    fontWeight: FontWeight.w500,
+                    color: isDark
+                        ? kTextColor.withOpacity(0.8)
+                        : kLTextColor.withOpacity(0.8),
                   ),
                 ),
-                enableFeedback: true,
-                activeColor: kPrimaryColor,
-                activeTrackColor: kBlack20,
-                inactiveThumbColor: kGrey90,
-                inactiveTrackColor: kBlack20,
+                activeColor: isDark ? kPrimaryColor : kLPrimaryColor,
+                activeTrackColor: isDark ? kBlack20 : kGrey30,
+                inactiveThumbColor: isDark ? kGrey90 : kLGrey40,
+                inactiveTrackColor: isDark ? kBlack20 : kGrey40,
                 value: anon,
                 onChanged: (bool value) {
                   setState(() {
@@ -69,23 +73,25 @@ class _MoreDetailsState extends State<MoreDetails> {
                   });
                 },
               ),
-              const Divider(
+              Divider(
                 thickness: 1.0,
-                color: kBlack20,
+                color: isDark ? kBlack20 : kGrey90,
               ),
               SwitchListTile(
                 title: Text(
                   'Is this a problem in your department?',
                   style: TextStyle(
                     fontSize: 15,
-                    color: kTextColor.withOpacity(0.8),
+                    fontWeight: FontWeight.w500,
+                    color: isDark
+                        ? kTextColor.withOpacity(0.8)
+                        : kLTextColor.withOpacity(0.8),
                   ),
                 ),
-                enableFeedback: true,
-                activeColor: kPrimaryColor,
-                activeTrackColor: kBlack20,
-                inactiveThumbColor: kGrey90,
-                inactiveTrackColor: kBlack20,
+                activeColor: isDark ? kPrimaryColor : kLPrimaryColor,
+                activeTrackColor: isDark ? kBlack20 : kGrey30,
+                inactiveThumbColor: isDark ? kGrey90 : kLGrey40,
+                inactiveTrackColor: isDark ? kBlack20 : kGrey40,
                 value: dept,
                 onChanged: (bool value) {
                   setState(() {

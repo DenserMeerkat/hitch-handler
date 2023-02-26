@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constants.dart';
 
 class CustomErrorMsg extends StatelessWidget {
@@ -39,7 +40,11 @@ class CustomErrorMsg extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          top: padTop, bottom: padBottom, left: padLeft, right: padRight),
+        top: padTop.h,
+        bottom: padBottom.h,
+        left: padLeft.w,
+        right: padRight.w,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -49,7 +54,11 @@ class CustomErrorMsg extends StatelessWidget {
           Text(
             errorText,
             style: TextStyle(
-                color: errorColor, letterSpacing: 0.4, fontSize: fsize! - 3.0),
+              height: 1,
+              color: errorColor,
+              letterSpacing: 0.4,
+              fontSize: errorText != '' ? (fsize! - 3.0).sp : 0,
+            ),
           ),
           const SizedBox(
             width: 5,

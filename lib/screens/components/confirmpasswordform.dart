@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'utils/customdialog.dart';
 import '../../args_class.dart';
 import '../../resources/auth_methods.dart';
@@ -57,6 +59,8 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
         rollno: user.rollno,
         password: user.password,
         dob: user.dob,
+        domain: '',
+        userType: 'user',
       );
       if (res != "success") {
         showCustomSnackBar(contexT, res, "Ok", () {
@@ -72,10 +76,9 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size; // Available screen size
     return Container(
-      height: size.height * 0.78,
       width: size.width,
       color: isDark ? kGrey30 : kLGrey30,
       child: SingleChildScrollView(
@@ -85,8 +88,8 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
           child: Padding(
             padding: EdgeInsets.only(
               top: size.height * 0.02,
-              left: size.width * 0.1,
-              right: size.width * 0.1,
+              left: 30.w,
+              right: 30.w,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,

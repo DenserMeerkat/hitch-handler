@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../args_class.dart';
 import '../../constants.dart';
 import '../components/customfields/customelevatedbutton.dart';
@@ -15,29 +17,29 @@ class ButtonsContainer extends StatelessWidget {
   final Size size;
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Container(
-      height: 300,
-      width: size.width * 0.95,
+      height: 250.h,
+      width: 300.w,
       padding: EdgeInsets.only(
-        top: 20,
-        right: size.width * 0.10,
-        left: size.width * 0.10,
-        bottom: 15,
+        top: 20.h,
+        right: 5.w,
+        left: 5.w,
+        bottom: 15.h,
       ),
       decoration: BoxDecoration(
         color: isDark ? kGrey30 : kLGrey30,
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(30.0),
-          top: Radius.circular(30.0),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30.0.r),
+          top: Radius.circular(30.0.r),
         ),
         boxShadow: [
           BoxShadow(
-            offset: const Offset(0, 2.5),
+            offset: Offset(0.w, 2.5.h),
             color: isDark ? kBlack15 : kGrey150,
           ),
           BoxShadow(
-            offset: const Offset(0, -5),
+            offset: Offset(0.w, -5.h),
             color: isDark ? kPrimaryColor : kLPrimaryColor,
           ),
         ],
@@ -53,10 +55,10 @@ class ButtonsContainer extends StatelessWidget {
                 bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
                 iconcolor: isDark ? kBlack20 : kBlack20,
                 fgcolor: isDark ? kStudentColor : kLStudentColor,
-                shcolor: isDark ? kBlack10 : kLGrey50,
+                shcolor: isDark ? kBlack10 : kLGrey70,
                 textcolor: isDark ? kStudentColor : kBlack20,
-                bradius: 40.0,
-                fsize: 15.0,
+                bradius: 40.0.r,
+                fsize: 13,
                 title: "Student / Staff",
                 icon: Icons.school,
                 press: () {
@@ -75,8 +77,8 @@ class ButtonsContainer extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 25,
+          SizedBox(
+            height: 25.h,
           ),
           Hero(
             tag: "AuthorityHero",
@@ -86,10 +88,10 @@ class ButtonsContainer extends StatelessWidget {
                 bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
                 iconcolor: kBlack20,
                 fgcolor: isDark ? kAuthorityColor : kLAuthorityColor,
-                shcolor: isDark ? kBlack10 : kLGrey50,
+                shcolor: isDark ? kBlack10 : kLGrey70,
                 textcolor: isDark ? kAuthorityColor : kBlack20,
-                bradius: 40.0,
-                fsize: 16.0,
+                bradius: 40.0.r,
+                fsize: 13,
                 title: "Authority",
                 icon: Icons.work,
                 press: () {
@@ -109,8 +111,8 @@ class ButtonsContainer extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 25,
+          SizedBox(
+            height: 25.h,
           ),
           Hero(
             tag: "AdminHero",
@@ -120,10 +122,10 @@ class ButtonsContainer extends StatelessWidget {
                 bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
                 iconcolor: kBlack20,
                 fgcolor: isDark ? kAdminColor : kLAdminColor,
-                shcolor: isDark ? kBlack10 : kLGrey50,
+                shcolor: isDark ? kBlack10 : kLGrey70,
                 textcolor: isDark ? kAdminColor : kBlack20,
-                bradius: 40.0,
-                fsize: 16.0,
+                bradius: 40.0.r,
+                fsize: 13,
                 title: "Admin",
                 icon: Icons.key,
                 press: () {

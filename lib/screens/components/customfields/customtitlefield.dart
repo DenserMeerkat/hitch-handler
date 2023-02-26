@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import '../../../string_extensions.dart';
 import '../../../constants.dart';
@@ -9,13 +10,13 @@ class CustomTitleField extends StatefulWidget {
   final String hintText;
   final String title;
   final int length;
-  String errorText;
-  TextEditingController controller;
+  final String errorText;
+  final TextEditingController controller;
 
   static bool hasError = false;
   static bool focusState = false;
 
-  CustomTitleField({
+  const CustomTitleField({
     super.key,
     required this.fgcolor,
     this.hintText = "HintText",
@@ -33,21 +34,18 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
 
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
-  Color fieldBorderColor = kBlack20;
-
+  late String errorText = widget.errorText;
   String validateField(String? value) {
     if (value!.isWhitespace()) {
       setState(() {
         CustomTitleField.hasError = true;
-        widget.errorText = "${widget.title} can't be empty";
-        fieldBorderColor = fieldState();
+        errorText = "${widget.title} can't be empty";
       });
       return "Error!";
     } else {
       setState(() {
         CustomTitleField.hasError = false;
-        widget.errorText = "";
-        fieldBorderColor = fieldState();
+        errorText = "";
       });
       return "";
     }
@@ -65,6 +63,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
         ),
         borderSide: BorderSide.none);
 
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -76,7 +75,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
               FieldLabel(
                 fgcolor: widget.fgcolor,
                 title: widget.title,
-                bgcolor: kBlack20,
+                bgcolor: isDark ? kBlack20 : kGrey30,
                 tooltip: "min : 10\nmax : 50",
               ),
             ],
@@ -91,7 +90,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
                 height: 44,
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
-                  color: kGrey50,
+                  color: isDark ? kGrey50 : kLBlack10,
                   borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(5.0),
                     bottomRight: Radius.circular(5.0),
@@ -100,8 +99,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
                   boxShadow: [
                     BoxShadow(
                       offset: const Offset(0, 2.5),
-                      color:
-                          widget.errorText == '' ? fieldState() : fieldState(),
+                      color: errorText == '' ? fieldState() : fieldState(),
                     ),
                   ],
                 ),
@@ -143,10 +141,14 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
                   scrollPadding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom + 80),
                   cursorColor: widget.fgcolor,
-                  style: const TextStyle(
-                    fontSize: 17.0,
-                    letterSpacing: 1,
-                  ),
+                  style: AdaptiveTheme.of(context)
+                      .theme
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(
+                        fontSize: 17.0,
+                        letterSpacing: 1,
+                      ),
                   decoration: InputDecoration(
                       counterStyle: const TextStyle(
                         height: 0,
@@ -154,9 +156,9 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
                         fontSize: 0,
                       ),
                       hintText: widget.hintText,
-                      hintStyle: const TextStyle(
+                      hintStyle: TextStyle(
                         fontSize: 15.0,
-                        color: kGrey90,
+                        color: isDark ? kGrey90 : kLGrey50,
                         letterSpacing: 1,
                       ),
                       helperText: "_",
@@ -187,7 +189,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
         CustomErrorMsg(
           padLeft: 5.0,
           padTop: 0,
-          errorText: widget.errorText,
+          errorText: errorText,
           errorColor: errorColor,
           errorIcon: errorIcon,
         ),
@@ -196,14 +198,15 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
   }
 
   Color fieldState() {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     if (CustomTitleField.hasError) {
       return kErrorColor;
     } else if (CustomTitleField.focusState) {
-      return kStudentColor.withOpacity(0.9);
+      return isDark ? kLPrimaryColor.withOpacity(0.9) : kStudentColor;
     } else if (widget.controller.text != "" && !CustomTitleField.hasError) {
       return kPrimaryColor.withOpacity(0.8);
     } else {
-      return kBlack20;
+      return isDark ? kBlack20 : kGrey150;
     }
   }
 }
