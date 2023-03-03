@@ -7,6 +7,7 @@ import '../../../resources/post_methods.dart';
 
 class SearchField extends StatefulWidget {
   final Color fgcolor;
+  final Color hintColor;
   final String hintText;
   final TextEditingController controller;
 
@@ -15,6 +16,7 @@ class SearchField extends StatefulWidget {
     required this.fgcolor,
     this.hintText = "Search",
     required this.controller,
+    required this.hintColor,
   });
   @override
   State<SearchField> createState() => _SearchFieldState();
@@ -72,7 +74,7 @@ class _SearchFieldState extends State<SearchField> {
                 decoration: InputDecoration(
                   icon: Icon(
                     Icons.search,
-                    color: isDark ? kTextColor.withOpacity(0.5) : kLTextColor,
+                    color: widget.hintColor,
                     size: 20,
                   ),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 0),
@@ -83,8 +85,7 @@ class _SearchFieldState extends State<SearchField> {
                       .bodyMedium!
                       .copyWith(
                         fontWeight: FontWeight.normal,
-                        color:
-                            isDark ? kTextColor.withOpacity(0.5) : kLTextColor,
+                        color: widget.hintColor,
                       ),
                   border: enabledBorder,
                 ),

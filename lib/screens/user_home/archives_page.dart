@@ -60,7 +60,7 @@ class _BookmarkPageState extends State<BookmarkPage>
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50.r),
                 border: Border.all(
-                  color: isDark ? kGrey40 : kLGrey70,
+                  color: isDark ? kGrey40 : kLGrey40,
                 ),
               ),
               child: ClipRRect(
@@ -68,8 +68,8 @@ class _BookmarkPageState extends State<BookmarkPage>
                 child: Container(
                   color: isDark ? kGrey30 : kLBlack10,
                   child: TabBar(
-                    dividerColor: isDark ? kBlack20 : kLBlack10,
-                    indicatorWeight: 0,
+                    dividerColor: Colors.transparent,
+                    indicatorWeight: 0.0,
                     indicatorSize: TabBarIndicatorSize.tab,
                     labelColor: kBlack10,
                     unselectedLabelColor: isDark
@@ -88,9 +88,11 @@ class _BookmarkPageState extends State<BookmarkPage>
                     splashBorderRadius: BorderRadius.circular(50.r),
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(50.r),
-                      color: kPrimaryColor.withOpacity(0.9),
+                      color: isDark
+                          ? kPrimaryColor.withOpacity(0.9)
+                          : kLPrimaryColor.withOpacity(0.8),
                       border: Border.all(
-                        color: kPrimaryColor,
+                        color: isDark ? kPrimaryColor : kLPrimaryColor,
                         width: 2,
                       ),
                     ),

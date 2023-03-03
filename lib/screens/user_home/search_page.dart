@@ -1,14 +1,14 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
-import 'package:hitch_handler/screens/user_home/feed/searchfield.dart';
 import 'package:hitch_handler/screens/user_home/feed/searchformfield.dart';
 
 import '../../resources/post_methods.dart';
 import '../components/appbar.dart';
+import 'feed/searchfield.dart';
 
 class SearchPage extends StatefulWidget {
   static String routeName = '/search_page';
@@ -41,6 +41,23 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
+  var currentStream = FirebaseFirestore.instance
+      .collection('posts')
+      .orderBy("datePublished", descending: true)
+      .snapshots();
+  final List streams = [
+    FirebaseFirestore.instance
+        .collection('posts')
+        .where(
+          'title',
+        )
+        .snapshots(),
+    FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy("upVoteCount", descending: true)
+        .snapshots(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
@@ -58,6 +75,18 @@ class _SearchPageState extends State<SearchPage> {
                   padding: const EdgeInsets.all(6.0),
                   child: FittedBox(
                     child: IconButton(
+                      splashColor: isDark
+                          ? kTextColor.withOpacity(0.1)
+                          : kLTextColor.withOpacity(0.1),
+                      focusColor: isDark
+                          ? kTextColor.withOpacity(0.1)
+                          : kLTextColor.withOpacity(0.1),
+                      highlightColor: isDark
+                          ? kTextColor.withOpacity(0.1)
+                          : kLTextColor.withOpacity(0.1),
+                      hoverColor: isDark
+                          ? kTextColor.withOpacity(0.1)
+                          : kLTextColor.withOpacity(0.1),
                       style:
                           AdaptiveTheme.of(context).theme.iconButtonTheme.style,
                       icon: Icon(
@@ -129,18 +158,27 @@ class _SearchPageState extends State<SearchPage> {
                                   //   },
                                   //     // ),
 
-                                  SearchFormField(
-                                hintText: "Search",
-                                controller: searchController,
-                                fgcolor:
-                                    isDark ? kPrimaryColor : kLPrimaryColor,
-                              ),
-                              //     SearchField(
-                              //   hintText: "Search",
-                              //   controller: searchController,
-                              //   fgcolor:
-                              //       isDark ? kPrimaryColor : kLPrimaryColor,
-                              // ),
+                                  currentIndex == 2
+                                      ? SearchFormField(
+                                          hintText: "Search",
+                                          controller: searchController,
+                                          fgcolor: isDark
+                                              ? kPrimaryColor
+                                              : kLPrimaryColor,
+                                        )
+                                      : SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: SearchField(
+                                            hintText: "Search",
+                                            hintColor: isDark
+                                                ? kTextColor
+                                                : kLTextColor,
+                                            controller: searchController,
+                                            fgcolor: isDark
+                                                ? kPrimaryColor
+                                                : kLPrimaryColor,
+                                          ),
+                                        ),
                             ),
                           ),
                         ),
@@ -247,7 +285,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
           ),
-          SliverFillRemaining(
+          SliverToBoxAdapter(
             child: Container(),
           )
         ],

@@ -1,6 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/settings_page.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../constants.dart';
 import '../../resources/auth_methods.dart';
 import 'utils/customdialog.dart';
@@ -39,10 +41,24 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
+                splashColor: isDark
+                    ? kTextColor.withOpacity(0.1)
+                    : kLTextColor.withOpacity(0.1),
+                focusColor: isDark
+                    ? kTextColor.withOpacity(0.1)
+                    : kLTextColor.withOpacity(0.1),
+                highlightColor: isDark
+                    ? kTextColor.withOpacity(0.1)
+                    : kLTextColor.withOpacity(0.1),
+                hoverColor: isDark
+                    ? kTextColor.withOpacity(0.1)
+                    : kLTextColor.withOpacity(0.1),
                 splashRadius: 20.0,
                 icon: Icon(
-                  Icons.exit_to_app_rounded,
-                  color: isDark ? kTextColor : kLTextColor,
+                  Icons.exit_to_app_outlined,
+                  color: isDark
+                      ? kTextColor.withOpacity(0.9)
+                      : kLTextColor.withOpacity(0.9),
                 ),
                 onPressed: () {
                   showConfirmDialog(
@@ -81,15 +97,30 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
       ),
       actions: <Widget>[
         IconButton(
+          splashColor: isDark
+              ? kTextColor.withOpacity(0.1)
+              : kLTextColor.withOpacity(0.1),
+          focusColor: isDark
+              ? kTextColor.withOpacity(0.1)
+              : kLTextColor.withOpacity(0.1),
+          highlightColor: isDark
+              ? kTextColor.withOpacity(0.1)
+              : kLTextColor.withOpacity(0.1),
+          hoverColor: isDark
+              ? kTextColor.withOpacity(0.1)
+              : kLTextColor.withOpacity(0.1),
           splashRadius: 20.0,
           icon: Icon(
-            Icons.account_box_outlined,
-            color: isDark ? kTextColor : kLTextColor,
+            Icons.settings_outlined,
+            color: isDark
+                ? kTextColor.withOpacity(0.9)
+                : kLTextColor.withOpacity(0.9),
           ),
           onPressed: () {
-            Scaffold.of(context).openEndDrawer();
+            Navigator.of(context).pushNamed(SettingsPage.routeName);
+            //Scaffold.of(context).openEndDrawer();
           },
-          tooltip: "Account",
+          tooltip: "Settings",
         ),
         SizedBox(width: 3.w),
       ],

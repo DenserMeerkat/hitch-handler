@@ -32,6 +32,7 @@ class _AddPageState extends State<AddPage> {
         return false;
       },
       child: Scaffold(
+        backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
         appBar: AppBar(
           elevation: 9,
           backgroundColor: isDark ? kBackgroundColor : Colors.white,
@@ -54,6 +55,18 @@ class _AddPageState extends State<AddPage> {
                 padding: const EdgeInsets.all(6.0),
                 child: FittedBox(
                   child: IconButton(
+                    splashColor: isDark
+                        ? kTextColor.withOpacity(0.1)
+                        : kLTextColor.withOpacity(0.1),
+                    focusColor: isDark
+                        ? kTextColor.withOpacity(0.1)
+                        : kLTextColor.withOpacity(0.1),
+                    highlightColor: isDark
+                        ? kTextColor.withOpacity(0.1)
+                        : kLTextColor.withOpacity(0.1),
+                    hoverColor: isDark
+                        ? kTextColor.withOpacity(0.1)
+                        : kLTextColor.withOpacity(0.1),
                     style:
                         AdaptiveTheme.of(context).theme.iconButtonTheme.style,
                     icon: Icon(

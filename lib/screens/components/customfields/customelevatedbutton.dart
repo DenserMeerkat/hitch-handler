@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constants.dart';
@@ -91,8 +92,9 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Text(
+                  child: AutoSizeText(
                     title,
+                    maxLines: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,

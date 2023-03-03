@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/user.dart' as model;
 
 class UserData {
   String email;
@@ -47,18 +48,10 @@ class OTPArguments {
   );
 }
 
-// class PasswordArguments {
-//   final Color fgcolor;
-//   final String title;
-//   final IconData icon;
-//   final String homeroute;
-//   final UserData user;
+class PostsArguments {
+  final dynamic snap;
 
-//   PasswordArguments(
-//     this.fgcolor,
-//     this.title,
-//     this.icon,
-//     this.homeroute,
-//     this.user,
-//   );
-// }
+  PostsArguments(
+    this.snap,
+  );
+}
