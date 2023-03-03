@@ -59,7 +59,7 @@ Future<void> showToggleThemeDialog(BuildContext context) {
               icon: Icons.smartphone_outlined,
               isSelected:
                   AdaptiveTheme.of(context).mode == AdaptiveThemeMode.system,
-              title: 'System Theme',
+              title: 'System Default',
             ),
           ),
         ],

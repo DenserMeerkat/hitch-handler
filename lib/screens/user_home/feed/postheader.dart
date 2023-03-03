@@ -8,10 +8,10 @@ import '../../../constants.dart';
 class PostTitle extends StatelessWidget {
   const PostTitle({
     super.key,
-    required this.widget,
+    required this.snap,
   });
 
-  final PostCard widget;
+  final dynamic snap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PostTitle extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: 15.w, right: 30.w),
       child: Text(
-        widget.snap['title'],
+        snap['title'],
         textAlign: TextAlign.left,
         style:
             AdaptiveTheme.of(context).theme.textTheme.headlineSmall!.copyWith(
@@ -37,9 +37,9 @@ class PostTitle extends StatelessWidget {
 class PostTop extends StatelessWidget {
   const PostTop({
     super.key,
-    required this.widget,
+    required this.snap,
   });
-  final PostCard widget;
+  final dynamic snap;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class PostTop extends StatelessWidget {
               ),
             ),
             child: Text(
-              widget.snap['domain'],
+              snap['domain'],
               style: AdaptiveTheme.of(context)
                   .theme
                   .textTheme
@@ -110,10 +110,10 @@ class PostTop extends StatelessWidget {
 class PostDesc extends StatelessWidget {
   const PostDesc({
     super.key,
-    required this.widget,
+    required this.snap,
   });
 
-  final PostCard widget;
+  final dynamic snap;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +121,7 @@ class PostDesc extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
       child: ExpandableText(
-        widget.snap['description'],
+        snap['description'],
         style: AdaptiveTheme.of(context)
             .theme
             .textTheme

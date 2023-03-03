@@ -45,6 +45,7 @@ class _SearchFormFieldState extends State<SearchFormField> {
             child: TextFormField(
               onChanged: (value) {},
               onSaved: (value) {},
+              autofocus: true,
               controller: widget.controller,
               cursorColor: kPrimaryColor,
               textInputAction: TextInputAction.search,

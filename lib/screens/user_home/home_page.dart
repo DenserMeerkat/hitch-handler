@@ -4,6 +4,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/screens/user_home/search_page.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../constants.dart';
 import '../components/utils/customdialog.dart';
 import 'feed/postcard.dart';
@@ -17,31 +18,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<IconData> sortOptions = [
-    Icons.schedule,
-    Icons.thumb_up_alt_outlined
+  int loadMoreMsgs;
+  _HomePageState() : loadMoreMsgs = 4;
+  int a = 2;
+
+  List<IconData> sortOptions = [
+    Icons.hourglass_empty_outlined,
+    MdiIcons.fromString("arrow-up-bold-outline")!,
   ];
   int currentIndex = 0;
-  IconData currentIcon = Icons.schedule;
-  var currentStream = FirebaseFirestore.instance
+  IconData currentIcon = Icons.hourglass_empty_outlined;
+  dynamic currentStream = FirebaseFirestore.instance
       .collection('posts')
       .orderBy("datePublished", descending: true)
+      //.limit(loadMoreMsgs)
       .snapshots();
-  final TextEditingController searchController = TextEditingController();
-  final List streams = [
+  List streams = [
     FirebaseFirestore.instance
         .collection('posts')
         .orderBy("datePublished", descending: true)
+        //.limit(loadMoreMsgs)
         .snapshots(),
     FirebaseFirestore.instance
         .collection('posts')
         .orderBy("upVoteCount", descending: true)
+        //.limit(loadMoreMsgs)
         .snapshots(),
   ];
+
   @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
   }
 
   void changeSort(int index) {
@@ -191,7 +198,7 @@ class _HomePageState extends State<HomePage> {
                                     child: PopupItem(
                                       icon: sortOptions[0],
                                       isSelected: currentIndex == 0,
-                                      title: 'Date Posted',
+                                      title: 'Upload Time',
                                     ),
                                   ),
                                   PopupMenuItem<int>(

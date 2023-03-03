@@ -64,10 +64,10 @@ class _PostCardState extends State<PostCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PostTop(widget: widget),
-          PostTitle(widget: widget),
-          PostDesc(widget: widget),
-          PostImages(widget: widget, imgList: imgList),
+          PostTop(snap: widget.snap),
+          PostTitle(snap: widget.snap),
+          PostDesc(snap: widget.snap),
+          PostImages(snap: widget.snap, imgList: imgList),
           ActionButtons(snap: widget.snap, user: user),
           PostInfo(location: location, date: date, time: time, widget: widget),
           PostTimeAgo(timeAgo: timeAgo, isDark: isDark),
