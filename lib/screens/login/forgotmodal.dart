@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../args_class.dart';
 import 'reset_password.dart';
 import '../../constants.dart';
@@ -38,21 +40,21 @@ class ForgotModalFormState extends State<ForgotModalForm> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+        padding: EdgeInsets.symmetric(horizontal: 30.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              height: size.height * 0.06,
+              height: 40.h,
               child: Center(
                 child: Container(
                   height: 5,
-                  width: 50,
+                  width: 50.w,
                   decoration: BoxDecoration(
                     color: isDark
                         ? kTextColor.withOpacity(0.5)
@@ -63,26 +65,33 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               ),
             ),
             SizedBox(
-              height: size.height * 0.025,
+              height: 10.h,
             ),
-            FittedBox(
-              child: Text(
-                "Forgot Password ?",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineLarge,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.w),
+              child: FittedBox(
+                child: Text(
+                  "Forgot Password ?",
+                  textAlign: TextAlign.center,
+                  style:
+                      AdaptiveTheme.of(context).theme.textTheme.headlineLarge,
+                ),
               ),
             ),
             SizedBox(
-              height: size.height * 0.03,
+              height: 15.h,
             ),
-            FittedBox(
-              child: Text(
-                "Enter registered Email ID / Mobile Number.",
-                style: Theme.of(context).textTheme.titleSmall,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: FittedBox(
+                child: Text(
+                  "Enter registered Email ID / Mobile Number.",
+                  style: AdaptiveTheme.of(context).theme.textTheme.titleSmall,
+                ),
               ),
             ),
             SizedBox(
-              height: size.height * 0.05,
+              height: 40.h,
             ),
             CustomMultiField(
               controller: myTextFieldController,
@@ -103,9 +112,6 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                 TextInputType.phone,
                 TextInputType.number,
               ],
-            ),
-            SizedBox(
-              height: size.height * 0.010,
             ),
             CustomSubmitButton(
               size: size,
@@ -153,7 +159,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
               }, //Todo_Navigation
             ),
             SizedBox(
-              height: size.height * 0.05,
+              height: 30.h,
             ),
           ],
         ),

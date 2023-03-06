@@ -31,6 +31,20 @@ class DomainList {
 
 class LocationList {
   static List<String> locationsList = [
+    "Vivek Audi",
+    "Tag Audi",
+    //"Hostel",
+    //"Mess",
+    "International hostel",
+    "Gurunath",
+    "Amenities",
+    "Alumini Centre",
+    "SBI parking",
+    "SBI atm",
+    "Blue Shed",
+    "Sports Board",
+    //"Department",
+    "Science and Humanities",
     "Main Gallery",
     "Mini Gallery",
     "Sports Ground",

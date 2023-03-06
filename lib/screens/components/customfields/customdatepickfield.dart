@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import '../../../string_extensions.dart';
 import '../../../constants.dart';
@@ -8,8 +10,8 @@ import 'customerrormsg.dart';
 class CustomDatePickField extends StatefulWidget {
   final Color fgcolor;
   final String hinttext;
-  TextEditingController controller;
-  CustomDatePickField({
+  final TextEditingController controller;
+  const CustomDatePickField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Date of Birth",
@@ -65,12 +67,11 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    Size size = MediaQuery.of(context).size;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
 
-    const outlineInputBorder = OutlineInputBorder(
+    OutlineInputBorder outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.vertical(
-        top: Radius.circular(10.0),
+        top: Radius.circular(10.0.r),
       ),
       borderSide: BorderSide.none,
       gapPadding: 0,
@@ -86,10 +87,10 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               right: 0,
               child: Container(
                 height: 48,
-                width: size.width * 0.8,
+                width: 300.w,
                 decoration: BoxDecoration(
                   color: isDark ? kGrey50 : kLGrey40,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(10.0.r),
                   boxShadow: [
                     errorIndicator(),
                     BoxShadow(
@@ -126,13 +127,14 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
               scrollPadding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 80),
-              style: const TextStyle(
-                fontSize: 16.0,
-                letterSpacing: 1,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 80.h),
+              style: TextStyle(
+                fontSize: 16.0.sp,
+                color: isDark ? kTextColor : kLTextColor,
+                letterSpacing: 0.5.sp,
               ),
               cursorColor: widget.fgcolor,
-              cursorHeight: 16.0,
+              cursorHeight: 20.sp,
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
                   onTap: () async {
@@ -196,16 +198,16 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                 icon: Container(
                   height: 50,
                   width: 50,
-                  decoration: const BoxDecoration(
-                    color: kBlack20,
-                    borderRadius: BorderRadius.horizontal(
+                  decoration: BoxDecoration(
+                    color: isDark ? kBlack20 : kGrey30,
+                    borderRadius: const BorderRadius.horizontal(
                       left: Radius.circular(10.0),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        offset: Offset(1, 1),
+                        offset: const Offset(1, 1),
                         blurRadius: 1,
-                        color: kBlack10,
+                        color: isDark ? kBlack10 : kGrey30,
                       )
                     ],
                   ),
@@ -217,9 +219,9 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   ),
                 ),
                 hintText: widget.hinttext,
-                hintStyle: const TextStyle(
+                hintStyle: TextStyle(
                   fontSize: 15.0,
-                  color: kGrey90,
+                  color: isDark ? kGrey90 : kGrey90,
                   letterSpacing: 0.5,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,

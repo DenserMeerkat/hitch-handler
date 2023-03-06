@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../constants.dart';
 
 class BackButtonWithColor extends StatelessWidget {
@@ -17,11 +19,11 @@ class BackButtonWithColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Container(
         decoration: BoxDecoration(
             color: iconbg.withOpacity(0.9),
-            borderRadius: BorderRadius.circular(30.0),
+            borderRadius: BorderRadius.circular(30.0.r),
             boxShadow: [
               BoxShadow(
                 offset: const Offset(0, 2),
@@ -29,7 +31,7 @@ class BackButtonWithColor extends StatelessWidget {
               ),
             ],
             border: Border.all(
-              width: 2.0,
+              width: 2.0.w,
               color: iconbg,
             )),
         child: Material(
@@ -37,7 +39,7 @@ class BackButtonWithColor extends StatelessWidget {
           shape: const CircleBorder(),
           clipBehavior: Clip.hardEdge,
           child: IconButton(
-            splashRadius: 50.0,
+            splashRadius: 50.0.r,
             splashColor: isDark
                 ? kTextColor.withOpacity(0.1)
                 : kLTextColor.withOpacity(0.1),
@@ -48,7 +50,7 @@ class BackButtonWithColor extends StatelessWidget {
               shadows: [
                 Shadow(
                   offset: const Offset(1, 1),
-                  blurRadius: 5,
+                  blurRadius: 5.r,
                   color: bgcolor.withOpacity(0.5),
                 ),
               ],

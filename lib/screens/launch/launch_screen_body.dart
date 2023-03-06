@@ -1,30 +1,30 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../constants.dart';
 import 'buttonscontainer.dart';
 
 class LaunchScreenBody extends StatelessWidget {
-  LaunchScreenBody({super.key, required this.maxHeight});
-  double maxHeight;
+  const LaunchScreenBody({super.key});
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Available screen size
     return ListView(
       children: [
         SizedBox(
-          height: (maxHeight - 100) * 0.005, //0.005
+          height: 20.h,
         ),
         LogoContainer(size: size),
         SizedBox(
-          height: (maxHeight - 100) * 0.12,
+          height: 60.h,
         ),
         Padding(
-          padding:
-              EdgeInsets.symmetric(vertical: 10, horizontal: size.width * 0.03),
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
           child: ButtonsContainer(size: size),
         ),
         SizedBox(
-          height: maxHeight * 0.005,
+          height: 10.h,
         ),
       ],
     );
@@ -32,7 +32,7 @@ class LaunchScreenBody extends StatelessWidget {
 }
 
 class LogoContainer extends StatelessWidget {
-  LogoContainer({
+  const LogoContainer({
     Key? key,
     required this.size,
   }) : super(key: key);
@@ -41,14 +41,11 @@ class LogoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode =
-        SchedulerBinding.instance.platformDispatcher.platformBrightness ==
-            Brightness.dark;
-    return Container(
-      constraints: const BoxConstraints(minHeight: 200),
-      height: size.height * 0.3,
+    bool isDarkMode = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    return SizedBox(
+      height: 200.h,
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0.h),
         child: Placeholder(
           color: isDarkMode
               ? kTextColor.withOpacity(0.1)

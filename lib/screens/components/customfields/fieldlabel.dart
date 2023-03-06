@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
@@ -17,6 +18,7 @@ class FieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Tooltip(
       preferBelow: false,
       triggerMode: TooltipTriggerMode.tap,
@@ -36,9 +38,9 @@ class FieldLabel extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
         height: 20,
-        decoration: const BoxDecoration(
-            color: kBlack20,
-            borderRadius: BorderRadius.vertical(
+        decoration: BoxDecoration(
+            color: isDark ? kBlack20 : kGrey40,
+            borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(5.0), bottom: Radius.circular(0))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

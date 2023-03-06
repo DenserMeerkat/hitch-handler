@@ -1,9 +1,12 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 import '../../resources/auth_methods.dart';
 import '../components/utils/customdialog.dart';
 import '../user_home/notifiers.dart';
 import 'forgotmodal.dart';
-import '../user_home/main_app.dart';
 import '../../constants.dart';
 import '../components/customfields/customsubmitbutton.dart';
 import '../components/customfields/custommultifield.dart';
@@ -12,11 +15,13 @@ import '../components/customfields/custompasswordfield.dart';
 class LoginForm extends StatefulWidget {
   const LoginForm({
     super.key,
+    required this.userIndex,
     required this.fgcolor,
     required this.title,
     required this.icon,
     required this.homeroute,
   });
+  final int userIndex;
   final Color fgcolor;
   final String title;
   final IconData icon;
@@ -31,13 +36,14 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
 
   void showBottomSheet() {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
     showModalBottomSheet(
       backgroundColor: isDark ? kGrey30 : kLGrey30,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0.r)),
+      ),
       context: context,
       builder: (context) {
         return Padding(
@@ -55,11 +61,14 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
+  addData() async {
+    UserProvider userProvider = Provider.of(context, listen: false);
+    await userProvider.refreshUser();
+  }
+
   final myTextFieldController = TextEditingController();
   final myPassFieldController = TextEditingController();
   bool isLoading = false;
-
-  String email = "email";
 
   @override
   void dispose() {
@@ -70,7 +79,6 @@ class _LoginFormState extends State<LoginForm> {
 
   void loginAuthentication(String email, String pass) async {
     String res = "UnknownError";
-    final navigator = Navigator.of(context);
     final scaffoldContext = ScaffoldMessenger.of(context);
     setState(() {
       isLoading = true;
@@ -80,11 +88,13 @@ class _LoginFormState extends State<LoginForm> {
       email: email,
       password: myPassFieldController.text,
     );
+    addData();
+    setState(() {
+      isLoading = false;
+      IsLoading(isLoading).dispatch(context);
+    });
     if (res == "success") {
       debugPrint(res);
-      navigator.pushNamed(
-        AppScreen.routeName,
-      );
     } else {
       final snackBar = SnackBar(
         content: Text(res.toString()),
@@ -95,15 +105,11 @@ class _LoginFormState extends State<LoginForm> {
           .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
       debugPrint("Error in Login");
     }
-    setState(() {
-      isLoading = false;
-      IsLoading(isLoading).dispatch(context);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
     return Center(
       child: Form(
@@ -129,9 +135,6 @@ class _LoginFormState extends State<LoginForm> {
                 TextInputType.phone,
                 TextInputType.number,
               ],
-            ),
-            SizedBox(
-              height: size.height * 0.01,
             ),
             CustomPasswordField(
               controller: myPassFieldController,
@@ -160,17 +163,17 @@ class _LoginFormState extends State<LoginForm> {
                       );
                     }),
                     padding: MaterialStateProperty.resolveWith((states) {
-                      return const EdgeInsets.symmetric(
-                        horizontal: 12,
+                      return EdgeInsets.symmetric(
+                        horizontal: 12.w,
                       );
                     }),
                   ),
                   child: Text(
                     "Forgot Password ?",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
-                      letterSpacing: 0.6,
+                      letterSpacing: 0.6.sp,
                       color: isDark ? widget.fgcolor : kLTextColor,
                     ),
                   ),
@@ -178,14 +181,14 @@ class _LoginFormState extends State<LoginForm> {
               ],
             ),
             SizedBox(
-              height: size.height * 0.025,
+              height: 12.h,
             ),
             CustomSubmitButton(
               size: size,
               bgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
               msg: "Continue",
-              fsize: 20,
-              width: 2.5,
+              fsize: 20.sp,
+              width: 2.5.w,
               press: () {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 if (_formKey.currentState!.validate()) {
@@ -193,14 +196,18 @@ class _LoginFormState extends State<LoginForm> {
                   debugPrint("___________________");
                   debugPrint("${_formKey.currentState!.validate()}");
 
-                  email = myTextFieldController.text;
+                  String email = myTextFieldController.text;
                   loginAuthentication(email, myPassFieldController.text);
                 } else {
-                  final snackBar = showCustomSnackBar(
-                    context,
-                    "One or more Fields have Errors",
-                    "Ok",
-                    () {},
+                  final snackBar = SnackBar(
+                    backgroundColor: isDark ? kGrey40 : kLGrey40,
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(
+                      "One or more Fields have Errors",
+                      style: TextStyle(
+                        color: isDark ? kTextColor : kLTextColor,
+                      ),
+                    ),
                   );
                   ScaffoldMessenger.of(context)
                       .showSnackBar(snackBar)
@@ -212,7 +219,7 @@ class _LoginFormState extends State<LoginForm> {
               }, //Todo_Navigation
             ),
             SizedBox(
-              height: size.height * 0.04,
+              height: 10.h,
             ),
           ],
         ),

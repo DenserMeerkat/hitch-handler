@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constants.dart';
 import 'userloginheader.dart';
 
@@ -21,9 +23,8 @@ class CustomSignInAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Container(
-      //margin: const EdgeInsets.only(top: 10),
       color: isDark ? kBackgroundColor : kLBackgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -35,39 +36,39 @@ class CustomSignInAppBar extends StatelessWidget {
                   ? kTextColor.withOpacity(0.7)
                   : kLTextColor.withOpacity(0.7),
               fontWeight: FontWeight.bold,
-              fontSize: 11,
-              letterSpacing: 2,
-              wordSpacing: 5,
+              fontSize: 11.sp,
+              letterSpacing: 2.sp,
+              wordSpacing: 5.sp,
             ),
           ),
-          const SizedBox(
-            height: 15,
+          SizedBox(
+            height: 15.h,
           ),
           Container(
-            padding: const EdgeInsets.only(top: 5),
+            padding: EdgeInsets.only(top: 5.h),
             decoration: BoxDecoration(
               color: isDark ? kGrey30 : kLGrey30,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(40.0),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(40.0.r),
               ),
               boxShadow: [
                 BoxShadow(
-                  offset: const Offset(0, -5),
+                  offset: Offset(0.w, -5.h),
                   color: fgcolor.withOpacity(0.9),
                 ),
               ],
             ),
             child: SizedBox(
-              height: 80,
+              height: 80.h,
               child: UserLoginHeader(
                 herotag: herotag,
                 bradius: 30.0,
                 bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
-                shcolor: isDark ? kBlack10 : kGrey90,
+                shcolor: isDark ? kBlack10 : kLGrey70,
                 fgcolor: fgcolor,
                 icon: icon,
                 title: title,
-                fsize: 16,
+                fsize: 15,
                 press: press,
                 iconbg: isDark ? kPrimaryColor : kLPrimaryColor,
                 iconcolor: isDark ? kBlack20 : kBlack20,

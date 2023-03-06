@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import '../../../string_extensions.dart';
 import 'customerrormsg.dart';
@@ -7,8 +8,8 @@ import '../../../constants.dart';
 class CustomConfirmPasswordField extends StatefulWidget {
   final Color fgcolor;
   final String hinttext;
-  TextEditingController controller;
-  CustomConfirmPasswordField({
+  final TextEditingController controller;
+  const CustomConfirmPasswordField({
     super.key,
     required this.fgcolor,
     this.hinttext = "Password",
@@ -81,6 +82,8 @@ class _CustomConfirmPasswordFieldState
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -133,7 +136,7 @@ class _CustomConfirmPasswordFieldState
             padding:
                 const EdgeInsets.symmetric(vertical: 12.0, horizontal: 14.0),
             decoration: BoxDecoration(
-              color: kBlack20,
+              color: isDark ? kBlack20 : kGrey40,
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Row(

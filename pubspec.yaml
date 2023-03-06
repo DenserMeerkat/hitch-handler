@@ -37,11 +37,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.1.6
   material_design_icons_flutter: ^6.0.7096
+  pinput: ^2.2.30
   otp_text_field:
     git:
       url: https://github.com/AbedrahmanYassen/OTPTextField.git
   #overlay_support: ^2.1.0
-  #adaptive_theme: ^3.1.1
+  adaptive_theme: ^3.1.1
+  flutter_screenutil: ^5.6.1
   flutter_exit_app: ^1.1.2
   cloud_firestore: ^4.2.0
   firebase_core: ^2.5.0

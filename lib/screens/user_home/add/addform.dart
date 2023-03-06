@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/resources/firestore_methods.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -21,17 +20,13 @@ import 'moredetails.dart';
 import '../notifiers.dart';
 
 class AddForm extends StatefulWidget {
-  final ScrollController scrollController;
-  const AddForm({
-    required this.scrollController,
-    super.key,
-  });
+  const AddForm({required Key key}) : super(key: key);
 
   @override
-  State<AddForm> createState() => _AddFormState();
+  State<AddForm> createState() => AddFormState();
 }
 
-class _AddFormState extends State<AddForm> {
+class AddFormState extends State<AddForm> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -41,6 +36,8 @@ class _AddFormState extends State<AddForm> {
   String msgErrorText = '';
   final myLocFieldController = TextEditingController();
   String locErrorText = '';
+  final myDomFieldController = TextEditingController();
+  String domErrorText = '';
   DateTime myDateController = DateTime.now();
   TimeOfDay myTimeController = const TimeOfDay(hour: 0, minute: 0);
 
@@ -64,7 +61,7 @@ class _AddFormState extends State<AddForm> {
         myTitleFieldController.text,
         myMsgFieldController.text,
         myLocFieldController.text,
-        "open-domain", //
+        myDomFieldController.text,
         DateFormat('dd-MM-yyyy').format(myDateController),
         getTime(myTimeController),
         isAnon.toString(),
@@ -135,6 +132,7 @@ class _AddFormState extends State<AddForm> {
     myTitleFieldController.dispose();
     myMsgFieldController.dispose();
     myLocFieldController.dispose();
+    myDomFieldController.dispose();
     CustomMessageField.hasError = false;
     CustomTitleField.hasError = false;
     CustomTypeAheadField.hasError = false;
@@ -148,10 +146,13 @@ class _AddFormState extends State<AddForm> {
       titleErrorText = '';
       myMsgFieldController.clear();
       msgErrorText = '';
+      myDomFieldController.clear();
+      domErrorText = '';
       myLocFieldController.clear();
       locErrorText = '';
       CustomMessageField.hasError = false;
       CustomTitleField.hasError = false;
+      CustomTypeAheadField.hasError = false;
       _addImageEnabled = UploadFileList.currLength() < 5 ? true : false;
       _viewImagesEnabled = UploadFileList.currLength() > 0 ? true : false;
     });
@@ -159,7 +160,6 @@ class _AddFormState extends State<AddForm> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
@@ -189,17 +189,18 @@ class _AddFormState extends State<AddForm> {
                 ),
                 CustomTypeAheadField(
                   fgcolor: kPrimaryColor,
-                  controller: myLocFieldController,
+                  controller: myDomFieldController,
                   hintText: "Domain",
                   title: "Domain",
                   length: 50,
-                  errorText: locErrorText,
+                  errorText: domErrorText,
+                  showErrors: true,
                 ),
                 AddImages(
                     addImageEnabled: _addImageEnabled,
                     viewImagesEnabled: _viewImagesEnabled),
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: 35.h,
                 ),
                 NotificationListener<DateTimeChanged>(
                   child: const CustomDateTime(),
@@ -221,6 +222,7 @@ class _AddFormState extends State<AddForm> {
                   title: "Location",
                   length: 50,
                   errorText: locErrorText,
+                  showErrors: false,
                 ),
                 NotificationListener<SwitchChanged>(
                   child: const MoreDetails(),
@@ -233,122 +235,7 @@ class _AddFormState extends State<AddForm> {
                   },
                 ),
                 const SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: CustomSubmitButton(
-                        size: size,
-                        bgcolor: kSecButtonColor,
-                        msg: "Reset",
-                        fsize: 16,
-                        press: () {
-                          debugPrint(getTime(myTimeController));
-                          debugPrint("$myDateController");
-                          WidgetsBinding.instance.focusManager.primaryFocus
-                              ?.unfocus();
-                          showConfirmDialog(
-                            context,
-                            DialogCont(
-                              title: "Reset Fields",
-                              message:
-                                  "Are you sure you want to reset all fields ?",
-                              icon: Icons.restore_page_rounded,
-                              iconBackgroundColor:
-                                  kSecButtonColor.withOpacity(1),
-                              secondaryButtonColor:
-                                  kSecButtonColor.withOpacity(1),
-                              primaryButtonLabel: "Reset",
-                              primaryButtonColor: kGrey150,
-                              primaryFunction: () {
-                                debugPrint(UploadFileList.clearFileList());
-                                clearFields();
-                                Navigator.pop(context);
-                              },
-                              secondaryFunction: () {
-                                Navigator.pop(context);
-                              },
-                              borderRadius: 10,
-                              //showSecondaryButton: false,
-                            ),
-                            borderRadius: 10,
-                          );
-                        }, //Todo Dialog
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    Expanded(
-                      child: CustomSubmitButton(
-                        size: size,
-                        bgcolor: kPrimaryColor,
-                        msg: "Done",
-                        fsize: 16,
-                        press: () {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            WidgetsBinding.instance.focusManager.primaryFocus
-                                ?.unfocus();
-                            debugPrint("________");
-                            showConfirmDialog(
-                              context,
-                              DialogCont(
-                                title: "Confirm Post",
-                                message:
-                                    "Looks good!, Click 'Confirm' to add complaint",
-                                icon: Icons.check_box_rounded,
-                                iconBackgroundColor:
-                                    kPrimaryColor.withOpacity(0.7),
-                                secondaryButtonColor: kGrey150,
-                                primaryButtonLabel: "Confirm",
-                                primaryButtonColor:
-                                    kPrimaryColor.withOpacity(0.7),
-                                primaryFunction: () {
-                                  addPost(user.uid);
-                                  Navigator.pop(context);
-                                },
-                                secondaryFunction: () {
-                                  Navigator.pop(context);
-                                },
-                                borderRadius: 10,
-                                //showSecondaryButton: false,
-                              ),
-                              borderRadius: 10,
-                            );
-                          } else {
-                            AddPage.scrollController.animateTo(0,
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeIn);
-                            debugPrint("Hi");
-                            final snackBar = showCustomSnackBar(
-                              context,
-                              "One or more Fields have Errors",
-                              "Ok",
-                              () {},
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar)
-                                .closed
-                                .then((value) => ScaffoldMessenger.of(context)
-                                    .clearSnackBars());
-                            debugPrint(">>>>>ERRORS!");
-                          }
-                        }, //Todo_Navigation
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
+                  height: 30,
                 ),
               ],
             ),
@@ -356,5 +243,80 @@ class _AddFormState extends State<AddForm> {
         ),
       ],
     );
+  }
+
+  void clearForm() {
+    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+    showConfirmDialog(
+      context,
+      DialogCont(
+        title: "Reset Fields",
+        message: "Are you sure you want to reset all fields ?",
+        icon: Icons.restore_page_rounded,
+        iconBackgroundColor: kSecButtonColor.withOpacity(1),
+        secondaryButtonColor: kSecButtonColor.withOpacity(1),
+        primaryButtonLabel: "Reset",
+        primaryButtonColor: kGrey150,
+        primaryFunction: () {
+          debugPrint(UploadFileList.clearFileList());
+          clearFields();
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).clearSnackBars();
+          Navigator.of(context).pop();
+        },
+        secondaryFunction: () {
+          Navigator.pop(context);
+        },
+        borderRadius: 10,
+        //showSecondaryButton: false,
+      ),
+      borderRadius: 10,
+    );
+  }
+
+  void validateForm() {
+    final User user = Provider.of<UserProvider>(context, listen: false).getUser;
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+      debugPrint("________");
+      showConfirmDialog(
+        context,
+        DialogCont(
+          title: "Confirm Post",
+          message: "Looks good!, Click 'Confirm' to add complaint",
+          icon: Icons.check_box_rounded,
+          iconBackgroundColor: kPrimaryColor.withOpacity(0.7),
+          secondaryButtonColor: kGrey150,
+          primaryButtonLabel: "Confirm",
+          primaryButtonColor: kPrimaryColor.withOpacity(0.7),
+          primaryFunction: () {
+            addPost(user.uid);
+            Navigator.pop(context);
+          },
+          secondaryFunction: () {
+            Navigator.pop(context);
+          },
+          borderRadius: 10,
+          //showSecondaryButton: false,
+        ),
+        borderRadius: 10,
+      );
+    } else {
+      AddPage.scrollController.animateTo(0,
+          duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+      debugPrint("Hi");
+      final snackBar = showCustomSnackBar(
+        context,
+        "One or more Fields have Errors",
+        "Ok",
+        () {},
+      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackBar)
+          .closed
+          .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
+      debugPrint(">>>>>ERRORS!");
+    }
   }
 }

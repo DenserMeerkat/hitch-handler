@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'constants.dart';
 
-class Styles {
-  static ThemeData lightTheme = ThemeData(
+class ThemeProvider with ChangeNotifier {
+  static String currentTheme = 'system';
+
+  static String getThemeMode() => currentTheme;
+
+  ThemeMode get themeMode {
+    if (currentTheme == 'light') {
+      return ThemeMode.light;
+    } else if (currentTheme == 'dark') {
+      return ThemeMode.dark;
+    } else {
+      return ThemeMode.system;
+    }
+  }
+
+  void changeTheme(String theme) {
+    currentTheme = theme;
+    notifyListeners();
+  }
+
+  static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     useMaterial3: true,
+    primaryColor: kLPrimaryColor,
     scaffoldBackgroundColor: kLBackgroundColor,
     textTheme: TextTheme(
       headlineLarge: const TextStyle(
@@ -19,6 +38,11 @@ class Styles {
         color: kLTextColor.withOpacity(0.7),
         letterSpacing: 0.6,
       ),
+      headlineSmall: TextStyle(
+        fontSize: 18,
+        color: kLTextColor.withOpacity(0.7),
+        letterSpacing: 0.6,
+      ),
     ),
     textSelectionTheme: const TextSelectionThemeData(
       selectionHandleColor: kLPrimaryColor,
@@ -28,9 +52,10 @@ class Styles {
     ),
   );
 
-  static ThemeData darkTheme = ThemeData(
+  static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     useMaterial3: true,
+    primaryColor: kPrimaryColor,
     scaffoldBackgroundColor: kBackgroundColor,
     textTheme: TextTheme(
       headlineLarge: const TextStyle(
@@ -43,6 +68,11 @@ class Styles {
         color: kTextColor.withOpacity(0.7),
         letterSpacing: 0.6,
       ),
+      headlineSmall: TextStyle(
+        fontSize: 18,
+        color: kTextColor.withOpacity(0.7),
+        letterSpacing: 0.6,
+      ),
     ),
     textSelectionTheme: const TextSelectionThemeData(
       selectionHandleColor: kPrimaryColor,
@@ -51,31 +81,4 @@ class Styles {
       actionTextColor: kLPrimaryColor,
     ),
   );
-
-  static void darkStatusAndNavigationBar() {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.light,
-        statusBarColor: kBackgroundColor,
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: kBackgroundColor,
-        systemNavigationBarIconBrightness: Brightness.light,
-      ),
-    );
-  }
-
-  static void lightStatusAndNavigationBar() {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.dark,
-        statusBarColor: kLBackgroundColor,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: kLBackgroundColor,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
-  }
 }
-
-//textTheme:Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-

@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../args_class.dart';
 import '../components/customfields/customdatepickfield.dart';
 import '../components/utils/customdialog.dart';
@@ -41,7 +43,7 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
     return Center(
       child: Form(
@@ -68,22 +70,19 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
                 TextInputType.number,
               ],
             ),
-            SizedBox(
-              height: size.height * 0.01,
-            ),
             CustomDatePickField(
               controller: myDateFieldController,
               fgcolor: widget.fgcolor,
             ),
             SizedBox(
-              height: size.height * 0.04,
+              height: 10.h,
             ),
             CustomSubmitButton(
               size: size,
               bgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
               msg: "Continue",
-              fsize: 20,
-              width: 2.5,
+              fsize: 20.sp,
+              width: 2.5.w,
               press: () {
                 WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                 if (_formKey.currentState!.validate()) {

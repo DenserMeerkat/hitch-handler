@@ -1,5 +1,7 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_provider.dart';
 import 'feed/postcard.dart';
@@ -31,59 +33,61 @@ class _BookmarkPageState extends State<BookmarkPage>
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
-    Size size = MediaQuery.of(context).size; // Available screen size
-
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+    //Size size = MediaQuery.of(context).size; // Available screen size
+    final bool isDark =
+        AdaptiveTheme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
+      backgroundColor: isDark ? Colors.transparent : kLBlack20,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
+        backgroundColor: isDark ? Colors.transparent : kLBlack20,
+        surfaceTintColor: isDark ? Colors.transparent : kLBlack20,
         elevation: 0,
         flexibleSpace: FlexibleSpaceBar(
           background: Container(
             padding: EdgeInsets.only(
-              top: 10.0,
-              left: size.width * 0.22,
-              right: size.width * 0.22,
-              bottom: 14.0,
+              top: 10.0.h,
+              left: 70.w,
+              right: 70.w,
+              bottom: 14.0.h,
             ),
-            decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: kGrey40)),
+            decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(color: isDark ? kGrey40 : kLGrey40)),
             ),
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(color: kGrey40),
-                // boxShadow: const [
-                //   BoxShadow(
-                //     offset: Offset(0, 2),
-                //     color: kBlack10,
-                //   )
-                // ],
+                borderRadius: BorderRadius.circular(50.r),
+                border: Border.all(
+                  color: isDark ? kGrey40 : kLGrey70,
+                ),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(50.r),
                 child: Container(
-                  color: kGrey30,
+                  color: isDark ? kGrey30 : kLBlack10,
                   child: TabBar(
-                    dividerColor: kBlack20,
+                    dividerColor: isDark ? kBlack20 : kLBlack10,
                     indicatorWeight: 0,
                     indicatorSize: TabBarIndicatorSize.tab,
                     labelColor: kBlack10,
-                    unselectedLabelColor: kTextColor.withOpacity(0.8),
-                    labelStyle: const TextStyle(
+                    unselectedLabelColor: isDark
+                        ? kTextColor.withOpacity(0.8)
+                        : kLTextColor.withOpacity(0.8),
+                    labelStyle: TextStyle(
                       fontWeight: FontWeight.w800,
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       letterSpacing: 0.5,
                     ),
-                    unselectedLabelStyle: const TextStyle(
+                    unselectedLabelStyle: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       letterSpacing: 0.5,
                     ),
-                    splashBorderRadius: BorderRadius.circular(50),
+                    splashBorderRadius: BorderRadius.circular(50.r),
                     indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(50.r),
                       color: kPrimaryColor.withOpacity(0.9),
                       border: Border.all(
                         color: kPrimaryColor,
@@ -129,41 +133,36 @@ class _BookmarkPageState extends State<BookmarkPage>
                 if (snapshot1.data!.docs.isEmpty) {
                   return Center(
                       child: Container(
-                    height: 300,
-                    margin: const EdgeInsets.symmetric(horizontal: 30),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 30),
+                    constraints:
+                        BoxConstraints(minHeight: 280.h, maxHeight: 340.h),
+                    margin: EdgeInsets.symmetric(horizontal: 30.w),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 20.0.w, vertical: 30.h),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: kGrey30,
+                        color: isDark ? kGrey30 : kLGrey40,
                         width: 2,
                       ),
-                      borderRadius: BorderRadius.circular(10),
-                      color: kGrey30.withOpacity(0.4),
-                      // boxShadow: const [
-                      //   BoxShadow(
-                      //       offset: Offset(1, 2),
-                      //       color: kBlack10,
-                      //       blurRadius: 5),
-                      // ],
+                      borderRadius: BorderRadius.circular(10.r),
+                      color: isDark ? kGrey30.withOpacity(0.4) : kLGrey30,
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.post_add_rounded,
                           size: 100,
                           color: kPrimaryColor,
                           shadows: [
                             Shadow(
-                              offset: Offset(2, 5),
-                              color: kBlack10,
+                              offset: const Offset(2, 5),
+                              color: isDark ? kBlack10 : kGrey40,
                             )
                           ],
                         ),
                         SizedBox(
-                          height: 40,
+                          height: 40.h,
                           width: double.infinity,
                         ),
                         FittedBox(
@@ -171,21 +170,21 @@ class _BookmarkPageState extends State<BookmarkPage>
                             "Posts you have made \nappear here",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: kGrey150,
-                              fontSize: 24,
+                              color: isDark ? kGrey150 : kGrey50,
+                              fontSize: 24.sp,
                             ),
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 20.h,
                         ),
                         FittedBox(
                           child: Text(
                             "You haven't made any posts yet",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: kGrey150,
-                              fontSize: 12,
+                              color: isDark ? kGrey150 : kGrey50,
+                              fontSize: 12.sp,
                             ),
                           ),
                         ),
@@ -225,42 +224,37 @@ class _BookmarkPageState extends State<BookmarkPage>
                 if (snapshot2.data!.docs.isEmpty) {
                   return Center(
                       child: Container(
-                    height: 300,
-                    margin: const EdgeInsets.symmetric(horizontal: 30),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 30),
+                    constraints:
+                        BoxConstraints(minHeight: 280.h, maxHeight: 340.h),
+                    margin: EdgeInsets.symmetric(horizontal: 30.w),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 20.0.w, vertical: 30.h),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: kGrey30,
+                        color: isDark ? kGrey30 : kLGrey40,
                         width: 2,
                       ),
-                      borderRadius: BorderRadius.circular(10),
-                      color: kGrey30.withOpacity(0.4),
-                      // boxShadow: const [
-                      //   BoxShadow(
-                      //       offset: Offset(1, 2),
-                      //       color: kBlack10,
-                      //       blurRadius: 5),
-                      // ],
+                      borderRadius: BorderRadius.circular(10.r),
+                      color: isDark ? kGrey30.withOpacity(0.4) : kLGrey30,
                     ),
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(
                             Icons.bookmark_added_outlined,
                             size: 100,
                             color: kPrimaryColor,
                             shadows: [
                               Shadow(
-                                offset: Offset(2, 5),
-                                color: kBlack10,
+                                offset: const Offset(2, 5),
+                                color: isDark ? kBlack10 : kGrey40,
                               )
                             ],
                           ),
                           SizedBox(
-                            height: 40,
+                            height: 40.h,
                             width: double.infinity,
                           ),
                           FittedBox(
@@ -268,21 +262,19 @@ class _BookmarkPageState extends State<BookmarkPage>
                               "Your Bookmarked posts \nappear here",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: kGrey150,
-                                fontSize: 24,
+                                color: isDark ? kGrey150 : kGrey50,
+                                fontSize: 24.sp,
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          SizedBox(height: 20.h),
                           FittedBox(
                             child: Text(
                               "You haven't bookmarked any posts",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: kGrey150,
-                                fontSize: 12,
+                                color: isDark ? kGrey150 : kGrey50,
+                                fontSize: 12.sp,
                               ),
                             ),
                           ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/customfields/customelevatedbutton.dart';
 import '../../constants.dart';
 import 'backbuttonwithcolor.dart';
 import 'labelwithicon.dart';
@@ -34,7 +36,18 @@ class UserLoginHeader extends StatelessWidget {
   final double fsize;
 
   Widget labelwithicon() {
-    Widget labelicon = LabelWithIcon(
+    Widget labelicon =
+        // CustomElevatedButtonWithIcon(
+        //   fgcolor: fgcolor,
+        //   iconcolor: iconcolor,
+        //   textcolor: textcolor,
+        //   shcolor: shcolor,
+        //   title: title,
+        //   press: () {},
+        //   icon: icon,
+        //   isButton: false,
+        // );
+        LabelWithIcon(
       bradius: bradius,
       bgcolor: bgcolor,
       shcolor: shcolor,
@@ -48,7 +61,10 @@ class UserLoginHeader extends StatelessWidget {
     if (herotag != null) {
       return Hero(
         tag: herotag!,
-        child: Material(type: MaterialType.transparency, child: labelicon),
+        child: Material(
+          type: MaterialType.transparency,
+          child: labelicon,
+        ),
       );
     } else {
       return labelicon;
@@ -57,16 +73,16 @@ class UserLoginHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.only(
-        left: size.width * 0.075,
-        right: size.width * 0.075,
+        left: 25.w,
+        right: 25.w,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           labelwithicon(),
-          const Spacer(),
+          SizedBox(width: 10.w),
           BackButtonWithColor(
             shcolor: shcolor,
             press: press,

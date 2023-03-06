@@ -1,4 +1,6 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../args_class.dart';
 import '../launch/launch_screen.dart';
 import 'loginform.dart';
@@ -15,7 +17,7 @@ class AuthorityLoginScreen extends StatelessWidget {
   @override
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     final arguments =
         ModalRoute.of(context)?.settings.arguments as LoginSignUpArguments;
     Size size = MediaQuery.of(context).size; // Available screen size
@@ -24,7 +26,7 @@ class AuthorityLoginScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
-        toolbarHeight: kHeaderHeight,
+        toolbarHeight: kHeaderHeight.h,
         elevation: 0,
         flexibleSpace: CustomSignInAppBar(
           herotag: arguments.herotag,
@@ -39,16 +41,13 @@ class AuthorityLoginScreen extends StatelessWidget {
           },
         ),
       ),
-      body: SizedBox(
-        height: size.height * 0.67,
-        width: size.height * 0.95,
-        child: LoginBody(
-          formwidget: LoginForm(
-            fgcolor: arguments.fgcolor,
-            title: arguments.title,
-            icon: arguments.icon,
-            homeroute: AuthorityLoginScreen.routeName,
-          ),
+      body: LoginBody(
+        formwidget: LoginForm(
+          userIndex: 1,
+          fgcolor: arguments.fgcolor,
+          title: arguments.title,
+          icon: arguments.icon,
+          homeroute: AuthorityLoginScreen.routeName,
         ),
       ),
       bottomNavigationBar: Container(
@@ -56,12 +55,12 @@ class AuthorityLoginScreen extends StatelessWidget {
           color: isDark ? kBackgroundColor : kLBackgroundColor,
           boxShadow: [
             BoxShadow(
-              offset: const Offset(0, -2),
+              offset: Offset(0.w, -2.h),
               color: isDark ? kBlack15 : kLGrey50,
             ),
           ],
         ),
-        height: 80,
+        height: 70.h,
         child: LoginSignUpFooter(
           size: size,
           msg: "Contact Support to register as an Admin.",
