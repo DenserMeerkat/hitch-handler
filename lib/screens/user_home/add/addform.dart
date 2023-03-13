@@ -212,8 +212,8 @@ class AddFormState extends State<AddForm> {
                     return true;
                   },
                 ),
-                const SizedBox(
-                  height: 36,
+                SizedBox(
+                  height: 35.h,
                 ),
                 CustomTypeAheadField(
                   fgcolor: kPrimaryColor,

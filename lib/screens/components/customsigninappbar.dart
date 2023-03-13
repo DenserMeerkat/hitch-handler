@@ -63,7 +63,7 @@ class CustomSignInAppBar extends StatelessWidget {
               child: UserLoginHeader(
                 herotag: herotag,
                 bradius: 30.0,
-                bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
+                bgcolor: isDark ? kBackgroundColor : kLBlack10,
                 shcolor: isDark ? kBlack10 : kLGrey70,
                 fgcolor: fgcolor,
                 icon: icon,

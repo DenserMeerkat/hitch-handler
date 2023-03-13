@@ -66,31 +66,19 @@ class FirestoreMethods {
   Future<String> upVotePost(String postId, String uid, List upVotes) async {
     try {
       var db = _firestore.collection('posts').doc(postId);
-      var docs = await db.get();
 
       if (upVotes.contains(uid)) {
         await db.update({
           'upVotes': FieldValue.arrayRemove([uid]),
         });
 
-        Map<String, dynamic> data = docs.data()!;
-        int newCount = data['upVotes'].length - 1;
-        await db.update({'upVoteCount': newCount});
-
-        // await _firestore.collection('posts').doc(postId).update({
-        //   'upVoteCount': FieldValue.increment(-1),
-        // });
+        await db.update({'upVoteCount': FieldValue.increment(-1)});
       } else {
         await _firestore.collection('posts').doc(postId).update({
           'upVotes': FieldValue.arrayUnion([uid]),
         });
 
-        Map<String, dynamic> data = docs.data()!;
-        int newCount = data['upVotes'].length + 1;
-        await db.update({'upVoteCount': newCount});
-        // await _firestore.collection('posts').doc(postId).update({
-        //   'upVoteCount': FieldValue.increment(1),
-        // });
+        await db.update({'upVoteCount': FieldValue.increment(1)});
       }
       debugPrint("UpVoteChangeSuccess");
       return "success";

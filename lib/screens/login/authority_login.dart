@@ -63,6 +63,7 @@ class AuthorityLoginScreen extends StatelessWidget {
         height: 70.h,
         child: LoginSignUpFooter(
           size: size,
+          maxLines: 2,
           msg: "Contact Support to register as an Admin.",
           btntext: "Support",
           fsize: 15,

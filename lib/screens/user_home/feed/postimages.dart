@@ -10,11 +10,11 @@ import '../../../constants.dart';
 class PostImages extends StatefulWidget {
   const PostImages({
     super.key,
-    required this.widget,
+    required this.snap,
     required this.imgList,
   });
   final List<dynamic> imgList;
-  final PostCard widget;
+  final dynamic snap;
 
   @override
   State<PostImages> createState() => _PostImagesState();

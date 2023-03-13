@@ -19,10 +19,11 @@ Future<DateTime?> showCustomDatePicker(
               ? ThemeData.dark().copyWith(
                   useMaterial3: true,
                   dialogBackgroundColor: kBlack20,
-                  datePickerTheme: const DatePickerThemeData(
+                  // datePickerTheme: const DatePickerThemeData(
+                  dialogTheme: const DialogTheme(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    headerBackgroundColor: kBlack20,
+                    //headerBackgroundColor: kBlack20,
                     backgroundColor: kGrey30,
                     surfaceTintColor: kGrey70,
                   ),
@@ -37,11 +38,12 @@ Future<DateTime?> showCustomDatePicker(
               : ThemeData.light().copyWith(
                   useMaterial3: true,
                   dialogBackgroundColor: kGrey30,
-                  datePickerTheme: const DatePickerThemeData(
+                  //datePickerTheme: const DatePickerThemeData(
+                  dialogTheme: const DialogTheme(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    headerBackgroundColor: kGrey30,
-                    headerForegroundColor: kTextColor,
+                    //headerBackgroundColor: kGrey30,
+                    //headerForegroundColor: kTextColor,
                     backgroundColor: kLBlack20,
                     surfaceTintColor: kLBlack20,
                   ),
@@ -50,7 +52,7 @@ Future<DateTime?> showCustomDatePicker(
                     onSurface: kLTextColor,
                   ),
                   buttonTheme: const ButtonThemeData(
-                    colorScheme: ColorScheme.dark(),
+                    colorScheme: ColorScheme.light(),
                   ),
                 ),
           child: child!,

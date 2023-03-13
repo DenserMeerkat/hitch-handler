@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../constants.dart';
@@ -10,6 +11,7 @@ class LoginSignUpFooter extends StatelessWidget {
     required this.msg,
     required this.btntext,
     required this.fsize,
+    this.maxLines = 1,
     required this.press,
   }) : super(key: key);
 
@@ -17,6 +19,7 @@ class LoginSignUpFooter extends StatelessWidget {
   final String msg;
   final String btntext;
   final double fsize;
+  final int maxLines;
   final Function()? press;
 
   @override
@@ -35,8 +38,9 @@ class LoginSignUpFooter extends StatelessWidget {
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.0.h),
-                  child: Text(
+                  child: AutoSizeText(
                     msg,
+                    maxLines: maxLines,
                     style: TextStyle(
                       fontSize: fsize.sp,
                       letterSpacing: 1.sp,

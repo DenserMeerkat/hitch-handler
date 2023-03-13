@@ -1,6 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/settings_page.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../constants.dart';
 import '../../resources/auth_methods.dart';
 import 'utils/customdialog.dart';
@@ -17,6 +19,7 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return AppBar(
+      automaticallyImplyLeading: false,
       elevation: 0,
       title: Text(
         "HITCH HANDLER",
@@ -32,64 +35,65 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
       centerTitle: true,
       backgroundColor: isDark ? kBackgroundColor : kLBlack20,
       surfaceTintColor: isDark ? kBackgroundColor : kLBlack20,
-      leading: Builder(
-        builder: (BuildContext context) {
-          return Transform.scale(
-            scaleX: -1,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                splashRadius: 20.0,
-                icon: Icon(
-                  Icons.exit_to_app_rounded,
-                  color: isDark ? kTextColor : kLTextColor,
-                ),
-                onPressed: () {
-                  showConfirmDialog(
-                    context,
-                    DialogCont(
-                      title: "Logout",
-                      message: "Are you sure you want to logout ?",
-                      icon: Icons.exit_to_app_rounded,
-                      iconBackgroundColor: kErrorColor.withOpacity(0.7),
-                      primaryButtonLabel: "Logout",
-                      primaryButtonColor: kGrey150,
-                      secondaryButtonColor: kErrorColor.withOpacity(0.7),
-                      primaryFunction: () async {
-                        final navigator = Navigator.of(context);
-                        final scaffold = ScaffoldMessenger.of(context);
-                        await AuthMethods().signOut();
-                        scaffold.removeCurrentSnackBar();
-                        navigator.pushNamedAndRemoveUntil(
-                            LaunchScreen.routeName,
-                            (Route<dynamic> route) => false);
-                      },
-                      secondaryFunction: () {
-                        Navigator.pop(context);
-                      },
-                      borderRadius: 10,
-                      //showSecondaryButton: false,
-                    ),
-                    borderRadius: 10,
-                  );
-                },
-                tooltip: "Logout",
-              ),
-            ),
-          );
-        },
-      ),
+      // leading: Builder(
+      //   builder: (BuildContext context) {
+      //     return Transform.scale(
+      //       scaleX: -1,
+      //       child: Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: IconButton(
+      //           splashColor: isDark
+      //               ? kTextColor.withOpacity(0.1)
+      //               : kLTextColor.withOpacity(0.1),
+      //           focusColor: isDark
+      //               ? kTextColor.withOpacity(0.1)
+      //               : kLTextColor.withOpacity(0.1),
+      //           highlightColor: isDark
+      //               ? kTextColor.withOpacity(0.1)
+      //               : kLTextColor.withOpacity(0.1),
+      //           hoverColor: isDark
+      //               ? kTextColor.withOpacity(0.1)
+      //               : kLTextColor.withOpacity(0.1),
+      //           splashRadius: 20.0,
+      //           icon: Icon(
+      //             Icons.exit_to_app_outlined,
+      //             color: isDark
+      //                 ? kTextColor.withOpacity(0.9)
+      //                 : kLTextColor.withOpacity(0.9),
+      //           ),
+      //           onPressed: () {},
+      //           tooltip: "Logout",
+      //         ),
+      //       ),
+      //     );
+      //   },
+      // ),
       actions: <Widget>[
         IconButton(
+          splashColor: isDark
+              ? kTextColor.withOpacity(0.1)
+              : kLTextColor.withOpacity(0.1),
+          focusColor: isDark
+              ? kTextColor.withOpacity(0.1)
+              : kLTextColor.withOpacity(0.1),
+          highlightColor: isDark
+              ? kTextColor.withOpacity(0.1)
+              : kLTextColor.withOpacity(0.1),
+          hoverColor: isDark
+              ? kTextColor.withOpacity(0.1)
+              : kLTextColor.withOpacity(0.1),
           splashRadius: 20.0,
           icon: Icon(
-            Icons.account_box_outlined,
-            color: isDark ? kTextColor : kLTextColor,
+            Icons.settings_outlined,
+            color: isDark
+                ? kTextColor.withOpacity(0.9)
+                : kLTextColor.withOpacity(0.9),
           ),
           onPressed: () {
-            Scaffold.of(context).openEndDrawer();
+            Navigator.of(context).pushNamed(SettingsPage.routeName);
+            //Scaffold.of(context).openEndDrawer();
           },
-          tooltip: "Account",
+          tooltip: "Settings",
         ),
         SizedBox(width: 3.w),
       ],

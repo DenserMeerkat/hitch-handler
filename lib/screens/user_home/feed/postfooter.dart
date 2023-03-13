@@ -1,7 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/args_class.dart';
+import 'package:hitch_handler/screens/components/post_page.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../../resources/firestore_methods.dart';
@@ -20,7 +21,7 @@ class PostInfo extends StatelessWidget {
   final String location;
   final String date;
   final String time;
-  final PostCard widget;
+  final dynamic widget;
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +82,12 @@ class PostInfo extends StatelessWidget {
 class ActionButtons extends StatefulWidget {
   final dynamic snap;
   final dynamic user;
+  final bool showOpen;
   const ActionButtons({
     super.key,
     required this.snap,
     required this.user,
+    this.showOpen = true,
   });
 
   @override
@@ -93,13 +96,13 @@ class ActionButtons extends StatefulWidget {
 
 class _ActionButtonsState extends State<ActionButtons> {
   bool isUpVoted = false;
-  int upVoteCount = 0;
+  late int upVoteCount;
 
   bool isBookmarked = false;
   @override
   void initState() {
     isUpVoted = widget.snap['upVotes'].contains(widget.user.uid) ? true : false;
-    upVoteCount = widget.snap['upVotes'].length;
+    upVoteCount = widget.snap['upVoteCount'];
     isBookmarked =
         widget.user.bookmarks.contains(widget.snap['postId']) ? true : false;
     super.initState();
@@ -252,25 +255,35 @@ class _ActionButtonsState extends State<ActionButtons> {
             ),
           ),
           SizedBox(width: 8.w),
-          InkWell(
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-              child: Icon(
-                Icons.open_in_new,
-                color: isDark
-                    ? kTextColor.withOpacity(0.7)
-                    : kLTextColor.withOpacity(0.7),
-                size: 20.sp,
-                // shadows: [
-                //   BoxShadow(
-                //       offset: const Offset(1, 1),
-                //       color: isDark ? Colors.transparent : kLGrey30,
-                //       blurRadius: 5)
-                // ],
-              ),
-            ),
-          ),
+          widget.showOpen
+              ? InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: () {
+                    final args = PostsArguments(widget.snap);
+                    Navigator.pushNamed(context, PostsPage.routeName,
+                        arguments: args);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 8.0),
+                    child: Icon(
+                      Icons.open_in_new,
+                      color: isDark
+                          ? kTextColor.withOpacity(0.7)
+                          : kLTextColor.withOpacity(0.7),
+                      size: 20.sp,
+                      // shadows: [
+                      //   BoxShadow(
+                      //       offset: const Offset(1, 1),
+                      //       color: isDark ? Colors.transparent : kLGrey30,
+                      //       blurRadius: 5)
+                      // ],
+                    ),
+                  ),
+                )
+              : const SizedBox(
+                  width: 0,
+                ),
           const Spacer(),
           LikeButton(
             size: 20.sp,

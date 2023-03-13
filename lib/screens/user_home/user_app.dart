@@ -1,10 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/user_home/add/addform.dart';
 import '../../providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import '../components/utils/customdialog.dart';
 import '../components/appbar.dart';
 import 'archives_page.dart';
 import 'home_page.dart';
@@ -27,12 +25,15 @@ class _AppScreenState extends State<AppScreen> {
   String mobno = "";
   static const List<Widget> _homeTabs = [
     HomePage(),
-    //SearchPage(),
-    HomePage(),
-    //AddPage(),
+    SizedBox(),
     BookmarkPage(),
-    //SearchPage(),
   ];
+  final pageController = PageController();
+  void onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   addData() async {
     UserProvider userProvider = Provider.of(context, listen: false);
@@ -46,6 +47,7 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   void _tabChange(int index) {
+    pageController.jumpToPage(index);
     setState(() {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       _selectedIndex = index;
@@ -62,87 +64,16 @@ class _AppScreenState extends State<AppScreen> {
         return false;
       },
       child: Scaffold(
-        endDrawer: Drawer(
-          width: 280,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
-          surfaceTintColor: isDark ? kBackgroundColor : kLBackgroundColor,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  borderRadius:
-                      const BorderRadius.only(topLeft: Radius.circular(20)),
-                  color: isDark ? kBlack20 : kLGrey50,
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Future.delayed(
-                      const Duration(seconds: 0),
-                      () => showToggleThemeDialog(context),
-                    );
-                  },
-                  icon: Icon(Icons.palette_outlined),
-                ),
-              ),
-              ListTile(
-                splashColor: isDark ? kGrey50 : kLGrey50,
-                focusColor: isDark ? kGrey50 : kLGrey50,
-                tileColor: isDark ? kGrey30 : kLGrey30,
-                title: Text(
-                  user.email,
-                  style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
-                ),
-                onTap: () {
-                  // Update the state of the app.
-                  // ...
-                },
-              ),
-              ListTile(
-                splashColor: isDark ? kGrey50 : kLGrey50,
-                focusColor: isDark ? kGrey50 : kLGrey50,
-                tileColor: isDark ? kGrey30 : kLGrey30,
-                title: Text(
-                  user.rollno,
-                  style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
-                ),
-                onTap: () {
-                  // Update the state of the app.
-                  // ...
-                },
-              ),
-              ListTile(
-                splashColor: isDark ? kGrey50 : kLGrey50,
-                focusColor: isDark ? kGrey50 : kLGrey50,
-                tileColor: isDark ? kGrey30 : kLGrey30,
-                title: Text(
-                  user.mobno,
-                  style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
-                ),
-                onTap: () {
-                  // Update the state of the app.
-                  // ...
-                },
-              ),
-            ],
-          ),
-        ),
-        drawerEdgeDragWidth: size.width * 0.25,
         backgroundColor: isDark ? kBackgroundColor : kLBlack20,
         appBar: const MainAppBar(),
-        body: Container(
-          height: size.height * 0.9,
-          width: size.width,
-          decoration: const BoxDecoration(
-              //color: kGrey30,
-              ),
-          child: _homeTabs.elementAt(_selectedIndex),
+        body: PageView(
+          controller: pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: onPageChanged,
+          children: _homeTabs,
         ),
         bottomNavigationBar: Container(
-          padding: const EdgeInsets.only(top: 2),
+          padding: const EdgeInsets.only(top: 1),
           color: isDark ? kGrey30 : kLGrey30,
           child: SafeArea(
             child: NavigationBarTheme(
@@ -198,9 +129,10 @@ class _AppScreenState extends State<AppScreen> {
                     onTap: () {
                       pushAddPage(context);
                     },
-                    child: SizedBox(
+                    child: Container(
+                      color: Colors.transparent,
                       height: double.infinity,
-                      width: 50,
+                      width: double.maxFinite,
                       child: Stack(
                         alignment: Alignment.topCenter,
                         fit: StackFit.loose,
@@ -244,23 +176,6 @@ class _AppScreenState extends State<AppScreen> {
                       ),
                     ),
                   ),
-
-                  // NavigationDestination(
-                  //   selectedIcon: const Icon(
-                  //     Icons.add_box_rounded,
-                  //     color: kBackgroundColor,
-                  //     size: 25,
-                  //   ),
-                  //   icon:
-                  // Icon(
-                  //     Icons.add_box_outlined,
-                  //     color: isDark
-                  //         ? kTextColor.withOpacity(0.4)
-                  //         : kLTextColor.withOpacity(0.6),
-                  //     size: 28,
-                  //   ),
-                  //   label: 'Add',
-                  // ),
                   NavigationDestination(
                     selectedIcon: const Icon(
                       Icons.archive_rounded,
@@ -297,7 +212,7 @@ class _AppScreenState extends State<AppScreen> {
             position: Tween<Offset>(
               begin: const Offset(0.0, 1.0),
               end: Offset.zero,
-            ).animate(animation),
+            ).chain(CurveTween(curve: Curves.decelerate)).animate(animation),
             child: child,
           );
 

@@ -1,21 +1,7 @@
-// import 'package:flutter/material.dart';
-// import 'routing_constants.dart';
-// import 'screens/home/app.dart';
-// import 'screens/launch/launch_screen.dart';
-
-// Route<dynamic> generateRoute(RouteSettings settings) {
-//   switch (settings.name) {
-//     case LaunchViewRoute:
-//       return MaterialPageRoute(builder: (context) => const LaunchScreen());
-//     case AppViewRoute:
-//       return MaterialPageRoute(builder: (context) => const AppScreen());
-//     default:
-//       return MaterialPageRoute(builder: (context) => const LaunchScreen());
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'widget_tree.dart';
+import 'screens/components/settings_page.dart';
+import 'screens/components/post_page.dart';
 import 'screens/auth_home/auth_app.dart';
 import 'screens/user_home/search_page.dart';
 import 'screens/launch/launch_screen.dart';
@@ -27,7 +13,7 @@ import 'screens/components/otp_screen.dart';
 import 'screens/user_home/user_app.dart';
 
 final Map<String, WidgetBuilder> routes = {
-  LaunchScreen.routeName: (context) => LaunchScreen(),
+  LaunchScreen.routeName: (context) => const LaunchScreen(),
   StudentLoginScreen.routeName: (context) => const StudentLoginScreen(),
   AuthorityLoginScreen.routeName: (context) => const AuthorityLoginScreen(),
   AdminLoginScreen.routeName: (context) => const AdminLoginScreen(),
@@ -35,6 +21,8 @@ final Map<String, WidgetBuilder> routes = {
   OtpScreen.routeName: (context) => const OtpScreen(),
   AppScreen.routeName: (context) => const AppScreen(),
   SearchPage.routeName: (context) => const SearchPage(),
+  SettingsPage.routeName: (context) => const SettingsPage(),
+  PostsPage.routeName: (context) => const PostsPage(),
   AuthAppScreen.routeName: (context) => const AuthAppScreen(),
   WidgetTree.routeName: (context) => const WidgetTree(),
 };

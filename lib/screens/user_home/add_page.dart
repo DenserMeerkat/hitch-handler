@@ -32,10 +32,11 @@ class _AddPageState extends State<AddPage> {
         return false;
       },
       child: Scaffold(
+        backgroundColor: isDark ? kGrey30 : kLBackgroundColor,
         appBar: AppBar(
           elevation: 9,
-          backgroundColor: isDark ? kBackgroundColor : Colors.white,
-          surfaceTintColor: isDark ? kBackgroundColor : Colors.white,
+          backgroundColor: isDark ? kBlack20 : kLBlack10,
+          surfaceTintColor: isDark ? kBlack20 : kLBlack10,
           title: Text(
             "Add Post",
             style: AdaptiveTheme.of(context)
@@ -54,6 +55,18 @@ class _AddPageState extends State<AddPage> {
                 padding: const EdgeInsets.all(6.0),
                 child: FittedBox(
                   child: IconButton(
+                    splashColor: isDark
+                        ? kTextColor.withOpacity(0.1)
+                        : kLTextColor.withOpacity(0.1),
+                    focusColor: isDark
+                        ? kTextColor.withOpacity(0.1)
+                        : kLTextColor.withOpacity(0.1),
+                    highlightColor: isDark
+                        ? kTextColor.withOpacity(0.1)
+                        : kLTextColor.withOpacity(0.1),
+                    hoverColor: isDark
+                        ? kTextColor.withOpacity(0.1)
+                        : kLTextColor.withOpacity(0.1),
                     style:
                         AdaptiveTheme.of(context).theme.iconButtonTheme.style,
                     icon: Icon(
@@ -124,7 +137,7 @@ class _AddPageState extends State<AddPage> {
               child: Container(
                 constraints:
                     const BoxConstraints(minHeight: 300, maxHeight: 2000),
-                color: isDark ? kGrey30.withOpacity(0.7) : kLGrey30,
+                color: isDark ? kGrey30 : kLBlack20,
                 child: SingleChildScrollView(
                   controller: AddPage.scrollController,
                   child: Column(

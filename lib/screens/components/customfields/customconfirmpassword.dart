@@ -106,9 +106,6 @@ class _CustomConfirmPasswordFieldState
             checkPass();
           },
         ),
-        // const SizedBox(
-        //   height: 10.0,
-        // ),
         CustomPasswordField(
           controller: myConfPassFieldController,
           extraError: false,
@@ -136,7 +133,7 @@ class _CustomConfirmPasswordFieldState
             padding:
                 const EdgeInsets.symmetric(vertical: 12.0, horizontal: 14.0),
             decoration: BoxDecoration(
-              color: isDark ? kBlack20 : kGrey40,
+              color: isDark ? kBlack20 : kGrey50,
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Row(

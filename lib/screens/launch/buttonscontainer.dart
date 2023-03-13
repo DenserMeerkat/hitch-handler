@@ -52,7 +52,7 @@ class ButtonsContainer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: CustomElevatedButtonWithIcon(
-                bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
+                bgcolor: isDark ? kBackgroundColor : kLBlack10,
                 iconcolor: isDark ? kBlack20 : kBlack20,
                 fgcolor: isDark ? kStudentColor : kLStudentColor,
                 shcolor: isDark ? kBlack10 : kLGrey70,
@@ -85,7 +85,7 @@ class ButtonsContainer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: CustomElevatedButtonWithIcon(
-                bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
+                bgcolor: isDark ? kBackgroundColor : kLBlack10,
                 iconcolor: kBlack20,
                 fgcolor: isDark ? kAuthorityColor : kLAuthorityColor,
                 shcolor: isDark ? kBlack10 : kLGrey70,
@@ -119,7 +119,7 @@ class ButtonsContainer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: CustomElevatedButtonWithIcon(
-                bgcolor: isDark ? kBackgroundColor : kLBackgroundColor,
+                bgcolor: isDark ? kBackgroundColor : kLBlack10,
                 iconcolor: kBlack20,
                 fgcolor: isDark ? kAdminColor : kLAdminColor,
                 shcolor: isDark ? kBlack10 : kLGrey70,

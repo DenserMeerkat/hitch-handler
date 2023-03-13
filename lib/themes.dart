@@ -25,7 +25,7 @@ class ThemeProvider with ChangeNotifier {
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     useMaterial3: true,
-    primaryColor: kLPrimaryColor,
+    colorSchemeSeed: kLPrimaryColor,
     scaffoldBackgroundColor: kLBackgroundColor,
     textTheme: TextTheme(
       headlineLarge: const TextStyle(
@@ -48,14 +48,26 @@ class ThemeProvider with ChangeNotifier {
       selectionHandleColor: kLPrimaryColor,
     ),
     snackBarTheme: const SnackBarThemeData(
-      actionTextColor: kPrimaryColor,
+      actionTextColor: kLPrimaryColor,
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      surfaceTintColor: kLBackgroundColor,
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: ButtonStyle(
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
     ),
   );
 
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     useMaterial3: true,
-    primaryColor: kPrimaryColor,
+    colorSchemeSeed: kPrimaryColor,
     scaffoldBackgroundColor: kBackgroundColor,
     textTheme: TextTheme(
       headlineLarge: const TextStyle(
@@ -78,7 +90,15 @@ class ThemeProvider with ChangeNotifier {
       selectionHandleColor: kPrimaryColor,
     ),
     snackBarTheme: const SnackBarThemeData(
-      actionTextColor: kLPrimaryColor,
+      actionTextColor: kPrimaryColor,
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      surfaceTintColor: kBackgroundColor,
+    ),
+    buttonTheme: ButtonThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
     ),
   );
 }
