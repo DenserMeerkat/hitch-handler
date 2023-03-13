@@ -31,7 +31,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
   _CustomPasswordFieldState();
   bool _obscureText = true;
   IconData errorIcon = Icons.error;
-  Color errorColor = kErrorColor;
+  late Color errorColor;
   String errorText = "";
 
   String? validateField(String? value) {
@@ -70,10 +70,12 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
   @override
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    errorColor = AdaptiveTheme.of(context).theme.colorScheme.error;
     Size size = MediaQuery.of(context).size;
-    const outlineInputBorder = OutlineInputBorder(
+    OutlineInputBorder outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.vertical(
-        top: Radius.circular(10.0),
+        top: Radius.circular(10.0.r),
+        bottom: Radius.circular(10.0.r),
       ),
       borderSide: BorderSide.none,
       gapPadding: 0,
@@ -83,27 +85,22 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
       children: [
         Stack(
           children: [
-            Positioned(
+            Container(
               height: 48,
-              top: 0,
-              right: 0,
-              child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: isDark ? kGrey50 : kLBlack10,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  errorIndicator(),
+                  BoxShadow(
+                    offset: const Offset(1, 2),
+                    color: isDark ? kBlack20 : kLGrey70,
+                  )
+                ],
+              ),
+              child: const SizedBox(
                 height: 48,
-                width: 300.w,
-                decoration: BoxDecoration(
-                  color: isDark ? kGrey50 : kLGrey40,
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    errorIndicator(),
-                    BoxShadow(
-                      offset: const Offset(1, 2),
-                      color: isDark ? kBlack20 : kGrey90,
-                    )
-                  ],
-                ),
-                child: const SizedBox(
-                  height: 48,
-                ),
               ),
             ),
             TextFormField(
@@ -127,11 +124,15 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               },
               scrollPadding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom + 80),
-              style: TextStyle(
-                fontSize: 16.0.sp,
-                letterSpacing: 1.w,
-                color: isDark ? kTextColor : kLTextColor,
-              ),
+              style: AdaptiveTheme.of(context)
+                  .theme
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(
+                    fontSize: 16.0.sp,
+                    letterSpacing: 1.w,
+                    color: isDark ? kTextColor : kLTextColor,
+                  ),
               cursorColor: widget.fgcolor,
               cursorHeight: 20.0.sp,
               obscureText: _obscureText,
@@ -155,6 +156,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                         BoxShadow(
                           offset: const Offset(1, 1),
                           color: isDark ? kBlack20 : kGrey30,
+                          blurRadius: 3,
                         )
                       ],
                     ),
@@ -177,7 +179,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
-                    color: isDark ? kBlack20 : kGrey30,
+                    color: isDark ? kBlack20 : kGrey50,
                     borderRadius: const BorderRadius.horizontal(
                       left: Radius.circular(10.0),
                     ),
@@ -199,7 +201,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                 hintText: widget.hinttext,
                 hintStyle: TextStyle(
                   fontSize: 15.0.sp,
-                  color: isDark ? kGrey90 : kGrey90,
+                  color: isDark ? kGrey90 : kGrey90.withOpacity(0.7),
                   letterSpacing: 0.5.sp,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -218,7 +220,6 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
         ),
         CustomErrorMsg(
           errorText: showErrorBool(),
-          errorColor: errorColor,
           errorIcon: errorIcon,
           padBottom: 0.0,
         ),
@@ -236,9 +237,9 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
 
   BoxShadow errorIndicator() {
     if (errorText != '') {
-      return const BoxShadow(
-        offset: Offset(1, 3.5),
-        color: kErrorColor,
+      return BoxShadow(
+        offset: const Offset(1, 3.5),
+        color: AdaptiveTheme.of(context).theme.colorScheme.error,
       );
     } else {
       return const BoxShadow(

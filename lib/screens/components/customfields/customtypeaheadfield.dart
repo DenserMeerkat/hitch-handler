@@ -37,7 +37,7 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
   _CustomTypeAheadFieldState();
 
   IconData errorIcon = Icons.error;
-  Color errorColor = kErrorColor;
+  late Color errorColor;
   late String errorText = widget.errorText;
   String validateField(String? value) {
     List list;
@@ -70,7 +70,7 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    errorColor = AdaptiveTheme.of(context).theme.colorScheme.error;
     var enabledBorder = const OutlineInputBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(5.0),
@@ -185,10 +185,10 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
                   border: enabledBorder,
                 ),
               ),
-              noItemsFoundBuilder: (context) => const ListTile(
+              noItemsFoundBuilder: (context) => ListTile(
                 iconColor: kPrimaryColor,
                 title: Row(
-                  children: [
+                  children: const [
                     Icon(Icons.location_on_outlined),
                     SizedBox(
                       width: 10,
@@ -244,9 +244,8 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
         ),
         CustomErrorMsg(
           padLeft: 5.0,
-          padTop: 10,
+          padTop: 10.0,
           errorText: errorText,
-          errorColor: errorColor,
           errorIcon: errorIcon,
         ),
       ],
@@ -256,7 +255,7 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
   Color fieldState() {
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     if (CustomTypeAheadField.hasError && widget.title != "Location") {
-      return kErrorColor;
+      return AdaptiveTheme.of(context).theme.colorScheme.error;
     } else if (CustomTypeAheadField.focusState) {
       return isDark ? kLPrimaryColor.withOpacity(0.9) : kStudentColor;
     } else if (widget.controller.text != "" && !CustomTypeAheadField.hasError) {

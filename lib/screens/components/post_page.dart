@@ -95,7 +95,7 @@ class _PostsPageState extends State<PostsPage> {
           SliverAppBar(
             pinned: true,
             title: Text(
-              "Posts",
+              "View Post",
               style: AdaptiveTheme.of(context).theme.textTheme.headlineMedium,
             ),
             backgroundColor: isDark ? kBackgroundColor : kLBlack20,

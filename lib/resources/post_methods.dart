@@ -18,7 +18,7 @@ class DomainList {
     "Affiliated College Issues",
     "Research related Issues",
     "Common student Issues",
-    "Amenities ",
+    "Amenities",
   ];
   static List<String> getSuggestions(String query) {
     List<String> matchList = [];
@@ -73,16 +73,6 @@ class LocationList {
     return matchList;
   }
 }
-
-// class UploadFile {
-//   late File imageFile;
-//   late int index;
-
-//   UploadFile({required File imageFile, required int index}) {
-//     this.imageFile;
-//     this.index;
-//   }
-// }
 
 class UploadFileList {
   static int _lenth = 0;

@@ -86,4 +86,8 @@ class AuthMethods {
     await _auth.signOut();
     debugPrint("Signed out!");
   }
+
+  Future<void> passReset(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
 }

@@ -17,11 +17,11 @@ class _PopupMenuState extends State<PopupMenu> {
   Widget build(BuildContext context) {
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return PopupMenuButton(
-      color: isDark ? kGrey40 : kLBlack20,
-      surfaceTintColor: isDark ? kGrey40 : kLBlack20,
+      color: isDark ? kGrey40 : kLBlack10,
+      surfaceTintColor: isDark ? kGrey40 : kLBlack10,
       splashRadius: 25.0,
       offset: const Offset(-10, 10),
-      position: PopupMenuPosition.over,
+      position: PopupMenuPosition.under,
       icon: Icon(
         Icons.more_vert,
         color:

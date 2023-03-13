@@ -1,19 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'routing_constants.dart';
-// import 'screens/home/app.dart';
-// import 'screens/launch/launch_screen.dart';
-
-// Route<dynamic> generateRoute(RouteSettings settings) {
-//   switch (settings.name) {
-//     case LaunchViewRoute:
-//       return MaterialPageRoute(builder: (context) => const LaunchScreen());
-//     case AppViewRoute:
-//       return MaterialPageRoute(builder: (context) => const AppScreen());
-//     default:
-//       return MaterialPageRoute(builder: (context) => const LaunchScreen());
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'widget_tree.dart';
 import 'screens/components/settings_page.dart';

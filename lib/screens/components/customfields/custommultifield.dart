@@ -105,6 +105,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
     OutlineInputBorder outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(10.0.r),
+        bottom: Radius.circular(10.0.r),
       ),
       borderSide: BorderSide.none,
       gapPadding: 0,
@@ -112,31 +113,28 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Stack(children: [
-          Positioned(
+        Stack(fit: StackFit.passthrough, children: [
+          Container(
             height: 48,
-            top: 0,
-            right: 0,
-            child: Container(
+            width: double.infinity,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              color: isDark ? kGrey50 : kLBlack10,
+              borderRadius: BorderRadius.circular(10.0.r),
+              boxShadow: [
+                errorIndicator(),
+                BoxShadow(
+                  offset: const Offset(1, 2),
+                  color: isDark ? kBlack20 : kLGrey70,
+                ),
+              ],
+            ),
+            child: const SizedBox(
               height: 48,
-              width: 300.w,
-              decoration: BoxDecoration(
-                color: isDark ? kGrey50 : kLGrey40,
-                borderRadius: BorderRadius.circular(10.0.r),
-                boxShadow: [
-                  errorIndicator(),
-                  BoxShadow(
-                    offset: const Offset(1, 2),
-                    color: isDark ? kBlack20 : kGrey90,
-                  ),
-                ],
-              ),
-              child: const SizedBox(
-                height: 48,
-              ),
             ),
           ),
           TextFormField(
+            //autovalidateMode: AutovalidateMode.onUserInteraction,
             onChanged: (value) {
               validateField(value, current);
             },
@@ -152,16 +150,20 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
                 return val;
               }
             },
-            style: TextStyle(
-              fontSize: 16.0.sp,
-              color: isDark ? kTextColor : kLTextColor,
-            ),
+            style:
+                AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.copyWith(
+                      fontSize: 16.0.sp,
+                      letterSpacing: 1.w,
+                      color: isDark ? kTextColor : kLTextColor,
+                    ),
             cursorColor: widget.fgcolor,
             cursorHeight: 20.0.sp,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
             keyboardType: keyboardtype,
             decoration: InputDecoration(
+              // fillColor: isDark ? kGrey50 : kLBlack10,
+              // filled: true,
               suffixIcon: GestureDetector(
                 onTap: () {
                   setState(() {
@@ -201,6 +203,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
                       BoxShadow(
                         offset: const Offset(1, 1),
                         color: isDark ? kBlack20 : kGrey30,
+                        blurRadius: 3,
                       )
                     ],
                   ), //_________________ICON DATA____________
@@ -212,7 +215,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
                 fontSize: 0,
               ),
               isDense: true,
-              helperText: '_',
+              helperText: '',
               helperStyle: const TextStyle(
                 height: 0,
                 color: Colors.transparent,
@@ -223,7 +226,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
                 height: 49,
                 width: 50,
                 decoration: BoxDecoration(
-                  color: isDark ? kBlack20 : kGrey30,
+                  color: isDark ? kBlack20 : kGrey50,
                   borderRadius: const BorderRadius.horizontal(
                     left: Radius.circular(10.0),
                   ),
@@ -245,7 +248,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
               hintText: hinttext, //_________________HINT TEXT____________
               hintStyle: TextStyle(
                 fontSize: 15.0.sp,
-                color: isDark ? kGrey90 : kGrey90,
+                color: isDark ? kGrey90 : kGrey90.withOpacity(0.7),
                 letterSpacing: 0.5.sp,
               ),
               floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -262,16 +265,18 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
           ),
         ]),
         CustomErrorMsg(
-            errorText: errorText, errorColor: errorColor, errorIcon: errorIcon),
+          errorText: errorText,
+          errorIcon: errorIcon,
+        ),
       ],
     );
   }
 
   BoxShadow errorIndicator() {
     if (errorText != '') {
-      return const BoxShadow(
-        offset: Offset(1, 3.5),
-        color: kErrorColor,
+      return BoxShadow(
+        offset: const Offset(1, 3.5),
+        color: AdaptiveTheme.of(context).theme.colorScheme.error,
       );
     } else {
       return const BoxShadow(

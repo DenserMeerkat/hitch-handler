@@ -31,7 +31,7 @@ extension StringExtensions on String {
         .hasMatch(this);
   }
 
-  bool isWhitespace() => this.trim().isEmpty;
+  bool isWhitespace() => trim().isEmpty;
 
   bool isValidDouble() => double.tryParse(this) != null;
 

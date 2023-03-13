@@ -33,7 +33,7 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
   _CustomMessageFieldState();
 
   IconData errorIcon = Icons.error;
-  Color errorColor = kErrorColor;
+  late Color errorColor;
   late String errorText = widget.errorText;
   String validateField(String? value) {
     if (value!.isWhitespace()) {
@@ -54,7 +54,7 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    errorColor = AdaptiveTheme.of(context).theme.colorScheme.error;
     var enabledBorder = const OutlineInputBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(5.0),
@@ -191,7 +191,6 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
           padLeft: 5.0,
           padTop: 0,
           errorText: errorText,
-          errorColor: errorColor,
           errorIcon: errorIcon,
         ),
       ],
@@ -201,7 +200,7 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
   Color fieldState() {
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     if (CustomMessageField.hasError) {
-      return kErrorColor;
+      return AdaptiveTheme.of(context).theme.colorScheme.error;
     } else if (CustomMessageField.focusState) {
       return isDark ? kLPrimaryColor.withOpacity(0.9) : kStudentColor;
     } else if (widget.controller.text != "" && !CustomMessageField.hasError) {

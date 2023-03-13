@@ -50,8 +50,17 @@ class ThemeProvider with ChangeNotifier {
     snackBarTheme: const SnackBarThemeData(
       actionTextColor: kLPrimaryColor,
     ),
-    bottomSheetTheme: BottomSheetThemeData(
+    bottomSheetTheme: const BottomSheetThemeData(
       surfaceTintColor: kLBackgroundColor,
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: ButtonStyle(
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
     ),
   );
 
@@ -83,8 +92,13 @@ class ThemeProvider with ChangeNotifier {
     snackBarTheme: const SnackBarThemeData(
       actionTextColor: kPrimaryColor,
     ),
-    bottomSheetTheme: BottomSheetThemeData(
+    bottomSheetTheme: const BottomSheetThemeData(
       surfaceTintColor: kBackgroundColor,
+    ),
+    buttonTheme: ButtonThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
     ),
   );
 }
