@@ -55,7 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
     model.User? user =
         Provider.of<UserProvider>(context, listen: false).getUser;
     return Scaffold(
-      backgroundColor: isDark ? kBackgroundColor : kLBlack20,
+      backgroundColor: isDark ? kBackgroundColor : kLBlack20
       body: CustomScrollView(
         slivers: [
           SliverAppBar(

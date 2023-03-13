@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/user.dart' as model;
 
 class UserData {
   String email;
