@@ -96,13 +96,13 @@ class ActionButtons extends StatefulWidget {
 
 class _ActionButtonsState extends State<ActionButtons> {
   bool isUpVoted = false;
-  late int upVoteCount;
+  int upVoteCount = 0;
 
   bool isBookmarked = false;
   @override
   void initState() {
     isUpVoted = widget.snap['upVotes'].contains(widget.user.uid) ? true : false;
-    upVoteCount = widget.snap['upVoteCount'];
+    upVoteCount = widget.snap['upVotes'].length;
     isBookmarked =
         widget.user.bookmarks.contains(widget.snap['postId']) ? true : false;
     super.initState();

@@ -24,7 +24,7 @@ class CustomDatePickField extends StatefulWidget {
 class _CustomDatePickFieldState extends State<CustomDatePickField> {
   _CustomDatePickFieldState();
   IconData errorIcon = Icons.error;
-  late Color errorColor;
+  Color errorColor = kErrorColor;
   String errorText = "";
 
   String? validateField(String? value) {
@@ -38,7 +38,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
       errorText = errormsg;
     });
     if (errormsg != "") {
-      return errormsg;
+      return "Error!";
     }
     return null;
   }
@@ -60,7 +60,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
       errorText = errormsg;
     });
     if (errormsg != "") {
-      return errormsg;
+      return "Error!";
     }
     return null;
   }
@@ -68,11 +68,10 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
   @override
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    errorColor = AdaptiveTheme.of(context).theme.colorScheme.error;
+
     OutlineInputBorder outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(10.0.r),
-        bottom: Radius.circular(10.0.r),
       ),
       borderSide: BorderSide.none,
       gapPadding: 0,
@@ -82,26 +81,30 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
       children: [
         Stack(
           children: [
-            Container(
+            Positioned(
               height: 48,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: isDark ? kGrey50 : kLBlack10,
-                borderRadius: BorderRadius.circular(10.0.r),
-                boxShadow: [
-                  errorIndicator(),
-                  BoxShadow(
-                    offset: const Offset(1, 2),
-                    color: isDark ? kBlack20 : kLGrey70,
-                  )
-                ],
-              ),
-              child: const SizedBox(
+              top: 0,
+              right: 0,
+              child: Container(
                 height: 48,
+                width: 300.w,
+                decoration: BoxDecoration(
+                  color: isDark ? kGrey50 : kLGrey40,
+                  borderRadius: BorderRadius.circular(10.0.r),
+                  boxShadow: [
+                    errorIndicator(),
+                    BoxShadow(
+                      offset: const Offset(1, 2),
+                      color: isDark ? kBlack20 : kGrey90,
+                    )
+                  ],
+                ),
+                child: const SizedBox(
+                  height: 48,
+                ),
               ),
             ),
             TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               onSaved: validateField,
               validator: validateDate,
               showCursor: true,
@@ -125,15 +128,11 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
               scrollPadding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom + 80.h),
-              style: AdaptiveTheme.of(context)
-                  .theme
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(
-                    fontSize: 16.0.sp,
-                    letterSpacing: 1.w,
-                    color: isDark ? kTextColor : kLTextColor,
-                  ),
+              style: TextStyle(
+                fontSize: 16.0.sp,
+                color: isDark ? kTextColor : kLTextColor,
+                letterSpacing: 0.5.sp,
+              ),
               cursorColor: widget.fgcolor,
               cursorHeight: 20.sp,
               decoration: InputDecoration(
@@ -178,7 +177,6 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                         BoxShadow(
                           offset: const Offset(1, 1),
                           color: isDark ? kBlack20 : kGrey30,
-                          blurRadius: 3,
                         )
                       ],
                     ),
@@ -190,7 +188,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   fontSize: 0,
                 ),
                 isDense: true,
-                helperText: '',
+                helperText: '_',
                 helperStyle: const TextStyle(
                   height: 0,
                   color: Colors.transparent,
@@ -201,7 +199,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
-                    color: isDark ? kBlack20 : kGrey50,
+                    color: isDark ? kBlack20 : kGrey30,
                     borderRadius: const BorderRadius.horizontal(
                       left: Radius.circular(10.0),
                     ),
@@ -222,9 +220,9 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                 ),
                 hintText: widget.hinttext,
                 hintStyle: TextStyle(
-                  fontSize: 15.0.sp,
-                  color: isDark ? kGrey90 : kGrey90.withOpacity(0.7),
-                  letterSpacing: 0.5.sp,
+                  fontSize: 15.0,
+                  color: isDark ? kGrey90 : kGrey90,
+                  letterSpacing: 0.5,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 floatingLabelAlignment: FloatingLabelAlignment.start,
@@ -242,6 +240,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
         ),
         CustomErrorMsg(
           errorText: errorText,
+          errorColor: errorColor,
           errorIcon: errorIcon,
         ),
       ],
@@ -263,9 +262,9 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
 
   BoxShadow errorIndicator() {
     if (errorText != '') {
-      return BoxShadow(
-        offset: const Offset(1, 3.5),
-        color: AdaptiveTheme.of(context).theme.colorScheme.error,
+      return const BoxShadow(
+        offset: Offset(1, 3.5),
+        color: kErrorColor,
       );
     } else {
       return const BoxShadow(

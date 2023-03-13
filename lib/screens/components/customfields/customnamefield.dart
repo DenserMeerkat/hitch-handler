@@ -1,76 +1,52 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../string_extensions.dart';
+
 import '../../../constants.dart';
 import 'customerrormsg.dart';
 
-class CustomPasswordField extends StatefulWidget {
+class CustomNameField extends StatefulWidget {
   final Color fgcolor;
   final String hinttext;
-  final bool extraError;
-  final bool showError;
   final TextEditingController controller;
-  final Function(String) onSubmit;
-  final Function(String) onChange;
-  const CustomPasswordField({
+  const CustomNameField({
     super.key,
     required this.fgcolor,
-    this.hinttext = "Password",
+    this.hinttext = "Full Name",
     required this.controller,
-    required this.onSubmit,
-    required this.onChange,
-    this.extraError = false,
-    this.showError = true,
   });
   @override
-  State<CustomPasswordField> createState() => _CustomPasswordFieldState();
+  State<CustomNameField> createState() => _CustomNameFieldState();
 }
 
-class _CustomPasswordFieldState extends State<CustomPasswordField> {
-  _CustomPasswordFieldState();
-  bool _obscureText = true;
+class _CustomNameFieldState extends State<CustomNameField> {
+  _CustomNameFieldState();
+
   IconData errorIcon = Icons.error;
   Color errorColor = kErrorColor;
   String errorText = "";
 
   String? validateField(String? value) {
+    String errormsg = "";
     if (value!.isWhitespace()) {
-      setState(() {
-        errorText = "Password can't be empty";
-      });
+      errormsg = "${widget.hinttext} can\'t be empty!";
+    } else if (value.isValidName()) {
+      errormsg = "";
     } else {
-      if (widget.extraError == true) {
-        if (!value.isValidPassword()) {
-          setState(() {
-            errorText = "Not a Valid Password";
-          });
-        } else {
-          setState(() {
-            errorText = "";
-          });
-          return '';
-        }
-      } else {
-        if (value.length < 8) {
-          setState(() {
-            errorText = "Password is atleast 8 characters";
-          });
-        } else {
-          setState(() {
-            errorText = "";
-          });
-          return '';
-        }
-      }
+      errormsg = "Valid Characters :  [a-z]  [A-Z]  [ , . - ' ]";
     }
-    return errorText;
+    setState(() {
+      errorText = errormsg;
+    });
+    if (errormsg != "") {
+      return "Error!";
+    }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
+
     const outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(10.0),
@@ -78,6 +54,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
       borderSide: BorderSide.none,
       gapPadding: 0,
     );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -89,15 +66,15 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
               right: 0,
               child: Container(
                 height: 48,
-                width: 300.w,
+                width: size.width * 0.8,
                 decoration: BoxDecoration(
-                  color: isDark ? kGrey50 : kLGrey40,
-                  borderRadius: BorderRadius.circular(10.0),
+                  color: kGrey50,
+                  borderRadius: BorderRadius.circular(15.0),
                   boxShadow: [
                     errorIndicator(),
-                    BoxShadow(
-                      offset: const Offset(1, 2),
-                      color: isDark ? kBlack20 : kGrey90,
+                    const BoxShadow(
+                      offset: Offset(1, 2),
+                      color: kBlack20,
                     )
                   ],
                 ),
@@ -108,55 +85,46 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             ),
             TextFormField(
               controller: widget.controller,
-              onFieldSubmitted: (value) {
-                widget.onSubmit(value);
-                FocusScope.of(context).nextFocus();
-              },
               onChanged: (value) {
-                widget.onChange(value);
+                widget.controller.text = value;
                 validateField(value);
               },
               validator: (value) {
-                String? val = validateField(value);
-                if (val == "") {
-                  widget.controller.text = value!;
-                  return null;
-                } else {
-                  return val;
-                }
+                widget.controller.text = value!;
+                return validateField(value);
               },
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (value) {
+                widget.controller.text = value;
+                FocusScope.of(context).nextFocus();
+              },
+              keyboardType: TextInputType.name,
               scrollPadding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom + 80),
-              style: TextStyle(
-                fontSize: 16.0.sp,
-                letterSpacing: 1.w,
-                color: isDark ? kTextColor : kLTextColor,
+              style: const TextStyle(
+                fontSize: 16.0,
+                letterSpacing: 1,
               ),
               cursorColor: widget.fgcolor,
-              cursorHeight: 20.0.sp,
-              obscureText: _obscureText,
-              enableSuggestions: false,
-              autocorrect: false,
+              cursorHeight: 16.0,
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      widget.controller.clear();
+                    });
+                  },
                   child: IconButton(
-                    splashRadius: 50.0,
+                    splashRadius: 30.0,
                     onPressed: () {
                       setState(() {
-                        _obscureText = !_obscureText;
+                        widget.controller.clear();
                       });
                     },
                     icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                      Icons.backspace_outlined,
                       color: widget.fgcolor,
                       size: 18,
-                      shadows: [
-                        BoxShadow(
-                          offset: const Offset(1, 1),
-                          color: isDark ? kBlack20 : kGrey30,
-                        )
-                      ],
                     ),
                   ),
                 ),
@@ -176,12 +144,12 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                 icon: Container(
                   height: 50,
                   width: 50,
-                  decoration: BoxDecoration(
-                    color: isDark ? kBlack20 : kGrey30,
-                    borderRadius: const BorderRadius.horizontal(
-                      left: Radius.circular(10.0),
+                  decoration: const BoxDecoration(
+                    color: kBlack20,
+                    borderRadius: BorderRadius.horizontal(
+                      left: Radius.circular(15.0),
                     ),
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
                         offset: Offset(1, 1),
                         blurRadius: 1,
@@ -191,16 +159,16 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                   ),
                   padding: const EdgeInsets.all(10.0),
                   child: Icon(
-                    Icons.password,
+                    Icons.text_fields,
                     color: widget.fgcolor,
                     size: 20,
                   ),
                 ),
                 hintText: widget.hinttext,
-                hintStyle: TextStyle(
-                  fontSize: 15.0.sp,
-                  color: isDark ? kGrey90 : kGrey90,
-                  letterSpacing: 0.5.sp,
+                hintStyle: const TextStyle(
+                  fontSize: 15.0,
+                  color: kGrey90,
+                  letterSpacing: 0.5,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 floatingLabelAlignment: FloatingLabelAlignment.start,
@@ -217,21 +185,9 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
           ],
         ),
         CustomErrorMsg(
-          errorText: showErrorBool(),
-          errorColor: errorColor,
-          errorIcon: errorIcon,
-          padBottom: 0.0,
-        ),
+            errorText: errorText, errorColor: errorColor, errorIcon: errorIcon),
       ],
     );
-  }
-
-  String showErrorBool() {
-    if (widget.showError == true) {
-      return errorText;
-    } else {
-      return '';
-    }
   }
 
   BoxShadow errorIndicator() {

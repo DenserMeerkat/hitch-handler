@@ -9,11 +9,9 @@ class ValidPassExpansionTile extends StatefulWidget {
     required this.fgcolor,
     required this.scroll,
     this.textStyle = const TextStyle(fontSize: 13, color: kGrey90),
-    this.bgColor,
   });
   final String bullet = "\u2022 ";
   final Color fgcolor;
-  final Color? bgColor;
   final TextStyle textStyle;
   final Function(bool) scroll;
 
@@ -42,10 +40,8 @@ class _ValidPassExpansionTileState extends State<ValidPassExpansionTile> {
       collapsedTextColor: isDark ? widget.fgcolor : kLTextColor,
       iconColor: isDark ? widget.fgcolor : kLTextColor,
       collapsedIconColor: isDark ? widget.fgcolor : kLTextColor,
-      backgroundColor:
-          widget.bgColor ?? (isDark ? kBackgroundColor : kLBackgroundColor),
-      collapsedBackgroundColor:
-          widget.bgColor ?? (isDark ? kBackgroundColor : kLBackgroundColor),
+      backgroundColor: isDark ? kBlack20 : kLGrey40,
+      collapsedBackgroundColor: isDark ? kBlack20 : kLGrey40,
       title: Text(
         'Password Requirements',
         style: TextStyle(

@@ -19,24 +19,11 @@ Future<void> showToggleThemeDialog(BuildContext context) {
                   color: isDark ? kTextColor : kLTextColor,
                 ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        title: Row(
-          children: [
-            const FittedBox(
-              child: Icon(
-                Icons.palette_outlined,
-                color: kPrimaryColor,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              'Change Theme',
-              style:
-                  AdaptiveTheme.of(context).theme.textTheme.bodyLarge!.copyWith(
-                        color: kPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-            ),
-          ],
+        title: Text(
+          'Change Theme',
+          style: TextStyle(
+            fontSize: 20.sp,
+          ),
         ),
         children: <Widget>[
           SimpleDialogOption(
@@ -103,115 +90,6 @@ void showConfirmDialog(BuildContext context, Widget dialogCont,
       });
 }
 
-void showAlertDialog(
-  BuildContext context,
-  String title,
-  Widget content,
-  List<Widget> actions,
-  IconData icon,
-) {
-  final bool isDark =
-      AdaptiveTheme.of(context).theme.brightness == Brightness.dark;
-  showDialog(
-      context: context,
-      barrierColor:
-          isDark ? kBlack10.withOpacity(0.8) : kGrey30.withOpacity(0.8),
-      builder: (BuildContext context) {
-        return CustomAlertDialog(
-            title: title, content: content, actions: actions, icon: icon);
-      });
-}
-
-Widget buildCancelButton(BuildContext context) {
-  return TextButton(
-    style: ButtonStyle(
-      shape: MaterialStatePropertyAll(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-      ),
-    ),
-    onPressed: () {
-      Navigator.of(context).pop();
-    },
-    child: Text(
-      'Cancel',
-      style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
-    ),
-  );
-}
-
-Widget buildActiveButton(BuildContext context, bool submit, String activeText,
-    Function()? onPressed) {
-  final bool isDark =
-      AdaptiveTheme.of(context).theme.brightness == Brightness.dark;
-  return TextButton(
-    style: ButtonStyle(
-      shape: MaterialStatePropertyAll(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-      ),
-    ),
-    onPressed: submit ? onPressed : null,
-    child: Text(
-      activeText,
-      style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.copyWith(
-          color: submit
-              ? kPrimaryColor
-              : isDark
-                  ? kTextColor.withOpacity(0.5)
-                  : kLTextColor.withOpacity(0.5)),
-    ),
-  );
-}
-
-class CustomAlertDialog extends StatelessWidget {
-  final String title;
-  final Widget content;
-  final IconData icon;
-  final List<Widget> actions;
-  const CustomAlertDialog({
-    super.key,
-    required this.title,
-    required this.content,
-    required this.actions,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: isDark ? kGrey40 : kLBlack10,
-      surfaceTintColor: isDark ? kGrey40 : kLBlack10,
-      title: Row(
-        children: [
-          FittedBox(
-            child: Icon(
-              icon,
-              color: kPrimaryColor,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            title,
-            style:
-                AdaptiveTheme.of(context).theme.textTheme.bodyLarge!.copyWith(
-                      color: kPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-          ),
-        ],
-      ),
-      content: content,
-      //contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-      actions: actions,
-    );
-  }
-}
-
 SnackBar showCustomSnackBar(BuildContext context, final String text,
     final String actionLabel, final void Function() onPressed,
     {Color? backgroundColor,
@@ -220,7 +98,9 @@ SnackBar showCustomSnackBar(BuildContext context, final String text,
     double fsize = 13,
     Color iconColor = kErrorColor,
     Color actionColor = kErrorColor}) {
-  bool isDark = AdaptiveTheme.of(context).theme.brightness == Brightness.dark;
+  bool isDark = MediaQueryData.fromView(WidgetsBinding.instance.window)
+          .platformBrightness ==
+      Brightness.dark;
   Size size = MediaQuery.of(context).size;
   return SnackBar(
     backgroundColor: backgroundColor ?? (isDark ? kGrey40 : kGrey40),

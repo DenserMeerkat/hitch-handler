@@ -33,7 +33,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
   _CustomTitleFieldState();
 
   IconData errorIcon = Icons.error;
-  late Color errorColor;
+  Color errorColor = kErrorColor;
   late String errorText = widget.errorText;
   String validateField(String? value) {
     if (value!.isWhitespace()) {
@@ -54,7 +54,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    errorColor = AdaptiveTheme.of(context).theme.colorScheme.error;
+
     var enabledBorder = const OutlineInputBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(5.0),
@@ -190,6 +190,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
           padLeft: 5.0,
           padTop: 0,
           errorText: errorText,
+          errorColor: errorColor,
           errorIcon: errorIcon,
         ),
       ],
@@ -199,7 +200,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
   Color fieldState() {
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     if (CustomTitleField.hasError) {
-      return AdaptiveTheme.of(context).theme.colorScheme.error;
+      return kErrorColor;
     } else if (CustomTitleField.focusState) {
       return isDark ? kLPrimaryColor.withOpacity(0.9) : kStudentColor;
     } else if (widget.controller.text != "" && !CustomTitleField.hasError) {

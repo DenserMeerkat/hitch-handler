@@ -85,104 +85,89 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
         controller: scroll,
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 10.h,
-                  left: 30.w,
-                  right: 30.w,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: size.height * 0.02,
+              left: 30.w,
+              right: 30.w,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: size.height * 0.03,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 20.h,
+                FittedBox(
+                  child: Text(
+                    widget.title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: isDark ? kTextColor : kLTextColor,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                      fontSize: 32,
                     ),
-                    FittedBox(
-                      child: Text(
-                        widget.title,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: isDark ? kTextColor : kLTextColor,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1,
-                          fontSize: 32,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    FittedBox(
-                      child: Text(
-                        widget.subtitle,
-                        style: TextStyle(
-                          color: isDark
-                              ? kTextColor.withOpacity(0.7)
-                              : kLTextColor,
-                          letterSpacing: 0.6,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50.h,
-                    ),
-                    CustomConfirmPasswordField(
-                      fgcolor: widget.fgcolor,
-                      controller: myPassFieldController,
-                    ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
-                    CustomSubmitButton(
-                      size: size,
-                      bgcolor: kPrimaryColor,
-                      msg: "Continue",
-                      press: () async {
-                        WidgetsBinding.instance.focusManager.primaryFocus
-                            ?.unfocus();
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          debugPrint("___________________");
-                          debugPrint("${_formKey.currentState!.validate()}");
-                          widget.user.password = myPassFieldController.text;
-                          String res = await performAuthentication(widget.user);
-                          if (res == "success") {}
-                          debugPrint(res);
-                        } else {
-                          debugPrint(">>>>>ERRORS!");
-                        }
-                      },
-                    ),
-                    SizedBox(
-                      height: 42.h,
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: isDark ? kBackgroundColor : kLBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0, -2),
-                      color: isDark ? kBlack15 : kLGrey50,
-                    ),
-                  ],
+                SizedBox(
+                  height: size.height * 0.015,
                 ),
-                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-                child: ValidPassExpansionTile(
+                FittedBox(
+                  child: Text(
+                    widget.subtitle,
+                    style: TextStyle(
+                      color: isDark ? kTextColor.withOpacity(0.7) : kLTextColor,
+                      letterSpacing: 0.6,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.07,
+                ),
+                CustomConfirmPasswordField(
+                  fgcolor: widget.fgcolor,
+                  controller: myPassFieldController,
+                ),
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
+                CustomSubmitButton(
+                  size: size,
+                  bgcolor: kPrimaryColor,
+                  msg: "Continue",
+                  press: () async {
+                    WidgetsBinding.instance.focusManager.primaryFocus
+                        ?.unfocus();
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      debugPrint("___________________");
+                      debugPrint("${_formKey.currentState!.validate()}");
+                      widget.user.password = myPassFieldController.text;
+                      String res = await performAuthentication(widget.user);
+                      if (res == "success") {}
+                      debugPrint(res);
+                    } else {
+                      debugPrint(">>>>>ERRORS!");
+                    }
+                  }, //Todo_Navigation,
+                ),
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
+                ValidPassExpansionTile(
                   fgcolor: widget.fgcolor,
                   scroll: (value) {
                     if (value == true) {
-                      scrollDown(40.h);
+                      scrollDown(size.height * 0.01);
                     }
                   },
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: size.height * 0.04,
+                ),
+              ],
+            ),
           ),
         ),
       ),

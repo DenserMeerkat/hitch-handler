@@ -90,10 +90,10 @@ class _SearchFieldState extends State<SearchField> {
                   border: enabledBorder,
                 ),
               ),
-              noItemsFoundBuilder: (context) => ListTile(
+              noItemsFoundBuilder: (context) => const ListTile(
                 iconColor: kPrimaryColor,
                 title: Row(
-                  children: const [
+                  children: [
                     Icon(Icons.location_on_outlined),
                     SizedBox(
                       width: 10,

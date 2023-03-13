@@ -175,7 +175,6 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Theme(
                 data: ThemeData(
-                  useMaterial3: true,
                   splashColor: Colors.transparent,
                   brightness: Brightness.dark,
                 ),

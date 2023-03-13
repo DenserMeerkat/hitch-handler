@@ -1,12 +1,12 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constants.dart';
 
 class CustomErrorMsg extends StatelessWidget {
-  CustomErrorMsg({
+  const CustomErrorMsg({
     super.key,
     required this.errorText,
+    this.errorColor = kErrorColor,
     this.errorIcon = Icons.error,
     this.padTop = 5.0,
     this.padBottom = 10.0,
@@ -16,6 +16,7 @@ class CustomErrorMsg extends StatelessWidget {
   });
 
   final String errorText;
+  final Color errorColor;
   final IconData errorIcon;
   final double padTop;
   final double padBottom;
@@ -35,14 +36,12 @@ class CustomErrorMsg extends StatelessWidget {
     }
   }
 
-  late Color errorColor;
   @override
   Widget build(BuildContext context) {
-    errorColor = AdaptiveTheme.of(context).theme.colorScheme.error;
     return Padding(
       padding: EdgeInsets.only(
         top: padTop.h,
-        bottom: padBottom,
+        bottom: padBottom.h,
         left: padLeft.w,
         right: padRight.w,
       ),

@@ -32,11 +32,11 @@ class _AddPageState extends State<AddPage> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: isDark ? kGrey30 : kLBackgroundColor,
+        backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
         appBar: AppBar(
           elevation: 9,
-          backgroundColor: isDark ? kBlack20 : kLBlack10,
-          surfaceTintColor: isDark ? kBlack20 : kLBlack10,
+          backgroundColor: isDark ? kBackgroundColor : Colors.white,
+          surfaceTintColor: isDark ? kBackgroundColor : Colors.white,
           title: Text(
             "Add Post",
             style: AdaptiveTheme.of(context)
@@ -137,7 +137,7 @@ class _AddPageState extends State<AddPage> {
               child: Container(
                 constraints:
                     const BoxConstraints(minHeight: 300, maxHeight: 2000),
-                color: isDark ? kGrey30 : kLBlack20,
+                color: isDark ? kGrey30.withOpacity(0.7) : kLGrey30,
                 child: SingleChildScrollView(
                   controller: AddPage.scrollController,
                   child: Column(

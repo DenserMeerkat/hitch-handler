@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import '../components/utils/customdialog.dart';
 import '../components/appbar.dart';
 import 'archives_page.dart';
 import 'home_page.dart';
@@ -26,15 +27,18 @@ class _AppScreenState extends State<AppScreen> {
   String mobno = "";
   static const List<Widget> _homeTabs = [
     HomePage(),
-    SizedBox(),
+    //SearchPage(),
+    HomePage(),
+    //AddPage(),
     BookmarkPage(),
+    //SearchPage(),
   ];
   final pageController = PageController();
-  void onPageChanged(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  // void onPageChanged(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
 
   addData() async {
     UserProvider userProvider = Provider.of(context, listen: false);
@@ -48,7 +52,7 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   void _tabChange(int index) {
-    pageController.jumpToPage(index);
+    //pageController.jumpToPage(index);
     setState(() {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       _selectedIndex = index;
@@ -67,12 +71,7 @@ class _AppScreenState extends State<AppScreen> {
       child: Scaffold(
         backgroundColor: isDark ? kBackgroundColor : kLBlack20,
         appBar: const MainAppBar(),
-        body: PageView(
-          controller: pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          onPageChanged: onPageChanged,
-          children: _homeTabs,
-        ),
+        body: _homeTabs[_selectedIndex],
         bottomNavigationBar: Container(
           padding: const EdgeInsets.only(top: 1),
           color: isDark ? kGrey30 : kLGrey30,
@@ -177,6 +176,23 @@ class _AppScreenState extends State<AppScreen> {
                       ),
                     ),
                   ),
+
+                  // NavigationDestination(
+                  //   selectedIcon: const Icon(
+                  //     Icons.add_box_rounded,
+                  //     color: kBackgroundColor,
+                  //     size: 25,
+                  //   ),
+                  //   icon:
+                  // Icon(
+                  //     Icons.add_box_outlined,
+                  //     color: isDark
+                  //         ? kTextColor.withOpacity(0.4)
+                  //         : kLTextColor.withOpacity(0.6),
+                  //     size: 28,
+                  //   ),
+                  //   label: 'Add',
+                  // ),
                   NavigationDestination(
                     selectedIcon: const Icon(
                       Icons.archive_rounded,
@@ -213,7 +229,7 @@ class _AppScreenState extends State<AppScreen> {
             position: Tween<Offset>(
               begin: const Offset(0.0, 1.0),
               end: Offset.zero,
-            ).chain(CurveTween(curve: Curves.decelerate)).animate(animation),
+            ).animate(animation),
             child: child,
           );
 

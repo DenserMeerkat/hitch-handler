@@ -1,8 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:hitch_handler/resources/auth_methods.dart';
-import 'package:hitch_handler/string_extensions.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +9,6 @@ import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:provider/provider.dart';
 import '../../models/user.dart' as model;
 import '../../providers/user_provider.dart';
-import '../launch/launch_screen.dart';
 
 class SettingsPage extends StatefulWidget {
   static String routeName = '/settings_page';
@@ -52,10 +49,8 @@ class _SettingsPageState extends State<SettingsPage> {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     Size size = MediaQuery.of(context).size;
 
-    model.User? user =
-        Provider.of<UserProvider>(context, listen: false).getUser;
     return Scaffold(
-      backgroundColor: isDark ? kBackgroundColor : kLBlack20
+      backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -101,7 +96,7 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
           ),
-          SliverFillRemaining(
+          SliverToBoxAdapter(
             child: ListView(
               shrinkWrap: true,
               children: [
@@ -120,17 +115,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                           ),
                         ),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              barrierColor: isDark
-                                  ? kBlack10.withOpacity(0.8)
-                                  : kGrey30.withOpacity(0.8),
-                              builder: (BuildContext context) {
-                                return const ResetPasswordDialog();
-                              });
-                        },
-                        child: const Text("Reset Password"),
+                        onPressed: () {},
+                        child: Text("Reset Password"),
                       ),
                       SizedBox(width: 20.w),
                       FilledButton(
@@ -141,72 +127,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                           ),
                         ),
-                        onPressed: () {
-                          showAlertDialog(
-                            context,
-                            "Log out",
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "Are you sure you want to logout of your account?",
-                                  style: AdaptiveTheme.of(context)
-                                      .theme
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(fontSize: 18),
-                                ),
-                                const SizedBox(height: 8),
-                                // Chip(
-                                //   padding: const EdgeInsets.symmetric(
-                                //       vertical: 12, horizontal: 8),
-                                //   backgroundColor: isDark ? kGrey50 : kLBlack15,
-                                //   surfaceTintColor:
-                                //       isDark ? kGrey50 : kLBlack15,
-                                //   side: BorderSide(
-                                //     width: 1.5,
-                                //     color: isDark
-                                //         ? kTextColor.withOpacity(0.05)
-                                //         : kLTextColor.withOpacity(0.05),
-                                //   ),
-                                //   shape: RoundedRectangleBorder(
-                                //     borderRadius: BorderRadius.circular(8),
-                                //   ),
-                                //   label: FittedBox(
-                                //     child: Text(
-                                //       user.email,
-                                //       style: TextStyle(
-                                //         color: isDark
-                                //             ? kTextColor.withOpacity(0.7)
-                                //             : kLTextColor.withOpacity(0.7),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
-                            ),
-                            [
-                              buildCancelButton(context),
-                              buildActiveButton(
-                                context,
-                                true,
-                                "Log out",
-                                () async {
-                                  final navigator = Navigator.of(context);
-                                  final scaffold =
-                                      ScaffoldMessenger.of(context);
-                                  await AuthMethods().signOut();
-                                  scaffold.removeCurrentSnackBar();
-                                  navigator.pushNamedAndRemoveUntil(
-                                      LaunchScreen.routeName,
-                                      (Route<dynamic> route) => false);
-                                },
-                              )
-                            ],
-                            Icons.exit_to_app,
-                          );
-                        },
-                        child: const Text("Log out"),
+                        onPressed: () {},
+                        child: Text("Log out"),
                       ),
                     ],
                   ),
@@ -243,190 +165,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: "About App",
                   icon: Icons.info_outline,
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );
-  }
-}
-
-class ResetPasswordDialog extends StatefulWidget {
-  const ResetPasswordDialog({
-    super.key,
-  });
-
-  @override
-  State<ResetPasswordDialog> createState() => _ResetPasswordDialogState();
-}
-
-class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
-  final TextEditingController myTextFieldController = TextEditingController();
-
-  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  bool submit = false;
-  bool clear = false;
-  @override
-  void dispose() {
-    myTextFieldController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    model.User? user =
-        Provider.of<UserProvider>(context, listen: false).getUser;
-    myTextFieldController.addListener(() {
-      setState(() {
-        clear = myTextFieldController.text.isNotEmpty;
-        submit = myTextFieldController.text.trim() == user.email;
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    OutlineInputBorder border(Color color) {
-      OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-        borderSide: BorderSide(
-          color: color,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(10.r),
-      );
-      return outlineInputBorder;
-    }
-
-    return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: isDark ? kGrey40 : kLBlack10,
-      surfaceTintColor: isDark ? kGrey40 : kLBlack10,
-      title: Row(
-        children: [
-          const FittedBox(
-            child: Icon(
-              MdiIcons.lockReset,
-              color: kPrimaryColor,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            'Rest Password',
-            style:
-                AdaptiveTheme.of(context).theme.textTheme.bodyLarge!.copyWith(
-                      color: kPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-          ),
-        ],
-      ),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 10),
-          Text(
-            "An email will be sent with instructions.",
-            style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
-          ),
-          Text(
-            "Please type your email to confirm.",
-            style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
-          ),
-          const SizedBox(height: 10),
-          Form(
-            key: _formkey,
-            child: Container(
-              constraints: BoxConstraints(maxWidth: 270.w),
-              //height: 44,
-              child: TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
-                validator: (value) {
-                  return validateEmail(value);
-                },
-                controller: myTextFieldController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.only(top: 4, bottom: 4, left: 16),
-                  border: border(Colors.transparent),
-                  focusedBorder: border(kPrimaryColor),
-                  errorBorder:
-                      border(AdaptiveTheme.of(context).theme.colorScheme.error),
-                  enabledBorder: border(isDark ? kGrey70 : kLBlack20),
-                  disabledBorder: border(Colors.transparent),
-                  suffixIconColor: kPrimaryColor,
-                  suffixIcon: clear
-                      ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              myTextFieldController.clear();
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.clear,
-                          ),
-                        )
-                      : const Icon(
-                          Icons.alternate_email_outlined,
-                        ),
-                  hintText: "Email",
-                  hintStyle: AdaptiveTheme.of(context)
-                      .theme
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(
-                        color: isDark
-                            ? kTextColor.withOpacity(0.5)
-                            : kLTextColor.withOpacity(0.5),
-                      ),
-                  fillColor: isDark ? kGrey50 : kLBlack15,
-                  filled: true,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        buildCancelButton(context),
-        buildActiveButton(
-            context,
-            submit,
-            "Confirm",
-            submit
-                ? () {
-                    if (_formkey.currentState!.validate()) {
-                      AuthMethods()
-                          .passReset(myTextFieldController.text.trim());
-                      debugPrint("Print");
-                      Navigator.of(context).pop();
-                    } else {
-                      debugPrint("Error");
-                    }
-                  }
-                : null),
-      ],
-    );
-  }
-
-  String? validateEmail(String? value) {
-    model.User? user =
-        Provider.of<UserProvider>(context, listen: false).getUser;
-    if (value!.isWhitespace()) {
-      return "Email can\t be empty";
-    } else if (value == user.email) {
-      return null;
-    } else {
-      return "Incorrect Email";
-    }
   }
 }
 
@@ -443,7 +187,7 @@ class AccountTile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.0),
         decoration: BoxDecoration(
-          color: isDark ? kGrey40 : kLBlack10,
+          color: isDark ? kGrey40 : kLBlack20,
           borderRadius: BorderRadius.circular(10),
           boxShadow: isDark
               ? [
@@ -583,7 +327,7 @@ class SettingTile extends StatelessWidget {
             isDark ? kTextColor.withOpacity(0.8) : kLTextColor.withOpacity(0.9),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-            color: isDark ? Colors.transparent : kLGrey30,
+            color: isDark ? Colors.transparent : kLBlack20,
           ),
           borderRadius: BorderRadius.circular(10),
         ),

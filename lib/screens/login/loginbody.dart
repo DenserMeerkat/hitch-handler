@@ -24,7 +24,12 @@ class _LoginBodyState extends State<LoginBody> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          loading ? const LinearProgressIndicator() : Container(),
+          loading
+              ? const LinearProgressIndicator(
+                  backgroundColor: kBlack20,
+                  color: kPrimaryColor,
+                )
+              : Container(),
           Container(
             decoration: BoxDecoration(
               color: isDark ? kGrey30 : kLGrey30,
