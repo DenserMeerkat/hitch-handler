@@ -9,7 +9,7 @@ class CustomErrorMsg extends StatelessWidget {
     required this.errorText,
     this.errorIcon = Icons.error,
     this.padTop = 5.0,
-    this.padBottom = 10.0,
+    this.padBottom = 15.0,
     this.padLeft = 30.0,
     this.padRight = 0.0,
     this.fsize = 15,
@@ -42,7 +42,7 @@ class CustomErrorMsg extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         top: padTop.h,
-        bottom: padBottom,
+        bottom: padBottom.h,
         left: padLeft.w,
         right: padRight.w,
       ),

@@ -1,12 +1,14 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
+import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:hitch_handler/screens/user_home/feed/searchformfield.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../resources/post_methods.dart';
 import '../components/appbar.dart';
 import 'feed/searchfield.dart';
 
@@ -20,13 +22,32 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final List<IconData> searchOptions = [
+    MdiIcons.linkVariant,
     Icons.title,
     Icons.domain_outlined,
     Icons.location_on_outlined,
   ];
-  int currentIndex = 0;
-  IconData currentIcon = Icons.title;
+  final List<String> searchHints = [
+    "Search by Post-Id",
+    "Search by Title",
+    "Search by Domain",
+    "Search by Location",
+  ];
+  late int currentIndex;
+  late IconData currentIcon;
   final TextEditingController searchController = TextEditingController();
+  late dynamic postIdStream;
+  late String previousSearch = "";
+  @override
+  void initState() {
+    currentIndex = 0;
+    currentIcon = searchOptions[0];
+    postIdStream = FirebaseFirestore.instance
+        .collection('posts')
+        .where('postId', isEqualTo: searchController.text)
+        .snapshots();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -40,23 +61,6 @@ class _SearchPageState extends State<SearchPage> {
       currentIcon = searchOptions[index];
     });
   }
-
-  var currentStream = FirebaseFirestore.instance
-      .collection('posts')
-      .orderBy("datePublished", descending: true)
-      .snapshots();
-  final List streams = [
-    FirebaseFirestore.instance
-        .collection('posts')
-        .where(
-          'title',
-        )
-        .snapshots(),
-    FirebaseFirestore.instance
-        .collection('posts')
-        .orderBy("upVoteCount", descending: true)
-        .snapshots(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -139,46 +143,27 @@ class _SearchPageState extends State<SearchPage> {
                                     : kLBlack10,
                                 borderRadius: BorderRadius.circular(50),
                               ),
-                              child:
-                                  // Autocomplete<User>(
-                                  //   displayStringForOption: _displayStringForOption,
-                                  //   optionsBuilder:
-                                  //       (TextEditingValue textEditingValue) {
-                                  //     if (textEditingValue.text == '') {
-                                  //       return const Iterable<User>.empty();
-                                  //     }
-                                  //     return _userOptions.where((User option) {
-                                  //       return option.toString().contains(
-                                  //           textEditingValue.text.toLowerCase());
-                                  //     });
-                                  //   },
-                                  //   onSelected: (User selection) {
-                                  //     debugPrint(
-                                  //         'You just selected ${_displayStringForOption(selection)}');
-                                  //   },
-                                  //     // ),
-
-                                  currentIndex == 2
-                                      ? SearchFormField(
-                                          hintText: "Search",
-                                          controller: searchController,
-                                          fgcolor: isDark
-                                              ? kPrimaryColor
-                                              : kLPrimaryColor,
-                                        )
-                                      : SingleChildScrollView(
-                                          scrollDirection: Axis.vertical,
-                                          child: SearchField(
-                                            hintText: "Search",
-                                            hintColor: isDark
-                                                ? kTextColor
-                                                : kLTextColor,
-                                            controller: searchController,
-                                            fgcolor: isDark
-                                                ? kPrimaryColor
-                                                : kLPrimaryColor,
-                                          ),
-                                        ),
+                              child: SearchFormField(
+                                hintText: searchHints[currentIndex],
+                                controller: searchController,
+                                fgcolor:
+                                    isDark ? kPrimaryColor : kLPrimaryColor,
+                                onSearch: (value) {
+                                  if (value != null &&
+                                      value != "" &&
+                                      (previousSearch != ""
+                                          ? value != previousSearch
+                                          : true)) {
+                                    setState(() {
+                                      previousSearch = value;
+                                      postIdStream = FirebaseFirestore.instance
+                                          .collection('posts')
+                                          .where('postId', isEqualTo: value)
+                                          .snapshots();
+                                    });
+                                  }
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -221,35 +206,63 @@ class _SearchPageState extends State<SearchPage> {
                                 },
                                 value: 0,
                                 child: PopupItem(
-                                  icon: Icons.title,
+                                  icon: searchOptions[0],
                                   isSelected: currentIndex == 0,
-                                  title: 'Title',
+                                  title: 'Post-Id',
                                 ),
                               ),
                               PopupMenuItem<int>(
+                                enabled: false,
                                 height: 40,
                                 onTap: () {
                                   changeSearch(1);
                                 },
                                 value: 1,
                                 child: PopupItem(
-                                  icon: Icons.domain_outlined,
+                                  icon: Icons.more_horiz,
                                   isSelected: currentIndex == 1,
-                                  title: 'Domain',
+                                  title: 'More soon',
                                 ),
                               ),
-                              PopupMenuItem<int>(
-                                height: 40,
-                                onTap: () {
-                                  changeSearch(2);
-                                },
-                                value: 2,
-                                child: PopupItem(
-                                  icon: Icons.location_on_outlined,
-                                  isSelected: currentIndex == 2,
-                                  title: 'Location',
-                                ),
-                              ),
+                              // PopupMenuItem<int>(
+                              //   enabled: false,
+                              //   height: 40,
+                              //   onTap: () {
+                              //     changeSearch(1);
+                              //   },
+                              //   value: 1,
+                              //   child: PopupItem(
+                              //     icon: searchOptions[1],
+                              //     isSelected: currentIndex == 1,
+                              //     title: 'Title',
+                              //   ),
+                              // ),
+                              // PopupMenuItem<int>(
+                              //   enabled: false,
+                              //   height: 40,
+                              //   onTap: () {
+                              //     changeSearch(2);
+                              //   },
+                              //   value: 2,
+                              //   child: PopupItem(
+                              //     icon: searchOptions[2],
+                              //     isSelected: currentIndex == 2,
+                              //     title: 'Domain',
+                              //   ),
+                              // ),
+                              // PopupMenuItem<int>(
+                              //   enabled: false,
+                              //   height: 40,
+                              //   onTap: () {
+                              //     changeSearch(3);
+                              //   },
+                              //   value: 3,
+                              //   child: PopupItem(
+                              //     icon: searchOptions[3],
+                              //     isSelected: currentIndex == 3,
+                              //     title: 'Location',
+                              //   ),
+                              // ),
                             ];
                           },
                           child: Ink(
@@ -285,11 +298,93 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(),
-          )
+          SliverFillRemaining(
+            child: searchResult(),
+          ),
         ],
       ),
     );
+  }
+
+  Widget searchResult() {
+    bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    if (searchController.text.isNotEmpty && currentIndex == 0) {
+      return StreamBuilder(
+        stream: postIdStream,
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot2) {
+          if (snapshot2.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                backgroundColor: kBlack20,
+                color: kPrimaryColor,
+              ),
+            );
+          }
+          if (snapshot2.data!.docs.isEmpty) {
+            return Center(
+              child: Container(
+                constraints: BoxConstraints(minHeight: 200, maxHeight: 340.h),
+                margin: EdgeInsets.symmetric(horizontal: 30.w),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 30.h),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: isDark ? kGrey30 : kLGrey40,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(10.r),
+                  color: isDark ? kGrey30.withOpacity(0.4) : kLGrey30,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.cancel_outlined,
+                        size: 100,
+                        color: kPrimaryColor,
+                        shadows: [
+                          Shadow(
+                            offset: const Offset(2, 5),
+                            color: isDark ? kBlack10 : kGrey40,
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                        width: double.infinity,
+                      ),
+                      AutoSizeText(
+                        "Could not find Post",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: isDark ? kGrey150 : kGrey50,
+                          fontSize: 24.sp,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: snapshot2.data!.docs.length,
+            itemBuilder: (context, index) {
+              dynamic snap = snapshot2.data!.docs[index].data();
+              return PostCard(
+                key: ValueKey(snap['postId']),
+                snap: snap,
+              );
+            },
+          );
+        },
+      );
+    }
+    return Container();
   }
 }

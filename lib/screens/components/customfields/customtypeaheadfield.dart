@@ -126,9 +126,6 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
                   validateField(value);
                   String val = validateField(value);
                   if (val == "") {
-                    setState(() {
-                      widget.controller.text = value!;
-                    });
                     return null;
                   } else {
                     return val;

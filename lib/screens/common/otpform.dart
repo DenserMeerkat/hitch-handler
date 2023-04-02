@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 import '../../constants.dart';
-import 'customfields/customsubmitbutton.dart';
+import '../components/customfields/customsubmitbutton.dart';
 
 class OtpForm extends StatefulWidget {
   const OtpForm({

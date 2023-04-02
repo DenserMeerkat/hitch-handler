@@ -49,8 +49,9 @@ class OTPArguments {
 
 class PostsArguments {
   final dynamic snap;
-
+  final bool isAuthority;
   PostsArguments(
     this.snap,
+    this.isAuthority,
   );
 }

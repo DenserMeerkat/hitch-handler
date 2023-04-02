@@ -60,6 +60,9 @@ dependencies:
   pull_to_refresh: ^2.0.0
   expandable_bottom_bar: ^2.0.2
   draggable_scrollbar: ^0.1.0
+  fluttertoast: ^8.2.1
+  overlay_support: ^2.1.0
+  im_stepper: ^1.0.1+1
   #expandable_page_view: ^1.0.17
 
 dev_dependencies:

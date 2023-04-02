@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widget_tree.dart';
-import 'screens/components/settings_page.dart';
-import 'screens/components/post_page.dart';
+import 'screens/common/settings_page.dart';
+import 'screens/common/post_page.dart';
 import 'screens/auth_home/auth_app.dart';
 import 'screens/user_home/search_page.dart';
 import 'screens/launch/launch_screen.dart';
@@ -9,7 +9,7 @@ import 'screens/login/student_login.dart';
 import 'screens/login/authority_login.dart';
 import 'screens/login/admin_login.dart';
 import 'screens/signup/user_signup.dart';
-import 'screens/components/otp_screen.dart';
+import 'screens/common/otp_screen.dart';
 import 'screens/user_home/user_app.dart';
 
 final Map<String, WidgetBuilder> routes = {

@@ -27,20 +27,35 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
   late Color errorColor;
   String errorText = "";
 
+  @override
+  void initState() {
+    widget.controller.text = "";
+    super.initState();
+  }
+
   String? validateField(String? value) {
     String errormsg = "";
     if (value!.isWhitespace()) {
       errormsg = "${widget.hinttext} can\'t be empty";
-    } else if (value.isValidName()) {
-      errormsg = "";
     }
-    setState(() {
-      errorText = errormsg;
-    });
+
     if (errormsg != "") {
       return errormsg;
     }
     return null;
+  }
+
+  String? validateDate(value) {
+    if (value != "") {
+      String? val = birthDateValidator(DateFormat("dd-MM-yyyy").parse(value!));
+      if (val == "") {
+        return null;
+      } else {
+        return val;
+      }
+    } else {
+      return birthDateValidator(null);
+    }
   }
 
   String? birthDateValidator(DateTime? value) {
@@ -101,9 +116,11 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               ),
             ),
             TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              onSaved: validateField,
-              validator: validateDate,
+              controller: widget.controller,
+              onChanged: (v) => validateField(v),
+              validator: (v) {
+                return validateDate(v);
+              },
               showCursor: true,
               readOnly: true,
               onTap: () async {
@@ -113,14 +130,10 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   DateTime.now(),
                 );
                 if (pickeddate != null) {
-                  setState(() {
-                    widget.controller.text =
-                        DateFormat('dd-MM-yyyy').format(pickeddate);
-                    validateDate(DateFormat('dd-MM-yyyy').format(pickeddate));
-                  });
+                  widget.controller.text =
+                      DateFormat('dd-MM-yyyy').format(pickeddate);
                 }
               },
-              controller: widget.controller,
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
               scrollPadding: EdgeInsets.only(
@@ -145,12 +158,10 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                       DateTime.now(),
                     );
                     if (pickeddate != null) {
-                      setState(() {
-                        widget.controller.text =
-                            DateFormat('dd-MM-yyyy').format(pickeddate);
-                        validateDate(
-                            DateFormat('dd-MM-yyyy').format(pickeddate));
-                      });
+                      widget.controller.text =
+                          DateFormat('dd-MM-yyyy').format(pickeddate);
+                      // validateDate(
+                      //     DateFormat('dd-MM-yyyy').format(pickeddate));
                     }
                   },
                   child: IconButton(
@@ -240,25 +251,19 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
             ),
           ],
         ),
-        CustomErrorMsg(
-          errorText: errorText,
-          errorIcon: errorIcon,
+        Offstage(
+          offstage: errorText != "",
+          child: SizedBox(height: 25.h),
+        ),
+        Offstage(
+          offstage: errorText == "",
+          child: CustomErrorMsg(
+            errorText: errorText,
+            errorIcon: errorIcon,
+          ),
         ),
       ],
     );
-  }
-
-  String? validateDate(value) {
-    if (value != "") {
-      String? val = birthDateValidator(DateFormat("dd-MM-yyyy").parse(value!));
-      if (val == "") {
-        return null;
-      } else {
-        return val;
-      }
-    } else {
-      return birthDateValidator(null);
-    }
   }
 
   BoxShadow errorIndicator() {

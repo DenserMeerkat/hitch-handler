@@ -2,15 +2,15 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'postcard.dart';
 import '../../../constants.dart';
 
 class PostTitle extends StatelessWidget {
   const PostTitle({
     super.key,
     required this.snap,
+    required this.isAuthority,
   });
-
+  final bool isAuthority;
   final dynamic snap;
 
   @override
@@ -29,79 +29,6 @@ class PostTitle extends StatelessWidget {
                 ),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
-      ),
-    );
-  }
-}
-
-class PostTop extends StatelessWidget {
-  const PostTop({
-    super.key,
-    required this.snap,
-  });
-  final dynamic snap;
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    return Container(
-      padding: EdgeInsets.only(
-        left: 12.w,
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4),
-            decoration: BoxDecoration(
-              color: isDark ? kGrey40 : kLGrey30.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(5.r),
-              border: Border.all(
-                color: isDark ? kGrey50 : kLGrey30,
-                width: 0.5,
-              ),
-            ),
-            child: Text(
-              snap['domain'],
-              style: AdaptiveTheme.of(context)
-                  .theme
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(
-                    fontSize: 12.sp,
-                  ),
-            ),
-          ),
-          const Spacer(),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4),
-            decoration: BoxDecoration(
-              border: Border.all(color: kPrimaryColor, width: 2),
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: Text(
-              "In Review",
-              style: AdaptiveTheme.of(context)
-                  .theme
-                  .textTheme
-                  .titleSmall!
-                  .copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10.sp,
-                  ),
-            ),
-          ),
-          Material(
-            type: MaterialType.transparency,
-            child: IconButton(
-              splashRadius: 20.r,
-              icon: Icon(
-                Icons.more_vert_rounded,
-                color: isDark ? kTextColor : kLTextColor,
-              ),
-              onPressed: () {},
-            ),
-          ),
-        ],
       ),
     );
   }

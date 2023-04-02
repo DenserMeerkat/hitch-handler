@@ -5,17 +5,22 @@ class Post {
   final String uid;
   final String title;
   final String description;
-  final String location;
+  final String? location;
   final String domain;
-  final String date;
+  final String? date;
   final DateTime datePublished;
-  final String time;
+  final String? time;
   final String isAnon;
   final String isDept;
   final List imgList;
   final List upVotes;
+  final List bookmarks;
   final int upVoteCount;
-
+  final String status;
+  final DateTime? dateClosed;
+  final String? authUid;
+  final String? authRemark;
+  final double? rating;
   const Post({
     required this.postId,
     required this.uid,
@@ -31,6 +36,12 @@ class Post {
     required this.imgList,
     required this.upVotes,
     required this.upVoteCount,
+    required this.status,
+    required this.bookmarks,
+    this.authRemark,
+    this.dateClosed,
+    this.authUid,
+    this.rating,
   });
 
   Map<String, dynamic> toJson() => {
@@ -48,6 +59,12 @@ class Post {
         "imgList": imgList,
         "upVotes": upVotes,
         "upVoteCount": upVoteCount,
+        "bookmarks": bookmarks,
+        "status": status,
+        "authRemark": authRemark,
+        "dateClosed": dateClosed,
+        "authUid": authUid,
+        "rating": rating,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -67,6 +84,12 @@ class Post {
       imgList: snapshot["imgList"],
       upVotes: snapshot["upVotes"],
       upVoteCount: snapshot["upVoteCount"],
+      bookmarks: snapshot["bookmarks"],
+      status: snapshot["status"],
+      authRemark: snapshot["authRemark"],
+      dateClosed: snapshot["dateClosed"],
+      authUid: snapshot["authUid"],
+      rating: snapshot["rating"],
     );
   }
 }

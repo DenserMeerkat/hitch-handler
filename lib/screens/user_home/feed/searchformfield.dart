@@ -1,20 +1,20 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../../string_extensions.dart';
 import '../../../constants.dart';
-import '../../../resources/post_methods.dart';
 
 class SearchFormField extends StatefulWidget {
   final Color fgcolor;
   final String hintText;
   final TextEditingController controller;
+  final Function(String?) onSearch;
 
   const SearchFormField({
     super.key,
     required this.fgcolor,
     this.hintText = "Search",
     required this.controller,
+    required this.onSearch,
   });
   @override
   State<SearchFormField> createState() => _SearchFormFieldState();
@@ -41,11 +41,20 @@ class _SearchFormFieldState extends State<SearchFormField> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           //width: double.infinity,
           child: Focus(
-            onFocusChange: (focus) {},
+            onFocusChange: (focus) {
+              widget.onSearch(widget.controller.text);
+            },
             child: TextFormField(
-              onChanged: (value) {},
-              onSaved: (value) {},
-              autofocus: true,
+              onEditingComplete: () {
+                widget.onSearch(widget.controller.text);
+              },
+              onSaved: (value) {
+                widget.onSearch(value);
+              },
+              onFieldSubmitted: (value) {
+                widget.onSearch(value);
+              },
+              //autofocus: true,
               controller: widget.controller,
               cursorColor: kPrimaryColor,
               textInputAction: TextInputAction.search,
@@ -60,10 +69,12 @@ class _SearchFormFieldState extends State<SearchFormField> {
                 hintStyle: AdaptiveTheme.of(context)
                     .theme
                     .textTheme
-                    .bodyMedium!
+                    .bodySmall!
                     .copyWith(
-                      fontWeight: FontWeight.normal,
-                      color: isDark ? kTextColor : kLTextColor,
+                      fontSize: 14,
+                      color: isDark
+                          ? kTextColor.withOpacity(0.8)
+                          : kLTextColor.withOpacity(0.8),
                     ),
                 border: enabledBorder,
               ),

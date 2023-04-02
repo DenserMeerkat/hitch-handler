@@ -6,7 +6,7 @@ import 'reset_password.dart';
 import '../../constants.dart';
 import '../components/customfields/custommultifield.dart';
 import '../components/customfields/customsubmitbutton.dart';
-import '../components/otp_screen.dart';
+import '../common/otp_screen.dart';
 
 class ForgotModalForm extends StatefulWidget {
   const ForgotModalForm({

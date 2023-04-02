@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/utils/exitdialog.dart';
 import '../../args_class.dart';
 import '../../constants.dart';
 import '../components/customsigninappbar.dart';
@@ -27,29 +28,7 @@ class ResetPasswordPage extends StatelessWidget {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
-        showConfirmDialog(
-          context,
-          DialogCont(
-            title: "Exit Process",
-            message:
-                "Are you sure you want to go back? You have an ongoing process ",
-            icon: Icons.arrow_back,
-            iconBackgroundColor: fgcolor.withOpacity(0.7),
-            primaryButtonLabel: "Exit",
-            primaryButtonColor: kGrey150,
-            secondaryButtonColor: fgcolor.withOpacity(0.7),
-            primaryFunction: () {
-              ScaffoldMessenger.of(context).removeCurrentSnackBar();
-              Navigator.popUntil(context, ModalRoute.withName(homeroute));
-            },
-            secondaryFunction: () {
-              Navigator.pop(context);
-            },
-            borderRadius: 10,
-          ),
-          borderRadius: 10,
-          barrierColor: kBlack10,
-        );
+        exitDialog(context, homeroute);
         return false;
       },
       child: Scaffold(
@@ -65,29 +44,7 @@ class ResetPasswordPage extends StatelessWidget {
             title: title,
             icon: icon,
             press: () {
-              showConfirmDialog(
-                context,
-                DialogCont(
-                  title: "Exit Process",
-                  message:
-                      "Are you sure you want to go back? You have an ongoing process ",
-                  icon: Icons.arrow_back,
-                  iconBackgroundColor: fgcolor.withOpacity(0.7),
-                  primaryButtonLabel: "Exit",
-                  primaryButtonColor: kGrey150,
-                  secondaryButtonColor: fgcolor.withOpacity(0.7),
-                  primaryFunction: () {
-                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                    Navigator.popUntil(context, ModalRoute.withName(homeroute));
-                  },
-                  secondaryFunction: () {
-                    Navigator.pop(context);
-                  },
-                  borderRadius: 10,
-                ),
-                borderRadius: 10,
-                barrierColor: kBlack10,
-              );
+              exitDialog(context, homeroute);
             },
           ),
         ),

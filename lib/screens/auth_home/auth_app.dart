@@ -1,14 +1,15 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/user_home/search_page.dart';
+import 'package:hitch_handler/screens/auth_home/auth_Archives_page.dart';
+import 'package:hitch_handler/screens/auth_home/auth_home_page.dart';
 import '../../providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../components/appbar.dart';
 import '../../constants.dart';
 import '../../models/user.dart' as model;
-import 'auth_home_page.dart';
 
 class AuthAppScreen extends StatefulWidget {
-  static String routeName = '/auth_app_screen';
+  static String routeName = '/app_screen';
   const AuthAppScreen({super.key});
 
   @override
@@ -22,9 +23,14 @@ class _AuthAppScreenState extends State<AuthAppScreen> {
   String mobno = "";
   static const List<Widget> _homeTabs = [
     AuthHomePage(),
-    SearchPage(),
-    //SearchPage(),
+    AuthArchivesPage(),
   ];
+  final pageController = PageController();
+  void onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   addData() async {
     UserProvider userProvider = Provider.of(context, listen: false);
@@ -37,7 +43,14 @@ class _AuthAppScreenState extends State<AuthAppScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
   void _tabChange(int index) {
+    pageController.jumpToPage(index);
     setState(() {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       _selectedIndex = index;
@@ -46,7 +59,7 @@ class _AuthAppScreenState extends State<AuthAppScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     model.User? user = Provider.of<UserProvider>(context).getUser;
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
@@ -54,70 +67,17 @@ class _AuthAppScreenState extends State<AuthAppScreen> {
         return false;
       },
       child: Scaffold(
-        drawer: SafeArea(
-          child: Drawer(
-            width: 280,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        const BorderRadius.only(topLeft: Radius.circular(20)),
-                    color: isDark ? kGrey50 : kLGrey50,
-                  ),
-                  child: Text(''),
-                ),
-                ListTile(
-                  splashColor: isDark ? kGrey50 : kLGrey50,
-                  focusColor: isDark ? kGrey50 : kLGrey50,
-                  tileColor: isDark ? kGrey30 : kLGrey30,
-                  title: Text(user.email),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                  },
-                ),
-                ListTile(
-                  splashColor: isDark ? kGrey50 : kLGrey50,
-                  focusColor: isDark ? kGrey50 : kLGrey50,
-                  tileColor: isDark ? kGrey30 : kLGrey30,
-                  title: Text(user.rollno),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                  },
-                ),
-                ListTile(
-                  splashColor: isDark ? kGrey50 : kLGrey50,
-                  focusColor: isDark ? kGrey50 : kLGrey50,
-                  tileColor: isDark ? kGrey30 : kLGrey30,
-                  title: Text(user.mobno),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-        drawerEdgeDragWidth: size.width * 0.25,
         backgroundColor: isDark ? kBackgroundColor : kLBlack20,
         appBar: const MainAppBar(),
-        body: Container(
-          height: size.height * 0.9,
-          width: size.width,
-          decoration: const BoxDecoration(
-              //color: kGrey30,
-              ),
-          child: _homeTabs.elementAt(_selectedIndex),
+        body: PageView(
+          controller: pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: onPageChanged,
+          children: _homeTabs,
         ),
+        //_homeTabs[_selectedIndex],
         bottomNavigationBar: Container(
-          padding: const EdgeInsets.only(top: 2),
+          padding: const EdgeInsets.only(top: 1),
           color: isDark ? kGrey30 : kLGrey30,
           child: SafeArea(
             child: NavigationBarTheme(

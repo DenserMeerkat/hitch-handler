@@ -44,7 +44,6 @@ class _AddPageState extends State<AddPage> {
                 .textTheme
                 .displayMedium!
                 .copyWith(
-                  //color: kTextColor,
                   fontWeight: FontWeight.w500,
                   fontSize: 20,
                 ),

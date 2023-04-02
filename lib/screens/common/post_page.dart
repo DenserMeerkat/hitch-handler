@@ -1,17 +1,16 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../models/user.dart' as model;
 import '../../providers/user_provider.dart';
-import '../user_home/feed/postfooter.dart';
-import '../user_home/feed/postheader.dart';
-import '../user_home/feed/postimages.dart';
+import 'post/postfooter.dart';
+import 'post/postheader.dart';
+import 'post/postimages.dart';
 import '../../args_class.dart';
+import 'post/posttop.dart';
 
 class PostsPage extends StatefulWidget {
   static String routeName = '/posts_page';
@@ -76,6 +75,7 @@ class _PostsPageState extends State<PostsPage> {
     late DateTime tempDate;
     late String timeAgo;
     final snap = arguments.snap;
+    final bool isAuthority = arguments.isAuthority;
     location = snap['location'];
     date = snap['date'];
     time = snap['time'];
@@ -153,18 +153,23 @@ class _PostsPageState extends State<PostsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  PostTop(snap: snap),
-                  PostTitle(snap: snap),
+                  PostTop(snap: snap, isAuthority: isAuthority),
+                  PostTitle(snap: snap, isAuthority: isAuthority),
                   PostDesc(snap: snap),
                   PostImages(snap: snap, imgList: imgList),
                   ActionButtons(
                     snap: snap,
                     user: user,
+                    isAuthority: isAuthority,
                     showOpen: false,
                   ),
                   PostInfo(
-                      location: location, date: date, time: time, widget: snap),
-                  PostTimeAgo(timeAgo: timeAgo, isDark: isDark),
+                      location: location,
+                      date: date,
+                      time: time,
+                      widget: widget,
+                      isAuthority: isAuthority),
+                  PostTimeAgo(timeAgo: timeAgo, isAuthority: isAuthority),
                   const SizedBox(height: 10),
                 ],
               ),

@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/resources/firestore_methods.dart';
@@ -38,8 +39,8 @@ class AddFormState extends State<AddForm> {
   String locErrorText = '';
   final myDomFieldController = TextEditingController();
   String domErrorText = '';
-  DateTime myDateController = DateTime.now();
-  TimeOfDay myTimeController = const TimeOfDay(hour: 0, minute: 0);
+  DateTime? myDateController;
+  TimeOfDay? myTimeController;
 
   bool isAnon = false;
   bool isDept = false;
@@ -62,8 +63,10 @@ class AddFormState extends State<AddForm> {
         myMsgFieldController.text,
         myLocFieldController.text,
         myDomFieldController.text,
-        DateFormat('dd-MM-yyyy').format(myDateController),
-        getTime(myTimeController),
+        myDateController != null
+            ? DateFormat('dd-MM-yyyy').format(myDateController!)
+            : null,
+        myTimeController != null ? getTime(myTimeController!) : null,
         isAnon.toString(),
         isDept.toString(),
         UploadFileList.retrieveFileList(),
@@ -247,75 +250,102 @@ class AddFormState extends State<AddForm> {
 
   void clearForm() {
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-    showConfirmDialog(
-      context,
-      DialogCont(
-        title: "Reset Fields",
-        message: "Are you sure you want to reset all fields ?",
-        icon: Icons.restore_page_rounded,
-        iconBackgroundColor: kSecButtonColor.withOpacity(1),
-        secondaryButtonColor: kSecButtonColor.withOpacity(1),
-        primaryButtonLabel: "Reset",
-        primaryButtonColor: kGrey150,
-        primaryFunction: () {
-          debugPrint(UploadFileList.clearFileList());
-          clearFields();
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).clearSnackBars();
-          Navigator.of(context).pop();
-        },
-        secondaryFunction: () {
-          Navigator.pop(context);
-        },
-        borderRadius: 10,
-        //showSecondaryButton: false,
-      ),
-      borderRadius: 10,
-    );
+    if (myTitleFieldController.text != "" ||
+        myMsgFieldController.text != "" ||
+        myDomFieldController.text != "" ||
+        myLocFieldController.text != "" ||
+        myDateController != null ||
+        myTimeController != null ||
+        UploadFileList.currLength() != 0) {
+      showAlertDialog(
+        context,
+        "Discard edits?",
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "If you go back now you'll lose all the edits you've made.",
+              style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
+            ),
+          ],
+        ),
+        [
+          buildCancelButton(context),
+          buildActiveButton(
+            context,
+            true,
+            "Discard",
+            () {
+              clearFields();
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).clearSnackBars();
+              Navigator.of(context).pop();
+            },
+            fgColor: kErrorColor,
+          )
+        ],
+        Icons.delete_forever_outlined,
+        fgColor: kErrorColor,
+      );
+    } else {
+      Navigator.pop(context);
+    }
   }
 
   void validateForm() {
     final User user = Provider.of<UserProvider>(context, listen: false).getUser;
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
       debugPrint("________");
-      showConfirmDialog(
+      showAlertDialog(
         context,
-        DialogCont(
-          title: "Confirm Post",
-          message: "Looks good!, Click 'Confirm' to add complaint",
-          icon: Icons.check_box_rounded,
-          iconBackgroundColor: kPrimaryColor.withOpacity(0.7),
-          secondaryButtonColor: kGrey150,
-          primaryButtonLabel: "Confirm",
-          primaryButtonColor: kPrimaryColor.withOpacity(0.7),
-          primaryFunction: () {
-            addPost(user.uid);
-            Navigator.pop(context);
-          },
-          secondaryFunction: () {
-            Navigator.pop(context);
-          },
-          borderRadius: 10,
-          //showSecondaryButton: false,
+        "Confirm Post",
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Looks good!\nClick 'Confirm' to add complaint.",
+              style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
+            ),
+          ],
         ),
-        borderRadius: 10,
+        [
+          buildCancelButton(context),
+          buildActiveButton(
+            context,
+            true,
+            "Confirm",
+            () {
+              addPost(user.uid);
+              Navigator.pop(context);
+            },
+          )
+        ],
+        Icons.check_box_outlined,
       );
     } else {
       AddPage.scrollController.animateTo(0,
           duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
-      debugPrint("Hi");
-      final snackBar = showCustomSnackBar(
-        context,
-        "One or more Fields have Errors",
-        "Ok",
-        () {},
-      );
+
+      ScaffoldMessenger.of(context).clearSnackBars();
+      final snackBar =
+          showCustomSnackBar(context, "One or more Fields have Errors", () {},
+              backgroundColor: isDark ? kGrey40 : kLBlack10,
+              borderColor: AdaptiveTheme.of(context).theme.colorScheme.error,
+              textColor: AdaptiveTheme.of(context).theme.colorScheme.error,
+              icon: Icon(
+                Icons.error_outline_rounded,
+                color: AdaptiveTheme.of(context).theme.colorScheme.error,
+              ));
       ScaffoldMessenger.of(context)
           .showSnackBar(snackBar)
           .closed
           .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
+
       debugPrint(">>>>>ERRORS!");
     }
   }

@@ -1,7 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/components/settings_page.dart';
+import 'package:hitch_handler/screens/common/settings_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../constants.dart';
 import '../../resources/auth_methods.dart';

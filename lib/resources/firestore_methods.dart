@@ -14,10 +14,10 @@ class FirestoreMethods {
     String uid,
     String title,
     String description,
-    String location,
+    String? location,
     String domain,
-    String date,
-    String time,
+    String? date,
+    String? time,
     String isAnon,
     String isDept,
     List imgList,
@@ -47,8 +47,14 @@ class FirestoreMethods {
         isAnon: isAnon,
         isDept: isDept,
         imgList: files,
+        bookmarks: [],
         upVotes: [],
         upVoteCount: 0,
+        status: "In Review",
+        dateClosed: null,
+        authUid: null,
+        authRemark: null,
+        rating: null,
       );
 
       _firestore.collection('posts').doc(postId).set(
@@ -90,13 +96,14 @@ class FirestoreMethods {
 
   Future<String> bookmarkPost(String postId, String uid, List bookmarks) async {
     try {
-      if (bookmarks.contains(postId)) {
-        await _firestore.collection('users').doc(uid).update({
-          'bookmarks': FieldValue.arrayRemove([postId]),
+      var db = _firestore.collection('posts').doc(postId);
+      if (bookmarks.contains(uid)) {
+        await db.update({
+          'bookmarks': FieldValue.arrayRemove([uid]),
         });
       } else {
-        await _firestore.collection('users').doc(uid).update({
-          'bookmarks': FieldValue.arrayUnion([postId]),
+        await db.update({
+          'bookmarks': FieldValue.arrayUnion([uid]),
         });
       }
       debugPrint("BookmarkChangeSuccess");

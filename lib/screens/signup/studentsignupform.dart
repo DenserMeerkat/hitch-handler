@@ -5,7 +5,7 @@ import '../../args_class.dart';
 import '../components/customfields/customdatepickfield.dart';
 import '../components/utils/customdialog.dart';
 import 'create_password.dart';
-import '../components/otp_screen.dart';
+import '../common/otp_screen.dart';
 import '../../constants.dart';
 import '../components/customfields/customsubmitbutton.dart';
 import '../components/customfields/custommultifield.dart';
@@ -118,12 +118,19 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
                     arguments: args,
                   );
                 } else {
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   final snackBar = showCustomSnackBar(
-                    context,
-                    "One or more Fields have Errors",
-                    "Ok",
-                    () {},
-                  );
+                      context, "One or more Fields have Errors", () {},
+                      backgroundColor: isDark ? kGrey40 : kLBlack10,
+                      borderColor:
+                          AdaptiveTheme.of(context).theme.colorScheme.error,
+                      textColor:
+                          AdaptiveTheme.of(context).theme.colorScheme.error,
+                      icon: Icon(
+                        Icons.error_outline_rounded,
+                        color:
+                            AdaptiveTheme.of(context).theme.colorScheme.error,
+                      ));
                   ScaffoldMessenger.of(context)
                       .showSnackBar(snackBar)
                       .closed

@@ -10,8 +10,8 @@ class SwitchChanged extends Notification {
 }
 
 class DateTimeChanged extends Notification {
-  final DateTime date;
-  final TimeOfDay time;
+  final DateTime? date;
+  final TimeOfDay? time;
   DateTimeChanged(
     this.date,
     this.time,

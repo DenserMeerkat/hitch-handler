@@ -264,9 +264,16 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
             ),
           ),
         ]),
-        CustomErrorMsg(
-          errorText: errorText,
-          errorIcon: errorIcon,
+        Offstage(
+          offstage: errorText != "",
+          child: SizedBox(height: 25.h),
+        ),
+        Offstage(
+          offstage: errorText == "",
+          child: CustomErrorMsg(
+            errorText: errorText,
+            errorIcon: errorIcon,
+          ),
         ),
       ],
     );

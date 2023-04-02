@@ -26,7 +26,7 @@ class _AppScreenState extends State<AppScreen> {
   static const List<Widget> _homeTabs = [
     HomePage(),
     SizedBox(),
-    BookmarkPage(),
+    ArchivesPage(),
   ];
   final pageController = PageController();
   void onPageChanged(int index) {
@@ -44,6 +44,12 @@ class _AppScreenState extends State<AppScreen> {
   void initState() {
     addData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 
   void _tabChange(int index) {
@@ -72,6 +78,7 @@ class _AppScreenState extends State<AppScreen> {
           onPageChanged: onPageChanged,
           children: _homeTabs,
         ),
+        //_homeTabs[_selectedIndex],
         bottomNavigationBar: Container(
           padding: const EdgeInsets.only(top: 1),
           color: isDark ? kGrey30 : kLGrey30,

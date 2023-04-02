@@ -1,27 +1,41 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/args_class.dart';
-import 'package:hitch_handler/screens/components/post_page.dart';
+import 'package:hitch_handler/screens/common/post_page.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import '../../../resources/firestore_methods.dart';
-import 'postcard.dart';
-import '../../../constants.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/resources/firestore_methods.dart';
 
-class PostInfo extends StatelessWidget {
+class PostInfo extends StatefulWidget {
   const PostInfo({
     super.key,
     required this.location,
     required this.date,
     required this.time,
     required this.widget,
+    required this.isAuthority,
   });
 
-  final String location;
-  final String date;
-  final String time;
+  final String? location;
+  final String? date;
+  final String? time;
   final dynamic widget;
+  final bool isAuthority;
+
+  @override
+  State<PostInfo> createState() => _PostInfoState();
+}
+
+class _PostInfoState extends State<PostInfo> {
+  String? location;
+  @override
+  void initState() {
+    location = widget.location == "" ? null : widget.location;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,44 +51,64 @@ class PostInfo extends StatelessWidget {
             );
     return Container(
       padding: const EdgeInsets.only(top: 0, left: 16, right: 20, bottom: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
+      child: location != null || widget.time != null || widget.date != null
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: Text(
-                    location != "" ? location : "Location",
-                    style: bodyMedium2,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      location != null
+                          ? Padding(
+                              padding: const EdgeInsets.only(right: 12.0),
+                              child: Text(
+                                location!,
+                                style: bodyMedium2,
+                              ),
+                            )
+                          : const SizedBox(),
+                      widget.date == null || location == null || location == ""
+                          ? const SizedBox()
+                          : Text(
+                              "•",
+                              style: bodyMedium2,
+                            ),
+                      widget.date != null
+                          ? Padding(
+                              padding: location == null || location == ""
+                                  ? const EdgeInsets.only(right: 8.0)
+                                  : const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                widget.date!,
+                                style: bodyMedium2,
+                              ),
+                            )
+                          : const SizedBox(),
+                      widget.time != null
+                          ? Text(
+                              "•",
+                              style: bodyMedium2,
+                            )
+                          : const SizedBox(),
+                      widget.time != null
+                          ? Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                widget.time!,
+                                style: bodyMedium2,
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
                   ),
                 ),
-                const Text("•"),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Text(
-                    date,
-                    style: bodyMedium2,
-                  ),
-                ),
-                const Text("•"),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Text(
-                    time,
-                    style: bodyMedium2,
-                  ),
+                const SizedBox(
+                  height: 5,
                 ),
               ],
-            ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-        ],
-      ),
+            )
+          : const SizedBox(),
     );
   }
 }
@@ -83,11 +117,13 @@ class ActionButtons extends StatefulWidget {
   final dynamic snap;
   final dynamic user;
   final bool showOpen;
+  final bool isAuthority;
   const ActionButtons({
     super.key,
     required this.snap,
     required this.user,
     this.showOpen = true,
+    required this.isAuthority,
   });
 
   @override
@@ -97,14 +133,27 @@ class ActionButtons extends StatefulWidget {
 class _ActionButtonsState extends State<ActionButtons> {
   bool isUpVoted = false;
   late int upVoteCount;
-
+  late dynamic snapp;
   bool isBookmarked = false;
   @override
   void initState() {
     isUpVoted = widget.snap['upVotes'].contains(widget.user.uid) ? true : false;
     upVoteCount = widget.snap['upVoteCount'];
     isBookmarked =
-        widget.user.bookmarks.contains(widget.snap['postId']) ? true : false;
+        widget.snap['bookmarks'].contains(widget.user.uid) ? true : false;
+    var collection = FirebaseFirestore.instance.collection('posts');
+    collection.doc(widget.snap['postId']).snapshots().listen((docSnapshot) {
+      Future.delayed(const Duration(milliseconds: 700), () {
+        if (docSnapshot.exists && mounted) {
+          Map<String, dynamic> data = docSnapshot.data()!;
+          isUpVoted = data['upVotes'].contains(widget.user.uid) ? true : false;
+          isBookmarked =
+              data['bookmarks'].contains(widget.user.uid) ? true : false;
+          upVoteCount = data['upVoteCount'];
+        }
+      });
+    });
+
     super.initState();
   }
 
@@ -131,7 +180,7 @@ class _ActionButtonsState extends State<ActionButtons> {
       bool success = false;
       try {
         res = await FirestoreMethods().bookmarkPost(
-            widget.snap['postId'], widget.user.uid, widget.user.bookmarks);
+            widget.snap['postId'], widget.user.uid, widget.snap['bookmarks']);
       } catch (err) {
         res = "$err";
         return isLiked;
@@ -193,12 +242,6 @@ class _ActionButtonsState extends State<ActionButtons> {
                           : isDark
                               ? kTextColor.withOpacity(0.7)
                               : kLTextColor.withOpacity(0.7),
-                      // shadows: [
-                      //   BoxShadow(
-                      //       offset: const Offset(1, 1),
-                      //       color: isDark ? Colors.transparent : kLGrey30,
-                      //       blurRadius: 5)
-                      // ],
                       size: isUpVoted ? 22.sp : 20.sp,
                     );
                   },
@@ -236,12 +279,6 @@ class _ActionButtonsState extends State<ActionButtons> {
                               ? kTextColor.withOpacity(0.7)
                               : kLTextColor.withOpacity(0.7),
                           size: 20.sp,
-                          // shadows: [
-                          //   BoxShadow(
-                          //       offset: const Offset(1, 1),
-                          //       color: isDark ? Colors.transparent : kLGrey30,
-                          //       blurRadius: 5)
-                          // ],
                         ),
                         SizedBox(
                           width: 8.w,
@@ -256,34 +293,52 @@ class _ActionButtonsState extends State<ActionButtons> {
           ),
           SizedBox(width: 8.w),
           widget.showOpen
-              ? InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () {
-                    final args = PostsArguments(widget.snap);
-                    Navigator.pushNamed(context, PostsPage.routeName,
-                        arguments: args);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 8.0),
-                    child: Icon(
-                      Icons.open_in_new,
-                      color: isDark
-                          ? kTextColor.withOpacity(0.7)
-                          : kLTextColor.withOpacity(0.7),
-                      size: 20.sp,
-                      // shadows: [
-                      //   BoxShadow(
-                      //       offset: const Offset(1, 1),
-                      //       color: isDark ? Colors.transparent : kLGrey30,
-                      //       blurRadius: 5)
-                      // ],
+              ? Tooltip(
+                  message: "View Post",
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(50),
+                    onTap: () {
+                      final args =
+                          PostsArguments(widget.snap, widget.isAuthority);
+                      Navigator.pushNamed(context, PostsPage.routeName,
+                          arguments: args);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 8.0),
+                      child: Icon(
+                        Icons.open_in_new,
+                        color: isDark
+                            ? kTextColor.withOpacity(0.7)
+                            : kLTextColor.withOpacity(0.7),
+                        size: 20.sp,
+                      ),
                     ),
                   ),
                 )
               : const SizedBox(
                   width: 0,
                 ),
+          const Spacer(),
+          widget.snap['status'] == "Closed" &&
+                  widget.user.uid == widget.snap['uid']
+              ? SizedBox(
+                  height: 30,
+                  child: OutlinedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      foregroundColor: MaterialStatePropertyAll(
+                          isDark ? kPrimaryColor : kLTextColor),
+                    ),
+                    onPressed: () {}, // Todo
+                    child: const Text("Satisfied ?"),
+                  ),
+                )
+              : const SizedBox(),
           const Spacer(),
           LikeButton(
             size: 20.sp,
@@ -306,12 +361,6 @@ class _ActionButtonsState extends State<ActionButtons> {
                         ? kTextColor.withOpacity(0.7)
                         : kLTextColor.withOpacity(0.7),
                 size: 20.sp,
-                // shadows: [
-                //   BoxShadow(
-                //       offset: const Offset(1, 1),
-                //       color: isDark ? Colors.transparent : kLGrey40,
-                //       blurRadius: 5)
-                // ],
               );
             },
           ),
@@ -325,14 +374,15 @@ class PostTimeAgo extends StatelessWidget {
   const PostTimeAgo({
     super.key,
     required this.timeAgo,
-    required this.isDark,
+    required this.isAuthority,
   });
 
+  final bool isAuthority;
   final String timeAgo;
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.only(left: 16.0.w, right: 16.0.w),
       child: Row(

@@ -78,6 +78,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void loginAuthentication(String email, String pass) async {
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     String res = "UnknownError";
     final scaffoldContext = ScaffoldMessenger.of(context);
     setState(() {
@@ -96,13 +97,21 @@ class _LoginFormState extends State<LoginForm> {
     if (res == "success") {
       debugPrint(res);
     } else {
-      final snackBar = SnackBar(
-        content: Text(res.toString()),
-      );
-      scaffoldContext
-          .showSnackBar(snackBar)
-          .closed
-          .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
+      if (context.mounted) {
+        scaffoldContext.clearSnackBars();
+        final snackBar = SnackBar(
+          content: Text(
+            res.toString(),
+            style: TextStyle(color: isDark ? kTextColor : kLTextColor),
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: isDark ? kGrey40 : kLBlack10,
+        );
+        scaffoldContext
+            .showSnackBar(snackBar)
+            .closed
+            .then((value) => scaffoldContext.clearSnackBars());
+      }
       debugPrint("Error in Login");
     }
   }
@@ -181,7 +190,7 @@ class _LoginFormState extends State<LoginForm> {
               ],
             ),
             SizedBox(
-              height: 12.h,
+              height: 20.h,
             ),
             CustomSubmitButton(
               size: size,
@@ -199,21 +208,25 @@ class _LoginFormState extends State<LoginForm> {
                   String email = myTextFieldController.text;
                   loginAuthentication(email, myPassFieldController.text);
                 } else {
-                  final snackBar = SnackBar(
-                    backgroundColor: isDark ? kGrey40 : kLGrey40,
-                    behavior: SnackBarBehavior.floating,
-                    content: Text(
-                      "One or more Fields have Errors",
-                      style: TextStyle(
-                        color: isDark ? kTextColor : kLTextColor,
-                      ),
-                    ),
-                  );
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  final snackBar = showCustomSnackBar(
+                      context, "One or more Fields have Errors", () {},
+                      backgroundColor: isDark ? kGrey40 : kLBlack10,
+                      borderColor:
+                          AdaptiveTheme.of(context).theme.colorScheme.error,
+                      textColor:
+                          AdaptiveTheme.of(context).theme.colorScheme.error,
+                      icon: Icon(
+                        Icons.error_outline_rounded,
+                        color:
+                            AdaptiveTheme.of(context).theme.colorScheme.error,
+                      ));
                   ScaffoldMessenger.of(context)
                       .showSnackBar(snackBar)
                       .closed
                       .then((value) =>
                           ScaffoldMessenger.of(context).clearSnackBars());
+
                   debugPrint(">>>>>ERRORS!");
                 }
               }, //Todo_Navigation

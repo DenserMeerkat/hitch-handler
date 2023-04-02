@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:hitch_handler/screens/common/post/posttop.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -12,9 +13,11 @@ import 'postimages.dart';
 
 class PostCard extends StatefulWidget {
   final dynamic snap;
+  final bool isAuthority;
   const PostCard({
     super.key,
     required this.snap,
+    this.isAuthority = false,
   });
 
   @override
@@ -25,8 +28,8 @@ class _PostCardState extends State<PostCard> {
   List imgList = [];
 
   late String location;
-  late String date;
-  late String time;
+  late String? date;
+  late String? time;
   late DateTime tempDate;
   late String timeAgo;
 
@@ -45,6 +48,11 @@ class _PostCardState extends State<PostCard> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     model.User? user = Provider.of<UserProvider>(context).getUser;
@@ -59,18 +67,26 @@ class _PostCardState extends State<PostCard> {
           top: BorderSide(color: isDark ? kGrey40 : kLGrey30),
           bottom: BorderSide(color: isDark ? kGrey40 : kLGrey30),
         ),
-        //borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PostTop(snap: widget.snap),
-          PostTitle(snap: widget.snap),
+          PostTop(
+            snap: widget.snap,
+            isAuthority: widget.isAuthority,
+          ),
+          PostTitle(snap: widget.snap, isAuthority: widget.isAuthority),
           PostDesc(snap: widget.snap),
           PostImages(snap: widget.snap, imgList: imgList),
-          ActionButtons(snap: widget.snap, user: user),
-          PostInfo(location: location, date: date, time: time, widget: widget),
-          PostTimeAgo(timeAgo: timeAgo, isDark: isDark),
+          ActionButtons(
+              snap: widget.snap, user: user, isAuthority: widget.isAuthority),
+          PostInfo(
+              location: location,
+              date: date,
+              time: time,
+              widget: widget,
+              isAuthority: widget.isAuthority),
+          PostTimeAgo(timeAgo: timeAgo, isAuthority: widget.isAuthority),
           const SizedBox(height: 10),
         ],
       ),

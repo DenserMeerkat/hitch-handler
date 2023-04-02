@@ -8,7 +8,7 @@ import '../../constants.dart';
 import 'customfields/customconfirmpassword.dart';
 import 'customfields/customsubmitbutton.dart';
 import 'utils/dialogcont.dart';
-import 'validpassword.dart';
+import '../common/validpassword.dart';
 
 class ConfirmPasswordBody extends StatefulWidget {
   final Color fgcolor;
@@ -63,7 +63,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
         userType: 'user',
       );
       if (res != "success") {
-        showCustomSnackBar(contexT, res, "Ok", () {
+        showCustomSnackBar(contexT, res, () {
           navigator.pop();
         });
       }

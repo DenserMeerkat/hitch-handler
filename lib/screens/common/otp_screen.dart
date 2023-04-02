@@ -1,11 +1,12 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'utils/customdialog.dart';
-import 'utils/dialogcont.dart';
+import 'package:hitch_handler/screens/components/utils/exitdialog.dart';
+import '../components/utils/customdialog.dart';
+import '../components/utils/dialogcont.dart';
 import '../../args_class.dart';
 import '../../constants.dart';
-import 'customsigninappbar.dart';
+import '../components/customsigninappbar.dart';
 import 'otpform.dart';
 
 class OtpScreen extends StatelessWidget {
@@ -22,30 +23,7 @@ class OtpScreen extends StatelessWidget {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
-        showConfirmDialog(
-          context,
-          DialogCont(
-            title: "Exit Process",
-            message:
-                "Are you sure you want to go back? You have an ongoing process ",
-            icon: Icons.arrow_back,
-            iconBackgroundColor: arguments.fgcolor.withOpacity(0.7),
-            primaryButtonLabel: "Exit",
-            primaryButtonColor: kGrey150,
-            secondaryButtonColor: arguments.fgcolor.withOpacity(0.7),
-            primaryFunction: () {
-              ScaffoldMessenger.of(context).removeCurrentSnackBar();
-              Navigator.popUntil(
-                  context, ModalRoute.withName(arguments.homeroute));
-            },
-            secondaryFunction: () {
-              Navigator.pop(context);
-            },
-            borderRadius: 10,
-          ),
-          borderRadius: 10,
-          barrierColor: kBlack10,
-        );
+        exitDialog(context, arguments.homeroute);
         return false;
       },
       child: Scaffold(
@@ -61,30 +39,7 @@ class OtpScreen extends StatelessWidget {
             title: arguments.title,
             icon: arguments.icon,
             press: () {
-              showConfirmDialog(
-                context,
-                DialogCont(
-                  title: "Exit Process",
-                  message:
-                      "Are you sure you want to go back? You have an ongoing process ",
-                  icon: Icons.arrow_back,
-                  iconBackgroundColor: arguments.fgcolor.withOpacity(0.7),
-                  primaryButtonLabel: "Exit",
-                  primaryButtonColor: kGrey150,
-                  secondaryButtonColor: arguments.fgcolor.withOpacity(0.7),
-                  primaryFunction: () {
-                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                    Navigator.popUntil(
-                        context, ModalRoute.withName(arguments.homeroute));
-                  },
-                  secondaryFunction: () {
-                    Navigator.pop(context);
-                  },
-                  borderRadius: 10,
-                ),
-                borderRadius: 10,
-                barrierColor: kBlack10,
-              );
+              exitDialog(context, arguments.homeroute);
             },
           ),
         ),

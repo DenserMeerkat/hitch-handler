@@ -8,14 +8,14 @@ import '../common/post/postcard.dart';
 import '../../constants.dart';
 import '../../models/user.dart' as model;
 
-class ArchivesPage extends StatefulWidget {
-  const ArchivesPage({super.key});
+class AuthArchivesPage extends StatefulWidget {
+  const AuthArchivesPage({super.key});
 
   @override
-  State<ArchivesPage> createState() => _ArchivesPageState();
+  State<AuthArchivesPage> createState() => _AuthArchivesPageState();
 }
 
-class _ArchivesPageState extends State<ArchivesPage>
+class _AuthArchivesPageState extends State<AuthArchivesPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
@@ -33,8 +33,7 @@ class _ArchivesPageState extends State<ArchivesPage>
 
   @override
   Widget build(BuildContext context) {
-    model.User? user =
-        Provider.of<UserProvider>(context, listen: false).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     //Size size = MediaQuery.of(context).size; // Available screen size
     final bool isDark =
         AdaptiveTheme.of(context).brightness == Brightness.dark ? true : false;
@@ -196,12 +195,12 @@ class _ArchivesPageState extends State<ArchivesPage>
                     ),
                   ));
                 }
-
                 return ListView.builder(
                   itemCount: snapshot1.data!.docs.length,
                   itemBuilder: (context, index) {
                     dynamic snap = snapshot1.data!.docs[index].data();
                     return PostCard(
+                      isAuthority: true,
                       key: ValueKey(snap['postId']),
                       snap: snap,
                     );
@@ -227,7 +226,6 @@ class _ArchivesPageState extends State<ArchivesPage>
                     ),
                   );
                 }
-
                 if (snapshot2.data!.docs.isEmpty) {
                   return Center(
                       child: Container(
@@ -290,12 +288,12 @@ class _ArchivesPageState extends State<ArchivesPage>
                     ),
                   ));
                 }
-
                 return ListView.builder(
                   itemCount: snapshot2.data!.docs.length,
                   itemBuilder: (context, index) {
                     dynamic snap = snapshot2.data!.docs[index].data();
                     return PostCard(
+                      isAuthority: true,
                       key: ValueKey(snap['postId']),
                       snap: snap,
                     );

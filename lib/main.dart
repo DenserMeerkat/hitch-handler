@@ -13,6 +13,7 @@ import 'package:hitch_handler/screens/auth_home/auth_app.dart';
 import 'package:hitch_handler/screens/user_home/user_app.dart';
 import 'package:hitch_handler/themes.dart';
 import 'package:hitch_handler/widget_tree.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'constants.dart';
@@ -88,13 +89,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             onTap: () {
               FocusManager.instance.primaryFocus?.unfocus();
             },
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 1),
-              child: AdaptiveTheme(
-                light: ThemeProvider.lightTheme,
-                dark: ThemeProvider.darkTheme,
-                initial: widget.savedThemeMode ?? AdaptiveThemeMode.dark,
-                builder: (theme, darkTheme) => MaterialApp(
+            child: AdaptiveTheme(
+              light: ThemeProvider.lightTheme,
+              dark: ThemeProvider.darkTheme,
+              initial: widget.savedThemeMode ?? AdaptiveThemeMode.dark,
+              builder: (theme, darkTheme) => OverlaySupport.global(
+                child: MaterialApp(
                   //showPerformanceOverlay: true,
                   debugShowCheckedModeBanner: false,
                   title: 'Hitch Handler',

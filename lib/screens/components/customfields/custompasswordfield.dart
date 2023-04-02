@@ -218,10 +218,17 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             ),
           ],
         ),
-        CustomErrorMsg(
-          errorText: showErrorBool(),
-          errorIcon: errorIcon,
-          padBottom: 0.0,
+        Offstage(
+          offstage: errorText != "",
+          child: SizedBox(height: 5.h),
+        ),
+        Offstage(
+          offstage: errorText == "",
+          child: CustomErrorMsg(
+            padBottom: 0,
+            errorText: errorText,
+            errorIcon: errorIcon,
+          ),
         ),
       ],
     );

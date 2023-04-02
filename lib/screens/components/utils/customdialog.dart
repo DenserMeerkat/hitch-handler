@@ -1,9 +1,28 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constants.dart';
 
 Future<void> showToggleThemeDialog(BuildContext context) {
+  void reponseSnackbar(String theme) {
+    bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    final snackBar = showCustomSnackBar(
+      context,
+      "Theme switched to $theme",
+      () {},
+      icon: Icon(
+        Icons.palette_outlined,
+        color: isDark ? kTextColor : kLTextColor,
+      ),
+      borderColor:
+          isDark ? kTextColor.withOpacity(0.2) : kLTextColor.withOpacity(0.5),
+      duration: const Duration(seconds: 1),
+      margin: EdgeInsets.symmetric(horizontal: 40.w, vertical: 10),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
   return showDialog(
     context: context,
@@ -42,7 +61,13 @@ Future<void> showToggleThemeDialog(BuildContext context) {
           SimpleDialogOption(
             onPressed: () {
               Navigator.of(context).pop();
-              AdaptiveTheme.of(context).setLight();
+              if (AdaptiveTheme.of(context).mode != AdaptiveThemeMode.light) {
+                AdaptiveTheme.of(context).setLight();
+                ScaffoldMessenger.of(context).clearSnackBars();
+                Future.delayed(const Duration(milliseconds: 10), () {
+                  reponseSnackbar("Light");
+                });
+              }
             },
             child: PopupItem(
               icon: Icons.light_mode_outlined,
@@ -54,7 +79,13 @@ Future<void> showToggleThemeDialog(BuildContext context) {
           SimpleDialogOption(
             onPressed: () {
               Navigator.of(context).pop();
-              AdaptiveTheme.of(context).setDark();
+              if (AdaptiveTheme.of(context).mode != AdaptiveThemeMode.dark) {
+                AdaptiveTheme.of(context).setDark();
+                ScaffoldMessenger.of(context).clearSnackBars();
+                Future.delayed(const Duration(milliseconds: 10), () {
+                  reponseSnackbar("Dark");
+                });
+              }
             },
             child: PopupItem(
               icon: Icons.dark_mode_outlined,
@@ -66,7 +97,13 @@ Future<void> showToggleThemeDialog(BuildContext context) {
           SimpleDialogOption(
             onPressed: () {
               Navigator.of(context).pop();
-              AdaptiveTheme.of(context).setSystem();
+              if (AdaptiveTheme.of(context).mode != AdaptiveThemeMode.system) {
+                AdaptiveTheme.of(context).setSystem();
+                ScaffoldMessenger.of(context).clearSnackBars();
+                Future.delayed(const Duration(milliseconds: 10), () {
+                  reponseSnackbar("System Default");
+                });
+              }
             },
             child: PopupItem(
               icon: Icons.smartphone_outlined,
@@ -103,13 +140,9 @@ void showConfirmDialog(BuildContext context, Widget dialogCont,
       });
 }
 
-void showAlertDialog(
-  BuildContext context,
-  String title,
-  Widget content,
-  List<Widget> actions,
-  IconData icon,
-) {
+void showAlertDialog(BuildContext context, String title, Widget content,
+    List<Widget> actions, IconData icon,
+    {Color? fgColor = kPrimaryColor}) {
   final bool isDark =
       AdaptiveTheme.of(context).theme.brightness == Brightness.dark;
   showDialog(
@@ -118,13 +151,24 @@ void showAlertDialog(
           isDark ? kBlack10.withOpacity(0.8) : kGrey30.withOpacity(0.8),
       builder: (BuildContext context) {
         return CustomAlertDialog(
-            title: title, content: content, actions: actions, icon: icon);
+          title: title,
+          content: content,
+          actions: actions,
+          icon: icon,
+          fgColor: fgColor,
+        );
       });
 }
 
 Widget buildCancelButton(BuildContext context) {
   return TextButton(
     style: ButtonStyle(
+      overlayColor: MaterialStateProperty.all(AdaptiveTheme.of(context)
+          .theme
+          .textTheme
+          .bodyLarge!
+          .color!
+          .withOpacity(0.1)),
       shape: MaterialStatePropertyAll(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
@@ -141,12 +185,14 @@ Widget buildCancelButton(BuildContext context) {
   );
 }
 
-Widget buildActiveButton(BuildContext context, bool submit, String activeText,
-    Function()? onPressed) {
+Widget buildActiveButton(
+    BuildContext context, bool submit, String activeText, Function()? onPressed,
+    {Color? fgColor = kPrimaryColor}) {
   final bool isDark =
       AdaptiveTheme.of(context).theme.brightness == Brightness.dark;
   return TextButton(
     style: ButtonStyle(
+      overlayColor: MaterialStateProperty.all(fgColor!.withOpacity(0.1)),
       shape: MaterialStatePropertyAll(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
@@ -158,7 +204,7 @@ Widget buildActiveButton(BuildContext context, bool submit, String activeText,
       activeText,
       style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.copyWith(
           color: submit
-              ? kPrimaryColor
+              ? fgColor
               : isDark
                   ? kTextColor.withOpacity(0.5)
                   : kLTextColor.withOpacity(0.5)),
@@ -171,12 +217,14 @@ class CustomAlertDialog extends StatelessWidget {
   final Widget content;
   final IconData icon;
   final List<Widget> actions;
+  final Color? fgColor;
   const CustomAlertDialog({
     super.key,
     required this.title,
     required this.content,
     required this.actions,
     required this.icon,
+    this.fgColor,
   });
 
   @override
@@ -191,7 +239,7 @@ class CustomAlertDialog extends StatelessWidget {
           FittedBox(
             child: Icon(
               icon,
-              color: kPrimaryColor,
+              color: fgColor ?? kPrimaryColor,
             ),
           ),
           const SizedBox(width: 10),
@@ -199,53 +247,69 @@ class CustomAlertDialog extends StatelessWidget {
             title,
             style:
                 AdaptiveTheme.of(context).theme.textTheme.bodyLarge!.copyWith(
-                      color: kPrimaryColor,
+                      color: fgColor ?? kPrimaryColor,
                       fontWeight: FontWeight.bold,
                     ),
           ),
         ],
       ),
       content: content,
-      //contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+      contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
       actions: actions,
+      actionsPadding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
     );
   }
 }
 
-SnackBar showCustomSnackBar(BuildContext context, final String text,
-    final String actionLabel, final void Function() onPressed,
-    {Color? backgroundColor,
+SnackBar showCustomSnackBar(BuildContext snackbarContext, final String text,
+    final void Function() onPressed,
+    {Icon? icon,
+    Color? backgroundColor,
     Color? textColor,
-    IconData icon = Icons.error,
+    Color? borderColor,
+    String? actionLabel,
+    Duration? duration,
+    EdgeInsetsGeometry? margin,
     double fsize = 13,
     Color iconColor = kErrorColor,
     Color actionColor = kErrorColor}) {
-  bool isDark = AdaptiveTheme.of(context).theme.brightness == Brightness.dark;
-  Size size = MediaQuery.of(context).size;
+  bool isDark =
+      AdaptiveTheme.of(snackbarContext).theme.brightness == Brightness.dark;
+  Size size = MediaQuery.of(snackbarContext).size;
   return SnackBar(
-    backgroundColor: backgroundColor ?? (isDark ? kGrey40 : kGrey40),
+    duration: duration ?? const Duration(seconds: 3),
+    backgroundColor: backgroundColor ?? (isDark ? kGrey40 : kLBackgroundColor),
     behavior: SnackBarBehavior.floating,
-    margin: EdgeInsets.symmetric(horizontal: size.width * 0.1, vertical: 10),
-    content: Container(
-        color: backgroundColor ?? (isDark ? kGrey40 : kGrey40),
-        height: 20,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                color: textColor ?? (isDark ? kTextColor : kTextColor),
-                fontSize: fsize,
-              ),
+    margin: margin ??
+        EdgeInsets.symmetric(horizontal: size.width * 0.1, vertical: 10),
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: borderColor ?? Colors.transparent)),
+    content: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        icon ?? const SizedBox(),
+        icon != null ? const SizedBox(width: 10) : const SizedBox(),
+        Flexible(
+          child: Text(
+            text,
+            style: TextStyle(
+              overflow: TextOverflow.ellipsis,
+              color: textColor ?? (isDark ? kTextColor : kLTextColor),
+              fontSize: fsize,
             ),
-          ],
-        )),
-    action: SnackBarAction(
-      label: actionLabel,
-      textColor: actionColor,
-      onPressed: onPressed,
+          ),
+        ),
+      ],
     ),
+    action: actionLabel != null
+        ? SnackBarAction(
+            label: actionLabel,
+            textColor: actionColor,
+            onPressed: onPressed,
+          )
+        : null,
   );
 }
 
@@ -284,6 +348,7 @@ class PopupItem extends StatelessWidget {
             color: isDark
                 ? kTextColor.withOpacity(0.8)
                 : kLTextColor.withOpacity(0.8),
+            size: 20.sp,
           ),
           const SizedBox(width: 10),
           Text(
@@ -294,9 +359,6 @@ class PopupItem extends StatelessWidget {
                   : kLTextColor.withOpacity(0.8),
             ),
           ),
-          // SizedBox(
-          //   width: 20.w,
-          // ),
         ],
       ),
     );
