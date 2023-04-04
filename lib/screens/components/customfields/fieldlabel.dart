@@ -37,34 +37,25 @@ class FieldLabel extends StatelessWidget {
       waitDuration: const Duration(seconds: 1),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
-        height: 20,
-        decoration: BoxDecoration(
-            color: isDark ? kBlack20 : kGrey40,
-            borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(5.0), bottom: Radius.circular(0))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(width: 10.0),
-            FittedBox(
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: kTextColor.withOpacity(0.7),
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2.5,
-                  fontSize: 15,
-                ),
+            const SizedBox(width: 4.0),
+            Text(
+              title,
+              style: TextStyle(
+                color: isDark ? kTextColor.withOpacity(0.7) : kLTextColor,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2.5,
+                fontSize: 12,
               ),
             ),
             const SizedBox(width: 10.0),
-            FittedBox(
-              child: Icon(
-                Icons.help_outline_outlined,
-                color: fgcolor.withOpacity(0.7),
-                size: 20,
-              ),
+            Icon(
+              Icons.help_outline_outlined,
+              color: isDark ? fgcolor.withOpacity(0.7) : kLTextColor,
+              size: 14,
             ),
           ],
         ),
@@ -72,65 +63,3 @@ class FieldLabel extends StatelessWidget {
     );
   }
 }
-
-// class FieldToolTip extends StatelessWidget {
-//   const FieldToolTip({
-//     super.key,
-//     required this.bgcolor,
-//     required this.tooltip,
-//   });
-
-//   final Color bgcolor;
-//   final String tooltip;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 3.0),
-//       height: 20,
-//       decoration: const BoxDecoration(
-//           color: kBlack20,
-//           borderRadius: BorderRadius.vertical(
-//               top: Radius.circular(5.0), bottom: Radius.circular(0))),
-//       child: Tooltip(
-//         triggerMode: TooltipTriggerMode.tap,
-//         message: tooltip,
-//         decoration: BoxDecoration(
-//           borderRadius: BorderRadius.circular(5.0),
-//           color: bgcolor,
-//         ),
-//         height: 15,
-//         padding: const EdgeInsets.all(8.0),
-//         preferBelow: false,
-//         textStyle: const TextStyle(
-//           fontSize: 15,
-//         ),
-//         showDuration: const Duration(seconds: 2),
-//         waitDuration: const Duration(seconds: 1),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             FittedBox(
-//               child: Icon(
-//                 Icons.help_outline_outlined,
-//                 color: kTextColor.withOpacity(0.8),
-//                 size: 20,
-//               ),
-//             ),
-//             const SizedBox(width: 3.0),
-//             Text(
-//               "help",
-//               style: TextStyle(
-//                 color: kTextColor.withOpacity(0.8),
-//                 fontWeight: FontWeight.normal,
-//                 letterSpacing: 1.5,
-//                 fontSize: 10,
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

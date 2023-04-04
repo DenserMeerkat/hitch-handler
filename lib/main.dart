@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/providers/user_provider.dart';
 import 'package:hitch_handler/screens/auth_home/auth_app.dart';
@@ -23,6 +24,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final isDark =
       SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
+  await dotenv.load(fileName: '.env');
   await Firebase.initializeApp();
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

@@ -1,7 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/login/student_login.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
 import '../../constants.dart';
 import '../components/customsigninappbar.dart';
 import '../components/loginsignupfooter.dart';
@@ -21,6 +23,7 @@ class UserSignUpScreen extends StatefulWidget {
 class _UserSignUpScreenState extends State<UserSignUpScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  bool loading = false;
   @override
   void initState() {
     super.initState();
@@ -148,29 +151,46 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                 ),
               ),
             ),
+            SliverToBoxAdapter(
+              child: loading ? const LProgressIndicator() : Container(),
+            ),
             SliverFillRemaining(
               child: TabBarView(
                 controller: _tabController,
                 children: <Widget>[
                   SizedBox(
-                    height: 400.h,
                     child: SignupBody(
-                      formwidget: StudentSignupForm(
-                        fgcolor: arguments.fgcolor,
-                        title: arguments.title,
-                        icon: arguments.icon,
-                        homeroute: UserSignUpScreen.routeName,
+                      formwidget: NotificationListener<IsLoading>(
+                        onNotification: (n) {
+                          setState(() {
+                            loading = n.isLoading;
+                          });
+                          return true;
+                        },
+                        child: StudentSignupForm(
+                          fgcolor: arguments.fgcolor,
+                          title: arguments.title,
+                          icon: arguments.icon,
+                          homeroute: UserSignUpScreen.routeName,
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 400.h,
                     child: SignupBody(
-                      formwidget: StudentSignupForm(
-                        fgcolor: kAuthorityColor,
-                        title: arguments.title,
-                        icon: arguments.icon,
-                        homeroute: UserSignUpScreen.routeName,
+                      formwidget: NotificationListener<IsLoading>(
+                        onNotification: (n) {
+                          setState(() {
+                            loading = n.isLoading;
+                          });
+                          return true;
+                        },
+                        child: StudentSignupForm(
+                          fgcolor: kAuthorityColor,
+                          title: arguments.title,
+                          icon: arguments.icon,
+                          homeroute: UserSignUpScreen.routeName,
+                        ),
                       ),
                     ),
                   ),

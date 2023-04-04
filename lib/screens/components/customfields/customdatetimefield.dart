@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/screens/components/customIiconbutton.dart';
 import '../../user_home/notifiers.dart';
 import '../../components/customfields/fieldlabel.dart';
@@ -89,16 +90,16 @@ class _CustomDateTimeState extends State<CustomDateTime> {
 
     TextStyle textStyle =
         AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.copyWith(
-      fontSize: 14,
+      fontSize: 14.r,
       fontWeight: FontWeight.bold,
       fontFeatures: [const FontFeature.oldstyleFigures()],
     );
     BoxDecoration boxDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(5),
-      color: isDark ? kGrey30.withOpacity(0.8) : kLGrey40.withOpacity(0.4),
+      color: isDark ? kGrey30.withOpacity(0.8) : kLBlack10,
       border: Border.all(
         width: 1.2,
-        color: isDark ? kGrey30 : kLGrey50.withOpacity(0.5),
+        color: isDark ? kGrey30 : kLGrey30,
       ),
     );
     void launchDate() async {
@@ -112,8 +113,8 @@ class _CustomDateTimeState extends State<CustomDateTime> {
           myDateController = pickeddate;
           DateTimeChanged(myDateController, myTimeController).dispatch(context);
         });
+        updateDate();
       }
-      updateDate();
     }
 
     void launchTime() async {
@@ -127,8 +128,8 @@ class _CustomDateTimeState extends State<CustomDateTime> {
           myTimeController = pickedtime;
           DateTimeChanged(myDateController, myTimeController).dispatch(context);
         });
+        updateTime();
       }
-      updateTime();
     }
 
     return Column(
@@ -142,18 +143,15 @@ class _CustomDateTimeState extends State<CustomDateTime> {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
           decoration: BoxDecoration(
-              color: isDark ? kGrey50 : kLBlack10,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(5.0),
-                bottomRight: Radius.circular(5.0),
-                bottomLeft: Radius.circular(5.0),
+            color: isDark ? kGrey50 : kLBlack20,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(0, 2.5),
+                color: isDark ? kBlack20 : kGrey150,
               ),
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(0, 3),
-                  color: isDark ? kBlack20 : kGrey150,
-                )
-              ]),
+            ],
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -176,7 +174,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                 iconColor: isDark ? kPrimaryColor : kLPrimaryColor,
                 title: day != "dd"
                     ? Transform.translate(
-                        offset: const Offset(-12, 0),
+                        offset: const Offset(-10, 0),
                         child: DateWidget(
                             onTap: launchDate,
                             boxDecoration: boxDecoration,
@@ -216,7 +214,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
                 iconColor: isDark ? kPrimaryColor : kLPrimaryColor,
                 title: hour != "hh"
                     ? Transform.translate(
-                        offset: const Offset(-12, 0),
+                        offset: const Offset(-10, 0),
                         child: TimeWidget(
                             onTap: launchTime,
                             boxDecoration: boxDecoration,
@@ -437,11 +435,12 @@ class TrailingWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isDark ? kBlack20 : kGrey40,
+            color: isDark ? kBlack20 : kPrimaryColor.withOpacity(0.3),
             borderRadius: BorderRadius.circular(5),
           ),
           child: Icon(
             icon,
+            color: isDark ? kPrimaryColor : kLTextColor,
           ),
         ),
       ),

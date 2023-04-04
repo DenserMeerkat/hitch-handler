@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/user_home/notifiers.dart';
 import 'add/addform.dart';
 import '../../constants.dart';
@@ -32,7 +33,7 @@ class _AddPageState extends State<AddPage> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: isDark ? kGrey30 : kLBackgroundColor,
+        backgroundColor: isDark ? kBlack20 : kLBlack10,
         appBar: AppBar(
           elevation: 9,
           backgroundColor: isDark ? kBlack20 : kLBlack10,
@@ -125,18 +126,13 @@ class _AddPageState extends State<AddPage> {
         body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: loading
-                  ? const LinearProgressIndicator(
-                      backgroundColor: kBlack20,
-                      color: kPrimaryColor,
-                    )
-                  : Container(),
+              child: loading ? const LProgressIndicator() : null,
             ),
             SliverFillRemaining(
               child: Container(
                 constraints:
                     const BoxConstraints(minHeight: 300, maxHeight: 2000),
-                color: isDark ? kGrey30 : kLBlack20,
+                color: isDark ? kBlack20 : kLBlack10,
                 child: SingleChildScrollView(
                   controller: AddPage.scrollController,
                   child: Column(

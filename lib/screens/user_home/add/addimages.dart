@@ -56,12 +56,12 @@ class _AddImagesState extends State<AddImages> {
         5,
         GestureDetector(
           onTap: () async {
-            final bool? shouldRefresh = await showImageSources();
+            await showImageSources();
             updateButtons();
           },
           child: Icon(
             Icons.image,
-            color: isDark ? kBlack20 : kGrey50,
+            color: isDark ? kBlack20 : kLGrey50,
             size: 90,
           ),
         ),
@@ -119,18 +119,15 @@ class _AddImagesState extends State<AddImages> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15.0),
           decoration: BoxDecoration(
-              color: isDark ? kGrey50 : kLBlack10,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(5.0),
-                bottomRight: Radius.circular(5.0),
-                bottomLeft: Radius.circular(5.0),
+            color: isDark ? kGrey50 : kLBlack20,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(0, 2.5),
+                color: isDark ? kBlack20 : kGrey150,
               ),
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(0, 3),
-                  color: isDark ? kBlack20 : kGrey150,
-                )
-              ]),
+            ],
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -142,7 +139,7 @@ class _AddImagesState extends State<AddImages> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: isDark ? kGrey40 : kLBlack20,
+                    color: isDark ? kGrey40 : kLBlack10,
                     boxShadow: [
                       BoxShadow(
                         offset: const Offset(0, 2),
@@ -151,7 +148,7 @@ class _AddImagesState extends State<AddImages> {
                     ]),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Padding(
+                  child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -175,14 +172,15 @@ class _AddImagesState extends State<AddImages> {
                       child: ElevatedButtonWithIcon(
                         onPressed: addImageEnabled
                             ? () async {
-                                final bool? shouldRefresh =
-                                    await showImageSources();
+                                await showImageSources();
                                 updateButtons();
                               }
                             : null,
                         label: "Add",
                         icon: Icons.add_photo_alternate_rounded,
-                        activeColor: kPrimaryColor.withOpacity(0.9),
+                        activeColor: isDark
+                            ? kPrimaryColor.withOpacity(0.8)
+                            : kLPrimaryColor.withOpacity(0.6),
                       ),
                     ),
                     const SizedBox(

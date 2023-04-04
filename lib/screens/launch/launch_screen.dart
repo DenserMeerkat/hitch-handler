@@ -2,6 +2,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/utils/exitdialog.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../constants.dart';
 import '../components/popupmenu.dart';
 import '../components/utils/customdialog.dart';
@@ -19,57 +21,59 @@ class LaunchScreen extends StatefulWidget {
 class _LaunchScreenState extends State<LaunchScreen> {
   @override
   Widget build(BuildContext context) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
-        showConfirmDialog(
-          context,
-          DialogCont(
-            title: "Exit",
-            message: "Click Exit to close app. ",
-            icon: Icons.exit_to_app_rounded,
-            iconBackgroundColor:
-                Theme.of(context).brightness == Brightness.light
-                    ? kLPrimaryColor
-                    : kPrimaryColor,
-            primaryButtonLabel: "Exit",
-            primaryButtonColor: kGrey150,
-            secondaryButtonColor:
-                Theme.of(context).brightness == Brightness.light
-                    ? kLPrimaryColor
-                    : kPrimaryColor,
-            primaryFunction: () {
-              FlutterExitApp.exitApp(iosForceExit: true);
-            },
-            secondaryFunction: () {
-              Navigator.pop(context);
-            },
-            borderRadius: 10.r,
-            //showSecondaryButton: false,
-          ),
-          borderRadius: 10.r,
-        );
+        exitAppDialog(context);
+
         return false;
       },
       child: AnimatedTheme(
         duration: const Duration(seconds: 1),
         data: Theme.of(context),
         child: Scaffold(
-          backgroundColor:
-              AdaptiveTheme.of(context).brightness == Brightness.dark
-                  ? kBackgroundColor
-                  : kLBackgroundColor,
+          backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            backgroundColor:
-                AdaptiveTheme.of(context).brightness == Brightness.dark
-                    ? kBackgroundColor
-                    : kLBackgroundColor,
-            surfaceTintColor:
-                AdaptiveTheme.of(context).brightness == Brightness.dark
-                    ? kBackgroundColor
-                    : kLBackgroundColor,
+            backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
+            surfaceTintColor: isDark ? kBackgroundColor : kLBackgroundColor,
             elevation: 0,
+            leading: Builder(
+              builder: (BuildContext context) {
+                return Transform.scale(
+                  scaleX: -1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      splashColor: isDark
+                          ? kTextColor.withOpacity(0.1)
+                          : kLTextColor.withOpacity(0.1),
+                      focusColor: isDark
+                          ? kTextColor.withOpacity(0.1)
+                          : kLTextColor.withOpacity(0.1),
+                      highlightColor: isDark
+                          ? kTextColor.withOpacity(0.1)
+                          : kLTextColor.withOpacity(0.1),
+                      hoverColor: isDark
+                          ? kTextColor.withOpacity(0.1)
+                          : kLTextColor.withOpacity(0.1),
+                      splashRadius: 20.0,
+                      icon: Icon(
+                        Icons.close,
+                        color: isDark
+                            ? kTextColor.withOpacity(0.9)
+                            : kLTextColor.withOpacity(0.9),
+                      ),
+                      onPressed: () {
+                        exitAppDialog(context);
+                      },
+                      tooltip: "Exit",
+                    ),
+                  ),
+                );
+              },
+            ),
             actions: [
               const PopupMenu(),
               SizedBox(
@@ -92,7 +96,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
                   letterSpacing: 2.2.sp,
                   fontSize: 10.sp,
                   fontWeight: FontWeight.bold,
-                  color: AdaptiveTheme.of(context).brightness == Brightness.dark
+                  color: isDark
                       ? kTextColor.withOpacity(0.5)
                       : kLTextColor.withOpacity(0.5),
                 ),
@@ -101,6 +105,35 @@ class _LaunchScreenState extends State<LaunchScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void exitAppDialog(BuildContext context) {
+    showAlertDialog(
+      context,
+      "Exit Apllication",
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Click Exit to close app.",
+            style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
+          ),
+        ],
+      ),
+      [
+        buildCancelButton(context),
+        buildActiveButton(
+          context,
+          true,
+          "Exit",
+          () {
+            FlutterExitApp.exitApp(iosForceExit: true);
+          },
+        )
+      ],
+      Icons.cancel_outlined,
     );
   }
 }

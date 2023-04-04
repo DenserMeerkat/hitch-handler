@@ -173,7 +173,6 @@ class AddFormState extends State<AddForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                //_isLoading ? const LinearProgressIndicator() : Container(),
                 CustomTitleField(
                   fgcolor: kPrimaryColor,
                   controller: myTitleFieldController,
@@ -199,6 +198,15 @@ class AddFormState extends State<AddForm> {
                   errorText: domErrorText,
                   showErrors: true,
                 ),
+                CustomTypeAheadField(
+                  fgcolor: kPrimaryColor,
+                  controller: myLocFieldController,
+                  hintText: "Location",
+                  title: "Location",
+                  length: 50,
+                  errorText: locErrorText,
+                  showErrors: false,
+                ),
                 AddImages(
                     addImageEnabled: _addImageEnabled,
                     viewImagesEnabled: _viewImagesEnabled),
@@ -218,28 +226,19 @@ class AddFormState extends State<AddForm> {
                 SizedBox(
                   height: 35.h,
                 ),
-                CustomTypeAheadField(
-                  fgcolor: kPrimaryColor,
-                  controller: myLocFieldController,
-                  hintText: "Location",
-                  title: "Location",
-                  length: 50,
-                  errorText: locErrorText,
-                  showErrors: false,
-                ),
-                NotificationListener<SwitchChanged>(
-                  child: const MoreDetails(),
-                  onNotification: (n) {
-                    setState(() {
-                      isAnon = n.anon;
-                      isDept = n.dept;
-                    });
-                    return true;
-                  },
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
+                // NotificationListener<SwitchChanged>(
+                //   child: const MoreDetails(),
+                //   onNotification: (n) {
+                //     setState(() {
+                //       isAnon = n.anon;
+                //       isDept = n.dept;
+                //     });
+                //     return true;
+                //   },
+                // ),
+                // const SizedBox(
+                //   height: 30,
+                // ),
               ],
             ),
           ),
@@ -289,6 +288,7 @@ class AddFormState extends State<AddForm> {
         fgColor: kErrorColor,
       );
     } else {
+      ScaffoldMessenger.of(context).clearSnackBars();
       Navigator.pop(context);
     }
   }

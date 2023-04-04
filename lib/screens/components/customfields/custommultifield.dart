@@ -36,7 +36,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
 
   String validateField(String? value, int current) {
     String val = "";
-    if (current == 0) {
+    if (widget.hints[current] == 'E-mail') {
       if (value!.isWhitespace()) {
         val = errorTextGen(current, 1);
       } else if (value.isValidEmail()) {
@@ -45,7 +45,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
       } else {
         val = errorTextGen(current, 2);
       }
-    } else if (current == 1) {
+    } else if (widget.hints[current] == 'Phone') {
       if (value!.isWhitespace()) {
         val = errorTextGen(current, 1);
       } else if (value.isValidMobile()) {
@@ -54,7 +54,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
       } else {
         val = errorTextGen(current, 2);
       }
-    } else if (current == 2) {
+    } else if (widget.hints[current] == 'ID Number') {
       if (value!.isWhitespace()) {
         val = errorTextGen(current, 1);
       } else if (value.isValidRoll()) {
@@ -183,20 +183,24 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
                   splashRadius: 20.0,
                   onPressed: () {
                     setState(() {
-                      //__________________SET STATE___________
-                      reset();
-                      if (current < widget.index - 1) {
-                        current += 1;
-                      } else {
-                        current = 0;
+                      if (widget.controller.text.isNotEmpty) {
+                        reset();
+                        return;
                       }
-                      icondata = widget.icons[current];
-                      hinttext = widget.hints[current];
-                      keyboardtype = widget.keyboards[current];
+                      if (widget.index != 1) {
+                        if (current < widget.index - 1) {
+                          current += 1;
+                        } else {
+                          current = 0;
+                        }
+                        icondata = widget.icons[current];
+                        hinttext = widget.hints[current];
+                        keyboardtype = widget.keyboards[current];
+                      }
                     });
                   },
                   icon: Icon(
-                    icondata,
+                    widget.controller.text.isNotEmpty ? Icons.close : icondata,
                     size: 20.0,
                     color: widget.fgcolor,
                     shadows: [

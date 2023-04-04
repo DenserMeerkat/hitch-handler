@@ -2,13 +2,10 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/screens/components/utils/exitdialog.dart';
-import '../../resources/auth_methods.dart';
 import '../../args_class.dart';
 import '../../constants.dart';
 import '../components/confirmpasswordform.dart';
 import '../components/customsigninappbar.dart';
-import '../components/utils/customdialog.dart';
-import '../components/utils/dialogcont.dart';
 
 class CreatePasswordPage extends StatelessWidget {
   const CreatePasswordPage({

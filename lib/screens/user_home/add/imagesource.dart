@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../../constants.dart';
@@ -21,6 +23,7 @@ class ImageSourceSelect extends StatefulWidget {
 class _ImageSourceSelectState extends State<ImageSourceSelect> {
   File? imageFile;
   List<File>? imageList;
+  void navig() => Navigator.pop(context);
   Future pickImage(ImageSource source) async {
     try {
       final file = await ImagePicker().pickImage(
@@ -39,38 +42,59 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
     } on PlatformException catch (e) {
       debugPrint('Failed to pick image: $e');
     }
-
-    Navigator.pop(context);
+    navig();
   }
 
   Future pickMultiImage() async {
+    late bool moreThan = false;
     try {
       final list = await ImagePicker()
-          .pickMultiImage(maxHeight: 1080, maxWidth: 1920, imageQuality: 50);
+          .pickMultiImage(maxHeight: 1080, maxWidth: 1920, imageQuality: 100);
 
-      if (list == null || list == []) {
-        print('multi Image picking : Failed!');
+      if (list == []) {
+        debugPrint('multi Image picking : Failed!');
         return; //Todo Dialog
       }
 
       setState(() {
         int lent = 0;
         if (list.length > 5 - UploadFileList.currLength()) {
+          moreThan = true;
           lent = 5 - UploadFileList.currLength();
         } else {
           lent = list.length;
         }
         for (var i = 0; i < lent; i++) {
           imageFile = File(list[i].path);
-          debugPrint(UploadFileList.appendFile(imageFile!) + " : $i+1");
+          UploadFileList.appendFile(imageFile!);
         }
         debugPrint('multi Image picking : Succesful!');
       });
     } on Exception catch (e) {
       debugPrint('Failed to pick image: $e');
     }
-    //Todo Show Dialog if chosen many images
-    Navigator.pop(context);
+    navig();
+    if (moreThan) {
+      showAtmostDialog();
+    }
+  }
+
+  void showAtmostDialog() {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    final snackBar = showCustomSnackBar(
+      context,
+      "Atmost 5 images can only be chosen",
+      () {},
+      icon: Icon(
+        Icons.palette_outlined,
+        color: isDark ? kTextColor : kLTextColor,
+      ),
+      borderColor:
+          isDark ? kTextColor.withOpacity(0.2) : kLTextColor.withOpacity(0.5),
+      duration: const Duration(seconds: 2),
+      margin: EdgeInsets.symmetric(horizontal: 40.w, vertical: 10),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   final String bullet = "\u2022 ";
@@ -80,7 +104,7 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     TextStyle textStyle =
         AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.copyWith(
-      color: kTextColor,
+      color: isDark ? kTextColor : kLTextColor,
       //fontWeight: isDark ? FontWeight.normal : FontWeight.w500,
       fontSize: 13,
       fontFeatures: const [
@@ -174,11 +198,10 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Theme(
-                data: ThemeData(
-                  useMaterial3: true,
-                  splashColor: Colors.transparent,
-                  brightness: Brightness.dark,
-                ),
+                data: AdaptiveTheme.of(context).theme.copyWith(
+                      useMaterial3: true,
+                      splashColor: Colors.transparent,
+                    ),
                 child: ExpansionTile(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -187,12 +210,12 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   initiallyExpanded: true,
-                  textColor: kTextColor,
-                  collapsedTextColor: kTextColor.withOpacity(0.8),
-                  iconColor: kTextColor,
-                  collapsedIconColor: kTextColor.withOpacity(0.8),
-                  backgroundColor: isDark ? kBlack20 : kGrey30,
-                  collapsedBackgroundColor: isDark ? kBlack20 : kGrey30,
+                  textColor: isDark ? kTextColor : kLTextColor,
+                  collapsedTextColor: isDark ? kTextColor : kLTextColor,
+                  iconColor: isDark ? kTextColor : kLTextColor,
+                  collapsedIconColor: isDark ? kTextColor : kLTextColor,
+                  backgroundColor: isDark ? kBlack20 : kLBlack10,
+                  collapsedBackgroundColor: isDark ? kBlack20 : kLBlack10,
                   title: Row(
                     children: [
                       const Icon(

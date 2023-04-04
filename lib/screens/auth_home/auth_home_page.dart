@@ -3,6 +3,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hitch_handler/screens/components/popupitem.dart';
+import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/user_home/search_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:hitch_handler/constants.dart';
@@ -93,15 +95,18 @@ class _AuthHomePageState extends State<AuthHomePage>
             AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CProgressIndicator(),
             );
           }
           return SmartRefresher(
             enablePullDown: true,
             enablePullUp: false,
-            header: const ClassicHeader(),
+            header: const RefreshThemedHeader(),
             controller: _refreshController,
             onRefresh: () {
+              if (!mounted) {
+                return;
+              }
               setState(() {
                 _isFinish = false;
                 requestNextPage(currentIndex);
@@ -229,7 +234,9 @@ class _AuthHomePageState extends State<AuthHomePage>
                                               .copyWith(
                                                 color: isDark
                                                     ? kTextColor
-                                                    : kLTextColor,
+                                                        .withOpacity(0.6)
+                                                    : kLTextColor
+                                                        .withOpacity(0.6),
                                               ),
                                         ),
                                         const SizedBox(width: 18),
@@ -362,7 +369,7 @@ class _AuthHomePageState extends State<AuthHomePage>
                       child: Container(
                         padding: const EdgeInsets.all(16.0),
                         decoration: const BoxDecoration(border: Border()),
-                        child: const Center(child: CircularProgressIndicator()),
+                        child: const Center(child: CProgressIndicator()),
                       ),
                     ),
                   ),
@@ -376,6 +383,9 @@ class _AuthHomePageState extends State<AuthHomePage>
   }
 
   void changeSort(int index) {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       currentIndex = index;
       currentIcon = sortOptions[index];
@@ -472,9 +482,15 @@ class _AuthHomePageState extends State<AuthHomePage>
           _streamController2.add(_posts);
         }
       } else {
+        if (!mounted) {
+          return;
+        }
         setState(() {
           _isFinish = true;
         });
+      }
+      if (!mounted) {
+        return;
       }
       setState(() {
         _isRequesting = false;

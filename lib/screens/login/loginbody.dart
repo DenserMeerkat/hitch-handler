@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import '../../constants.dart';
 import '../user_home/notifiers.dart';
 
@@ -24,7 +25,7 @@ class _LoginBodyState extends State<LoginBody> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          loading ? const LinearProgressIndicator() : Container(),
+          loading ? const LProgressIndicator() : Container(),
           Container(
             decoration: BoxDecoration(
               color: isDark ? kGrey30 : kLGrey30,

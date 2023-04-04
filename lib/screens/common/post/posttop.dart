@@ -154,7 +154,7 @@ class _PostTopState extends State<PostTop> {
                 }
               },
               child: SizedBox(
-                width: 80,
+                width: 80.w,
                 child: Status(
                   statusIcon: statusIcon,
                   statusText: widget.snap['status'],

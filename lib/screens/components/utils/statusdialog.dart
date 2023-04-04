@@ -90,195 +90,203 @@ class _StatusDialogState extends State<StatusDialog> {
         ],
       ),
       content: SizedBox(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Divider(
-              height: 2,
-              color: isDark
-                  ? kTextColor.withOpacity(0.2)
-                  : kLTextColor.withOpacity(0.2),
-            ),
-            IconStepper(
-              activeStep: statusIndex,
-              enableStepTapping: false,
-              enableNextPreviousButtons: false,
-              scrollingDisabled: true,
-              stepRadius: 18,
-              stepReachedAnimationEffect: Curves.easeOutCubic,
-              stepColor: isDark ? kGrey90 : kLGrey40,
-              lineColor: isDark ? kTextColor : kLTextColor,
-              activeStepBorderColor: isDark ? kTextColor : kLTextColor,
-              activeStepColor: statusColor,
-              icons: [
-                Icon(
-                  Icons.radio_button_checked_rounded,
-                  color: isDark ? kTextColor : kTextColor,
-                ),
-                Icon(
-                  Icons.cached_rounded,
-                  color: isDark ? kTextColor : kTextColor,
-                ),
-                Icon(
-                  Icons.check_circle_outline_rounded,
-                  color: isDark ? kTextColor : kTextColor,
-                ),
-              ],
-              onStepReached: (index) {
-                setState(() {
-                  statusIndex = index;
-                  statusIcon = PostTop.status[statusIndex].icon;
-                  statusColor = PostTop.status[statusIndex].color;
-                  statusTitle = PostTop.status[statusIndex].title;
-                });
-              },
-            ),
-            Divider(
-              height: 2,
-              color: isDark
-                  ? kTextColor.withOpacity(0.2)
-                  : kLTextColor.withOpacity(0.2),
-            ),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomIconButton(
-                    icon: Icons.arrow_back,
-                    tooltip: 'Next',
-                    onTap: onPrevious,
-                    bgColor: isDark
-                        ? kTextColor.withOpacity(0.2)
-                        : kLTextColor.withOpacity(0.2),
-                    size: 24,
-                    iconColor: isDark ? kTextColor : kLTextColor,
-                  ),
-                  SizedBox(
-                    width: 110,
-                    child: Status(
-                      statusColor: statusColor,
-                      statusIcon: statusIcon,
-                      statusText: statusTitle,
-                      fsize: 14,
-                    ),
-                  ),
-                  CustomIconButton(
-                    icon: Icons.arrow_forward,
-                    tooltip: 'Previous',
-                    onTap: onNext,
-                    bgColor: isDark
-                        ? kTextColor.withOpacity(0.2)
-                        : kLTextColor.withOpacity(0.2),
-                    size: 24,
-                    iconColor: isDark ? kTextColor : kLTextColor,
-                  )
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Divider(
+                height: 2,
+                color: isDark
+                    ? kTextColor.withOpacity(0.2)
+                    : kLTextColor.withOpacity(0.2),
               ),
-            ),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 12.0),
-                        child: Text(
-                          "Write a Brief comment.",
-                          style: TextStyle(
-                            color: statusIndex != widget.statusIndex
-                                ? isDark
-                                    ? kTextColor
-                                    : kLTextColor
+              Theme(
+                data: AdaptiveTheme.of(context).theme.copyWith(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                    ),
+                child: IconStepper(
+                  activeStep: statusIndex,
+                  enableStepTapping: true,
+                  enableNextPreviousButtons: false,
+                  scrollingDisabled: true,
+                  stepRadius: 18,
+                  stepReachedAnimationEffect: Curves.easeOutCubic,
+                  stepColor: isDark ? kGrey90 : kLGrey40,
+                  lineColor: isDark ? kTextColor : kLTextColor,
+                  activeStepBorderColor: isDark ? kTextColor : kLTextColor,
+                  activeStepColor: statusColor,
+                  icons: [
+                    Icon(
+                      Icons.radio_button_checked_rounded,
+                      color: isDark ? kTextColor : kTextColor,
+                    ),
+                    Icon(
+                      Icons.cached_rounded,
+                      color: isDark ? kTextColor : kTextColor,
+                    ),
+                    Icon(
+                      Icons.check_circle_outline_rounded,
+                      color: isDark ? kTextColor : kTextColor,
+                    ),
+                  ],
+                  onStepReached: (index) {
+                    setState(() {
+                      statusIndex = index;
+                      statusIcon = PostTop.status[statusIndex].icon;
+                      statusColor = PostTop.status[statusIndex].color;
+                      statusTitle = PostTop.status[statusIndex].title;
+                    });
+                  },
+                ),
+              ),
+              Divider(
+                height: 2,
+                color: isDark
+                    ? kTextColor.withOpacity(0.2)
+                    : kLTextColor.withOpacity(0.2),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomIconButton(
+                      icon: Icons.arrow_back,
+                      tooltip: 'Next',
+                      onTap: onPrevious,
+                      bgColor: isDark
+                          ? kTextColor.withOpacity(0.2)
+                          : kLTextColor.withOpacity(0.2),
+                      size: 24,
+                      iconColor: isDark ? kTextColor : kLTextColor,
+                    ),
+                    SizedBox(
+                      width: 110,
+                      child: Status(
+                        statusColor: statusColor,
+                        statusIcon: statusIcon,
+                        statusText: statusTitle,
+                        fsize: 12,
+                      ),
+                    ),
+                    CustomIconButton(
+                      icon: Icons.arrow_forward,
+                      tooltip: 'Previous',
+                      onTap: onNext,
+                      bgColor: isDark
+                          ? kTextColor.withOpacity(0.2)
+                          : kLTextColor.withOpacity(0.2),
+                      size: 24,
+                      iconColor: isDark ? kTextColor : kLTextColor,
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 16.0, horizontal: 16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 12.0),
+                          child: Text(
+                            "Write a Brief comment.",
+                            style: TextStyle(
+                              color: statusIndex != widget.statusIndex
+                                  ? isDark
+                                      ? kTextColor
+                                      : kLTextColor
+                                  : isDark
+                                      ? kTextColor.withOpacity(0.4)
+                                      : kLTextColor.withOpacity(0.4),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Form(
+                      key: _formkey,
+                      child: Container(
+                        constraints: BoxConstraints(maxWidth: 270.w),
+                        child: TextFormField(
+                          enabled: statusIndex != widget.statusIndex,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          style: AdaptiveTheme.of(context)
+                              .theme
+                              .textTheme
+                              .bodyMedium,
+                          validator: (value) {
+                            return validateCommnet(value);
+                          },
+                          minLines: 1,
+                          maxLines: 3,
+                          controller: myTextFieldController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.only(
+                                top: 4, bottom: 4, left: 16),
+                            border: border(Colors.transparent),
+                            focusedBorder: border(kPrimaryColor),
+                            errorBorder: border(AdaptiveTheme.of(context)
+                                .theme
+                                .colorScheme
+                                .error),
+                            enabledBorder: border(isDark ? kGrey70 : kLBlack20),
+                            disabledBorder: border(Colors.transparent),
+                            suffixIconColor: statusIndex != widget.statusIndex
+                                ? kPrimaryColor
                                 : isDark
-                                    ? kTextColor.withOpacity(0.4)
-                                    : kLTextColor.withOpacity(0.4),
-                            fontSize: 14,
+                                    ? kTextColor.withOpacity(0.3)
+                                    : kLTextColor.withOpacity(0.2),
+                            suffixIcon: clear
+                                ? IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        myTextFieldController.clear();
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.clear,
+                                    ),
+                                  )
+                                : const Icon(
+                                    Icons.edit_note_rounded,
+                                  ),
+                            hintText: "Write Comment",
+                            hintStyle: AdaptiveTheme.of(context)
+                                .theme
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: isDark
+                                      ? kTextColor.withOpacity(0.5)
+                                      : kLTextColor.withOpacity(0.5),
+                                ),
+                            fillColor: isDark ? kGrey50 : kLBlack15,
+                            filled: true,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  Form(
-                    key: _formkey,
-                    child: Container(
-                      constraints: BoxConstraints(maxWidth: 270.w),
-                      child: TextFormField(
-                        enabled: statusIndex != widget.statusIndex,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        style: AdaptiveTheme.of(context)
-                            .theme
-                            .textTheme
-                            .bodyMedium,
-                        validator: (value) {
-                          return validateCommnet(value);
-                        },
-                        minLines: 1,
-                        maxLines: 3,
-                        controller: myTextFieldController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                              top: 4, bottom: 4, left: 16),
-                          border: border(Colors.transparent),
-                          focusedBorder: border(kPrimaryColor),
-                          errorBorder: border(AdaptiveTheme.of(context)
-                              .theme
-                              .colorScheme
-                              .error),
-                          enabledBorder: border(isDark ? kGrey70 : kLBlack20),
-                          disabledBorder: border(Colors.transparent),
-                          suffixIconColor: statusIndex != widget.statusIndex
-                              ? kPrimaryColor
-                              : isDark
-                                  ? kTextColor.withOpacity(0.3)
-                                  : kLTextColor.withOpacity(0.2),
-                          suffixIcon: clear
-                              ? IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      myTextFieldController.clear();
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.clear,
-                                  ),
-                                )
-                              : const Icon(
-                                  Icons.edit_note_rounded,
-                                ),
-                          hintText: "Write Comment",
-                          hintStyle: AdaptiveTheme.of(context)
-                              .theme
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                color: isDark
-                                    ? kTextColor.withOpacity(0.5)
-                                    : kLTextColor.withOpacity(0.5),
-                              ),
-                          fillColor: isDark ? kGrey50 : kLBlack15,
-                          filled: true,
-                        ),
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            Divider(
-              height: 4,
-              color: isDark
-                  ? kTextColor.withOpacity(0.2)
-                  : kLTextColor.withOpacity(0.2),
-            ),
-          ],
+              const SizedBox(height: 12),
+              Divider(
+                height: 4,
+                color: isDark
+                    ? kTextColor.withOpacity(0.2)
+                    : kLTextColor.withOpacity(0.2),
+              ),
+            ],
+          ),
         ),
       ),
       contentPadding: const EdgeInsets.fromLTRB(8, 16, 8, 0),

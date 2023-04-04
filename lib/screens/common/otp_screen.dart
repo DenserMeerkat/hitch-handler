@@ -2,8 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/screens/components/utils/exitdialog.dart';
-import '../components/utils/customdialog.dart';
-import '../components/utils/dialogcont.dart';
+
 import '../../args_class.dart';
 import '../../constants.dart';
 import '../components/customsigninappbar.dart';
@@ -19,7 +18,13 @@ class OtpScreen extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)?.settings.arguments as OTPArguments;
     Size size = MediaQuery.of(context).size; // Available screen size
-
+    // debugPrint(arguments.user.rollno);
+    // debugPrint(arguments.user.name);
+    // debugPrint(arguments.user.email);
+    // debugPrint(arguments.user.gender);
+    // debugPrint(arguments.user.clg);
+    // debugPrint(arguments.user.password);
+    // debugPrint(arguments.user.mobno);
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {

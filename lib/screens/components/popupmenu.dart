@@ -1,6 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/components/utils/customdialog.dart';
+import 'package:hitch_handler/screens/components/utils/themedialog.dart';
 import '../../constants.dart';
 
 class PopupMenu extends StatefulWidget {

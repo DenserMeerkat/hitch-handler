@@ -100,12 +100,8 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
         Container(
           height: 44,
           decoration: BoxDecoration(
-            color: isDark ? kGrey50 : kLBlack10,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(5.0),
-              bottomRight: Radius.circular(5.0),
-              bottomLeft: Radius.circular(5.0),
-            ),
+            color: isDark ? kGrey50 : kLBlack20,
+            borderRadius: BorderRadius.circular(5),
             boxShadow: [
               BoxShadow(
                 offset: const Offset(0, 2.5),

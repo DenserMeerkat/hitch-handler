@@ -3,6 +3,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hitch_handler/screens/components/popupitem.dart';
+import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/user_home/search_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:hitch_handler/constants.dart';
@@ -41,7 +43,7 @@ class _HomePageState extends State<HomePage>
   final List<DocumentSnapshot> _posts = [];
   bool _isRequesting = false;
   bool _isFinish = false;
-  static const int postLimit = 5;
+  static const int postLimit = 6;
 
   @override
   void initState() {
@@ -81,17 +83,21 @@ class _HomePageState extends State<HomePage>
             : _streamController2.stream,
         builder: (BuildContext context,
             AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if ((_isRequesting && _posts.isEmpty) ||
+              snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CProgressIndicator(),
             );
           }
           return SmartRefresher(
             enablePullDown: true,
             enablePullUp: false,
-            header: const ClassicHeader(),
+            header: const RefreshThemedHeader(),
             controller: _refreshController,
             onRefresh: () {
+              if (!mounted) {
+                return;
+              }
               setState(() {
                 _isFinish = false;
                 requestNextPage(currentIndex);
@@ -219,7 +225,9 @@ class _HomePageState extends State<HomePage>
                                               .copyWith(
                                                 color: isDark
                                                     ? kTextColor
-                                                    : kLTextColor,
+                                                        .withOpacity(0.6)
+                                                    : kLTextColor
+                                                        .withOpacity(0.6),
                                               ),
                                         ),
                                         const SizedBox(width: 18),
@@ -351,7 +359,7 @@ class _HomePageState extends State<HomePage>
                       child: Container(
                         padding: const EdgeInsets.all(16.0),
                         decoration: const BoxDecoration(border: Border()),
-                        child: const Center(child: CircularProgressIndicator()),
+                        child: const Center(child: CProgressIndicator()),
                       ),
                     ),
                   ),
@@ -365,6 +373,9 @@ class _HomePageState extends State<HomePage>
   }
 
   void changeSort(int index) {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       currentIndex = index;
       currentIcon = sortOptions[index];
@@ -455,41 +466,19 @@ class _HomePageState extends State<HomePage>
           _streamController2.add(_posts);
         }
       } else {
+        if (!mounted) {
+          return;
+        }
         setState(() {
           _isFinish = true;
         });
+      }
+      if (!mounted) {
+        return;
       }
       setState(() {
         _isRequesting = false;
       });
     }
-  }
-}
-
-class SpinningIconButton extends AnimatedWidget {
-  final VoidCallback onPressed;
-  final Icon icon;
-  final AnimationController controller;
-  const SpinningIconButton(
-      {super.key,
-      required this.controller,
-      required this.icon,
-      required this.onPressed})
-      : super(listenable: controller);
-
-  @override
-  Widget build(BuildContext context) {
-    final Animation<double> animation = CurvedAnimation(
-      parent: controller,
-      curve: Curves.linearToEaseOut,
-    );
-
-    return RotationTransition(
-      turns: animation,
-      child: IconButton(
-        icon: icon,
-        onPressed: onPressed,
-      ),
-    );
   }
 }

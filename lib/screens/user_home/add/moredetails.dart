@@ -35,18 +35,15 @@ class _MoreDetailsState extends State<MoreDetails> {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
           decoration: BoxDecoration(
-              color: isDark ? kGrey50 : kLBlack10,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(5.0),
-                bottomRight: Radius.circular(5.0),
-                bottomLeft: Radius.circular(5.0),
+            color: isDark ? kGrey50 : kLBlack20,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(0, 2.5),
+                color: isDark ? kBlack20 : kGrey150,
               ),
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(0, 3),
-                  color: isDark ? kBlack20 : kGrey150,
-                )
-              ]),
+            ],
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

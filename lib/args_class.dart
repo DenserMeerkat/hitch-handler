@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 
 class UserData {
+  String clg;
+  String name;
   String email;
   String mobno;
   String rollno;
   String password;
   String dob;
+  String? gender;
   UserData(
+    this.clg,
+    this.name,
     this.email,
     this.mobno,
     this.rollno,
     this.password,
     this.dob,
+    this.gender,
   );
 }
 

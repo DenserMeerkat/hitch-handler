@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/popupitem.dart';
+import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/user_home/search_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../constants.dart';
-import '../components/utils/customdialog.dart';
 import '../common/post/postcard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CProgressIndicator(),
             );
           }
           return CustomScrollView(
@@ -277,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       padding: const EdgeInsets.all(16.0),
                       decoration: const BoxDecoration(border: Border()),
-                      child: const Center(child: CircularProgressIndicator()),
+                      child: const Center(child: CProgressIndicator()),
                     ),
                   ),
                 ),

@@ -130,14 +130,17 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                         ?.unfocus();
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      print("____Forgot Form Valid!");
+                      debugPrint("____Forgot Form Valid!");
 
                       UserData user = UserData(
+                        '---',
+                        "name",
                         myTextFieldController.text,
-                        '0000000000', //Todo UserData
-                        '2021000000', //Todo UserData
-                        '**********', //Todo UserData
-                        '00-00-0000', //Todo UserData
+                        '0000000000',
+                        '2021000000',
+                        '********',
+                        '00-00-0000',
+                        '-',
                       );
 
                       OTPArguments args = OTPArguments(
@@ -159,9 +162,9 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                         OtpScreen.routeName,
                         arguments: args,
                       );
-                      print(myTextFieldController.text);
+                      debugPrint(myTextFieldController.text);
                     } else {
-                      print("____Forgot Form Error!");
+                      debugPrint("____Forgot Form Error!");
                     }
                   }, //Todo_Navigation
                 ),

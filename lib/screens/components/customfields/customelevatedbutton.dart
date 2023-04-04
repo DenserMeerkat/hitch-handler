@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -174,16 +175,18 @@ class ElevatedButtonWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return ElevatedButton.icon(
       onPressed: onPressed,
-      icon: Icon(
-        icon,
-        size: 18.sp,
+      icon: FittedBox(
+        child: Icon(
+          icon,
+        ),
       ),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.disabled)) {
-            return kGrey30;
+            return isDark ? kGrey30 : kLGrey70;
           }
           return activeColor;
         }),

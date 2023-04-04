@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/popupitem.dart';
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:hitch_handler/screens/user_home/feed/searchformfield.dart';
