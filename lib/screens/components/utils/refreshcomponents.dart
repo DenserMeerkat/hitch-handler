@@ -24,6 +24,25 @@ class RefreshThemedHeader extends StatelessWidget {
   }
 }
 
+class LoadThemedFooter extends StatelessWidget {
+  const LoadThemedFooter({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClassicFooter(
+      textStyle: AdaptiveTheme.of(context).theme.textTheme.bodyMedium!,
+      failedIcon: Icon(Icons.error,
+          color: AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.color),
+      idleIcon: Icon(Icons.arrow_downward,
+          color: AdaptiveTheme.of(context).theme.textTheme.bodyMedium!.color),
+      loadingIcon:
+          const SizedBox(height: 20, width: 20, child: CProgressIndicator()),
+    );
+  }
+}
+
 class SpinningIconButton extends AnimatedWidget {
   final VoidCallback onPressed;
   final Icon icon;

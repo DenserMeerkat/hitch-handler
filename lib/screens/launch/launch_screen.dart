@@ -2,13 +2,10 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/components/utils/exitdialog.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import '../../constants.dart';
-import '../components/popupmenu.dart';
-import '../components/utils/customdialog.dart';
-import '../components/utils/dialogcont.dart';
-import 'launch_screen_body.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/popupmenu.dart';
+import 'package:hitch_handler/screens/components/utils/customdialog.dart';
+import 'package:hitch_handler/screens/launch/launch_screen_body.dart';
 
 class LaunchScreen extends StatefulWidget {
   static String routeName = '/launch';

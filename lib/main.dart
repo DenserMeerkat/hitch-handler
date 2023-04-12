@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -10,8 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/providers/user_provider.dart';
-import 'package:hitch_handler/screens/auth_home/auth_app.dart';
-import 'package:hitch_handler/screens/user_home/user_app.dart';
 import 'package:hitch_handler/themes.dart';
 import 'package:hitch_handler/widget_tree.dart';
 import 'package:overlay_support/overlay_support.dart';

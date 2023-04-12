@@ -32,8 +32,8 @@ class _PostsPageState extends State<PostsPage> {
   late String timeAgo;
 
   Future<Map<String, dynamic>> getPostDetails(String pid) async {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    var db = _firestore.collection('posts').doc(pid);
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var db = firestore.collection('posts').doc(pid);
     var docs = await db.get();
     Map<String, dynamic> snap = docs.data()!;
 
@@ -87,7 +87,6 @@ class _PostsPageState extends State<PostsPage> {
     );
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     model.User? user = Provider.of<UserProvider>(context).getUser;
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
       body: CustomScrollView(

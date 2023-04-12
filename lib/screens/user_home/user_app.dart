@@ -1,17 +1,26 @@
+import 'dart:async';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../providers/user_provider.dart';
+import 'package:hitch_handler/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import '../components/appbar.dart';
-import 'archives_page.dart';
-import 'home_page.dart';
-import 'add_page.dart';
-import '../../constants.dart';
-import '../../models/user.dart' as model;
+import 'package:hitch_handler/screens/components/appbar.dart';
+import 'package:hitch_handler/screens/user_home/archives_page.dart';
+import 'package:hitch_handler/screens/user_home/home_page.dart';
+import 'package:hitch_handler/screens/user_home/add_page.dart';
+import 'package:hitch_handler/constants.dart';
 
 class AppScreen extends StatefulWidget {
   static String routeName = '/app_screen';
+  static final StreamController<List<DocumentSnapshot>> homeController1 =
+      StreamController<List<DocumentSnapshot>>.broadcast();
+  static final StreamController<List<DocumentSnapshot>> homeController2 =
+      StreamController<List<DocumentSnapshot>>.broadcast();
+  static final StreamController<List<DocumentSnapshot>> archiveController1 =
+      StreamController<List<DocumentSnapshot>>.broadcast();
+  static final StreamController<List<DocumentSnapshot>> archiveController2 =
+      StreamController<List<DocumentSnapshot>>.broadcast();
   const AppScreen({super.key});
 
   @override
@@ -63,8 +72,6 @@ class _AppScreenState extends State<AppScreen> {
   @override
   Widget build(BuildContext context) {
     bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    model.User? user = Provider.of<UserProvider>(context).getUser;
-    Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
         return false;

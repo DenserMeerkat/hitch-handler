@@ -1,7 +1,6 @@
-import 'dart:ui';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import '../../../constants.dart';
+import 'package:hitch_handler/constants.dart';
 
 class CustomIconButton extends StatelessWidget {
   final String tooltip;

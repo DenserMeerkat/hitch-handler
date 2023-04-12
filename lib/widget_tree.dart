@@ -4,8 +4,7 @@ import 'package:hitch_handler/screens/auth_home/auth_app.dart';
 import 'package:hitch_handler/screens/user_home/user_app.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/user.dart' as model;
-import 'resources/auth_methods.dart';
+import 'package:hitch_handler/models/user.dart' as model;
 
 class WidgetTree extends StatefulWidget {
   static String routeName = '/branch';

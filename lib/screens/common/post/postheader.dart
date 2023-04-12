@@ -72,6 +72,8 @@ class PostDesc extends StatelessWidget {
                 fontSize: 13,
                 color: isDark ? kTextColor.withOpacity(0.6) : kLTextColor,
                 fontWeight: isDark ? FontWeight.normal : FontWeight.bold),
+        animation: true,
+        animationDuration: const Duration(milliseconds: 700),
       ),
     );
   }

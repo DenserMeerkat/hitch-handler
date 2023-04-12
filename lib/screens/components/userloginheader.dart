@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/components/customfields/customelevatedbutton.dart';
 import '../../constants.dart';
 import 'backbuttonwithcolor.dart';
 import 'labelwithicon.dart';

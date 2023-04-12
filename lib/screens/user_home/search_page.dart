@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/screens/components/popupitem.dart';
-import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:hitch_handler/screens/user_home/feed/searchformfield.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../components/appbar.dart';
-import 'feed/searchfield.dart';
+import 'package:hitch_handler/screens/components/appbar.dart';
 
 class SearchPage extends StatefulWidget {
   static String routeName = '/search_page';
@@ -66,7 +64,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
       appBar: const MainAppBar(),

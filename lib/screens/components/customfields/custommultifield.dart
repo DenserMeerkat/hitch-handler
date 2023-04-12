@@ -79,7 +79,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
     String type = widget.hints[index];
     String errormsg;
     if (error == 1) {
-      errormsg = "$type can\'t be empty";
+      errormsg = "$type can't be empty";
     } else if (error == 2) {
       errormsg = "Not a valid $type";
     } else {
@@ -134,7 +134,6 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
             ),
           ),
           TextFormField(
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
             onChanged: (value) {
               validateField(value, current);
             },
@@ -219,7 +218,7 @@ class _CustomMultiFieldState extends State<CustomMultiField> {
                 fontSize: 0,
               ),
               isDense: true,
-              helperText: '',
+              helperText: '_',
               helperStyle: const TextStyle(
                 height: 0,
                 color: Colors.transparent,

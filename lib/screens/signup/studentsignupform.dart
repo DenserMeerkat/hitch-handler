@@ -2,15 +2,13 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/screens/user_home/notifiers.dart';
-import '../../args_class.dart';
-import '../components/customfields/customdatepickfield.dart';
-import '../components/utils/customdialog.dart';
-import 'create_password.dart';
-import '../common/otp_screen.dart';
-import '../../constants.dart';
-import '../components/customfields/customsubmitbutton.dart';
-import '../components/customfields/custommultifield.dart';
-import 'dart:io';
+import 'package:hitch_handler/args_class.dart';
+import 'package:hitch_handler/screens/components/customfields/customdatepickfield.dart';
+import 'package:hitch_handler/screens/signup/create_password.dart';
+import 'package:hitch_handler/screens/common/otp_screen.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/customfields/customsubmitbutton.dart';
+import 'package:hitch_handler/screens/components/customfields/custommultifield.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -104,6 +102,7 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
   ) async {
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+    final scaffoldContext = ScaffoldMessenger.of(context);
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       debugPrint("____SignUp Form Valid!");
@@ -139,19 +138,19 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
           }
         } else {
           if (mounted) {
-            ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            final snackBar = showCustomSnackBar(
-                context, "Invalid Credentials", () {},
-                backgroundColor: isDark ? kGrey40 : kLBlack10,
-                margin: EdgeInsets.symmetric(horizontal: 70.w, vertical: 10),
-                borderColor: AdaptiveTheme.of(context).theme.colorScheme.error,
-                textColor: AdaptiveTheme.of(context).theme.colorScheme.error,
-                icon: Icon(
-                  Icons.error_outline_rounded,
+            scaffoldContext.removeCurrentSnackBar();
+            final snackBar = SnackBar(
+              content: Text(
+                "Invalid Credentials",
+                style: TextStyle(
                   color: AdaptiveTheme.of(context).theme.colorScheme.error,
-                ));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar).closed.then(
-                (value) => ScaffoldMessenger.of(context).clearSnackBars());
+                ),
+              ),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: isDark ? kGrey40 : kLBlack10,
+            );
+            scaffoldContext.showSnackBar(snackBar);
+
             debugPrint("____SignUp Form Error!");
           }
         }
@@ -159,20 +158,19 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
         debugPrint(err.toString());
       }
     } else {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      final snackBar =
-          showCustomSnackBar(context, "One or more Fields have Errors", () {},
-              backgroundColor: isDark ? kGrey40 : kLBlack10,
-              borderColor: AdaptiveTheme.of(context).theme.colorScheme.error,
-              textColor: AdaptiveTheme.of(context).theme.colorScheme.error,
-              icon: Icon(
-                Icons.error_outline_rounded,
-                color: AdaptiveTheme.of(context).theme.colorScheme.error,
-              ));
-      ScaffoldMessenger.of(context)
-          .showSnackBar(snackBar)
-          .closed
-          .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
+      scaffoldContext.removeCurrentSnackBar();
+      final snackBar = SnackBar(
+        content: Text(
+          "One or more Fields have Errors",
+          style: TextStyle(
+            color: AdaptiveTheme.of(context).theme.colorScheme.error,
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: isDark ? kGrey40 : kLBlack10,
+      );
+      scaffoldContext.showSnackBar(snackBar);
+
       debugPrint("____SignUp Form Error!");
     }
   }

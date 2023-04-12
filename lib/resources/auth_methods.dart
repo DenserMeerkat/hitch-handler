@@ -19,6 +19,7 @@ class AuthMethods {
   //Sign up user
   Future<String> signUpUser({
     required String userType,
+    required String name,
     required String email,
     required String mobno,
     required String rollno,
@@ -41,6 +42,7 @@ class AuthMethods {
         //add user to database
         model.User user = model.User(
           userType: userType,
+          name: name,
           email: email,
           mobno: mobno,
           rollno: rollno,

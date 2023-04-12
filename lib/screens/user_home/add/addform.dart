@@ -4,21 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/resources/firestore_methods.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../../../models/user.dart';
-import '../../../providers/user_provider.dart';
-import '../../components/customfields/customdatetimefield.dart';
-import '../../components/customfields/custommessagefield.dart';
-import '../../components/customfields/customtitlefield.dart';
-import '../../../constants.dart';
-import '../../components/customfields/customsubmitbutton.dart';
-import '../../components/customfields/customtypeaheadfield.dart';
-import '../../components/utils/customdialog.dart';
-import '../../components/utils/dialogcont.dart';
-import '../add_page.dart';
-import 'addimages.dart';
-import '../../../resources/post_methods.dart';
-import 'moredetails.dart';
-import '../notifiers.dart';
+import 'package:hitch_handler/models/user.dart';
+import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:hitch_handler/screens/components/customfields/customdatetimefield.dart';
+import 'package:hitch_handler/screens/components/customfields/custommessagefield.dart';
+import 'package:hitch_handler/screens/components/customfields/customtitlefield.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/customfields/customtypeaheadfield.dart';
+import 'package:hitch_handler/screens/components/utils/customdialog.dart';
+import 'package:hitch_handler/screens/user_home/add_page.dart';
+import 'package:hitch_handler/screens/user_home/add/addimages.dart';
+import 'package:hitch_handler/resources/post_methods.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
 
 class AddForm extends StatefulWidget {
   const AddForm({required Key key}) : super(key: key);
@@ -332,19 +329,18 @@ class AddFormState extends State<AddForm> {
           duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
 
       ScaffoldMessenger.of(context).clearSnackBars();
-      final snackBar =
-          showCustomSnackBar(context, "One or more Fields have Errors", () {},
-              backgroundColor: isDark ? kGrey40 : kLBlack10,
-              borderColor: AdaptiveTheme.of(context).theme.colorScheme.error,
-              textColor: AdaptiveTheme.of(context).theme.colorScheme.error,
-              icon: Icon(
-                Icons.error_outline_rounded,
-                color: AdaptiveTheme.of(context).theme.colorScheme.error,
-              ));
-      ScaffoldMessenger.of(context)
-          .showSnackBar(snackBar)
-          .closed
-          .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
+      final scaffoldContext = ScaffoldMessenger.of(context);
+      final snackBar = SnackBar(
+        content: Text(
+          "One or more Fields have Errors",
+          style: TextStyle(
+            color: AdaptiveTheme.of(context).theme.colorScheme.error,
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: isDark ? kGrey40 : kLBlack10,
+      );
+      scaffoldContext.showSnackBar(snackBar);
 
       debugPrint(">>>>>ERRORS!");
     }

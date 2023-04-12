@@ -39,7 +39,7 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
     if (value!.isWhitespace()) {
       setState(() {
         CustomMessageField.hasError = true;
-        errorText = "${widget.title} can\'t be empty";
+        errorText = "${widget.title} can't be empty";
       });
       return "Error!";
     } else {
@@ -90,7 +90,7 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
                 height: 132,
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
-                  color: isDark ? kGrey50 : kLBlack20,
+                  color: isDark ? kGrey50 : kLBlack10,
                   borderRadius: BorderRadius.circular(5),
                   boxShadow: [
                     BoxShadow(

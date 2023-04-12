@@ -33,7 +33,6 @@ class _SearchFormFieldState extends State<SearchFormField> {
     var enabledBorder = const OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(50)),
         borderSide: BorderSide.none);
-    Size size = MediaQuery.of(context).size;
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,7 +2,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/components/utils/customdialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/statusdialog.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../../constants.dart';
@@ -151,6 +152,8 @@ class _PostTopState extends State<PostTop> {
                       return StatusDialog(statusIndex: statusIndex);
                     },
                   );
+                } else {
+                  // Todo User Status Dialog
                 }
               },
               child: SizedBox(
@@ -183,26 +186,34 @@ class _PostTopState extends State<PostTop> {
                       await Clipboard.setData(
                               ClipboardData(text: widget.snap['postId']))
                           .then((value) {
-                        final snackBar = showCustomSnackBar(
-                          context,
-                          "Post-Id copied to clipboard",
-                          () {},
-                          icon: Icon(
-                            Icons.link,
-                            color: isDark ? kTextColor : kLTextColor,
-                          ),
-                          borderColor: isDark
-                              ? kTextColor.withOpacity(0.2)
-                              : kLTextColor.withOpacity(0.5),
-                          duration: const Duration(milliseconds: 1200),
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 65.w, vertical: 10),
-                        );
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(snackBar)
-                            .closed
-                            .then((value) =>
-                                ScaffoldMessenger.of(context).clearSnackBars());
+                        // final snackBar = showCustomSnackBar(
+                        //   context,
+                        //   "Post-Id copied to clipboard",
+                        //   () {},
+                        //   icon: Icon(
+                        //     Icons.link,
+                        //     color: isDark ? kTextColor : kLTextColor,
+                        //   ),
+                        //   borderColor: isDark
+                        //       ? kTextColor.withOpacity(0.2)
+                        //       : kLTextColor.withOpacity(0.5),
+                        //   duration: const Duration(milliseconds: 1200),
+                        //   margin: EdgeInsets.symmetric(
+                        //       horizontal: 65.w, vertical: 10),
+                        // );
+                        // ScaffoldMessenger.of(context)
+                        //     .showSnackBar(snackBar)
+                        //     .closed
+                        //     .then((value) =>
+                        //         ScaffoldMessenger.of(context).clearSnackBars());
+                        Fluttertoast.showToast(
+                            msg: "Post-Id copied to clipboard",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.SNACKBAR,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: isDark ? kGrey40 : kLBlack10,
+                            textColor: isDark ? kTextColor : kLTextColor,
+                            fontSize: 14.0);
                       });
                     },
                     child: Padding(

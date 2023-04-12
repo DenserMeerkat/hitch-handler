@@ -1,9 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../constants.dart';
-import 'buttonscontainer.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/launch/buttonscontainer.dart';
 
 class LaunchScreenBody extends StatelessWidget {
   const LaunchScreenBody({super.key});

@@ -26,7 +26,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
   IconData errorIcon = Icons.error;
   late Color errorColor;
   String errorText = "";
-
+  late DateTime? pickeddate = DateTime.now();
   @override
   void initState() {
     widget.controller.text = "";
@@ -36,7 +36,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
   String? validateField(String? value) {
     String errormsg = "";
     if (value!.isWhitespace()) {
-      errormsg = "${widget.hinttext} can\'t be empty";
+      errormsg = "${widget.hinttext} can't be empty";
     }
 
     if (errormsg != "") {
@@ -124,15 +124,17 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               showCursor: true,
               readOnly: true,
               onTap: () async {
-                DateTime? pickeddate = await showCustomDatePicker(
+                pickeddate = await showCustomDatePicker(
                   context,
-                  isDark ? kPrimaryColor : kLPrimaryColor,
-                  DateTime.now(),
+                  kPrimaryColor,
+                  pickeddate ?? DateTime.now(),
                 );
                 if (pickeddate != null) {
                   widget.controller.text =
-                      DateFormat('dd-MM-yyyy').format(pickeddate);
+                      DateFormat('dd-MM-yyyy').format(pickeddate!);
+                  validateDate(DateFormat('dd-MM-yyyy').format(pickeddate!));
                 }
+                setState(() {});
               },
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) => {FocusScope.of(context).nextFocus()},
@@ -152,34 +154,34 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
                   onTap: () async {
-                    DateTime? pickeddate = await showCustomDatePicker(
+                    pickeddate = await showCustomDatePicker(
                       context,
                       kPrimaryColor,
-                      DateTime.now(),
+                      pickeddate ?? DateTime.now(),
                     );
                     if (pickeddate != null) {
                       widget.controller.text =
-                          DateFormat('dd-MM-yyyy').format(pickeddate);
-                      // validateDate(
-                      //     DateFormat('dd-MM-yyyy').format(pickeddate));
+                          DateFormat('dd-MM-yyyy').format(pickeddate!);
+                      validateDate(
+                          DateFormat('dd-MM-yyyy').format(pickeddate!));
                     }
+                    setState(() {});
                   },
                   child: IconButton(
                     splashRadius: 50.0,
                     onPressed: () async {
-                      DateTime? pickeddate = await showCustomDatePicker(
+                      pickeddate = await showCustomDatePicker(
                         context,
                         kPrimaryColor,
-                        DateTime.now(),
+                        pickeddate ?? DateTime.now(),
                       );
                       if (pickeddate != null) {
-                        setState(() {
-                          widget.controller.text =
-                              DateFormat('dd-MM-yyyy').format(pickeddate);
-                          validateDate(
-                              DateFormat('dd-MM-yyyy').format(pickeddate));
-                        });
+                        widget.controller.text =
+                            DateFormat('dd-MM-yyyy').format(pickeddate!);
+                        validateDate(
+                            DateFormat('dd-MM-yyyy').format(pickeddate!));
                       }
+                      setState(() {});
                     },
                     icon: Icon(
                       Icons.edit_calendar_outlined,
@@ -201,7 +203,7 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                   fontSize: 0,
                 ),
                 isDense: true,
-                helperText: '',
+                helperText: '_',
                 helperStyle: const TextStyle(
                   height: 0,
                   color: Colors.transparent,

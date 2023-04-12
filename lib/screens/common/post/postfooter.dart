@@ -138,18 +138,20 @@ class _ActionButtonsState extends State<ActionButtons> {
   @override
   void initState() {
     isUpVoted = widget.snap['upVotes'].contains(widget.user.uid) ? true : false;
-    upVoteCount = widget.snap['upVoteCount'];
+    //upVoteCount = widget.snap['upVoteCount'];
+    upVoteCount = widget.snap['upVotes'].length;
     isBookmarked =
         widget.snap['bookmarks'].contains(widget.user.uid) ? true : false;
     var collection = FirebaseFirestore.instance.collection('posts');
     collection.doc(widget.snap['postId']).snapshots().listen((docSnapshot) {
-      Future.delayed(const Duration(milliseconds: 700), () {
+      Future.delayed(const Duration(milliseconds: 400), () {
         if (docSnapshot.exists && mounted) {
           Map<String, dynamic> data = docSnapshot.data()!;
           isUpVoted = data['upVotes'].contains(widget.user.uid) ? true : false;
           isBookmarked =
               data['bookmarks'].contains(widget.user.uid) ? true : false;
-          upVoteCount = data['upVoteCount'];
+          //upVoteCount = data['upVoteCount'];
+          upVoteCount = data['upVotes'].length;
         }
       });
     });
@@ -161,18 +163,15 @@ class _ActionButtonsState extends State<ActionButtons> {
   Widget build(BuildContext context) {
     Future<bool> onLikeButtonTapped(bool isLiked) async {
       String res = "";
-      bool success = false;
       try {
         res = await FirestoreMethods().upVotePost(
             widget.snap['postId'], widget.user.uid, widget.snap['upVotes']);
       } catch (err) {
         res = "$err";
+        debugPrint(res);
         return isLiked;
       }
-      if (res == "success") {
-        success = true;
-      }
-      return success ? !isLiked : isLiked;
+      return !isLiked;
     }
 
     Future<bool> onBookmarkTapped(bool isLiked) async {
@@ -223,8 +222,8 @@ class _ActionButtonsState extends State<ActionButtons> {
                   size: 20.sp,
                   countPostion: CountPostion.right,
                   likeCountPadding: EdgeInsets.only(left: 6.w, right: 6.w),
-                  animationDuration: const Duration(milliseconds: 500),
-                  likeCountAnimationDuration: const Duration(milliseconds: 500),
+                  animationDuration: const Duration(milliseconds: 200),
+                  likeCountAnimationDuration: const Duration(milliseconds: 200),
                   circleColor: const CircleColor(
                       start: Color(0xff0099cc), end: kPrimaryColor),
                   bubblesColor: const BubblesColor(

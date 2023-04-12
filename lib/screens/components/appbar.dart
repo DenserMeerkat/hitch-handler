@@ -1,13 +1,12 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_initicon/flutter_initicon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/screens/common/settings_page.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import '../../constants.dart';
-import '../../resources/auth_methods.dart';
-import 'utils/customdialog.dart';
-import 'utils/dialogcont.dart';
-import '../launch/launch_screen.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:hitch_handler/models/user.dart' as model;
+import 'package:hitch_handler/providers/user_provider.dart';
 
 class MainAppBar extends StatelessWidget with PreferredSizeWidget {
   const MainAppBar({
@@ -17,6 +16,7 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   @override
   Widget build(BuildContext context) {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return AppBar(
       automaticallyImplyLeading: false,
@@ -83,12 +83,24 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
               ? kTextColor.withOpacity(0.1)
               : kLTextColor.withOpacity(0.1),
           splashRadius: 20.0,
-          icon: Icon(
-            Icons.settings_outlined,
-            color: isDark
-                ? kTextColor.withOpacity(0.9)
-                : kLTextColor.withOpacity(0.9),
+          icon: Initicon(
+            text: user.name,
+            backgroundColor: isDark
+                ? kPrimaryColor.withOpacity(0.8)
+                : kLPrimaryColor.withOpacity(0.8),
+            size: 28,
+            border: Border.all(
+                width: 0.2, color: isDark ? Colors.transparent : kGrey30),
+            style: TextStyle(
+                color: isDark ? kLTextColor : kLTextColor,
+                fontWeight: FontWeight.w500),
           ),
+          // Icon(
+          //   Icons.settings_outlined,
+          //   color: isDark
+          //       ? kTextColor.withOpacity(0.9)
+          //       : kLTextColor.withOpacity(0.9),
+          // ),
           onPressed: () {
             Navigator.of(context).pushNamed(SettingsPage.routeName);
             //Scaffold.of(context).openEndDrawer();

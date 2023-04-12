@@ -119,7 +119,7 @@ class _AddImagesState extends State<AddImages> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15.0),
           decoration: BoxDecoration(
-            color: isDark ? kGrey50 : kLBlack20,
+            color: isDark ? kGrey50 : kLBlack10,
             borderRadius: BorderRadius.circular(5),
             boxShadow: [
               BoxShadow(
@@ -139,7 +139,7 @@ class _AddImagesState extends State<AddImages> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: isDark ? kGrey40 : kLBlack10,
+                    color: isDark ? kGrey40 : kLBlack20,
                     boxShadow: [
                       BoxShadow(
                         offset: const Offset(0, 2),
@@ -245,7 +245,7 @@ class ImageThumbnail extends StatelessWidget {
           BoxShadow(
             offset: const Offset(2, 2),
             blurRadius: 5,
-            color: isDark ? kBlack20 : kGrey50,
+            color: isDark ? kBlack20 : kGrey90,
           ),
         ],
       ),

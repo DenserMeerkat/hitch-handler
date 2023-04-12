@@ -43,9 +43,6 @@ class OtpFormState extends State<OtpForm> {
     Size size = MediaQuery.of(context).size;
 
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
-    const fillColor = Color.fromRGBO(243, 246, 249, 0);
-    const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
     final defaultPinTheme = PinTheme(
       width: 60.w,
       height: 58.h,
@@ -93,34 +90,6 @@ class OtpFormState extends State<OtpForm> {
                         BoxDecoration(color: widget.fgcolor.withOpacity(0.9))),
               ),
             ),
-            // OTPTextField(
-            //   length: 4,
-            //   width: size.width,
-            //   spaceBetween: 0,
-            //   fieldWidth: 50,
-            //   contentPadding:
-            //       EdgeInsets.symmetric(vertical: 14.0, horizontal: 4.0),
-            //   otpFieldStyle: OtpFieldStyle(
-            //     backgroundColor: isDark ? kBlack20 : kLGrey40,
-            //     borderColor: isDark ? kTextColor.withOpacity(0.2) : kLTextColor,
-            //     focusBorderColor: widget.fgcolor,
-            //     disabledBorderColor: Colors.grey,
-            //     enabledBorderColor:
-            //         isDark ? kTextColor.withOpacity(0.2) : kLTextColor,
-            //     errorBorderColor: Colors.red,
-            //   ),
-            //   style: const TextStyle(fontSize: 30),
-            //   textFieldAlignment: MainAxisAlignment.spaceAround,
-            //   outlineBorderRadius: 5.0,
-            //   fieldStyle: FieldStyle.box,
-            //   cursorColor: widget.fgcolor,
-            //   onChanged: (value) {},
-            //   onCompleted: (pin) {
-            //     print("Completed: " + pin); //Todo
-            //     otp = pin;
-            //   },
-            // ),
-            //Pinput(),
             SizedBox(
               height: 40.h,
             ),
@@ -152,8 +121,8 @@ class OtpFormState extends State<OtpForm> {
                           ?.unfocus();
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        print("___________________");
-                        print(_formKey.currentState!.validate());
+                        debugPrint("___________________");
+                        debugPrint("${_formKey.currentState!.validate()}");
                         ScaffoldMessenger.of(context).removeCurrentSnackBar();
                         Navigator.push(
                           context,
@@ -161,9 +130,9 @@ class OtpFormState extends State<OtpForm> {
                             return widget.nextPage;
                           }),
                         );
-                        print("OTP : " + otp);
+                        debugPrint("OTP : $otp");
                       } else {
-                        print(">>>>>ERRORS!");
+                        debugPrint(">>>>>ERRORS!");
                       }
                     }, //Todo_Navigation
                   ),

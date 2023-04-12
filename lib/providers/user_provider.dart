@@ -7,6 +7,7 @@ class UserProvider extends ChangeNotifier {
   User _user = const User(
     bookmarks: [],
     dob: '01-01-2000',
+    name: '',
     email: 'guest@email.com',
     mobno: '9000001234',
     rollno: '2000000000',

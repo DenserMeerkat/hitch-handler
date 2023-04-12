@@ -77,8 +77,17 @@ class FirestoreMethods {
         await db.update({
           'upVotes': FieldValue.arrayRemove([uid]),
         });
-
+        // FirebaseFirestore.instance
+        //     .collection('posts')
+        //     .doc(postId)
+        //     .get()
+        //     .then((DocumentSnapshot snap) async {
+        //   if (snap.exists) {
+        //     if (snap['upVoteCount'] > 0) {
         await db.update({'upVoteCount': FieldValue.increment(-1)});
+        //     }
+        //   }
+        // });
       } else {
         await _firestore.collection('posts').doc(postId).update({
           'upVotes': FieldValue.arrayUnion([uid]),

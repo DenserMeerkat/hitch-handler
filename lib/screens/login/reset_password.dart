@@ -6,8 +6,6 @@ import '../../args_class.dart';
 import '../../constants.dart';
 import '../components/customsigninappbar.dart';
 import '../components/confirmpasswordform.dart';
-import '../components/utils/customdialog.dart';
-import '../components/utils/dialogcont.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   final Color fgcolor;

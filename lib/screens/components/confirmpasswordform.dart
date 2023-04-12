@@ -1,13 +1,11 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'utils/customdialog.dart';
 import '../../args_class.dart';
 import '../../resources/auth_methods.dart';
 import '../../constants.dart';
 import 'customfields/customconfirmpassword.dart';
 import 'customfields/customsubmitbutton.dart';
-import 'utils/dialogcont.dart';
 import '../common/validpassword.dart';
 
 class ConfirmPasswordBody extends StatefulWidget {
@@ -49,11 +47,12 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
   }
 
   Future<String> performAuthentication(UserData user) async {
-    final navigator = Navigator.of(context);
-    final BuildContext contexT = context;
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    final scaffoldContext = ScaffoldMessenger.of(context);
     String res = "UnknownError";
     if (widget.authentication == 1) {
       res = await AuthMethods().signUpUser(
+        name: user.name,
         email: user.email,
         mobno: user.mobno,
         rollno: user.rollno,
@@ -63,9 +62,18 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
         userType: 'user',
       );
       if (res != "success") {
-        showCustomSnackBar(contexT, res, () {
-          navigator.pop();
-        });
+        scaffoldContext.clearSnackBars();
+        final snackBar = SnackBar(
+          content: Text(
+            res,
+            style: TextStyle(
+              color: isDark ? kTextColor : kLTextColor,
+            ),
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: isDark ? kGrey40 : kLBlack10,
+        );
+        scaffoldContext.showSnackBar(snackBar);
       }
     } else if (widget.authentication == 2) {
       res = "Not yet done";
@@ -167,7 +175,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                   color: isDark ? kBackgroundColor : kLBackgroundColor,
                   boxShadow: [
                     BoxShadow(
-                      offset: Offset(0, -2),
+                      offset: const Offset(0, -2),
                       color: isDark ? kBlack15 : kLGrey50,
                     ),
                   ],

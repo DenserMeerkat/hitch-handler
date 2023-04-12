@@ -12,7 +12,6 @@ class SignupBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    Size size = MediaQuery.of(context).size; // Available screen size
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.symmetric(

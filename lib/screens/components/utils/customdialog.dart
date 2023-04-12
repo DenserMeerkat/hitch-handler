@@ -115,62 +115,10 @@ class CustomAlertDialog extends StatelessWidget {
           ),
         ],
       ),
-      content: content,
+      content: SingleChildScrollView(child: content),
       contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
       actions: actions,
       actionsPadding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
     );
   }
-}
-
-SnackBar showCustomSnackBar(BuildContext snackbarContext, final String text,
-    final void Function() onPressed,
-    {Icon? icon,
-    Color? backgroundColor,
-    Color? textColor,
-    Color? borderColor,
-    String? actionLabel,
-    Duration? duration,
-    EdgeInsetsGeometry? margin,
-    double fsize = 13,
-    Color iconColor = kErrorColor,
-    Color actionColor = kErrorColor}) {
-  bool isDark =
-      AdaptiveTheme.of(snackbarContext).theme.brightness == Brightness.dark;
-  Size size = MediaQuery.of(snackbarContext).size;
-  return SnackBar(
-    duration: duration ?? const Duration(seconds: 3),
-    backgroundColor: backgroundColor ?? (isDark ? kGrey40 : kLBackgroundColor),
-    behavior: SnackBarBehavior.floating,
-    margin: margin ??
-        EdgeInsets.symmetric(horizontal: size.width * 0.1, vertical: 10),
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: borderColor ?? Colors.transparent)),
-    content: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        icon ?? const SizedBox(),
-        icon != null ? const SizedBox(width: 10) : const SizedBox(),
-        Flexible(
-          child: Text(
-            text,
-            style: TextStyle(
-              overflow: TextOverflow.ellipsis,
-              color: textColor ?? (isDark ? kTextColor : kLTextColor),
-              fontSize: fsize,
-            ),
-          ),
-        ),
-      ],
-    ),
-    action: actionLabel != null
-        ? SnackBarAction(
-            label: actionLabel,
-            textColor: actionColor,
-            onPressed: onPressed,
-          )
-        : null,
-  );
 }

@@ -1,9 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import '../../../string_extensions.dart';
-import '../../../constants.dart';
-import '../../../resources/post_methods.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/resources/post_methods.dart';
 
 class SearchField extends StatefulWidget {
   final Color fgcolor;
@@ -30,8 +29,6 @@ class _SearchFieldState extends State<SearchField> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     var enabledBorder = const OutlineInputBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(5.0),
@@ -115,7 +112,7 @@ class _SearchFieldState extends State<SearchField> {
                   iconColor: kPrimaryColor,
                   title: Row(
                     children: [
-                      Icon(Icons.domain_outlined),
+                      const Icon(Icons.domain_outlined),
                       const SizedBox(
                         width: 10,
                       ),

@@ -90,7 +90,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
                 height: 44,
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
-                  color: isDark ? kGrey50 : kLBlack20,
+                  color: isDark ? kGrey50 : kLBlack10,
                   borderRadius: BorderRadius.circular(5),
                   boxShadow: [
                     BoxShadow(

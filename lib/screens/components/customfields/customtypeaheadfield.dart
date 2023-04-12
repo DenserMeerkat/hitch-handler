@@ -69,7 +69,6 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     errorColor = AdaptiveTheme.of(context).theme.colorScheme.error;
     var enabledBorder = const OutlineInputBorder(
         borderRadius: BorderRadius.only(
@@ -100,7 +99,7 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
         Container(
           height: 44,
           decoration: BoxDecoration(
-            color: isDark ? kGrey50 : kLBlack20,
+            color: isDark ? kGrey50 : kLBlack10,
             borderRadius: BorderRadius.circular(5),
             boxShadow: [
               BoxShadow(

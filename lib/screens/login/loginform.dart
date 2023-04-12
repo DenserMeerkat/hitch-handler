@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import '../../resources/auth_methods.dart';
-import '../components/utils/customdialog.dart';
-import '../user_home/notifiers.dart';
+import 'package:hitch_handler/resources/auth_methods.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
 import 'forgotmodal.dart';
-import '../../constants.dart';
-import '../components/customfields/customsubmitbutton.dart';
-import '../components/customfields/custommultifield.dart';
-import '../components/customfields/custompasswordfield.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/customfields/customsubmitbutton.dart';
+import 'package:hitch_handler/screens/components/customfields/custommultifield.dart';
+import 'package:hitch_handler/screens/components/customfields/custompasswordfield.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -209,23 +208,19 @@ class _LoginFormState extends State<LoginForm> {
                   loginAuthentication(email, myPassFieldController.text);
                 } else {
                   ScaffoldMessenger.of(context).clearSnackBars();
-                  final snackBar = showCustomSnackBar(
-                      context, "One or more Fields have Errors", () {},
-                      backgroundColor: isDark ? kGrey40 : kLBlack10,
-                      borderColor:
-                          AdaptiveTheme.of(context).theme.colorScheme.error,
-                      textColor:
-                          AdaptiveTheme.of(context).theme.colorScheme.error,
-                      icon: Icon(
-                        Icons.error_outline_rounded,
+                  final scaffoldContext = ScaffoldMessenger.of(context);
+                  final snackBar = SnackBar(
+                    content: Text(
+                      "One or more Fields have Errors",
+                      style: TextStyle(
                         color:
                             AdaptiveTheme.of(context).theme.colorScheme.error,
-                      ));
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(snackBar)
-                      .closed
-                      .then((value) =>
-                          ScaffoldMessenger.of(context).clearSnackBars());
+                      ),
+                    ),
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: isDark ? kGrey40 : kLBlack10,
+                  );
+                  scaffoldContext.showSnackBar(snackBar);
 
                   debugPrint(">>>>>ERRORS!");
                 }

@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/components/customIiconbutton.dart';
+import 'package:hitch_handler/screens/components/customiconbutton.dart';
 import '../../user_home/notifiers.dart';
 import '../../components/customfields/fieldlabel.dart';
 import '../../../constants.dart';
@@ -96,7 +96,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
     );
     BoxDecoration boxDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(5),
-      color: isDark ? kGrey30.withOpacity(0.8) : kLBlack10,
+      color: isDark ? kGrey30.withOpacity(0.8) : kLBlack20.withOpacity(0.5),
       border: Border.all(
         width: 1.2,
         color: isDark ? kGrey30 : kLGrey30,
@@ -106,7 +106,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
       DateTime? pickeddate = await showCustomDatePicker(
         context,
         kPrimaryColor,
-        DateTime.now(),
+        myDateController ?? DateTime.now(),
       );
       if (pickeddate != null) {
         setState(() {
@@ -121,7 +121,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
       TimeOfDay? pickedtime = await selectTime(
         context,
         kPrimaryColor,
-        const TimeOfDay(hour: 0, minute: 0),
+        myTimeController ?? const TimeOfDay(hour: 0, minute: 0),
       );
       if (pickedtime != null && pickedtime != myTimeController) {
         setState(() {
@@ -143,7 +143,7 @@ class _CustomDateTimeState extends State<CustomDateTime> {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
           decoration: BoxDecoration(
-            color: isDark ? kGrey50 : kLBlack20,
+            color: isDark ? kGrey50 : kLBlack10,
             borderRadius: BorderRadius.circular(5),
             boxShadow: [
               BoxShadow(

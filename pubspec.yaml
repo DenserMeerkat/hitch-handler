@@ -64,6 +64,9 @@ dependencies:
   overlay_support: ^2.1.0
   im_stepper: ^1.0.1+1
   flutter_dotenv: ^5.0.2
+  shimmer: ^2.0.0
+  http: ^0.13.5
+  flutter_initicon: ^3.0.0+1
   #expandable_page_view: ^1.0.17
 
 dev_dependencies:

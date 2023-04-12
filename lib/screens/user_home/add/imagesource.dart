@@ -3,13 +3,10 @@ import 'dart:ui';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_view/photo_view.dart';
-import '../../../constants.dart';
-import '../../../resources/post_methods.dart';
-import '../../components/customfields/customelevatedbutton.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/resources/post_methods.dart';
+import 'package:hitch_handler/screens/components/customfields/customelevatedbutton.dart';
 
 class ImageSourceSelect extends StatefulWidget {
   const ImageSourceSelect({
@@ -81,18 +78,16 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
 
   void showAtmostDialog() {
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    final snackBar = showCustomSnackBar(
-      context,
-      "Atmost 5 images can only be chosen",
-      () {},
-      icon: Icon(
-        Icons.palette_outlined,
-        color: isDark ? kTextColor : kLTextColor,
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    final snackBar = SnackBar(
+      content: Text(
+        "Atmost 5 images can only be chosen",
+        style: TextStyle(
+          color: isDark ? kTextColor : kLTextColor,
+        ),
       ),
-      borderColor:
-          isDark ? kTextColor.withOpacity(0.2) : kLTextColor.withOpacity(0.5),
-      duration: const Duration(seconds: 2),
-      margin: EdgeInsets.symmetric(horizontal: 40.w, vertical: 10),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: isDark ? kGrey40 : kLBlack10,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

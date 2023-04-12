@@ -71,7 +71,6 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     errorColor = AdaptiveTheme.of(context).theme.colorScheme.error;
-    Size size = MediaQuery.of(context).size;
     OutlineInputBorder outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(10.0.r),

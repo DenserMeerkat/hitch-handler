@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hitch_handler/screens/components/popupitem.dart';
+import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/user_home/search_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -93,15 +93,20 @@ class _AuthHomePageState extends State<AuthHomePage>
             : _streamController2.stream,
         builder: (BuildContext context,
             AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CProgressIndicator(),
+          if ((_isRequesting && _posts.isEmpty) ||
+              snapshot.connectionState == ConnectionState.waiting) {
+            return const FeedSkeleton(
+              hasAppbar: true,
             );
           }
           return SmartRefresher(
             enablePullDown: true,
-            enablePullUp: false,
+            enablePullUp: !_isFinish,
             header: const RefreshThemedHeader(),
+            footer: const LoadThemedFooter(),
+            onLoading: () {
+              requestNextPage(currentIndex);
+            },
             controller: _refreshController,
             onRefresh: () {
               if (!mounted) {
@@ -154,8 +159,9 @@ class _AuthHomePageState extends State<AuthHomePage>
                                           gravity: ToastGravity.SNACKBAR,
                                           timeInSecForIosWeb: 1,
                                           backgroundColor:
-                                              isDark ? kGrey40 : kLBlack15,
-                                          textColor: Colors.white,
+                                              isDark ? kGrey40 : kLBlack10,
+                                          textColor:
+                                              isDark ? kTextColor : kLTextColor,
                                           fontSize: 14.0);
                                     },
                                   ),
@@ -170,16 +176,17 @@ class _AuthHomePageState extends State<AuthHomePage>
                   elevation: 0,
                   expandedHeight: 60,
                   actions: <Widget>[Container()],
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(1.0),
+                    child: Container(
+                      height: 1.5,
+                      color: isDark ? kGrey40 : kLGrey40,
+                    ),
+                  ),
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 10),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom:
-                              BorderSide(color: isDark ? kGrey40 : kLGrey40),
-                        ),
-                      ),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(
@@ -193,7 +200,7 @@ class _AuthHomePageState extends State<AuthHomePage>
                           );
                         },
                         child: Tooltip(
-                          message: "Sort",
+                          message: "Search",
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -353,27 +360,6 @@ class _AuthHomePageState extends State<AuthHomePage>
                     childCount: snapshot.data!.length,
                   ),
                 ),
-                SliverOffstage(
-                  offstage: !(_posts.isNotEmpty && !_isFinish),
-                  sliver: SliverToBoxAdapter(
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(color: isDark ? kGrey40 : kLGrey30),
-                        ),
-                        color: isDark
-                            ? kGrey30.withOpacity(0.5)
-                            : kLBackgroundColor,
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: const BoxDecoration(border: Border()),
-                        child: const Center(child: CProgressIndicator()),
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           );
@@ -400,7 +386,7 @@ class _AuthHomePageState extends State<AuthHomePage>
 
   void onChangeData(List<DocumentChange> documentChanges) {
     var isChange = false;
-    documentChanges.forEach((postChange) {
+    for (var postChange in documentChanges) {
       if (postChange.type == DocumentChangeType.removed) {
         _posts.removeWhere((product) {
           return postChange.doc.id == product.id;
@@ -423,7 +409,7 @@ class _AuthHomePageState extends State<AuthHomePage>
           isChange = true;
         }
       }
-    });
+    }
 
     if (isChange) {
       if (currentIndex == 0) {

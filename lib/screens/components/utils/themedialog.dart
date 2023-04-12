@@ -1,27 +1,21 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/screens/components/popupitem.dart';
-import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/constants.dart';
 
 Future<void> showToggleThemeDialog(BuildContext context) {
   void reponseSnackbar(String theme) {
+    final scaffoldContext = ScaffoldMessenger.of(context);
     bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    final snackBar = showCustomSnackBar(
-      context,
-      "Theme switched to $theme",
-      () {},
-      icon: Icon(
-        Icons.palette_outlined,
-        color: isDark ? kTextColor : kLTextColor,
+    final snackBar = SnackBar(
+      content: Text(
+        "Theme switched to $theme",
+        style: TextStyle(color: isDark ? kTextColor : kLTextColor),
       ),
-      borderColor:
-          isDark ? kTextColor.withOpacity(0.2) : kLTextColor.withOpacity(0.5),
-      duration: const Duration(seconds: 1),
-      margin: EdgeInsets.symmetric(horizontal: 40.w, vertical: 10),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: isDark ? kGrey40 : kLBlack10,
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    scaffoldContext.showSnackBar(snackBar);
   }
 
   bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;

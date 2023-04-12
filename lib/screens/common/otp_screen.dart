@@ -18,13 +18,13 @@ class OtpScreen extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)?.settings.arguments as OTPArguments;
     Size size = MediaQuery.of(context).size; // Available screen size
-    // debugPrint(arguments.user.rollno);
-    // debugPrint(arguments.user.name);
-    // debugPrint(arguments.user.email);
-    // debugPrint(arguments.user.gender);
-    // debugPrint(arguments.user.clg);
-    // debugPrint(arguments.user.password);
-    // debugPrint(arguments.user.mobno);
+    debugPrint(arguments.user.rollno);
+    debugPrint(arguments.user.name);
+    debugPrint(arguments.user.email);
+    debugPrint(arguments.user.gender);
+    debugPrint(arguments.user.clg);
+    debugPrint(arguments.user.password);
+    debugPrint(arguments.user.mobno);
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {

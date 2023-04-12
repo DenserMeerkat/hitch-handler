@@ -1,15 +1,12 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/components/customIiconbutton.dart';
+import 'package:hitch_handler/screens/components/customiconbutton.dart';
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/screens/common/post/posttop.dart';
 import 'package:hitch_handler/string_extensions.dart';
 import '../../../constants.dart';
 import 'package:im_stepper/stepper.dart';
-import 'package:provider/provider.dart';
-import 'package:hitch_handler/models/user.dart' as model;
-import 'package:hitch_handler/providers/user_provider.dart';
 
 class StatusDialog extends StatefulWidget {
   final int statusIndex;

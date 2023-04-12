@@ -82,74 +82,76 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
           ),
         ],
       ),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 10),
-          Text(
-            "An email will be sent with instructions to reset your password.",
-            style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
-          ),
-          Text(
-            "Please type your email to confirm.",
-            style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
-          ),
-          const SizedBox(height: 10),
-          Form(
-            key: _formkey,
-            child: Container(
-              constraints: BoxConstraints(maxWidth: 270.w),
-              //height: 44,
-              child: TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
-                validator: (value) {
-                  return validateEmail(value);
-                },
-                controller: myTextFieldController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.only(top: 4, bottom: 4, left: 16),
-                  border: border(Colors.transparent),
-                  focusedBorder: border(kPrimaryColor),
-                  errorBorder:
-                      border(AdaptiveTheme.of(context).theme.colorScheme.error),
-                  enabledBorder: border(isDark ? kGrey70 : kLBlack20),
-                  disabledBorder: border(Colors.transparent),
-                  suffixIconColor: kPrimaryColor,
-                  suffixIcon: clear
-                      ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              myTextFieldController.clear();
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.clear,
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 10),
+            Text(
+              "An email will be sent with instructions to reset your password.",
+              style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
+            ),
+            Text(
+              "Please type your email to confirm.",
+              style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 10),
+            Form(
+              key: _formkey,
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 270.w),
+                //height: 44,
+                child: TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
+                  validator: (value) {
+                    return validateEmail(value);
+                  },
+                  controller: myTextFieldController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    contentPadding:
+                        const EdgeInsets.only(top: 4, bottom: 4, left: 16),
+                    border: border(Colors.transparent),
+                    focusedBorder: border(kPrimaryColor),
+                    errorBorder: border(
+                        AdaptiveTheme.of(context).theme.colorScheme.error),
+                    enabledBorder: border(isDark ? kGrey70 : kLBlack20),
+                    disabledBorder: border(Colors.transparent),
+                    suffixIconColor: kPrimaryColor,
+                    suffixIcon: clear
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                myTextFieldController.clear();
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.clear,
+                            ),
+                          )
+                        : const Icon(
+                            Icons.alternate_email_outlined,
                           ),
-                        )
-                      : const Icon(
-                          Icons.alternate_email_outlined,
+                    hintText: "Email",
+                    hintStyle: AdaptiveTheme.of(context)
+                        .theme
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(
+                          color: isDark
+                              ? kTextColor.withOpacity(0.5)
+                              : kLTextColor.withOpacity(0.5),
                         ),
-                  hintText: "Email",
-                  hintStyle: AdaptiveTheme.of(context)
-                      .theme
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(
-                        color: isDark
-                            ? kTextColor.withOpacity(0.5)
-                            : kLTextColor.withOpacity(0.5),
-                      ),
-                  fillColor: isDark ? kGrey50 : kLBlack15,
-                  filled: true,
+                    fillColor: isDark ? kGrey50 : kLBlack15,
+                    filled: true,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 4),
       actions: [

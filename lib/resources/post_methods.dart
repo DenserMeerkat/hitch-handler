@@ -22,8 +22,9 @@ class DomainList {
   ];
   static List<String> getSuggestions(String query) {
     List<String> matchList = [];
-    domainsList.forEach((element) =>
-        matchList.contains(element) ? null : matchList.add(element));
+    for (var element in domainsList) {
+      matchList.contains(element) ? null : matchList.add(element);
+    }
     matchList.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
     return matchList;
   }
@@ -67,8 +68,9 @@ class LocationList {
   ];
   static List<String> getSuggestions(String query) {
     List<String> matchList = [];
-    locationsList.forEach((element) =>
-        matchList.contains(element) ? null : matchList.add(element));
+    for (var element in locationsList) {
+      matchList.contains(element) ? null : matchList.add(element);
+    }
     matchList.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
     return matchList;
   }
@@ -76,7 +78,7 @@ class LocationList {
 
 class UploadFileList {
   static int _lenth = 0;
-  static List<File> _uploadFileList = [];
+  static final List<File> _uploadFileList = [];
 
   static String appendFile(File image) {
     if (_lenth < 5) {

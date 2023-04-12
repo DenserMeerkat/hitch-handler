@@ -3,6 +3,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -41,7 +42,7 @@ class _ArchivesPageState extends State<ArchivesPage>
 
   void onChangeData(List<DocumentChange> documentChanges) {
     var isChange = false;
-    documentChanges.forEach((postChange) {
+    for (var postChange in documentChanges) {
       if (postChange.type == DocumentChangeType.removed) {
         _posts.removeWhere((product) {
           return postChange.doc.id == product.id;
@@ -64,7 +65,7 @@ class _ArchivesPageState extends State<ArchivesPage>
           isChange = true;
         }
       }
-    });
+    }
 
     if (isChange) {
       _streamController1.add(_posts);
@@ -73,7 +74,8 @@ class _ArchivesPageState extends State<ArchivesPage>
 
   void onChangeData1(List<DocumentChange> documentChanges) {
     var isChange = false;
-    documentChanges.forEach((postChange) {
+
+    for (var postChange in documentChanges) {
       if (postChange.type == DocumentChangeType.removed) {
         _bookmarks.removeWhere((product) {
           return postChange.doc.id == product.id;
@@ -96,7 +98,7 @@ class _ArchivesPageState extends State<ArchivesPage>
           isChange = true;
         }
       }
-    });
+    }
 
     if (isChange) {
       _streamController1.add(_bookmarks);
@@ -143,7 +145,6 @@ class _ArchivesPageState extends State<ArchivesPage>
         currentIndex = _tabController.index;
       });
     }
-    requestNextPage(currentIndex);
     if (currentIndex == 0) {
       _isFinish = false;
       requestNextPage(0);
@@ -162,6 +163,7 @@ class _ArchivesPageState extends State<ArchivesPage>
         ? !_isRequesting && !_isFinish
         : !_isRequesting1 && !_isFinish1) {
       QuerySnapshot querySnapshot;
+      if (!mounted) return;
       if (currentIndex == 0) {
         setState(() {
           _isRequesting = true;
@@ -262,10 +264,6 @@ class _ArchivesPageState extends State<ArchivesPage>
               right: 70.w,
               bottom: 14.0.h,
             ),
-            decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(color: isDark ? kGrey40 : kLGrey40)),
-            ),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50.r),
@@ -321,6 +319,13 @@ class _ArchivesPageState extends State<ArchivesPage>
             ),
           ),
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+            height: 1.5,
+            color: isDark ? kGrey40 : kLGrey40,
+          ),
+        ),
       ),
       body: TabBarView(
         controller: _tabController,
@@ -340,11 +345,8 @@ class _ArchivesPageState extends State<ArchivesPage>
               builder:
                   (context, AsyncSnapshot<List<DocumentSnapshot>> snapshot1) {
                 if ((_isRequesting && _posts.isEmpty) ||
-                    (!_isFinish &&
-                        snapshot1.connectionState == ConnectionState.waiting)) {
-                  return const Center(
-                    child: CProgressIndicator(),
-                  );
+                    (snapshot1.connectionState == ConnectionState.waiting)) {
+                  return const FeedSkeleton();
                 }
                 if (_isFinish && snapshot1.data!.isEmpty) {
                   return Center(
@@ -410,10 +412,15 @@ class _ArchivesPageState extends State<ArchivesPage>
                 }
                 return SmartRefresher(
                   enablePullDown: true,
-                  enablePullUp: false,
+                  enablePullUp: !_isFinish,
                   header: const RefreshThemedHeader(),
+                  footer: const LoadThemedFooter(),
+                  onLoading: () {
+                    requestNextPage(currentIndex);
+                  },
                   controller: _refreshController,
                   onRefresh: () {
+                    if (!mounted) return;
                     setState(() {
                       _isFinish = false;
                       requestNextPage(currentIndex);
@@ -434,28 +441,6 @@ class _ArchivesPageState extends State<ArchivesPage>
                             );
                           }),
                           childCount: snapshot1.data!.length,
-                        ),
-                      ),
-                      SliverOffstage(
-                        offstage: !(_posts.isNotEmpty && !_isFinish),
-                        sliver: SliverToBoxAdapter(
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                    color: isDark ? kGrey40 : kLGrey30),
-                              ),
-                              color: isDark
-                                  ? kGrey30.withOpacity(0.5)
-                                  : kLBackgroundColor,
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.all(16.0),
-                              decoration: const BoxDecoration(border: Border()),
-                              child: const Center(child: CProgressIndicator()),
-                            ),
-                          ),
                         ),
                       ),
                     ],
@@ -479,11 +464,8 @@ class _ArchivesPageState extends State<ArchivesPage>
               builder:
                   (context, AsyncSnapshot<List<DocumentSnapshot>> snapshot2) {
                 if ((_isRequesting1 && _bookmarks.isEmpty) ||
-                    (!_isFinish1 &&
-                        snapshot2.connectionState == ConnectionState.waiting)) {
-                  return const Center(
-                    child: CProgressIndicator(),
-                  );
+                    (snapshot2.connectionState == ConnectionState.waiting)) {
+                  return const FeedSkeleton();
                 }
                 if (_isFinish1 && snapshot2.data!.isEmpty) {
                   return Center(
@@ -549,10 +531,15 @@ class _ArchivesPageState extends State<ArchivesPage>
                 }
                 return SmartRefresher(
                   enablePullDown: true,
-                  enablePullUp: false,
+                  enablePullUp: !_isFinish1,
                   header: const RefreshThemedHeader(),
+                  footer: const LoadThemedFooter(),
+                  onLoading: () {
+                    requestNextPage(currentIndex);
+                  },
                   controller: _refreshController1,
                   onRefresh: () {
+                    if (!mounted) return;
                     setState(() {
                       _isFinish = false;
                       requestNextPage(currentIndex);
@@ -573,28 +560,6 @@ class _ArchivesPageState extends State<ArchivesPage>
                             );
                           }),
                           childCount: snapshot2.data!.length,
-                        ),
-                      ),
-                      SliverOffstage(
-                        offstage: !(_bookmarks.isNotEmpty && !_isFinish1),
-                        sliver: SliverToBoxAdapter(
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                    color: isDark ? kGrey40 : kLGrey30),
-                              ),
-                              color: isDark
-                                  ? kGrey30.withOpacity(0.5)
-                                  : kLBackgroundColor,
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.all(16.0),
-                              decoration: const BoxDecoration(border: Border()),
-                              child: const Center(child: CProgressIndicator()),
-                            ),
-                          ),
                         ),
                       ),
                     ],

@@ -1,7 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -78,11 +77,11 @@ class _PostImagesState extends State<PostImages> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     if (widget.imgList.isNotEmpty) {
       return Container(
-        constraints: BoxConstraints(maxHeight: size.height * 0.38),
+        constraints: BoxConstraints(
+            maxHeight: 300.w > 320 ? 320 : 300.w, minHeight: 300),
         width: double.infinity,
         decoration: BoxDecoration(
           color: isDark ? Colors.black : kLBackgroundColor,

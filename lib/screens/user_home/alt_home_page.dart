@@ -306,7 +306,7 @@ class _HomePageState extends State<HomePage> {
 
   void onChangeData(List<DocumentChange> documentChanges) {
     var isChange = false;
-    documentChanges.forEach((postChange) {
+    for (var postChange in documentChanges) {
       if (postChange.type == DocumentChangeType.removed) {
         _posts.removeWhere((product) {
           return postChange.doc.id == product.id;
@@ -329,7 +329,7 @@ class _HomePageState extends State<HomePage> {
           isChange = true;
         }
       }
-    });
+    }
 
     if (isChange) {
       if (currentIndex == 0) {

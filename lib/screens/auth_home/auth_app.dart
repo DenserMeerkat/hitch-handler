@@ -6,7 +6,6 @@ import '../../providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../components/appbar.dart';
 import '../../constants.dart';
-import '../../models/user.dart' as model;
 
 class AuthAppScreen extends StatefulWidget {
   static String routeName = '/app_screen';
@@ -60,8 +59,6 @@ class _AuthAppScreenState extends State<AuthAppScreen> {
   @override
   Widget build(BuildContext context) {
     bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    model.User? user = Provider.of<UserProvider>(context).getUser;
-    Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
         return false;
