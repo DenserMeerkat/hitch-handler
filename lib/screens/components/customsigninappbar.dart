@@ -1,25 +1,32 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../constants.dart';
-import 'userloginheader.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/customappbar.dart';
 
 class CustomSignInAppBar extends StatelessWidget {
   const CustomSignInAppBar({
     super.key,
-    required this.size,
     required this.fgcolor,
     required this.title,
     required this.icon,
-    required this.press,
-    this.herotag,
+    this.leadingIcon = Icons.arrow_back_rounded,
+    this.leadingToolTip = "Back",
+    required this.leadingAction,
+    this.showActions = true,
   });
-  final Object? herotag;
-  final Size size;
   final Color fgcolor;
   final String title;
   final IconData icon;
-  final Function() press;
+  final IconData leadingIcon;
+  final String leadingToolTip;
+  final Function() leadingAction;
+  final bool showActions;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +36,11 @@ class CustomSignInAppBar extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          SizedBox(
+            height: 15.h,
+          ),
           Text(
-            "HITCH HANDLER",
+            appName.toUpperCase(),
             style: TextStyle(
               color: isDark
                   ? kTextColor.withOpacity(0.7)
@@ -45,7 +55,8 @@ class CustomSignInAppBar extends StatelessWidget {
             height: 15.h,
           ),
           Container(
-            padding: EdgeInsets.only(top: 5.h),
+            height: 75.h,
+            padding: EdgeInsets.only(top: 17.h),
             decoration: BoxDecoration(
               color: isDark ? kGrey30 : kLGrey30,
               borderRadius: BorderRadius.vertical(
@@ -58,22 +69,13 @@ class CustomSignInAppBar extends StatelessWidget {
                 ),
               ],
             ),
-            child: SizedBox(
-              height: 80.h,
-              child: UserLoginHeader(
-                herotag: herotag,
-                bradius: 30.0,
-                bgcolor: isDark ? kBackgroundColor : kLBlack10,
-                shcolor: isDark ? kBlack10 : kLGrey70,
-                fgcolor: fgcolor,
-                icon: icon,
-                title: title,
-                fsize: 15,
-                press: press,
-                iconbg: isDark ? kPrimaryColor : kLPrimaryColor,
-                iconcolor: isDark ? kBlack20 : kBlack20,
-                textcolor: isDark ? fgcolor : kBlack20,
-              ),
+            child: CustomAppBar(
+              title: title,
+              icon: icon,
+              leadingIcon: leadingIcon,
+              leadingAction: leadingAction,
+              leadingTooltip: leadingToolTip,
+              showActions: showActions,
             ),
           ),
         ],

@@ -1,11 +1,15 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/common/post/posttop.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../../../models/user.dart' as model;
+// Project imports:
+import 'package:hitch_handler/screens/common/post/posttop.dart';
 import '../../../constants.dart';
+import '../../../models/user.dart' as model;
 import '../../../providers/user_provider.dart';
 import 'postfooter.dart';
 import 'postheader.dart';

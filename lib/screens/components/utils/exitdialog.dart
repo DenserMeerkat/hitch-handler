@@ -1,5 +1,10 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Project imports:
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 
 void exitDialog(BuildContext context, String homeroute) {
@@ -11,7 +16,7 @@ void exitDialog(BuildContext context, String homeroute) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Are you sure you want to go back? You have an ongoing process ",
+          "Are you sure you want to go back? You have an ongoing process.",
           style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
         ),
       ],

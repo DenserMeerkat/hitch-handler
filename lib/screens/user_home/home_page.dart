@@ -1,17 +1,24 @@
+// Dart imports:
 import 'dart:async';
-import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:hitch_handler/screens/components/popupitem.dart';
 import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/user_home/search_page.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/common/post/postcard.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -44,12 +51,15 @@ class _HomePageState extends State<HomePage>
   bool _isRequesting = false;
   bool _isFinish = false;
   static const int postLimit = 6;
-
+  late dynamic sub1;
   @override
   void initState() {
     animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    FirebaseFirestore.instance.collection('posts').snapshots().listen((event) {
+    sub1 = FirebaseFirestore.instance
+        .collection('posts')
+        .snapshots()
+        .listen((event) {
       return onChangeData(event.docChanges);
     });
     requestNextPage(currentIndex);
@@ -61,6 +71,7 @@ class _HomePageState extends State<HomePage>
     animationController.dispose();
     _refreshController.dispose();
     myScrollController.dispose();
+    sub1.cancel();
     _posts.clear();
     super.dispose();
   }
@@ -112,7 +123,6 @@ class _HomePageState extends State<HomePage>
             },
             child: CustomScrollView(
               controller: myScrollController,
-              shrinkWrap: true,
               slivers: [
                 SliverAppBar(
                   automaticallyImplyLeading: false,

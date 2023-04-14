@@ -1,21 +1,27 @@
+// Dart imports:
 import 'dart:async';
 
-import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/providers/user_provider.dart';
-import 'package:hitch_handler/themes.dart';
-import 'package:hitch_handler/widget_tree.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'routes.dart';
-import 'constants.dart';
-import 'screens/launch/launch_screen.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:hitch_handler/routes.dart';
+import 'package:hitch_handler/screens/login/login_screen.dart';
+import 'package:hitch_handler/themes.dart';
+import 'package:hitch_handler/widget_tree.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +64,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     _sub = FirebaseAuth.instance.userChanges().listen((event) {
       _navigatorKey.currentState!.pushReplacementNamed(
-        event != null ? WidgetTree.routeName : LaunchScreen.routeName,
+        event != null ? WidgetTree.routeName : LoginScreen.routeName,
       );
     });
     super.initState();
@@ -103,7 +109,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   themeMode: ThemeMode.system,
 
                   initialRoute: FirebaseAuth.instance.currentUser == null
-                      ? LaunchScreen.routeName
+                      ? LoginScreen.routeName
                       : WidgetTree.routeName,
                   routes: routes,
                 ),

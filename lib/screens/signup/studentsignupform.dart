@@ -1,17 +1,23 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/user_home/notifiers.dart';
-import 'package:hitch_handler/args_class.dart';
-import 'package:hitch_handler/screens/components/customfields/customdatepickfield.dart';
-import 'package:hitch_handler/screens/signup/create_password.dart';
-import 'package:hitch_handler/screens/common/otp_screen.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/components/customfields/customsubmitbutton.dart';
-import 'package:hitch_handler/screens/components/customfields/custommultifield.dart';
-import 'package:http/http.dart' as http;
+// Dart imports:
 import 'dart:convert';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:http/http.dart' as http;
+
+// Project imports:
+import 'package:hitch_handler/args_class.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/customfields/customdatepickfield.dart';
+import 'package:hitch_handler/screens/components/customfields/custommultifield.dart';
+import 'package:hitch_handler/screens/components/customfields/customsubmitbutton.dart';
+import 'package:hitch_handler/screens/components/utils/signupdialog.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
 
 class StudentSignupForm extends StatefulWidget {
   const StudentSignupForm({
@@ -61,7 +67,7 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
               hints: const [
                 // 'E-mail',
                 // 'Phone',
-                'ID Number',
+                'Roll Number',
               ],
               icons: const [
                 // Icons.alternate_email,
@@ -115,27 +121,21 @@ class _StudentSignupFormState extends State<StudentSignupForm> {
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
         }
         if (user != null) {
-          OTPArguments args = OTPArguments(
-            widget.fgcolor,
-            widget.title,
-            widget.icon,
-            CreatePasswordPage(
-              fgcolor: widget.fgcolor,
-              title: widget.title,
-              icon: widget.icon,
-              homeroute: widget.homeroute,
-              user: user,
-            ),
-            widget.homeroute,
-            user,
+          SignUpDialog dialog = SignUpDialog(
+            title: widget.title,
+            icon: widget.icon,
+            homeroute: widget.homeroute,
+            user: user,
           );
-          if (mounted) {
-            Navigator.pushNamed(
-              context,
-              OtpScreen.routeName,
-              arguments: args,
-            );
-          }
+          if (!mounted) return;
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              barrierColor:
+                  isDark ? kBlack10.withOpacity(0.8) : kGrey30.withOpacity(0.8),
+              builder: (BuildContext context) {
+                return dialog;
+              });
         } else {
           if (mounted) {
             scaffoldContext.removeCurrentSnackBar();

@@ -1,3 +1,4 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 const kPrimaryColor = Color.fromARGB(255, 14, 168, 104);
@@ -37,3 +38,8 @@ const kValidColor = Color.fromARGB(255, 99, 182, 74);
 const kWarnColor = Color.fromARGB(255, 241, 217, 95);
 const double kDefaultPadding = 20.0;
 const double kHeaderHeight = 120.0;
+const String appName = "Hitch Handler";
+
+Color splash(bool isDark) {
+  return isDark ? kTextColor.withOpacity(0.1) : kLTextColor.withOpacity(0.1);
+}

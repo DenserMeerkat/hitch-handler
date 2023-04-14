@@ -1,9 +1,13 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// Project imports:
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
-import '../../constants.dart';
-import '../user_home/notifiers.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
 
 class LoginBody extends StatefulWidget {
   const LoginBody({
@@ -25,11 +29,8 @@ class _LoginBodyState extends State<LoginBody> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          loading ? const LProgressIndicator() : Container(),
+          loading ? const LProgressIndicator() : Container(height: 4),
           Container(
-            decoration: BoxDecoration(
-              color: isDark ? kGrey30 : kLGrey30,
-            ),
             padding: EdgeInsets.only(
               left: 30.w,
               right: 30.w,

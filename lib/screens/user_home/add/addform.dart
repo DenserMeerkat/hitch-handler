@@ -1,20 +1,30 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Dart imports:
+import 'dart:convert';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/resources/firestore_methods.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/models/user.dart';
 import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:hitch_handler/resources/firestore_methods.dart';
+import 'package:hitch_handler/resources/post_methods.dart';
 import 'package:hitch_handler/screens/components/customfields/customdatetimefield.dart';
 import 'package:hitch_handler/screens/components/customfields/custommessagefield.dart';
 import 'package:hitch_handler/screens/components/customfields/customtitlefield.dart';
-import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/screens/components/customfields/customtypeaheadfield.dart';
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
-import 'package:hitch_handler/screens/user_home/add_page.dart';
 import 'package:hitch_handler/screens/user_home/add/addimages.dart';
-import 'package:hitch_handler/resources/post_methods.dart';
+import 'package:hitch_handler/screens/user_home/add_page.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
 import 'package:hitch_handler/screens/user_home/notifiers.dart';
 
 class AddForm extends StatefulWidget {
@@ -28,6 +38,7 @@ class AddFormState extends State<AddForm> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
+  GlobalKey<CustomDateTimeState> globalKey1 = GlobalKey();
   final myTitleFieldController = TextEditingController();
   String titleErrorText = '';
   final myMsgFieldController = TextEditingController();
@@ -41,6 +52,7 @@ class AddFormState extends State<AddForm> {
 
   bool isAnon = false;
   bool isDept = false;
+  bool isLoading = false;
 
   bool _addImageEnabled = UploadFileList.currLength() < 5 ? true : false;
   bool _viewImagesEnabled = UploadFileList.currLength() > 0 ? true : false;
@@ -155,6 +167,8 @@ class AddFormState extends State<AddForm> {
       CustomTypeAheadField.hasError = false;
       _addImageEnabled = UploadFileList.currLength() < 5 ? true : false;
       _viewImagesEnabled = UploadFileList.currLength() > 0 ? true : false;
+      globalKey1.currentState!.resetTime();
+      globalKey1.currentState!.resetDate();
     });
   }
 
@@ -207,11 +221,11 @@ class AddFormState extends State<AddForm> {
                 AddImages(
                     addImageEnabled: _addImageEnabled,
                     viewImagesEnabled: _viewImagesEnabled),
-                SizedBox(
-                  height: 35.h,
-                ),
+                const SizedBox(height: 20),
                 NotificationListener<DateTimeChanged>(
-                  child: const CustomDateTime(),
+                  child: CustomDateTime(
+                    key: globalKey1,
+                  ),
                   onNotification: (n) {
                     setState(() {
                       myDateController = n.date;
@@ -220,9 +234,7 @@ class AddFormState extends State<AddForm> {
                     return true;
                   },
                 ),
-                SizedBox(
-                  height: 35.h,
-                ),
+                const SizedBox(height: 20),
                 // NotificationListener<SwitchChanged>(
                 //   child: const MoreDetails(),
                 //   onNotification: (n) {
@@ -290,40 +302,82 @@ class AddFormState extends State<AddForm> {
     }
   }
 
-  void validateForm() {
+  void validateForm() async {
     final User user = Provider.of<UserProvider>(context, listen: false).getUser;
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
       debugPrint("________");
-      showAlertDialog(
-        context,
-        "Confirm Post",
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Looks good!\nClick 'Confirm' to add complaint.",
-              style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
-            ),
-          ],
-        ),
-        [
-          buildCancelButton(context),
-          buildActiveButton(
-            context,
-            true,
-            "Confirm",
-            () {
-              addPost(user.uid);
-              Navigator.pop(context);
-            },
-          )
-        ],
-        Icons.check_box_outlined,
-      );
+      try {
+        setState(() {
+          isLoading = true;
+          IsLoading(isLoading).dispatch(context);
+        });
+        bool? check1 = await toxicRequest(myTitleFieldController.text);
+        bool? check2 = await toxicRequest(myMsgFieldController.text);
+        setState(() {
+          isLoading = false;
+          IsLoading(isLoading).dispatch(context);
+        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        }
+        if ((check1 == true) && (check2 == true)) {
+          if (mounted) {
+            showAlertDialog(
+              context,
+              "Confirm Post",
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Looks good!\nClick 'Confirm' to add complaint.",
+                    style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+              [
+                buildCancelButton(context),
+                buildActiveButton(
+                  context,
+                  true,
+                  "Confirm",
+                  () {
+                    addPost(user.uid);
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+              Icons.check_box_outlined,
+            );
+          }
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).clearSnackBars();
+            final scaffoldContext = ScaffoldMessenger.of(context);
+            final snackBar = SnackBar(
+              content: Text(
+                "Your post appears to be abusive, avoid any form of toxicity.",
+                style: TextStyle(
+                  color: AdaptiveTheme.of(context).theme.colorScheme.error,
+                ),
+              ),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: isDark ? kGrey40 : kLBlack10,
+            );
+            scaffoldContext.showSnackBar(snackBar);
+            debugPrint("Toxicity Error!");
+          }
+        }
+      } catch (err) {
+        setState(() {
+          isLoading = false;
+          IsLoading(isLoading).dispatch(context);
+        });
+        debugPrint(err.toString());
+      }
     } else {
       AddPage.scrollController.animateTo(0,
           duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
@@ -344,5 +398,23 @@ class AddFormState extends State<AddForm> {
 
       debugPrint(">>>>>ERRORS!");
     }
+  }
+
+  Future<bool?> toxicRequest(String sentence) async {
+    String url = dotenv.env['TOXIC_API']!;
+    url += '=$sentence';
+    http.Response response = await http.get(
+      Uri.parse(url),
+    );
+    dynamic responseData = json.decode(response.body);
+    if (((responseData[0]) >= 0.5) ||
+        ((responseData[1]) >= 0.5) ||
+        ((responseData[2]) >= 0.5) ||
+        ((responseData[3]) >= 0.5) ||
+        ((responseData[4]) >= 0.5) ||
+        ((responseData[5]) >= 0.5)) {
+      return false;
+    }
+    return true;
   }
 }

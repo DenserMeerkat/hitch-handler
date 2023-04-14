@@ -1,5 +1,10 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Project imports:
 import 'package:hitch_handler/constants.dart';
 
 void showAlertDialog(BuildContext context, String title, Widget content,

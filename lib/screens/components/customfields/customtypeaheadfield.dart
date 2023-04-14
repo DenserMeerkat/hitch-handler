@@ -1,11 +1,16 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import '../../../string_extensions.dart';
-import '../../../constants.dart';
-import '../../../resources/post_methods.dart';
-import 'customerrormsg.dart';
-import 'fieldlabel.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/resources/post_methods.dart';
+import 'package:hitch_handler/string_extensions.dart';
+import 'package:hitch_handler/screens/components/customfields/customerrormsg.dart';
+import 'package:hitch_handler/screens/components/customfields/fieldlabel.dart';
 
 class CustomTypeAheadField extends StatefulWidget {
   final Color fgcolor;
@@ -101,9 +106,12 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
           decoration: BoxDecoration(
             color: isDark ? kGrey50 : kLBlack10,
             borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+                width: isDark ? 0.5 : 1,
+                color: errorText == '' ? fieldState() : fieldState()),
             boxShadow: [
               BoxShadow(
-                offset: const Offset(0, 2.5),
+                offset: const Offset(0, 1.5),
                 color: errorText == '' ? fieldState() : fieldState(),
               ),
             ],
@@ -234,11 +242,21 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
             ),
           ),
         ),
-        CustomErrorMsg(
-          padLeft: 5.0,
-          padTop: 10.0,
-          errorText: errorText,
-          errorIcon: errorIcon,
+        Offstage(
+          offstage: errorText != '',
+          child: const SizedBox(
+            height: 20,
+          ),
+        ),
+        Offstage(
+          offstage: errorText == '',
+          child: CustomErrorMsg(
+            padLeft: 5.0,
+            padTop: 10,
+            padBottom: 0,
+            errorText: errorText,
+            errorIcon: errorIcon,
+          ),
         ),
       ],
     );
@@ -249,7 +267,7 @@ class _CustomTypeAheadFieldState extends State<CustomTypeAheadField> {
     if (CustomTypeAheadField.hasError && widget.title != "Location") {
       return AdaptiveTheme.of(context).theme.colorScheme.error;
     } else if (CustomTypeAheadField.focusState) {
-      return isDark ? kLPrimaryColor.withOpacity(0.9) : kStudentColor;
+      return isDark ? kStudentColor.withOpacity(0.9) : kLTextColor;
     } else if (widget.controller.text != "" && !CustomTypeAheadField.hasError) {
       return kPrimaryColor.withOpacity(0.8);
     } else {

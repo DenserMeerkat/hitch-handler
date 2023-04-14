@@ -1,13 +1,18 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+// Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+// Project imports:
 import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/statusdialog.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../../constants.dart';
-import 'package:flutter/services.dart';
 
 class StatusObject {
   final int index;
@@ -57,11 +62,12 @@ class _PostTopState extends State<PostTop> {
   late IconData statusIcon;
   late Color statusColor;
   late int statusIndex;
-
+  late dynamic sub;
   @override
   void initState() {
     var collection = FirebaseFirestore.instance.collection('posts');
-    collection.doc(widget.snap['postId']).snapshots().listen((docSnapshot) {
+    sub =
+        collection.doc(widget.snap['postId']).snapshots().listen((docSnapshot) {
       if (docSnapshot.exists && mounted) {
         Map<String, dynamic> data = docSnapshot.data()!;
         switch (data['status']) {
@@ -106,6 +112,12 @@ class _PostTopState extends State<PostTop> {
       statusColor = PostTop.status[statusIndex].color;
       statusIcon = PostTop.status[statusIndex].icon;
     });
+  }
+
+  @override
+  void dispose() {
+    sub.cancel();
+    super.dispose();
   }
 
   @override

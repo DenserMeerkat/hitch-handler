@@ -1,10 +1,15 @@
+// Dart imports:
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/resources/storage_methods.dart';
+
+// Package imports:
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
+// Project imports:
+import 'package:hitch_handler/resources/storage_methods.dart';
 import '../models/post.dart';
 
 class FirestoreMethods {

@@ -1,14 +1,20 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:hitch_handler/resources/auth_methods.dart';
-import 'package:hitch_handler/string_extensions.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/components/utils/customdialog.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/models/user.dart' as model;
 import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:hitch_handler/resources/auth_methods.dart';
+import 'package:hitch_handler/screens/components/customfields/dialogtextfield.dart';
+import 'package:hitch_handler/screens/components/utils/customdialog.dart';
+import 'package:hitch_handler/string_extensions.dart';
 
 class ResetPasswordDialog extends StatefulWidget {
   const ResetPasswordDialog({
@@ -102,51 +108,15 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
               child: Container(
                 constraints: BoxConstraints(maxWidth: 270.w),
                 //height: 44,
-                child: TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
+                child: DialogTextFormField(
                   validator: (value) {
                     return validateEmail(value);
                   },
                   controller: myTextFieldController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.only(top: 4, bottom: 4, left: 16),
-                    border: border(Colors.transparent),
-                    focusedBorder: border(kPrimaryColor),
-                    errorBorder: border(
-                        AdaptiveTheme.of(context).theme.colorScheme.error),
-                    enabledBorder: border(isDark ? kGrey70 : kLBlack20),
-                    disabledBorder: border(Colors.transparent),
-                    suffixIconColor: kPrimaryColor,
-                    suffixIcon: clear
-                        ? IconButton(
-                            onPressed: () {
-                              setState(() {
-                                myTextFieldController.clear();
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.clear,
-                            ),
-                          )
-                        : const Icon(
-                            Icons.alternate_email_outlined,
-                          ),
-                    hintText: "Email",
-                    hintStyle: AdaptiveTheme.of(context)
-                        .theme
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(
-                          color: isDark
-                              ? kTextColor.withOpacity(0.5)
-                              : kLTextColor.withOpacity(0.5),
-                        ),
-                    fillColor: isDark ? kGrey50 : kLBlack15,
-                    filled: true,
-                  ),
+                  icon: Icons.alternate_email_outlined,
+                  hintText: "Email",
+                  clear: clear,
                 ),
               ),
             ),
@@ -181,7 +151,7 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
     model.User? user =
         Provider.of<UserProvider>(context, listen: false).getUser;
     if (value!.isWhitespace()) {
-      return "Email can\t be empty";
+      return "Email can't be empty";
     } else if (value == user.email) {
       return null;
     } else {

@@ -1,20 +1,26 @@
+// Dart imports:
+import 'dart:async';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:hitch_handler/resources/auth_methods.dart';
-import 'package:hitch_handler/screens/components/utils/resetpassdialog.dart';
-import 'package:hitch_handler/screens/components/utils/themedialog.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_initicon/flutter_initicon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/models/user.dart' as model;
 import 'package:hitch_handler/providers/user_provider.dart';
-import 'package:hitch_handler/screens/launch/launch_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_initicon/flutter_initicon.dart';
-import 'dart:async';
+import 'package:hitch_handler/resources/auth_methods.dart';
+import 'package:hitch_handler/screens/components/utils/customdialog.dart';
+import 'package:hitch_handler/screens/components/utils/resetpassdialog.dart';
+import 'package:hitch_handler/screens/components/utils/themedialog.dart';
+import 'package:hitch_handler/screens/login/login_screen.dart';
 
 class SettingsPage extends StatefulWidget {
   static String routeName = '/settings_page';
@@ -73,18 +79,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 padding: const EdgeInsets.all(6.0),
                 child: FittedBox(
                   child: IconButton(
-                    splashColor: isDark
-                        ? kTextColor.withOpacity(0.1)
-                        : kLTextColor.withOpacity(0.1),
-                    focusColor: isDark
-                        ? kTextColor.withOpacity(0.1)
-                        : kLTextColor.withOpacity(0.1),
-                    highlightColor: isDark
-                        ? kTextColor.withOpacity(0.1)
-                        : kLTextColor.withOpacity(0.1),
-                    hoverColor: isDark
-                        ? kTextColor.withOpacity(0.1)
-                        : kLTextColor.withOpacity(0.1),
+                    splashColor: splash(isDark),
+                    focusColor: splash(isDark),
+                    highlightColor: splash(isDark),
+                    hoverColor: splash(isDark),
                     style:
                         AdaptiveTheme.of(context).theme.iconButtonTheme.style,
                     icon: Icon(
@@ -114,10 +112,12 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 20.h),
+              SizedBox(height: 40.h),
               const AccountTile(),
+              SizedBox(height: 8.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
                 child: Row(
                   children: [
                     SizedBox(width: 5.w),
@@ -177,9 +177,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                 final scaffold = ScaffoldMessenger.of(context);
                                 scaffold.removeCurrentSnackBar();
                                 navigator.pushNamedAndRemoveUntil(
-                                    LaunchScreen.routeName,
+                                    LoginScreen.routeName,
                                     (Route<dynamic> route) => false);
-                                await AuthMethods().signOut();
+                                Future.delayed(const Duration(milliseconds: 10),
+                                    () async {
+                                  await AuthMethods().signOut();
+                                });
                               },
                             )
                           ],
@@ -242,157 +245,132 @@ class AccountTile extends StatefulWidget {
 }
 
 class _AccountTileState extends State<AccountTile> {
-  late String posts = "loading...";
-
   @override
   Widget build(BuildContext context) {
-    getData();
     model.User? user = Provider.of<UserProvider>(context).getUser;
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    TextStyle textStyle = AdaptiveTheme.of(context).theme.textTheme.bodyMedium!;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.0),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.0),
-        decoration: BoxDecoration(
-          color: isDark ? kGrey40 : kLBlack10,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: isDark
-              ? [
-                  BoxShadow(
-                    offset: const Offset(0, 0),
-                    color: isDark ? kBlack20 : kLGrey50,
-                    blurRadius: 5,
-                  ),
-                ]
-              : null,
-          border: isDark ? null : Border.all(color: kLGrey30),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                Transform.scale(
-                  scale: 0.9,
-                  child: Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(50)),
-                    child: Initicon(
-                      text: user.name,
-                      backgroundColor: isDark
-                          ? kPrimaryColor.withOpacity(0.8)
-                          : kLPrimaryColor.withOpacity(0.8),
-                      size: 60,
-                      elevation: 2,
-                      border: Border.all(
-                          width: 0.5,
-                          color: isDark ? Colors.transparent : kGrey30),
-                      style: TextStyle(
-                          color: isDark ? kLTextColor : kLTextColor,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    // CircleAvatar(
-                    //   minRadius: 40,
-                    //   maxRadius: 40.w,
-                    //   backgroundColor: isDark ? kGrey30 : kGrey50,
-                    //   child: AutoSizeText(
-                    //     "JD",
-                    //     style: AdaptiveTheme.of(context)
-                    //         .theme
-                    //         .textTheme
-                    //         .headlineLarge!
-                    //         .copyWith(
-                    //       color: kTextColor.withOpacity(0.8),
-                    //       shadows: [
-                    //         BoxShadow(
-                    //           offset: const Offset(3, 3),
-                    //           color: isDark ? kBlack10 : kGrey30,
-                    //           blurRadius: 10,
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  decoration: BoxDecoration(
-                    color: isDark ? kGrey30 : kGrey50,
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(
-                      color: isDark ? kBlack20 : kGrey30,
-                    ),
-                  ),
-                  child: AutoSizeText(
-                    posts,
-                    style: const TextStyle(color: kTextColor),
-                  ),
-                ),
-              ],
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: isDark ? kGrey30 : kLGrey30),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Theme(
+        data: AdaptiveTheme.of(context).theme.copyWith(
+              brightness: AdaptiveTheme.of(context).brightness,
+              useMaterial3: true,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
             ),
-            SizedBox(
-              width: 30.w,
+        child: ExpansionTile(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          collapsedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          tilePadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          textColor: isDark ? kTextColor : kLTextColor,
+          collapsedTextColor: isDark ? kTextColor : kLTextColor,
+          iconColor: isDark ? kPrimaryColor : kLPrimaryColor,
+          collapsedIconColor: isDark ? kTextColor : kLTextColor,
+          backgroundColor: isDark ? kGrey30 : kLBlack10,
+          collapsedBackgroundColor: isDark ? kGrey30 : kLBlack10,
+          leading: Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
+            child: Initicon(
+              text: user.name,
+              backgroundColor: isDark
+                  ? kPrimaryColor.withOpacity(0.8)
+                  : kLPrimaryColor.withOpacity(0.8),
+              size: 40,
+              elevation: 2,
+              border: Border.all(
+                  width: 0.5, color: isDark ? Colors.transparent : kGrey30),
+              style: TextStyle(
+                  color: isDark ? kLTextColor : kLTextColor,
+                  fontWeight: FontWeight.w500),
             ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AutoSizeText(
-                    user.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textStyle,
-                  ),
-                  AutoSizeText(
-                    user.email,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textStyle,
-                  ),
-                  Text(
-                    user.rollno,
-                    style: textStyle,
-                  ),
-                  Text(
-                    user.mobno,
-                    style: textStyle,
-                  ),
-                  Text(
-                    user.dob,
-                    style: textStyle,
-                  ),
-                  // AutoSizeText(
-                  //   user.uid,
-                  //   maxLines: 1,
-                  //   overflow: TextOverflow.ellipsis,
-                  //   style: textStyle,
-                  // ),
-                ],
-              ),
+          ),
+          title: AutoSizeText(
+            user.name,
+            maxLines: 1,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
             ),
+          ),
+          subtitle: Text(
+            "Department  •  Year",
+            style: const TextStyle(
+              fontWeight: FontWeight.normal,
+              letterSpacing: 1,
+              fontSize: 11.0,
+            ),
+          ),
+          childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+          children: <Widget>[
+            AccountListTile(
+              text: user.rollno,
+              icon: Icons.badge_outlined,
+            ),
+            AccountListTile(
+              text: user.email,
+              icon: Icons.alternate_email,
+            ),
+            AccountListTile(
+              text: user.mobno,
+              icon: Icons.numbers,
+            ),
+            AccountListTile(
+              text: user.dob,
+              icon: Icons.calendar_month_outlined,
+            ),
+            const SizedBox(height: 8)
           ],
         ),
       ),
     );
   }
+}
 
-  Future<void> getData() async {
-    model.User? user = Provider.of<UserProvider>(context).getUser;
-    Query<Map<String, dynamic>> collectionRef = FirebaseFirestore.instance
-        .collection('posts')
-        .where('uid', isEqualTo: user.uid);
-    QuerySnapshot querySnapshot = await collectionRef.get();
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    if (mounted) {
-      setState(() {
-        posts = '${allData.length} posts';
-      });
-    }
+class AccountListTile extends StatelessWidget {
+  const AccountListTile({
+    super.key,
+    required this.text,
+    required this.icon,
+  });
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? kGrey40 : kLBlack15.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 20,
+            color: isDark ? kPrimaryColor : kPrimaryColor,
+          ),
+          const SizedBox(width: 16),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 12,
+              color: isDark ? kTextColor : kLTextColor,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -415,7 +393,7 @@ class SettingTile extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.0),
       child: ListTileTheme(
-        tileColor: isDark ? kGrey30 : kLBlack15,
+        tileColor: isDark ? kGrey30 : kLBlack10,
         textColor: isDark ? kTextColor : kLTextColor,
         iconColor:
             isDark ? kTextColor.withOpacity(0.8) : kLTextColor.withOpacity(0.9),

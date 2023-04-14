@@ -1,6 +1,11 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import '../../../constants.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
 
 class CustomSubmitButton extends StatelessWidget {
   final Color bgcolor;

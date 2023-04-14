@@ -1,12 +1,17 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// Project imports:
 import '../../args_class.dart';
-import 'reset_password.dart';
 import '../../constants.dart';
+import '../common/otp_screen.dart';
 import '../components/customfields/custommultifield.dart';
 import '../components/customfields/customsubmitbutton.dart';
-import '../common/otp_screen.dart';
+import 'reset_password.dart';
 
 class ForgotModalForm extends StatefulWidget {
   const ForgotModalForm({
@@ -47,28 +52,33 @@ class ForgotModalFormState extends State<ForgotModalForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          SizedBox(
+            height: 30.h,
+            child: Center(
+              child: Container(
+                height: 5,
+                width: 50.w,
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? kTextColor.withOpacity(0.5)
+                      : kLTextColor.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ),
+          Divider(
+            thickness: 2,
+            color: isDark ? kGrey40 : kLGrey50,
+            height: 2,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 30.w),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  height: 40.h,
-                  child: Center(
-                    child: Container(
-                      height: 5,
-                      width: 50.w,
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? kTextColor.withOpacity(0.5)
-                            : kLTextColor.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10.h,
+                  height: 20.h,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -84,7 +94,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                   ),
                 ),
                 SizedBox(
-                  height: 15.h,
+                  height: 12.h,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -97,7 +107,7 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                   ),
                 ),
                 SizedBox(
-                  height: 40.h,
+                  height: 35.h,
                 ),
                 CustomMultiField(
                   controller: myTextFieldController,
@@ -144,13 +154,13 @@ class ForgotModalFormState extends State<ForgotModalForm> {
                       );
 
                       OTPArguments args = OTPArguments(
-                        widget.fgcolor,
-                        widget.title,
-                        widget.icon,
+                        kPrimaryColor,
+                        "Verify",
+                        Icons.task_alt,
                         ResetPasswordPage(
                           fgcolor: widget.fgcolor,
-                          title: widget.title,
-                          icon: widget.icon,
+                          title: "Password",
+                          icon: Icons.key_rounded,
                           homeroute: widget.homeroute,
                           user: user,
                         ),

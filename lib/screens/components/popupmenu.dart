@@ -1,5 +1,10 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Project imports:
 import 'package:hitch_handler/screens/components/utils/themedialog.dart';
 import '../../constants.dart';
 
@@ -20,7 +25,7 @@ class _PopupMenuState extends State<PopupMenu> {
       color: isDark ? kGrey40 : kLBlack10,
       surfaceTintColor: isDark ? kGrey40 : kLBlack10,
       splashRadius: 25.0,
-      offset: const Offset(-10, 10),
+      offset: const Offset(-5, 25),
       position: PopupMenuPosition.under,
       icon: Icon(
         Icons.more_vert,

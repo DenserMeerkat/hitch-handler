@@ -1,10 +1,15 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// Project imports:
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/user_home/notifiers.dart';
-import 'add/addform.dart';
-import '../../constants.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/user_home/add/addform.dart';
 
 class AddPage extends StatefulWidget {
   static String routeName = '/add_page';
@@ -55,18 +60,10 @@ class _AddPageState extends State<AddPage> {
                 padding: const EdgeInsets.all(6.0),
                 child: FittedBox(
                   child: IconButton(
-                    splashColor: isDark
-                        ? kTextColor.withOpacity(0.1)
-                        : kLTextColor.withOpacity(0.1),
-                    focusColor: isDark
-                        ? kTextColor.withOpacity(0.1)
-                        : kLTextColor.withOpacity(0.1),
-                    highlightColor: isDark
-                        ? kTextColor.withOpacity(0.1)
-                        : kLTextColor.withOpacity(0.1),
-                    hoverColor: isDark
-                        ? kTextColor.withOpacity(0.1)
-                        : kLTextColor.withOpacity(0.1),
+                    splashColor: splash(isDark),
+                    focusColor: splash(isDark),
+                    highlightColor: splash(isDark),
+                    hoverColor: splash(isDark),
                     style:
                         AdaptiveTheme.of(context).theme.iconButtonTheme.style,
                     icon: Icon(

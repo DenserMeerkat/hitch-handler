@@ -1,12 +1,17 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// Project imports:
 import '../../args_class.dart';
-import '../../resources/auth_methods.dart';
 import '../../constants.dart';
+import '../../resources/auth_methods.dart';
+import '../common/validpassword.dart';
 import 'customfields/customconfirmpassword.dart';
 import 'customfields/customsubmitbutton.dart';
-import '../common/validpassword.dart';
 
 class ConfirmPasswordBody extends StatefulWidget {
   final Color fgcolor;
@@ -134,9 +139,7 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 50.h,
-                    ),
+                    SizedBox(height: 40.h),
                     CustomConfirmPasswordField(
                       fgcolor: widget.fgcolor,
                       controller: myPassFieldController,
@@ -165,13 +168,15 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                       },
                     ),
                     SizedBox(
-                      height: 42.h,
+                      height: 30.h,
                     ),
                   ],
                 ),
               ),
               Container(
+                margin: EdgeInsets.symmetric(horizontal: 15.w),
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
                   color: isDark ? kBackgroundColor : kLBackgroundColor,
                   boxShadow: [
                     BoxShadow(
@@ -189,6 +194,9 @@ class _ConfirmPasswordBodyState extends State<ConfirmPasswordBody> {
                     }
                   },
                 ),
+              ),
+              SizedBox(
+                height: 10.h,
               ),
             ],
           ),

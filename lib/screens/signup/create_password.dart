@@ -1,30 +1,31 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// Project imports:
+import 'package:hitch_handler/args_class.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/confirmpasswordform.dart';
+import 'package:hitch_handler/screens/components/customsigninappbar.dart';
 import 'package:hitch_handler/screens/components/utils/exitdialog.dart';
-import '../../args_class.dart';
-import '../../constants.dart';
-import '../components/confirmpasswordform.dart';
-import '../components/customsigninappbar.dart';
 
 class CreatePasswordPage extends StatelessWidget {
   const CreatePasswordPage({
     super.key,
-    required this.fgcolor,
     required this.title,
     required this.icon,
     required this.homeroute,
     required this.user,
   });
-  final Color fgcolor;
   final String title;
   final IconData icon;
   final String homeroute;
   final UserData user;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; // Available screen size
-
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
@@ -39,18 +40,18 @@ class CreatePasswordPage extends StatelessWidget {
           backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
-              size: size,
-              fgcolor: fgcolor,
+              fgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
               title: title,
               icon: icon,
-              press: () {
+              showActions: false,
+              leadingAction: () {
                 exitDialog(context, homeroute);
               }),
         ),
         body: ConfirmPasswordBody(
           title: "Create Password",
           subtitle: "Create a password for your account.",
-          fgcolor: fgcolor,
+          fgcolor: kStudentColor,
           user: user,
           authentication: 1, //Todo
         ),

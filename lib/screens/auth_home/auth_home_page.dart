@@ -1,21 +1,27 @@
+// Dart imports:
 import 'dart:async';
-import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:hitch_handler/screens/components/popupitem.dart';
 import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/user_home/search_page.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/common/post/postcard.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import 'package:provider/provider.dart';
-import '../../providers/user_provider.dart';
 import '../../models/user.dart' as model;
+import '../../providers/user_provider.dart';
 
 class AuthHomePage extends StatefulWidget {
   const AuthHomePage({
@@ -48,14 +54,14 @@ class _AuthHomePageState extends State<AuthHomePage>
   bool _isRequesting = false;
   bool _isFinish = false;
   static const int postLimit = 5;
-
+  late dynamic sub1;
   @override
   void initState() {
     model.User? user =
         Provider.of<UserProvider>(context, listen: false).getUser;
     animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    FirebaseFirestore.instance
+    sub1 = FirebaseFirestore.instance
         .collection('posts')
         .where('domain', isEqualTo: user.domain)
         .snapshots()
@@ -68,6 +74,7 @@ class _AuthHomePageState extends State<AuthHomePage>
 
   @override
   void dispose() {
+    sub1.cancel();
     animationController.dispose();
     _refreshController.dispose();
     myScrollController.dispose();
@@ -122,7 +129,6 @@ class _AuthHomePageState extends State<AuthHomePage>
             },
             child: CustomScrollView(
               controller: myScrollController,
-              shrinkWrap: true,
               slivers: [
                 SliverAppBar(
                   automaticallyImplyLeading: false,
@@ -482,33 +488,5 @@ class _AuthHomePageState extends State<AuthHomePage>
         _isRequesting = false;
       });
     }
-  }
-}
-
-class SpinningIconButton extends AnimatedWidget {
-  final VoidCallback onPressed;
-  final Icon icon;
-  final AnimationController controller;
-  const SpinningIconButton(
-      {super.key,
-      required this.controller,
-      required this.icon,
-      required this.onPressed})
-      : super(listenable: controller);
-
-  @override
-  Widget build(BuildContext context) {
-    final Animation<double> animation = CurvedAnimation(
-      parent: controller,
-      curve: Curves.linearToEaseOut,
-    );
-
-    return RotationTransition(
-      turns: animation,
-      child: IconButton(
-        icon: icon,
-        onPressed: onPressed,
-      ),
-    );
   }
 }

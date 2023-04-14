@@ -1,9 +1,14 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../../string_extensions.dart';
-import '../../../constants.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/string_extensions.dart';
 
 class SearchFormField extends StatefulWidget {
   final Color fgcolor;

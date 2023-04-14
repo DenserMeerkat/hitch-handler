@@ -1,9 +1,14 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import '../../../string_extensions.dart';
-import '../../../constants.dart';
-import 'customerrormsg.dart';
-import 'fieldlabel.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/string_extensions.dart';
+import 'package:hitch_handler/screens/components/customfields/customerrormsg.dart';
+import 'package:hitch_handler/screens/components/customfields/fieldlabel.dart';
 
 class CustomTitleField extends StatefulWidget {
   final Color fgcolor;
@@ -92,9 +97,12 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
                 decoration: BoxDecoration(
                   color: isDark ? kGrey50 : kLBlack10,
                   borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      width: isDark ? 0.5 : 1,
+                      color: errorText == '' ? fieldState() : fieldState()),
                   boxShadow: [
                     BoxShadow(
-                      offset: const Offset(0, 2.5),
+                      offset: const Offset(0, 1.5),
                       color: errorText == '' ? fieldState() : fieldState(),
                     ),
                   ],
@@ -182,11 +190,21 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
             ],
           ),
         ),
-        CustomErrorMsg(
-          padLeft: 5.0,
-          padTop: 0,
-          errorText: errorText,
-          errorIcon: errorIcon,
+        Offstage(
+          offstage: errorText != '',
+          child: const SizedBox(
+            height: 10,
+          ),
+        ),
+        Offstage(
+          offstage: errorText == '',
+          child: CustomErrorMsg(
+            padLeft: 5.0,
+            padTop: 0,
+            padBottom: 0,
+            errorText: errorText,
+            errorIcon: errorIcon,
+          ),
         ),
       ],
     );
@@ -197,7 +215,7 @@ class _CustomTitleFieldState extends State<CustomTitleField> {
     if (CustomTitleField.hasError) {
       return AdaptiveTheme.of(context).theme.colorScheme.error;
     } else if (CustomTitleField.focusState) {
-      return isDark ? kLPrimaryColor.withOpacity(0.9) : kStudentColor;
+      return isDark ? kStudentColor.withOpacity(0.9) : kLTextColor;
     } else if (widget.controller.text != "" && !CustomTitleField.hasError) {
       return kPrimaryColor.withOpacity(0.8);
     } else {

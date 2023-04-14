@@ -1,9 +1,14 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../constants.dart';
-import '../../../string_extensions.dart';
-import 'customerrormsg.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/string_extensions.dart';
+import 'package:hitch_handler/screens/components/customfields/customerrormsg.dart';
 
 class CustomMultiField extends StatefulWidget {
   final Color fgcolor;

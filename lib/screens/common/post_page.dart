@@ -1,16 +1,21 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:hitch_handler/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import '../../models/user.dart' as model;
-import '../../providers/user_provider.dart';
-import 'post/postfooter.dart';
-import 'post/postheader.dart';
-import 'post/postimages.dart';
-import '../../args_class.dart';
-import 'post/posttop.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/args_class.dart';
+import 'package:hitch_handler/models/user.dart' as model;
+import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:hitch_handler/screens/common/post/postfooter.dart';
+import 'package:hitch_handler/screens/common/post/postheader.dart';
+import 'package:hitch_handler/screens/common/post/postimages.dart';
+import 'package:hitch_handler/screens/common/post/posttop.dart';
 
 class PostsPage extends StatefulWidget {
   static String routeName = '/posts_page';
@@ -95,7 +100,14 @@ class _PostsPageState extends State<PostsPage> {
             pinned: true,
             title: Text(
               "View Post",
-              style: AdaptiveTheme.of(context).theme.textTheme.headlineMedium,
+              style: AdaptiveTheme.of(context)
+                  .theme
+                  .textTheme
+                  .displayMedium!
+                  .copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                  ),
             ),
             backgroundColor: isDark ? kBackgroundColor : kLBlack20,
             surfaceTintColor: isDark ? kBackgroundColor : kLBlack20,
@@ -106,18 +118,10 @@ class _PostsPageState extends State<PostsPage> {
                   padding: const EdgeInsets.all(6.0),
                   child: FittedBox(
                     child: IconButton(
-                      splashColor: isDark
-                          ? kTextColor.withOpacity(0.1)
-                          : kLTextColor.withOpacity(0.1),
-                      focusColor: isDark
-                          ? kTextColor.withOpacity(0.1)
-                          : kLTextColor.withOpacity(0.1),
-                      highlightColor: isDark
-                          ? kTextColor.withOpacity(0.1)
-                          : kLTextColor.withOpacity(0.1),
-                      hoverColor: isDark
-                          ? kTextColor.withOpacity(0.1)
-                          : kLTextColor.withOpacity(0.1),
+                      splashColor: splash(isDark),
+                      focusColor: splash(isDark),
+                      highlightColor: splash(isDark),
+                      hoverColor: splash(isDark),
                       style:
                           AdaptiveTheme.of(context).theme.iconButtonTheme.style,
                       icon: Icon(
@@ -132,6 +136,13 @@ class _PostsPageState extends State<PostsPage> {
                   ),
                 );
               },
+            ),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(1.0),
+              child: Container(
+                height: 1,
+                color: isDark ? kGrey40 : kLGrey40,
+              ),
             ),
           ),
           SliverToBoxAdapter(

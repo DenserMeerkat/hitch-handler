@@ -1,22 +1,27 @@
+// Dart imports:
 import 'dart:ui';
-import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// Project imports:
 import 'package:hitch_handler/screens/components/customiconbutton.dart';
-import '../../user_home/notifiers.dart';
-import '../../components/customfields/fieldlabel.dart';
-import '../../../constants.dart';
-import '../utils/datetimepicker.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
+import 'package:hitch_handler/screens/components/utils/datetimepicker.dart';
+import 'package:hitch_handler/screens/components/customfields/fieldlabel.dart';
 
 class CustomDateTime extends StatefulWidget {
-  const CustomDateTime({
-    super.key,
-  });
+  const CustomDateTime({required Key key}) : super(key: key);
   @override
-  State<CustomDateTime> createState() => _CustomDateTimeState();
+  State<CustomDateTime> createState() => CustomDateTimeState();
 }
 
-class _CustomDateTimeState extends State<CustomDateTime> {
+class CustomDateTimeState extends State<CustomDateTime> {
   DateTime? myDateController;
   TimeOfDay? myTimeController;
 
@@ -64,28 +69,28 @@ class _CustomDateTimeState extends State<CustomDateTime> {
     });
   }
 
+  void resetTime() {
+    setState(() {
+      myTimeController = null;
+      hour = "hh";
+      min = "mm";
+      ampm = "am / pm";
+    });
+    DateTimeChanged(myDateController, myTimeController).dispatch(context);
+  }
+
+  void resetDate() {
+    setState(() {
+      myDateController = null;
+      day = "dd";
+      mon = "mm";
+      year = "yyyy";
+    });
+    DateTimeChanged(myDateController, myTimeController).dispatch(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    void resetTime() {
-      setState(() {
-        myTimeController = null;
-        hour = "hh";
-        min = "mm";
-        ampm = "am / pm";
-      });
-      DateTimeChanged(myDateController, myTimeController).dispatch(context);
-    }
-
-    void resetDate() {
-      setState(() {
-        myDateController = null;
-        day = "dd";
-        mon = "mm";
-        year = "yyyy";
-      });
-      DateTimeChanged(myDateController, myTimeController).dispatch(context);
-    }
-
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
 
     TextStyle textStyle =
@@ -145,9 +150,13 @@ class _CustomDateTimeState extends State<CustomDateTime> {
           decoration: BoxDecoration(
             color: isDark ? kGrey50 : kLBlack10,
             borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              width: 0.5,
+              color: isDark ? kBlack20 : kGrey150,
+            ),
             boxShadow: [
               BoxShadow(
-                offset: const Offset(0, 2.5),
+                offset: const Offset(0, 1.5),
                 color: isDark ? kBlack20 : kGrey150,
               ),
             ],

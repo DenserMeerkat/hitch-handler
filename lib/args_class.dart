@@ -1,3 +1,4 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 class UserData {
@@ -36,7 +37,7 @@ class LoginSignUpArguments {
 }
 
 class OTPArguments {
-  final Color fgcolor;
+  final Color? fgcolor;
   final String title;
   final IconData icon;
   final Widget nextPage;

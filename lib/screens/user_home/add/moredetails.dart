@@ -1,8 +1,13 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import '../notifiers.dart';
-import '../../components/customfields/fieldlabel.dart';
-import '../../../constants.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/customfields/fieldlabel.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
 
 class MoreDetails extends StatefulWidget {
   const MoreDetails({

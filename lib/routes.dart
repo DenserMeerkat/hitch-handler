@@ -1,22 +1,19 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'widget_tree.dart';
-import 'screens/common/settings_page.dart';
-import 'screens/common/post_page.dart';
-import 'screens/auth_home/auth_app.dart';
-import 'screens/user_home/search_page.dart';
-import 'screens/launch/launch_screen.dart';
-import 'screens/login/student_login.dart';
-import 'screens/login/authority_login.dart';
-import 'screens/login/admin_login.dart';
-import 'screens/signup/user_signup.dart';
-import 'screens/common/otp_screen.dart';
-import 'screens/user_home/user_app.dart';
+
+// Project imports:
+import 'package:hitch_handler/screens/auth_home/auth_app.dart';
+import 'package:hitch_handler/screens/common/otp_screen.dart';
+import 'package:hitch_handler/screens/common/post_page.dart';
+import 'package:hitch_handler/screens/common/settings_page.dart';
+import 'package:hitch_handler/screens/login/login_screen.dart';
+import 'package:hitch_handler/screens/signup/signup_screen.dart';
+import 'package:hitch_handler/screens/user_home/search_page.dart';
+import 'package:hitch_handler/screens/user_home/user_app.dart';
+import 'package:hitch_handler/widget_tree.dart';
 
 final Map<String, WidgetBuilder> routes = {
-  LaunchScreen.routeName: (context) => const LaunchScreen(),
-  StudentLoginScreen.routeName: (context) => const StudentLoginScreen(),
-  AuthorityLoginScreen.routeName: (context) => const AuthorityLoginScreen(),
-  AdminLoginScreen.routeName: (context) => const AdminLoginScreen(),
+  LoginScreen.routeName: (context) => const LoginScreen(),
   UserSignUpScreen.routeName: (context) => const UserSignUpScreen(),
   OtpScreen.routeName: (context) => const OtpScreen(),
   AppScreen.routeName: (context) => const AppScreen(),

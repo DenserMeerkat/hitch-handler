@@ -1,6 +1,8 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/resources/auth_methods.dart';
 
+// Project imports:
+import 'package:hitch_handler/resources/auth_methods.dart';
 import '../models/user.dart';
 
 class UserProvider extends ChangeNotifier {

@@ -1,16 +1,23 @@
+// Dart imports:
 import 'dart:async';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
-import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../providers/user_provider.dart';
-import '../common/post/postcard.dart';
+
+// Project imports:
+import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
+import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import '../../constants.dart';
 import '../../models/user.dart' as model;
+import '../../providers/user_provider.dart';
+import '../common/post/postcard.dart';
 
 class AuthArchivesPage extends StatefulWidget {
   const AuthArchivesPage({super.key});
@@ -39,73 +46,13 @@ class _AuthArchivesPageState extends State<AuthArchivesPage>
   bool _isRequesting1 = false;
   bool _isFinish1 = false;
   static const int postLimit = 6;
-
-  void onChangeData(List<DocumentChange> documentChanges) {
-    var isChange = false;
-    for (var postChange in documentChanges) {
-      if (postChange.type == DocumentChangeType.removed) {
-        _posts.removeWhere((product) {
-          return postChange.doc.id == product.id;
-        });
-        isChange = true;
-      } else if (postChange.type == DocumentChangeType.added) {
-        if (postChange.newIndex < _posts.length) {
-          _posts.insert(0, postChange.doc);
-        }
-        isChange = true;
-      } else {
-        if (postChange.type == DocumentChangeType.modified) {
-          int indexWhere = _posts.indexWhere((product) {
-            return postChange.doc.id == product.id;
-          });
-
-          if (indexWhere >= 0) {
-            _posts[indexWhere] = postChange.doc;
-          }
-          isChange = true;
-        }
-      }
-    }
-
-    if (isChange) {
-      _streamController1.add(_posts);
-    }
-  }
-
-  void onChangeData1(List<DocumentChange> documentChanges) {
-    var isChange = false;
-    for (var postChange in documentChanges) {
-      if (postChange.type == DocumentChangeType.removed) {
-        _bookmarks.removeWhere((product) {
-          return postChange.doc.id == product.id;
-        });
-        isChange = true;
-      } else if (postChange.type == DocumentChangeType.added) {
-        if (postChange.newIndex < _bookmarks.length) {
-          _bookmarks.insert(0, postChange.doc);
-        }
-        isChange = true;
-      } else {
-        if (postChange.type == DocumentChangeType.modified) {
-          int indexWhere = _bookmarks.indexWhere((product) {
-            return postChange.doc.id == product.id;
-          });
-
-          if (indexWhere >= 0) {
-            _bookmarks[indexWhere] = postChange.doc;
-          }
-          isChange = true;
-        }
-      }
-    }
-
-    if (isChange) {
-      _streamController1.add(_bookmarks);
-    }
-  }
+  late dynamic sub1;
+  late dynamic sub2;
 
   @override
   void dispose() {
+    sub1.cancel();
+    sub2.cancel();
     _refreshController.dispose();
     _refreshController1.dispose();
     super.dispose();
@@ -120,123 +67,22 @@ class _AuthArchivesPageState extends State<AuthArchivesPage>
     _tabController.addListener(() {
       _handleTabSelection();
     });
-    FirebaseFirestore.instance
+    sub1 = FirebaseFirestore.instance
         .collection('posts')
         .where('uid', isEqualTo: user.uid)
         .snapshots()
         .listen((event) {
-      return onChangeData(event.docChanges);
+      return onChangeData(event.docChanges, _posts);
     });
-    FirebaseFirestore.instance
+    sub2 = FirebaseFirestore.instance
         .collection('posts')
         .where('bookmarks', arrayContains: user.uid)
         .snapshots()
         .listen((event) {
-      return onChangeData1(event.docChanges);
+      return onChangeData(event.docChanges, _bookmarks);
     });
     requestNextPage(0);
     super.initState();
-  }
-
-  void _handleTabSelection() {
-    if (currentIndex != _tabController.index) {
-      setState(() {
-        currentIndex = _tabController.index;
-      });
-    }
-    requestNextPage(currentIndex);
-    if (currentIndex == 0) {
-      _isFinish = false;
-      requestNextPage(0);
-      _streamController1.add(_posts);
-    } else {
-      _isFinish1 = false;
-      requestNextPage(1);
-      _streamController2.add(_bookmarks);
-    }
-  }
-
-  void requestNextPage(int index) async {
-    model.User? user =
-        Provider.of<UserProvider>(context, listen: false).getUser;
-    if (currentIndex == 0
-        ? !_isRequesting && !_isFinish
-        : !_isRequesting1 && !_isFinish1) {
-      QuerySnapshot querySnapshot;
-      if (currentIndex == 0) {
-        setState(() {
-          _isRequesting = true;
-        });
-      } else {
-        setState(() {
-          _isRequesting1 = true;
-        });
-      }
-      if (currentIndex == 0 ? _posts.isEmpty : _bookmarks.isEmpty) {
-        querySnapshot = index == 0
-            ? await FirebaseFirestore.instance
-                .collection('posts')
-                .where('uid', isEqualTo: user.uid)
-                .limit(postLimit)
-                .get()
-            : await FirebaseFirestore.instance
-                .collection('posts')
-                .where('bookmarks', arrayContains: user.uid)
-                .limit(postLimit)
-                .get();
-      } else {
-        querySnapshot = index == 0
-            ? await FirebaseFirestore.instance
-                .collection('posts')
-                .where('uid', isEqualTo: user.uid)
-                .startAfterDocument(_posts[_posts.length - 1])
-                .limit(postLimit)
-                .get()
-            : await FirebaseFirestore.instance
-                .collection('posts')
-                .where('bookmarks', arrayContains: user.uid)
-                .startAfterDocument(_bookmarks[_bookmarks.length - 1])
-                .limit(postLimit)
-                .get();
-      }
-      int oldSize;
-      int newSize;
-      if (currentIndex == 0) {
-        oldSize = _posts.length;
-        _posts.addAll(querySnapshot.docs);
-        newSize = _posts.length;
-      } else {
-        oldSize = _bookmarks.length;
-        _bookmarks.addAll(querySnapshot.docs);
-        newSize = _bookmarks.length;
-      }
-      if (oldSize != newSize) {
-        if (currentIndex == 0) {
-          _streamController1.add(_posts);
-        } else {
-          _streamController2.add(_bookmarks);
-        }
-      } else {
-        if (currentIndex == 0) {
-          setState(() {
-            _isFinish = true;
-          });
-        } else {
-          setState(() {
-            _isFinish1 = true;
-          });
-        }
-      }
-      if (currentIndex == 0) {
-        setState(() {
-          _isRequesting = false;
-        });
-      } else {
-        setState(() {
-          _isRequesting1 = false;
-        });
-      }
-    }
   }
 
   addData() async {
@@ -428,7 +274,6 @@ class _AuthArchivesPageState extends State<AuthArchivesPage>
                     _refreshController.refreshCompleted();
                   },
                   child: CustomScrollView(
-                    shrinkWrap: true,
                     slivers: [
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
@@ -548,7 +393,6 @@ class _AuthArchivesPageState extends State<AuthArchivesPage>
                     _refreshController1.refreshCompleted();
                   },
                   child: CustomScrollView(
-                    shrinkWrap: true,
                     slivers: [
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
@@ -572,5 +416,143 @@ class _AuthArchivesPageState extends State<AuthArchivesPage>
         ],
       ),
     );
+  }
+
+  void _handleTabSelection() {
+    if (currentIndex != _tabController.index) {
+      setState(() {
+        currentIndex = _tabController.index;
+      });
+    }
+    if (currentIndex == 0) {
+      _isFinish = false;
+      requestNextPage(0);
+      _streamController1.add(_posts);
+    } else {
+      _isFinish1 = false;
+      requestNextPage(1);
+      _streamController2.add(_bookmarks);
+    }
+  }
+
+  void requestNextPage(int index) async {
+    model.User? user =
+        Provider.of<UserProvider>(context, listen: false).getUser;
+    if (currentIndex == 0
+        ? !_isRequesting && !_isFinish
+        : !_isRequesting1 && !_isFinish1) {
+      QuerySnapshot querySnapshot;
+      if (!mounted) return;
+      if (currentIndex == 0) {
+        setState(() {
+          _isRequesting = true;
+        });
+      } else {
+        setState(() {
+          _isRequesting1 = true;
+        });
+      }
+      if (currentIndex == 0 ? _posts.isEmpty : _bookmarks.isEmpty) {
+        querySnapshot = index == 0
+            ? await FirebaseFirestore.instance
+                .collection('posts')
+                .where('uid', isEqualTo: user.uid)
+                .limit(postLimit)
+                .get()
+            : await FirebaseFirestore.instance
+                .collection('posts')
+                .where('bookmarks', arrayContains: user.uid)
+                .limit(postLimit)
+                .get();
+      } else {
+        querySnapshot = index == 0
+            ? await FirebaseFirestore.instance
+                .collection('posts')
+                .where('uid', isEqualTo: user.uid)
+                .startAfterDocument(_posts[_posts.length - 1])
+                .limit(postLimit)
+                .get()
+            : await FirebaseFirestore.instance
+                .collection('posts')
+                .where('bookmarks', arrayContains: user.uid)
+                .startAfterDocument(_bookmarks[_bookmarks.length - 1])
+                .limit(postLimit)
+                .get();
+      }
+      int oldSize;
+      int newSize;
+      if (currentIndex == 0) {
+        oldSize = _posts.length;
+        _posts.addAll(querySnapshot.docs);
+        newSize = _posts.length;
+      } else {
+        oldSize = _bookmarks.length;
+        _bookmarks.addAll(querySnapshot.docs);
+        newSize = _bookmarks.length;
+      }
+      if (oldSize != newSize) {
+        if (currentIndex == 0) {
+          _streamController1.add(_posts);
+        } else {
+          _streamController2.add(_bookmarks);
+        }
+      } else {
+        if (currentIndex == 0) {
+          setState(() {
+            _isFinish = true;
+          });
+        } else {
+          setState(() {
+            _isFinish1 = true;
+          });
+        }
+      }
+      if (currentIndex == 0) {
+        setState(() {
+          _isRequesting = false;
+        });
+      } else {
+        setState(() {
+          _isRequesting1 = false;
+        });
+      }
+    }
+  }
+
+  void onChangeData(List<DocumentChange> documentChanges,
+      List<DocumentSnapshot<Object?>> posts) {
+    var isChange = false;
+    for (var postChange in documentChanges) {
+      if (postChange.type == DocumentChangeType.removed) {
+        posts.removeWhere((product) {
+          return postChange.doc.id == product.id;
+        });
+        isChange = true;
+      } else if (postChange.type == DocumentChangeType.added) {
+        if (postChange.newIndex < posts.length) {
+          posts.insert(0, postChange.doc);
+        }
+        isChange = true;
+      } else {
+        if (postChange.type == DocumentChangeType.modified) {
+          int indexWhere = posts.indexWhere((product) {
+            return postChange.doc.id == product.id;
+          });
+
+          if (indexWhere >= 0) {
+            posts[indexWhere] = postChange.doc;
+          }
+          isChange = true;
+        }
+      }
+    }
+
+    if (isChange) {
+      if (currentIndex == 0) {
+        _streamController1.add(posts);
+      } else {
+        _streamController2.add(posts);
+      }
+    }
   }
 }

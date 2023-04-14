@@ -1,11 +1,16 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// Project imports:
 import 'package:hitch_handler/screens/components/utils/exitdialog.dart';
 import '../../args_class.dart';
 import '../../constants.dart';
-import '../components/customsigninappbar.dart';
 import '../components/confirmpasswordform.dart';
+import '../components/customsigninappbar.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   final Color fgcolor;
@@ -37,11 +42,11 @@ class ResetPasswordPage extends StatelessWidget {
           backgroundColor: isDark ? kBackgroundColor : kLBackgroundColor,
           elevation: 0,
           flexibleSpace: CustomSignInAppBar(
-            size: size,
-            fgcolor: fgcolor,
+            fgcolor: isDark ? kPrimaryColor : kLPrimaryColor,
             title: title,
             icon: icon,
-            press: () {
+            showActions: false,
+            leadingAction: () {
               exitDialog(context, homeroute);
             },
           ),

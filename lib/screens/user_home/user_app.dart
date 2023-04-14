@@ -1,15 +1,21 @@
+// Dart imports:
 import 'dart:async';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:hitch_handler/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/providers/user_provider.dart';
 import 'package:hitch_handler/screens/components/appbar.dart';
+import 'package:hitch_handler/screens/user_home/add_page.dart';
 import 'package:hitch_handler/screens/user_home/archives_page.dart';
 import 'package:hitch_handler/screens/user_home/home_page.dart';
-import 'package:hitch_handler/screens/user_home/add_page.dart';
-import 'package:hitch_handler/constants.dart';
 
 class AppScreen extends StatefulWidget {
   static String routeName = '/app_screen';

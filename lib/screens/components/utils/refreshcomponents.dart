@@ -1,7 +1,12 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/constants.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
 
 class RefreshThemedHeader extends StatelessWidget {
   const RefreshThemedHeader({

@@ -1,15 +1,20 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:hitch_handler/resources/auth_methods.dart';
-import 'package:hitch_handler/screens/user_home/notifiers.dart';
-import 'forgotmodal.dart';
+
+// Project imports:
 import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/components/customfields/customsubmitbutton.dart';
+import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:hitch_handler/resources/auth_methods.dart';
 import 'package:hitch_handler/screens/components/customfields/custommultifield.dart';
 import 'package:hitch_handler/screens/components/customfields/custompasswordfield.dart';
+import 'package:hitch_handler/screens/components/customfields/customsubmitbutton.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
+import 'forgotmodal.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -88,12 +93,12 @@ class _LoginFormState extends State<LoginForm> {
       email: email,
       password: myPassFieldController.text,
     );
-    addData();
     setState(() {
       isLoading = false;
       IsLoading(isLoading).dispatch(context);
     });
     if (res == "success") {
+      //addData();
       debugPrint(res);
     } else {
       if (context.mounted) {
@@ -167,13 +172,11 @@ class _LoginFormState extends State<LoginForm> {
                     }),
                     shape: MaterialStateProperty.resolveWith((states) {
                       return RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(6.0),
                       );
                     }),
                     padding: MaterialStateProperty.resolveWith((states) {
-                      return EdgeInsets.symmetric(
-                        horizontal: 12.w,
-                      );
+                      return const EdgeInsets.fromLTRB(8, 4, 8, 2);
                     }),
                   ),
                   child: Text(
@@ -182,7 +185,14 @@ class _LoginFormState extends State<LoginForm> {
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
                       letterSpacing: 0.6.sp,
-                      color: isDark ? widget.fgcolor : kLTextColor,
+                      color: Colors.transparent,
+                      shadows: [
+                        Shadow(
+                            color: isDark ? widget.fgcolor : kLTextColor,
+                            offset: const Offset(0, -4))
+                      ],
+                      decoration: TextDecoration.underline,
+                      decorationColor: isDark ? widget.fgcolor : kLTextColor,
                     ),
                   ),
                 ),

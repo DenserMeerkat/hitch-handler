@@ -1,12 +1,18 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:im_stepper/stepper.dart';
+
+// Project imports:
+import 'package:hitch_handler/screens/common/post/posttop.dart';
+import 'package:hitch_handler/screens/components/customfields/dialogtextfield.dart';
 import 'package:hitch_handler/screens/components/customiconbutton.dart';
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
-import 'package:hitch_handler/screens/common/post/posttop.dart';
 import 'package:hitch_handler/string_extensions.dart';
 import '../../../constants.dart';
-import 'package:im_stepper/stepper.dart';
 
 class StatusDialog extends StatefulWidget {
   final int statusIndex;
@@ -212,63 +218,18 @@ class _StatusDialogState extends State<StatusDialog> {
                       key: _formkey,
                       child: Container(
                         constraints: BoxConstraints(maxWidth: 270.w),
-                        child: TextFormField(
+                        child: DialogTextFormField(
                           enabled: statusIndex != widget.statusIndex,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          style: AdaptiveTheme.of(context)
-                              .theme
-                              .textTheme
-                              .bodyMedium,
                           validator: (value) {
                             return validateCommnet(value);
                           },
+                          controller: myTextFieldController,
+                          keyboardType: TextInputType.multiline,
+                          icon: Icons.edit_note_rounded,
+                          hintText: "Comment",
+                          clear: clear,
                           minLines: 1,
                           maxLines: 3,
-                          controller: myTextFieldController,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.only(
-                                top: 4, bottom: 4, left: 16),
-                            border: border(Colors.transparent),
-                            focusedBorder: border(kPrimaryColor),
-                            errorBorder: border(AdaptiveTheme.of(context)
-                                .theme
-                                .colorScheme
-                                .error),
-                            enabledBorder: border(isDark ? kGrey70 : kLBlack20),
-                            disabledBorder: border(Colors.transparent),
-                            suffixIconColor: statusIndex != widget.statusIndex
-                                ? kPrimaryColor
-                                : isDark
-                                    ? kTextColor.withOpacity(0.3)
-                                    : kLTextColor.withOpacity(0.2),
-                            suffixIcon: clear
-                                ? IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        myTextFieldController.clear();
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.clear,
-                                    ),
-                                  )
-                                : const Icon(
-                                    Icons.edit_note_rounded,
-                                  ),
-                            hintText: "Write Comment",
-                            hintStyle: AdaptiveTheme.of(context)
-                                .theme
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: isDark
-                                      ? kTextColor.withOpacity(0.5)
-                                      : kLTextColor.withOpacity(0.5),
-                                ),
-                            fillColor: isDark ? kGrey50 : kLBlack15,
-                            filled: true,
-                          ),
                         ),
                       ),
                     ),
@@ -311,7 +272,7 @@ class _StatusDialogState extends State<StatusDialog> {
 
   String? validateCommnet(String? value) {
     if (value!.isWhitespace()) {
-      return "Comment can\t be empty";
+      return "Comment can't be empty";
     } else if (value.length < 20) {
       return "Minimum 20 characters";
     } else {

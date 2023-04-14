@@ -1,12 +1,19 @@
+// Dart imports:
 import 'dart:io';
-import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import '../../components/customfields/customelevatedbutton.dart';
-import '../../components/customfields/fieldlabel.dart';
+
+// Project imports:
+import 'package:hitch_handler/screens/components/customfields/customelevatedbutton.dart';
 import '../../../constants.dart';
 import '../../../resources/post_methods.dart';
+import '../../components/customfields/fieldlabel.dart';
 import 'imagesource.dart';
 
 class AddImages extends StatefulWidget {
@@ -298,17 +305,25 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         backgroundColor: isDark ? kBackgroundColor : kLBlack20,
         leading: Builder(
           builder: (BuildContext context) {
-            return IconButton(
-              style: AdaptiveTheme.of(context).theme.iconButtonTheme.style,
-              splashRadius: 20.0,
-              icon: Icon(
-                Icons.arrow_back,
-                color: isDark ? kTextColor : kLTextColor,
+            return Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: FittedBox(
+                child: IconButton(
+                  splashColor: splash(isDark),
+                  focusColor: splash(isDark),
+                  highlightColor: splash(isDark),
+                  hoverColor: splash(isDark),
+                  style: AdaptiveTheme.of(context).theme.iconButtonTheme.style,
+                  icon: Icon(
+                    Icons.close,
+                    color: isDark ? kTextColor : kLTextColor,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  tooltip: "Exit",
+                ),
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              tooltip: "Back",
             );
           },
         ),
@@ -321,6 +336,13 @@ class _GalleryWidgetState extends State<GalleryWidget> {
           ),
         ),
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+            height: 2,
+            color: isDark ? kGrey40 : kLGrey40,
+          ),
+        ),
       ),
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -352,8 +374,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
           boxShadow: [
             BoxShadow(
               offset: const Offset(0, -2),
-              color: isDark ? kBlack10 : kLGrey40,
-              blurRadius: 5,
+              color: isDark ? kGrey40 : kLGrey40,
             )
           ],
         ),

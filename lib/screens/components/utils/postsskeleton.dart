@@ -1,8 +1,13 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/constants.dart';
 import 'package:shimmer/shimmer.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
 
 class FeedSkeleton extends StatelessWidget {
   final bool hasAppbar;
@@ -181,8 +186,8 @@ class ShimmerBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Shimmer.fromColors(
-      baseColor: isDark ? kGrey40 : kLGrey40,
-      highlightColor: isDark ? kGrey50 : kLGrey30,
+      baseColor: isDark ? kGrey40 : kLGrey30,
+      highlightColor: isDark ? kGrey50 : kLBlack20,
       child: Container(
         height: height,
         width: width,

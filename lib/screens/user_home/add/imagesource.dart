@@ -1,9 +1,17 @@
+// Dart imports:
 import 'dart:io';
 import 'dart:ui';
-import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+
+// Project imports:
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/resources/post_methods.dart';
 import 'package:hitch_handler/screens/components/customfields/customelevatedbutton.dart';
@@ -107,178 +115,185 @@ class _ImageSourceSelectState extends State<ImageSourceSelect> {
         FontFeature.oldstyleFigures()
       ],
     );
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(
-              height: 8,
-            ),
-            SizedBox(
-              height: 20,
-              child: Center(
-                child: Container(
-                  height: 5,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? kTextColor.withOpacity(0.4)
-                        : kLTextColor.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          height: 30.h,
+          child: Center(
+            child: Container(
+              height: 5,
+              width: 50.w,
+              decoration: BoxDecoration(
+                color: isDark
+                    ? kTextColor.withOpacity(0.5)
+                    : kLTextColor.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            FittedBox(
-              child: Text(
-                "Select Image source :",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: isDark ? kTextColor : kLTextColor,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          ),
+        ),
+        Divider(
+          thickness: 2,
+          color: isDark ? kGrey40 : kLGrey50,
+          height: 2,
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(
-                  width: 30,
+                  height: 30,
                 ),
-                Expanded(
-                  child: ElevatedButtonWithIcon(
-                    activeColor: Colors.lightBlue[200]!,
-                    label: "Camera",
-                    icon: Icons.camera_alt_rounded,
-                    onPressed: () {
-                      pickImage(ImageSource.camera);
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                Expanded(
-                  child: ElevatedButtonWithIcon(
-                    activeColor: Colors.green[300]!,
-                    label: "Gallery",
-                    icon: Icons.photo_library_rounded,
-                    onPressed: () {
-                      pickMultiImage();
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Theme(
-                data: AdaptiveTheme.of(context).theme.copyWith(
-                      useMaterial3: true,
-                      splashColor: Colors.transparent,
+                FittedBox(
+                  child: Text(
+                    "Select Image source :",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: isDark ? kTextColor : kLTextColor,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                      fontSize: 18,
                     ),
-                child: ExpansionTile(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  collapsedShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  initiallyExpanded: true,
-                  textColor: isDark ? kTextColor : kLTextColor,
-                  collapsedTextColor: isDark ? kTextColor : kLTextColor,
-                  iconColor: isDark ? kTextColor : kLTextColor,
-                  collapsedIconColor: isDark ? kTextColor : kLTextColor,
-                  backgroundColor: isDark ? kBlack20 : kLBlack10,
-                  collapsedBackgroundColor: isDark ? kBlack20 : kLBlack10,
-                  title: Row(
-                    children: [
-                      const Icon(
-                        Icons.info_outline_rounded,
-                        size: 18,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    Expanded(
+                      child: ElevatedButtonWithIcon(
+                        activeColor: Colors.lightBlue[200]!,
+                        label: "Camera",
+                        icon: Icons.camera_alt_rounded,
+                        onPressed: () {
+                          pickImage(ImageSource.camera);
+                        },
                       ),
-                      const SizedBox(
-                        width: 10,
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    Expanded(
+                      child: ElevatedButtonWithIcon(
+                        activeColor: Colors.green[300]!,
+                        label: "Gallery",
+                        icon: Icons.photo_library_rounded,
+                        onPressed: () {
+                          pickMultiImage();
+                        },
                       ),
-                      Text(
-                        'Note',
-                        style: TextStyle(
-                          fontWeight:
-                              isDark ? FontWeight.normal : FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                  children: <Widget>[
-                    ListTile(
-                      dense: true,
-                      title: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "$bullet Max Image count \t-\t 5.",
-                            style: textStyle,
-                          ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                          Text(
-                            "$bullet Max Resolution \t-\t 1920 x 1080.",
-                            style: textStyle,
-                          ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                          Text(
-                            "$bullet Camera \t:\t Capture single image.",
-                            style: textStyle,
-                          ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                          Text(
-                            "$bullet Gallery \t:\t Select multiple images.",
-                            style: textStyle,
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                        ],
-                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Theme(
+                    data: AdaptiveTheme.of(context).theme.copyWith(
+                          useMaterial3: true,
+                          splashColor: Colors.transparent,
+                        ),
+                    child: ExpansionTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      collapsedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      initiallyExpanded: true,
+                      textColor: isDark ? kTextColor : kLTextColor,
+                      collapsedTextColor: isDark ? kTextColor : kLTextColor,
+                      iconColor: isDark ? kTextColor : kLTextColor,
+                      collapsedIconColor: isDark ? kTextColor : kLTextColor,
+                      backgroundColor: isDark ? kBlack20 : kLBlack10,
+                      collapsedBackgroundColor: isDark ? kBlack20 : kLBlack10,
+                      title: Row(
+                        children: [
+                          const Icon(
+                            Icons.info_outline_rounded,
+                            size: 18,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Note',
+                            style: TextStyle(
+                              fontWeight:
+                                  isDark ? FontWeight.normal : FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      children: <Widget>[
+                        ListTile(
+                          dense: true,
+                          title: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "$bullet Max Image count \t-\t 5.",
+                                style: textStyle,
+                              ),
+                              const SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                "$bullet Max Resolution \t-\t 1920 x 1080.",
+                                style: textStyle,
+                              ),
+                              const SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                "$bullet Camera \t:\t Capture single image.",
+                                style: textStyle,
+                              ),
+                              const SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                "$bullet Gallery \t:\t Select multiple images.",
+                                style: textStyle,
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

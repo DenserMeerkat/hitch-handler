@@ -1,7 +1,12 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:hitch_handler/screens/components/popupitem.dart';
+
+// Package imports:
+import 'package:adaptive_theme/adaptive_theme.dart';
+
+// Project imports:
 import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/popupitem.dart';
 
 Future<void> showToggleThemeDialog(BuildContext context) {
   void reponseSnackbar(String theme) {

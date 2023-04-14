@@ -50,7 +50,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To capture Image for post</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To choose Image for post from library</string>
+	<string>To pick Images for post from library</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to capture audio for image picker plugin</string>
 </dict>

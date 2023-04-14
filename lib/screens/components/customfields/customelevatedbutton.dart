@@ -1,8 +1,13 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../constants.dart';
+
+// Project imports:
+import 'package:hitch_handler/constants.dart';
 
 class CustomElevatedButtonWithIcon extends StatelessWidget {
   const CustomElevatedButtonWithIcon({

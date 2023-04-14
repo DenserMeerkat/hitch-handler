@@ -1,15 +1,19 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/screens/components/popupitem.dart';
-import 'package:hitch_handler/screens/common/post/postcard.dart';
-import 'package:hitch_handler/screens/user_home/feed/searchformfield.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+// Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:hitch_handler/screens/components/appbar.dart';
+import 'package:hitch_handler/screens/components/popupitem.dart';
+import 'package:hitch_handler/screens/user_home/feed/searchformfield.dart';
 
 class SearchPage extends StatefulWidget {
   static String routeName = '/search_page';
