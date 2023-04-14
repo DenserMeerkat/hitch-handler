@@ -7,11 +7,14 @@ import 'package:hitch_handler/screens/common/post/posttop.dart';
 import 'package:hitch_handler/string_extensions.dart';
 import '../../../constants.dart';
 import 'package:im_stepper/stepper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hitch_handler/resources/firestore_methods.dart';
 
 class StatusDialog extends StatefulWidget {
   final int statusIndex;
-  const StatusDialog({super.key, required this.statusIndex});
-
+  final dynamic snap;
+  final dynamic user;
+  const StatusDialog({super.key, required this.statusIndex,required this.snap,required this.user});
   @override
   State<StatusDialog> createState() => _StatusDialogState();
 }
@@ -26,6 +29,7 @@ class _StatusDialogState extends State<StatusDialog> {
   late Color statusColor;
   late IconData statusIcon;
   late String statusTitle;
+
 
   @override
   void initState() {
@@ -294,10 +298,15 @@ class _StatusDialogState extends State<StatusDialog> {
             submit,
             "Update",
             submit
-                ? () {
+                ? () async{
                     if (_formkey.currentState!.validate()) {
                       // Todo Status Change
                       debugPrint("Status Change");
+                      String res = "";
+                      bool success = false;
+                      print(widget.snap['comments']);
+                      res = await FirestoreMethods().updateStatus(
+                          widget.snap['postId'],  widget.user.uid, myTextFieldController.text,statusTitle, widget.user.name);
                       Navigator.of(context).pop();
                     } else {
                       debugPrint("Error");

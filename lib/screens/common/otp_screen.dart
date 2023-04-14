@@ -82,7 +82,7 @@ class OtpScreen extends StatelessWidget {
                 ),
                 FittedBox(
                   child: Text(
-                    "An OTP has been sent to 91****2345",
+                    "An OTP has been sent to "+ arguments.user.mobno,
                     style: AdaptiveTheme.of(context).theme.textTheme.bodySmall,
                   ),
                 ),
@@ -151,4 +151,6 @@ class OtpScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }

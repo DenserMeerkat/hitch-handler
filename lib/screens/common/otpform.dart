@@ -73,7 +73,7 @@ class OtpFormState extends State<OtpForm> {
                     )
                   ]),
               child: Pinput(
-                length: 4,
+                length: 6,
                 controller: pinController,
                 focusNode: focusNode,
                 separator: Container(

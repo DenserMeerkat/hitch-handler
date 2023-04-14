@@ -16,6 +16,15 @@ import 'package:hitch_handler/screens/user_home/add_page.dart';
 import 'package:hitch_handler/screens/user_home/add/addimages.dart';
 import 'package:hitch_handler/resources/post_methods.dart';
 import 'package:hitch_handler/screens/user_home/notifiers.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
+import '../../../args_class.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AddForm extends StatefulWidget {
   const AddForm({required Key key}) : super(key: key);
@@ -41,11 +50,12 @@ class AddFormState extends State<AddForm> {
 
   bool isAnon = false;
   bool isDept = false;
+  bool isLoading = false;
 
   bool _addImageEnabled = UploadFileList.currLength() < 5 ? true : false;
   bool _viewImagesEnabled = UploadFileList.currLength() > 0 ? true : false;
 
-  void addPost(String uid) async {
+  void addPost(String uid, String name) async {
     final scaffoldContext = ScaffoldMessenger.of(context);
 
     String res = "Error in adding Post";
@@ -56,6 +66,7 @@ class AddFormState extends State<AddForm> {
       });
       res = await FirestoreMethods().uploadPost(
         uid,
+        name,
         myTitleFieldController.text,
         myMsgFieldController.text,
         myLocFieldController.text,
@@ -290,7 +301,7 @@ class AddFormState extends State<AddForm> {
     }
   }
 
-  void validateForm() {
+  void validateForm() async{
     final User user = Provider.of<UserProvider>(context, listen: false).getUser;
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     if (_formKey.currentState!.validate()) {
@@ -317,7 +328,7 @@ class AddFormState extends State<AddForm> {
             true,
             "Confirm",
             () {
-              addPost(user.uid);
+              addPost(user.uid,user.name);
               Navigator.pop(context);
             },
           )

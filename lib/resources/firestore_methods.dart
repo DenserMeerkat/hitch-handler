@@ -10,8 +10,10 @@ import '../models/post.dart';
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
   Future<String> uploadPost(
     String uid,
+    String name,
     String title,
     String description,
     String? location,
@@ -25,6 +27,7 @@ class FirestoreMethods {
     String res = "Some Error Occured";
     try {
       String postId = const Uuid().v1();
+      final commentRef = _firestore.collection('posts').doc(postId).collection('comments');
 
       List<String> files = [];
       for (var i = 0; i < imgList.length; i++) {
@@ -33,6 +36,16 @@ class FirestoreMethods {
             await StorageMethods().uploadImagetoStorage(postId, file);
         files.add(photoUrl);
       }
+
+      Map<String,List<String>> comments = {
+        "datePublished":[],
+        "uid":[],
+        "name":[],
+        "oldStatus":[],
+        "newStatus":[],
+        "message":[],
+      };
+      commentRef.add(comments);
 
       Post post = Post(
         postId: postId,
@@ -60,6 +73,8 @@ class FirestoreMethods {
       _firestore.collection('posts').doc(postId).set(
             post.toJson(),
           );
+
+
 
       res = "success";
     } catch (err) {
@@ -116,6 +131,40 @@ class FirestoreMethods {
         });
       }
       debugPrint("BookmarkChangeSuccess");
+      return "success";
+    } catch (err) {
+      debugPrint("$err");
+      return "$err";
+    }
+  }
+
+  Future<String> updateStatus(String postId, String uid, String to_add, String newstatus, String name) async {
+    final CollectionReference<Map<String, dynamic>> subcollectionRef = FirebaseFirestore.instance.collection('posts').doc(postId).collection('comments');
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot = await subcollectionRef.get();
+    final List<String> documentIds = querySnapshot.docs.map((doc) => doc.id).toList();
+
+    final postRef = await FirebaseFirestore.instance.collection('posts').doc(postId).get();
+    final data = postRef.data();
+    final List<Map<String, dynamic>> documents = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+    try {
+      print("started");
+      var db1 = await _firestore.collection('posts').doc(postId).collection('comments').doc(documentIds[0]);
+      var db2 = await _firestore.collection('posts').doc(postId);
+      print(data);
+      await db1.update({
+        'uid':FieldValue.arrayUnion([data!['uid']]),
+        'name':FieldValue.arrayUnion([name]),
+        'message': FieldValue.arrayUnion([to_add]),
+        'newStatus' : FieldValue.arrayUnion([newstatus]),
+        'oldStatus' : FieldValue.arrayUnion([data!['status']]),
+      });
+
+      await db2.update({
+        'status' : newstatus,
+      });
+
+      debugPrint("UpdateChangeSuccess");
       return "success";
     } catch (err) {
       debugPrint("$err");

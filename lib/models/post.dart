@@ -21,6 +21,7 @@ class Post {
   final String? authUid;
   final String? authRemark;
   final double? rating;
+
   const Post({
     required this.postId,
     required this.uid,
