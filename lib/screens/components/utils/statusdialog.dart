@@ -12,12 +12,18 @@ import 'package:hitch_handler/screens/components/customfields/dialogtextfield.da
 import 'package:hitch_handler/screens/components/customiconbutton.dart';
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/string_extensions.dart';
-import '../../../constants.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/resources/firestore_methods.dart';
 
 class StatusDialog extends StatefulWidget {
   final int statusIndex;
-  const StatusDialog({super.key, required this.statusIndex});
-
+  final dynamic snap;
+  final dynamic user;
+  const StatusDialog(
+      {super.key,
+      required this.statusIndex,
+      required this.snap,
+      required this.user});
   @override
   State<StatusDialog> createState() => _StatusDialogState();
 }
@@ -58,16 +64,6 @@ class _StatusDialogState extends State<StatusDialog> {
   @override
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    OutlineInputBorder border(Color color) {
-      OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-        borderSide: BorderSide(
-          color: color,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(10.r),
-      );
-      return outlineInputBorder;
-    }
 
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -255,10 +251,19 @@ class _StatusDialogState extends State<StatusDialog> {
             submit,
             "Update",
             submit
-                ? () {
+                ? () async {
                     if (_formkey.currentState!.validate()) {
                       // Todo Status Change
+                      String res = "";
+                      debugPrint(widget.snap['comments']);
+                      res = await FirestoreMethods().updateStatus(
+                          widget.snap['postId'],
+                          widget.user.uid,
+                          myTextFieldController.text,
+                          statusTitle,
+                          widget.user.name);
                       debugPrint("Status Change");
+                      if (!mounted) return;
                       Navigator.of(context).pop();
                     } else {
                       debugPrint("Error");

@@ -188,7 +188,7 @@ class OtpFormState extends State<OtpForm> {
               height: 40.h,
             ),
             Container(
-              width: 243.w,
+              width: 300.w,
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                   color: isDark ? kGrey30 : kLBackgroundColor,
@@ -201,11 +201,11 @@ class OtpFormState extends State<OtpForm> {
                     )
                   ]),
               child: Pinput(
-                length: 4,
+                length: 6,
                 controller: pinController,
                 focusNode: focusNode,
                 separator: Container(
-                  height: 58.h,
+                  height: 58.w,
                   width: 2.w,
                   color: isDark ? kGrey30 : kLGrey30,
                 ),
@@ -214,62 +214,14 @@ class OtpFormState extends State<OtpForm> {
                 defaultPinTheme: defaultPinTheme,
                 showCursor: true,
                 focusedPinTheme: defaultPinTheme.copyWith(
-                    decoration:
-                        BoxDecoration(color: widget.fgcolor.withOpacity(0.9))),
+                    decoration: BoxDecoration(
+                  color: widget.fgcolor.withOpacity(0.9),
+                )),
               ),
             ),
             SizedBox(
               height: 40.h,
             ),
-            // Row(
-            //   children: [
-            //     SizedBox(
-            //       width: 5.w,
-            //     ),
-            //     Expanded(
-            //       child: CustomSubmitButton(
-            //         size: size,
-            //         bgcolor: kSecButtonColor,
-            //         msg: "Resend",
-            //         fsize: 20.sp,
-            //         press: () {}, //Todo
-            //       ),
-            //     ),
-            //     SizedBox(
-            //       width: 20.w,
-            //     ),
-            //     Expanded(
-            //       child: CustomSubmitButton(
-            //         size: size,
-            //         bgcolor: kPrimaryColor,
-            //         msg: "Submit",
-            //         fsize: 20.sp,
-            //         press: () {
-            //           WidgetsBinding.instance.focusManager.primaryFocus
-            //               ?.unfocus();
-            //           if (_formKey.currentState!.validate()) {
-            //             _formKey.currentState!.save();
-            //             debugPrint("___________________");
-            //             debugPrint("${_formKey.currentState!.validate()}");
-            //             ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            //             Navigator.push(
-            //               context,
-            //               MaterialPageRoute(builder: (context) {
-            //                 return widget.nextPage;
-            //               }),
-            //             );
-            //             debugPrint("OTP : $otp");
-            //           } else {
-            //             debugPrint(">>>>>ERRORS!");
-            //           }
-            //         }, //Todo_Navigation
-            //       ),
-            //     ),
-            //     SizedBox(
-            //       width: 5.w,
-            //     ),
-            //   ],
-            // ),
             CustomSubmitButton(
               size: size,
               bgcolor: kPrimaryColor,

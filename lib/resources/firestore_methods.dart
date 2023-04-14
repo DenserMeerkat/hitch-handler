@@ -17,6 +17,7 @@ class FirestoreMethods {
 
   Future<String> uploadPost(
     String uid,
+    String name,
     String title,
     String description,
     String? location,
@@ -30,6 +31,8 @@ class FirestoreMethods {
     String res = "Some Error Occured";
     try {
       String postId = const Uuid().v1();
+      final commentRef =
+          _firestore.collection('posts').doc(postId).collection('comments');
 
       List<String> files = [];
       for (var i = 0; i < imgList.length; i++) {
@@ -38,6 +41,16 @@ class FirestoreMethods {
             await StorageMethods().uploadImagetoStorage(postId, file);
         files.add(photoUrl);
       }
+
+      Map<String, List<String>> comments = {
+        "datePublished": [],
+        "uid": [],
+        "name": [],
+        "oldStatus": [],
+        "newStatus": [],
+        "message": [],
+      };
+      commentRef.add(comments);
 
       Post post = Post(
         postId: postId,
@@ -82,17 +95,7 @@ class FirestoreMethods {
         await db.update({
           'upVotes': FieldValue.arrayRemove([uid]),
         });
-        // FirebaseFirestore.instance
-        //     .collection('posts')
-        //     .doc(postId)
-        //     .get()
-        //     .then((DocumentSnapshot snap) async {
-        //   if (snap.exists) {
-        //     if (snap['upVoteCount'] > 0) {
         await db.update({'upVoteCount': FieldValue.increment(-1)});
-        //     }
-        //   }
-        // });
       } else {
         await _firestore.collection('posts').doc(postId).update({
           'upVotes': FieldValue.arrayUnion([uid]),
@@ -121,6 +124,49 @@ class FirestoreMethods {
         });
       }
       debugPrint("BookmarkChangeSuccess");
+      return "success";
+    } catch (err) {
+      debugPrint("$err");
+      return "$err";
+    }
+  }
+
+  Future<String> updateStatus(String postId, String uid, String toAdd,
+      String newstatus, String name) async {
+    final CollectionReference<Map<String, dynamic>> subcollectionRef =
+        FirebaseFirestore.instance
+            .collection('posts')
+            .doc(postId)
+            .collection('comments');
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await subcollectionRef.get();
+    final List<String> documentIds =
+        querySnapshot.docs.map((doc) => doc.id).toList();
+
+    final postRef =
+        await FirebaseFirestore.instance.collection('posts').doc(postId).get();
+    final data = postRef.data();
+
+    try {
+      var db1 = _firestore
+          .collection('posts')
+          .doc(postId)
+          .collection('comments')
+          .doc(documentIds[0]);
+      var db2 = _firestore.collection('posts').doc(postId);
+      await db1.update({
+        'uid': FieldValue.arrayUnion([data!['uid']]),
+        'name': FieldValue.arrayUnion([name]),
+        'message': FieldValue.arrayUnion([toAdd]),
+        'newStatus': FieldValue.arrayUnion([newstatus]),
+        'oldStatus': FieldValue.arrayUnion([data!['status']]),
+      });
+
+      await db2.update({
+        'status': newstatus,
+      });
+
+      debugPrint("UpdateChangeSuccess");
       return "success";
     } catch (err) {
       debugPrint("$err");

@@ -10,9 +10,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Project imports:
-import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/statusdialog.dart';
-import '../../../constants.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:hitch_handler/models/user.dart' as model;
+import 'package:hitch_handler/providers/user_provider.dart';
 
 class StatusObject {
   final int index;
@@ -122,6 +124,7 @@ class _PostTopState extends State<PostTop> {
 
   @override
   Widget build(BuildContext context) {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.only(
@@ -161,7 +164,11 @@ class _PostTopState extends State<PostTop> {
                     context: context,
                     useSafeArea: false,
                     builder: (BuildContext context) {
-                      return StatusDialog(statusIndex: statusIndex);
+                      return StatusDialog(
+                        statusIndex: statusIndex,
+                        snap: widget.snap,
+                        user: user,
+                      );
                     },
                   );
                 } else {

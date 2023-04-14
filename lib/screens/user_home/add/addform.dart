@@ -25,7 +25,6 @@ import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/screens/user_home/add/addimages.dart';
 import 'package:hitch_handler/screens/user_home/add_page.dart';
 import 'package:hitch_handler/screens/user_home/notifiers.dart';
-import 'package:hitch_handler/screens/user_home/notifiers.dart';
 
 class AddForm extends StatefulWidget {
   const AddForm({required Key key}) : super(key: key);
@@ -57,7 +56,7 @@ class AddFormState extends State<AddForm> {
   bool _addImageEnabled = UploadFileList.currLength() < 5 ? true : false;
   bool _viewImagesEnabled = UploadFileList.currLength() > 0 ? true : false;
 
-  void addPost(String uid) async {
+  void addPost(String uid, String name) async {
     final scaffoldContext = ScaffoldMessenger.of(context);
 
     String res = "Error in adding Post";
@@ -68,6 +67,7 @@ class AddFormState extends State<AddForm> {
       });
       res = await FirestoreMethods().uploadPost(
         uid,
+        name,
         myTitleFieldController.text,
         myMsgFieldController.text,
         myLocFieldController.text,
@@ -345,7 +345,7 @@ class AddFormState extends State<AddForm> {
                   true,
                   "Confirm",
                   () {
-                    addPost(user.uid);
+                    addPost(user.uid, user.name);
                     Navigator.pop(context);
                   },
                 )
