@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flutter_initicon/flutter_initicon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/models/user.dart' as model;
-import 'package:hitch_handler/providers/user_provider.dart';
 import 'package:hitch_handler/screens/common/settings_page.dart';
 
 class MainAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -21,7 +17,6 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   @override
   Widget build(BuildContext context) {
-    model.User? user = Provider.of<UserProvider>(context).getUser;
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return AppBar(
       automaticallyImplyLeading: false,

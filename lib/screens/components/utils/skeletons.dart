@@ -54,6 +54,46 @@ class FeedSkeleton extends StatelessWidget {
   }
 }
 
+class StatusTileSkeleton extends StatelessWidget {
+  const StatusTileSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        color: isDark ? kGrey30 : kLBlack15,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: isDark ? kGrey50 : kLBlack20, width: 2),
+      ),
+      child: const ListTile(
+        dense: true,
+        leading: ShimmerBox(
+          height: 30,
+          width: 30,
+          bradius: 50,
+        ),
+        title: ShimmerBox(
+          height: 16,
+          width: 60,
+          bradius: 50,
+        ),
+        subtitle: ShimmerBox(
+          height: 16,
+          width: 100,
+          bradius: 50,
+        ),
+        trailing: ShimmerBox(
+          height: 24,
+          width: 24,
+          bradius: 50,
+        ),
+      ),
+    );
+  }
+}
+
 class PostSkeleton extends StatelessWidget {
   final bool hasImage;
   const PostSkeleton({super.key, this.hasImage = false});

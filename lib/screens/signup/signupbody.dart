@@ -19,6 +19,7 @@ class SignupBody extends StatelessWidget {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
       child: Container(
+        constraints: const BoxConstraints(maxWidth: 380),
         padding: EdgeInsets.symmetric(
           horizontal: 30.w,
         ),

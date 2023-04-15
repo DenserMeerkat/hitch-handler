@@ -12,12 +12,12 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // Project imports:
-import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/models/user.dart' as model;
+import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
-import '../../constants.dart';
-import '../../models/user.dart' as model;
-import '../../providers/user_provider.dart';
-import '../common/post/postcard.dart';
+import 'package:hitch_handler/screens/components/utils/skeletons.dart';
 
 class AuthArchivesPage extends StatefulWidget {
   const AuthArchivesPage({super.key});

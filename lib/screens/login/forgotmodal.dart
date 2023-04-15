@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // Project imports:
@@ -72,25 +73,24 @@ class ForgotModalFormState extends State<ForgotModalForm> {
             color: isDark ? kGrey40 : kLGrey50,
             height: 2,
           ),
-          Padding(
+          Container(
+            constraints: const BoxConstraints(maxWidth: 380),
             padding: EdgeInsets.symmetric(horizontal: 30.w),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
+                Container(
+                  constraints: const BoxConstraints(minHeight: 30),
                   height: 20.h,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.w),
-                  child: FittedBox(
-                    child: Text(
-                      "Forgot Password ?",
-                      textAlign: TextAlign.center,
-                      style: AdaptiveTheme.of(context)
-                          .theme
-                          .textTheme
-                          .headlineLarge,
-                    ),
+                  child: AutoSizeText(
+                    "Forgot Password ?",
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style:
+                        AdaptiveTheme.of(context).theme.textTheme.headlineLarge,
                   ),
                 ),
                 SizedBox(

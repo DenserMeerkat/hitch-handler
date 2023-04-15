@@ -7,13 +7,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:im_stepper/stepper.dart';
 
 // Project imports:
+import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/resources/firestore_methods.dart';
 import 'package:hitch_handler/screens/common/post/posttop.dart';
 import 'package:hitch_handler/screens/components/customfields/dialogtextfield.dart';
 import 'package:hitch_handler/screens/components/customiconbutton.dart';
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/string_extensions.dart';
-import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/resources/firestore_methods.dart';
 
 class StatusDialog extends StatefulWidget {
   final int statusIndex;
@@ -118,15 +118,15 @@ class _StatusDialogState extends State<StatusDialog> {
                   icons: [
                     Icon(
                       Icons.radio_button_checked_rounded,
-                      color: isDark ? kTextColor : kTextColor,
+                      color: isDark ? kTextColor : kLTextColor,
                     ),
                     Icon(
                       Icons.cached_rounded,
-                      color: isDark ? kTextColor : kTextColor,
+                      color: isDark ? kTextColor : kLTextColor,
                     ),
                     Icon(
                       Icons.check_circle_outline_rounded,
-                      color: isDark ? kTextColor : kTextColor,
+                      color: isDark ? kTextColor : kLTextColor,
                     ),
                   ],
                   onStepReached: (index) {
@@ -252,8 +252,8 @@ class _StatusDialogState extends State<StatusDialog> {
             "Update",
             submit
                 ? () async {
+                    FocusManager.instance.primaryFocus?.unfocus();
                     if (_formkey.currentState!.validate()) {
-                      // Todo Status Change
                       String res = "";
                       debugPrint(widget.snap['comments']);
                       res = await FirestoreMethods().updateStatus(
@@ -265,6 +265,27 @@ class _StatusDialogState extends State<StatusDialog> {
                       debugPrint("Status Change");
                       if (!mounted) return;
                       Navigator.of(context).pop();
+                      Future.delayed(const Duration(milliseconds: 1), () {
+                        final scaffoldContext = ScaffoldMessenger.of(context);
+                        bool isDark = AdaptiveTheme.of(context).brightness ==
+                            Brightness.dark;
+                        late String snackbarText;
+                        if (res == "success") {
+                          snackbarText = "Status updated Successfully";
+                        } else {
+                          snackbarText = res;
+                        }
+                        final snackBar = SnackBar(
+                          content: Text(
+                            snackbarText,
+                            style: TextStyle(
+                                color: isDark ? kTextColor : kLTextColor),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: isDark ? kGrey40 : kLBlack10,
+                        );
+                        scaffoldContext.showSnackBar(snackBar);
+                      });
                     } else {
                       debugPrint("Error");
                     }

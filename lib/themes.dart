@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'constants.dart';
+import 'package:hitch_handler/constants.dart';
 
 class ThemeProvider with ChangeNotifier {
   static String currentTheme = 'system';

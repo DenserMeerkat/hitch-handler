@@ -50,7 +50,7 @@ class _LoginFormState extends State<LoginForm> {
       ),
       context: context,
       builder: (context) {
-        return Padding(
+        return Container(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),

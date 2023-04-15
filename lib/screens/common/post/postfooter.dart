@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -279,7 +280,16 @@ class _ActionButtonsState extends State<ActionButtons> {
                   color: isDark ? kGrey50 : kLGrey30,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Fluttertoast.showToast(
+                        msg: "Not implemented yet",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.SNACKBAR,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: isDark ? kGrey40 : kLBlack10,
+                        textColor: isDark ? kTextColor : kLTextColor,
+                        fontSize: 14.0);
+                  },
                   child: Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 4),

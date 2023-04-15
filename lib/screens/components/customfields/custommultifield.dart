@@ -7,8 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // Project imports:
 import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/string_extensions.dart';
 import 'package:hitch_handler/screens/components/customfields/customerrormsg.dart';
+import 'package:hitch_handler/string_extensions.dart';
 
 class CustomMultiField extends StatefulWidget {
   final Color fgcolor;

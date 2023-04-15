@@ -40,6 +40,8 @@ class _PopupMenuState extends State<PopupMenu> {
             AdaptiveTheme.of(context).brightness == Brightness.dark;
         return [
           PopupMenuItem<int>(
+            height: 40,
+            padding: const EdgeInsets.fromLTRB(20, 12, 6, 12),
             onTap: () {
               Future.delayed(
                 const Duration(seconds: 0),
@@ -55,6 +57,8 @@ class _PopupMenuState extends State<PopupMenu> {
             ),
           ),
           PopupMenuItem<int>(
+            height: 40,
+            padding: const EdgeInsets.fromLTRB(20, 12, 6, 12),
             value: 1,
             child: Text(
               "Get Support",

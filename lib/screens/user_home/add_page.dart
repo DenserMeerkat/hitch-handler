@@ -6,10 +6,10 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // Project imports:
-import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
-import 'package:hitch_handler/screens/user_home/notifiers.dart';
 import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
 import 'package:hitch_handler/screens/user_home/add/addform.dart';
+import 'package:hitch_handler/screens/user_home/notifiers.dart';
 
 class AddPage extends StatefulWidget {
   static String routeName = '/add_page';

@@ -25,12 +25,12 @@ class _LoginBodyState extends State<LoginBody> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
       child: Column(
         children: [
           loading ? const LProgressIndicator() : Container(height: 4),
           Container(
+            constraints: const BoxConstraints(maxWidth: 380),
             padding: EdgeInsets.only(
               left: 30.w,
               right: 30.w,

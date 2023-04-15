@@ -15,13 +15,13 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // Project imports:
 import 'package:hitch_handler/constants.dart';
+import 'package:hitch_handler/models/user.dart' as model;
+import 'package:hitch_handler/providers/user_provider.dart';
 import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:hitch_handler/screens/components/popupitem.dart';
-import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
+import 'package:hitch_handler/screens/components/utils/skeletons.dart';
 import 'package:hitch_handler/screens/user_home/search_page.dart';
-import '../../models/user.dart' as model;
-import '../../providers/user_provider.dart';
 
 class AuthHomePage extends StatefulWidget {
   const AuthHomePage({
@@ -133,7 +133,6 @@ class _AuthHomePageState extends State<AuthHomePage>
                 SliverAppBar(
                   automaticallyImplyLeading: false,
                   snap: true,
-                  //pinned: true,
                   floating: true,
                   leading: showLeading
                       ? Builder(

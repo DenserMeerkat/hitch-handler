@@ -8,9 +8,9 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 // Project imports:
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/resources/post_methods.dart';
-import 'package:hitch_handler/string_extensions.dart';
 import 'package:hitch_handler/screens/components/customfields/customerrormsg.dart';
 import 'package:hitch_handler/screens/components/customfields/fieldlabel.dart';
+import 'package:hitch_handler/string_extensions.dart';
 
 class CustomTypeAheadField extends StatefulWidget {
   final Color fgcolor;

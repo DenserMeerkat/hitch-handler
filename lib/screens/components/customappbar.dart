@@ -30,7 +30,7 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return SizedBox(
-      height: 75.h,
+      height: 80.h,
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -42,8 +42,8 @@ class CustomAppBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: 38,
-                    width: 38,
+                    height: 38.r,
+                    width: 38.r,
                     margin: const EdgeInsets.only(left: 24.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
@@ -88,7 +88,7 @@ class CustomAppBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.fromLTRB(20, 8, 30, 8),
+                    padding: const EdgeInsets.fromLTRB(20, 8, 30, 8).r,
                     decoration: BoxDecoration(
                         color: isDark ? kBackgroundColor : kGrey50,
                         borderRadius: BorderRadius.circular(50),

@@ -9,9 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 // Project imports:
+import 'package:hitch_handler/models/post.dart';
 import 'package:hitch_handler/resources/storage_methods.dart';
-import '../models/post.dart';
-import 'dart:convert';
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -43,8 +42,8 @@ class FirestoreMethods {
         files.add(photoUrl);
       }
 
-      Map<String, String> comments = {
-        "datePublished": '',
+      Map<String, dynamic> comments = {
+        "datePublished": null,
         "uid": '',
         "name": '',
         "oldStatus": '',
@@ -134,25 +133,15 @@ class FirestoreMethods {
 
   Future<String> updateStatus(String postId, String uid, String toAdd,
       String newstatus, String name) async {
-    final CollectionReference<Map<String, dynamic>> subcollectionRef =
-        FirebaseFirestore.instance
-            .collection('posts')
-            .doc(postId)
-            .collection('comments');
-    final QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await subcollectionRef.get();
-    final List<String> documentIds =
-        querySnapshot.docs.map((doc) => doc.id).toList();
-
     final postRef =
         await FirebaseFirestore.instance.collection('posts').doc(postId).get();
     final data = postRef.data();
 
-    Map<String, String> comments = {
-      "datePublished": DateTime.now().toString(),
+    Map<String, dynamic> comments = {
+      "datePublished": DateTime.now(),
       "uid": data!['uid'],
       "name": name,
-      "oldStatus": data!['status'],
+      "oldStatus": data['status'],
       "newStatus": newstatus,
       "message": toAdd,
     };
@@ -162,21 +151,10 @@ class FirestoreMethods {
           .collection('posts')
           .doc(postId)
           .collection('comments')
-          .doc().set(
-        comments
-      );
+          .doc()
+          .set(comments);
 
       var db2 = _firestore.collection('posts').doc(postId);
-
-      /*await db1.update({
-        'uid': FieldValue.arrayUnion([data!['uid']]),
-        'name': FieldValue.arrayUnion([name]),
-        'message': FieldValue.arrayUnion([toAdd]),
-        'newStatus': FieldValue.arrayUnion([newstatus]),
-        'oldStatus': FieldValue.arrayUnion([data!['status']]),
-      });
-       */
-
       await db2.update({
         'status': newstatus,
       });

@@ -55,7 +55,7 @@ class CustomSignInAppBar extends StatelessWidget {
             height: 15.h,
           ),
           Container(
-            height: 75.h,
+            height: 80.h,
             padding: EdgeInsets.only(top: 17.h),
             decoration: BoxDecoration(
               color: isDark ? kGrey30 : kLGrey30,

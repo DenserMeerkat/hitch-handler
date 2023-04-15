@@ -12,8 +12,8 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // Project imports:
-import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
+import 'package:hitch_handler/screens/components/utils/skeletons.dart';
 import '../../constants.dart';
 import '../../models/user.dart' as model;
 import '../../providers/user_provider.dart';

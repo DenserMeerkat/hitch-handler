@@ -27,7 +27,6 @@ class ResetPasswordPage extends StatelessWidget {
       required this.user});
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; // Available screen size
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {

@@ -8,9 +8,9 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:hitch_handler/constants.dart';
-import 'package:hitch_handler/string_extensions.dart';
-import 'package:hitch_handler/screens/components/utils/datetimepicker.dart';
 import 'package:hitch_handler/screens/components/customfields/customerrormsg.dart';
+import 'package:hitch_handler/screens/components/utils/datetimepicker.dart';
+import 'package:hitch_handler/string_extensions.dart';
 
 class CustomDatePickField extends StatefulWidget {
   final Color fgcolor;
@@ -189,7 +189,9 @@ class _CustomDatePickFieldState extends State<CustomDatePickField> {
                       setState(() {});
                     },
                     icon: Icon(
-                      Icons.edit_calendar_outlined,
+                      isDark
+                          ? Icons.edit_calendar_outlined
+                          : Icons.edit_calendar,
                       color: widget.fgcolor,
                       size: 18,
                       shadows: [

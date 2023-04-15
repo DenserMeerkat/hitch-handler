@@ -126,6 +126,7 @@ class _SignUpDialogState extends State<SignUpDialog> {
                         return validateEmail(value);
                       },
                       controller: myEmailController,
+                      textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       icon: Icons.alternate_email_outlined,
                       hintText: "Email",

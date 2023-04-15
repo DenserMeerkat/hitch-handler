@@ -27,13 +27,7 @@ class UserSignUpScreen extends StatefulWidget {
 
 class _UserSignUpScreenState extends State<UserSignUpScreen>
     with TickerProviderStateMixin {
-  late TabController _tabController;
   bool loading = false;
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,87 +71,12 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
             },
           ),
         ),
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: loading ? const LProgressIndicator() : Container(),
-            ),
-            // SliverAppBar(
-            //   snap: true,
-            //   floating: true,
-            //   automaticallyImplyLeading: false,
-            //   elevation: 0,
-            //   surfaceTintColor: isDark ? kGrey30 : kLGrey30,
-            //   backgroundColor: isDark ? kGrey30 : kLGrey30,
-            //   flexibleSpace: FlexibleSpaceBar(
-            //     background: Container(
-            //       padding: EdgeInsets.only(
-            //         top: 12.0.h,
-            //         left: size.width * 0.25,
-            //         right: size.width * 0.25,
-            //         bottom: 14.0.h,
-            //       ),
-            //       child: Center(
-            //         child: Container(
-            //           decoration: BoxDecoration(
-            //             borderRadius: BorderRadius.circular(50),
-            //             boxShadow: [
-            //               BoxShadow(
-            //                 offset: const Offset(0, 2),
-            //                 color: isDark ? kBlack10 : kLGrey70,
-            //               )
-            //             ],
-            //           ),
-            //           child: ClipRRect(
-            //             borderRadius: BorderRadius.circular(50),
-            //             child: Container(
-            //               color: isDark ? kBlack20 : kLBlack10,
-            //               child: TabBar(
-            //                 dividerColor: isDark ? kBlack20 : kLBlack10,
-            //                 indicatorWeight: 0,
-            //                 indicatorSize: TabBarIndicatorSize.tab,
-            //                 labelColor: kBlack10,
-            //                 unselectedLabelColor: isDark
-            //                     ? kTextColor.withOpacity(0.8)
-            //                     : kLTextColor.withOpacity(0.8),
-            //                 labelStyle: TextStyle(
-            //                   fontWeight: FontWeight.w800,
-            //                   fontSize: 12.sp,
-            //                   letterSpacing: 0.5,
-            //                 ),
-            //                 unselectedLabelStyle: TextStyle(
-            //                   fontWeight: FontWeight.bold,
-            //                   fontSize: 12.sp,
-            //                   letterSpacing: 0.5,
-            //                 ),
-            //                 splashBorderRadius: BorderRadius.circular(50.r),
-            //                 indicator: BoxDecoration(
-            //                   borderRadius: BorderRadius.circular(50.r),
-            //                   color: kPrimaryColor.withOpacity(0.9),
-            //                   border: Border.all(
-            //                     color: kPrimaryColor,
-            //                     width: 2,
-            //                   ),
-            //                 ),
-            //                 controller: _tabController,
-            //                 tabs: const <Widget>[
-            //                   Tab(
-            //                     text: "Student",
-            //                   ),
-            //                   Tab(
-            //                     text: "Staff",
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            SliverFillRemaining(
-              child: SizedBox(
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              loading ? const LProgressIndicator() : Container(),
+              SizedBox(
                 child: SignupBody(
                   formwidget: NotificationListener<IsLoading>(
                     onNotification: (n) {
@@ -175,8 +94,8 @@ class _UserSignUpScreenState extends State<UserSignUpScreen>
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: LoginSignUpFooter(
           size: size,

@@ -15,6 +15,7 @@ class DialogTextFormField extends StatelessWidget {
   final void Function()? onPressed;
   final String hintText;
   final TextInputType keyboardType;
+  final TextInputAction textInputAction;
   final IconData icon;
   final bool enabled;
   final int? minLines;
@@ -31,6 +32,7 @@ class DialogTextFormField extends StatelessWidget {
     this.enabled = true,
     this.minLines,
     this.maxLines,
+    this.textInputAction = TextInputAction.done,
   });
 
   @override
@@ -56,6 +58,7 @@ class DialogTextFormField extends StatelessWidget {
       validator: validator,
       controller: controller,
       keyboardType: keyboardType,
+      textInputAction: textInputAction,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
         border: border(Colors.transparent),
@@ -70,7 +73,10 @@ class DialogTextFormField extends StatelessWidget {
                 : kLTextColor.withOpacity(0.2),
         suffixIcon: clear
             ? IconButton(
-                onPressed: onPressed,
+                onPressed: onPressed ??
+                    () {
+                      controller.clear();
+                    },
                 icon: const Icon(
                   Icons.clear,
                 ),

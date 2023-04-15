@@ -8,13 +8,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:hitch_handler/screens/components/utils/statusdialog.dart';
 import 'package:hitch_handler/constants.dart';
-import 'package:provider/provider.dart';
 import 'package:hitch_handler/models/user.dart' as model;
 import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:hitch_handler/screens/components/utils/statusdialog.dart';
+import 'package:hitch_handler/screens/components/utils/statuslogdialog.dart';
 
 class StatusObject {
   final int index;
@@ -71,9 +72,7 @@ class _PostTopState extends State<PostTop> {
     sub =
         collection.doc(widget.snap['postId']).snapshots().listen((docSnapshot) {
       if (docSnapshot.exists && mounted) {
-
         Map<String, dynamic> data = docSnapshot.data()!;
-        print(data['status']);
         switch (data['status']) {
           case "In Review":
             statusIndex = 0;
@@ -156,38 +155,116 @@ class _PostTopState extends State<PostTop> {
             ),
           ),
           const Spacer(),
-          Material(
-            type: MaterialType.transparency,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(50),
-              onTap: () {
-                if (widget.isAuthority) {
-                  showDialog(
-                    context: context,
-                    useSafeArea: false,
-                    builder: (BuildContext context) {
-                      return StatusDialog(
-                        statusIndex: statusIndex,
-                        snap: widget.snap,
-                        user: user,
+          widget.isAuthority
+              ? PopupMenuButton(
+                  color: isDark ? kGrey40 : kLBlack10,
+                  surfaceTintColor: isDark ? kGrey40 : kLBlack10,
+                  splashRadius: 25.0,
+                  offset: Offset(8.w, 4),
+                  position: PopupMenuPosition.under,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  icon: SizedBox(
+                    width: 80.w,
+                    child: Status(
+                      statusIcon: statusIcon,
+                      statusText: widget.snap['status'],
+                      statusColor: statusColor,
+                    ),
+                  ),
+                  itemBuilder: (context) {
+                    final bool isDark =
+                        AdaptiveTheme.of(context).brightness == Brightness.dark;
+                    return [
+                      PopupMenuItem<int>(
+                        height: 20,
+                        onTap: () {
+                          Future.delayed(
+                            const Duration(seconds: 0),
+                            () => showDialog(
+                              context: context,
+                              useSafeArea: false,
+                              builder: (BuildContext context) {
+                                return StatusDialog(
+                                  statusIndex: statusIndex,
+                                  snap: widget.snap,
+                                  user: user,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 8),
+                        value: 0,
+                        child: Text(
+                          "Update Status",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isDark ? kTextColor : kLTextColor,
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem<int>(
+                        height: 20,
+                        onTap: () {
+                          Future.delayed(
+                            const Duration(seconds: 0),
+                            () => showDialog(
+                              context: context,
+                              useSafeArea: false,
+                              builder: (BuildContext context) {
+                                return StatusLogDialog(
+                                  statusIndex: statusIndex,
+                                  snap: widget.snap,
+                                  user: user,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 8),
+                        value: 1,
+                        child: Text(
+                          "View Logs",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isDark ? kTextColor : kLTextColor,
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
+                )
+              : Material(
+                  type: MaterialType.transparency,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(50),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        useSafeArea: false,
+                        builder: (BuildContext context) {
+                          return StatusLogDialog(
+                            statusIndex: statusIndex,
+                            snap: widget.snap,
+                            user: user,
+                          );
+                        },
                       );
                     },
-                  );
-                  print(widget.snap['status']);
-                } else {
-                  // Todo User Status Dialog
-                }
-              },
-              child: SizedBox(
-                width: 80.w,
-                child: Status(
-                  statusIcon: statusIcon,
-                  statusText: widget.snap['status'],
-                  statusColor: statusColor,
+                    child: SizedBox(
+                      width: 80.w,
+                      child: Status(
+                        statusIcon: statusIcon,
+                        statusText: widget.snap['status'],
+                        statusColor: statusColor,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
           Tooltip(
             message: "Copy Post-Id",
             child: Padding(
@@ -208,26 +285,6 @@ class _PostTopState extends State<PostTop> {
                       await Clipboard.setData(
                               ClipboardData(text: widget.snap['postId']))
                           .then((value) {
-                        // final snackBar = showCustomSnackBar(
-                        //   context,
-                        //   "Post-Id copied to clipboard",
-                        //   () {},
-                        //   icon: Icon(
-                        //     Icons.link,
-                        //     color: isDark ? kTextColor : kLTextColor,
-                        //   ),
-                        //   borderColor: isDark
-                        //       ? kTextColor.withOpacity(0.2)
-                        //       : kLTextColor.withOpacity(0.5),
-                        //   duration: const Duration(milliseconds: 1200),
-                        //   margin: EdgeInsets.symmetric(
-                        //       horizontal: 65.w, vertical: 10),
-                        // );
-                        // ScaffoldMessenger.of(context)
-                        //     .showSnackBar(snackBar)
-                        //     .closed
-                        //     .then((value) =>
-                        //         ScaffoldMessenger.of(context).clearSnackBars());
                         Fluttertoast.showToast(
                             msg: "Post-Id copied to clipboard",
                             toastLength: Toast.LENGTH_LONG,

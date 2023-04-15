@@ -54,16 +54,6 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
   @override
   Widget build(BuildContext context) {
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
-    OutlineInputBorder border(Color color) {
-      OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-        borderSide: BorderSide(
-          color: color,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(10.r),
-      );
-      return outlineInputBorder;
-    }
 
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

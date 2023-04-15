@@ -16,8 +16,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/screens/common/post/postcard.dart';
 import 'package:hitch_handler/screens/components/popupitem.dart';
-import 'package:hitch_handler/screens/components/utils/postsskeleton.dart';
 import 'package:hitch_handler/screens/components/utils/refreshcomponents.dart';
+import 'package:hitch_handler/screens/components/utils/skeletons.dart';
 import 'package:hitch_handler/screens/user_home/search_page.dart';
 
 class HomePage extends StatefulWidget {
