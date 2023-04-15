@@ -71,7 +71,9 @@ class _PostTopState extends State<PostTop> {
     sub =
         collection.doc(widget.snap['postId']).snapshots().listen((docSnapshot) {
       if (docSnapshot.exists && mounted) {
+
         Map<String, dynamic> data = docSnapshot.data()!;
+        print(data['status']);
         switch (data['status']) {
           case "In Review":
             statusIndex = 0;
@@ -171,6 +173,7 @@ class _PostTopState extends State<PostTop> {
                       );
                     },
                   );
+                  print(widget.snap['status']);
                 } else {
                   // Todo User Status Dialog
                 }

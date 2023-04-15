@@ -11,6 +11,7 @@ import 'package:uuid/uuid.dart';
 // Project imports:
 import 'package:hitch_handler/resources/storage_methods.dart';
 import '../models/post.dart';
+import 'dart:convert';
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -42,13 +43,13 @@ class FirestoreMethods {
         files.add(photoUrl);
       }
 
-      Map<String, List<String>> comments = {
-        "datePublished": [],
-        "uid": [],
-        "name": [],
-        "oldStatus": [],
-        "newStatus": [],
-        "message": [],
+      Map<String, String> comments = {
+        "datePublished": '',
+        "uid": '',
+        "name": '',
+        "oldStatus": '',
+        "newStatus": '',
+        "message": '',
       };
       commentRef.add(comments);
 
@@ -147,20 +148,34 @@ class FirestoreMethods {
         await FirebaseFirestore.instance.collection('posts').doc(postId).get();
     final data = postRef.data();
 
+    Map<String, String> comments = {
+      "datePublished": DateTime.now().toString(),
+      "uid": data!['uid'],
+      "name": name,
+      "oldStatus": data!['status'],
+      "newStatus": newstatus,
+      "message": toAdd,
+    };
+
     try {
       var db1 = _firestore
           .collection('posts')
           .doc(postId)
           .collection('comments')
-          .doc(documentIds[0]);
+          .doc().set(
+        comments
+      );
+
       var db2 = _firestore.collection('posts').doc(postId);
-      await db1.update({
+
+      /*await db1.update({
         'uid': FieldValue.arrayUnion([data!['uid']]),
         'name': FieldValue.arrayUnion([name]),
         'message': FieldValue.arrayUnion([toAdd]),
         'newStatus': FieldValue.arrayUnion([newstatus]),
         'oldStatus': FieldValue.arrayUnion([data!['status']]),
       });
+       */
 
       await db2.update({
         'status': newstatus,
