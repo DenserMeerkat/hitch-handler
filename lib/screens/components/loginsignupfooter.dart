@@ -71,40 +71,43 @@ class LoginSignUpFooter extends StatelessWidget {
                     ),
                   ),
                 ),
-                TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.r),
-                    )),
-                    overlayColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.pressed)) {
-                        return isDark
-                            ? kTextColor.withOpacity(0.1)
-                            : kLTextColor.withOpacity(0.1);
-                      }
-                      return null;
-                    }),
-                  ),
-                  onPressed: press, //todo,
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0.r),
-                      border: Border.all(
-                        width: 2.0.w,
-                        color: isDark
-                            ? kTextColor.withOpacity(0.7)
-                            : kLTextColor.withOpacity(0.7),
-                      ),
+                Expanded(
+                  flex: 3,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                      )),
+                      overlayColor: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return isDark
+                              ? kTextColor.withOpacity(0.1)
+                              : kLTextColor.withOpacity(0.1);
+                        }
+                        return null;
+                      }),
                     ),
-                    child: Center(
-                      child: Text(
-                        btntext,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: isDark ? kTextColor : kLTextColor,
-                          letterSpacing: 1.sp,
+                    onPressed: press, //todo,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0.r),
+                        border: Border.all(
+                          width: 2.0.w,
+                          color: isDark
+                              ? kTextColor.withOpacity(0.7)
+                              : kLTextColor.withOpacity(0.7),
+                        ),
+                      ),
+                      child: Center(
+                        child: FittedBox(
+                          child: Text(
+                            btntext,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? kTextColor : kLTextColor,
+                              letterSpacing: 1.sp,
+                            ),
+                          ),
                         ),
                       ),
                     ),

@@ -61,6 +61,7 @@ class AddFormState extends State<AddForm> {
 
     String res = "Error in adding Post";
     try {
+      if (!mounted) return;
       setState(() {
         _isLoading = true;
         IsLoading(_isLoading).dispatch(context);
@@ -81,6 +82,7 @@ class AddFormState extends State<AddForm> {
         UploadFileList.retrieveFileList(),
       );
 
+      if (!mounted) return;
       if (res == "success") {
         setState(() {
           _isLoading = false;
@@ -90,12 +92,14 @@ class AddFormState extends State<AddForm> {
         const snackBar = SnackBar(
           content: Text("Posted Successfully"),
         );
+        if (!mounted) return;
         scaffoldContext
             .showSnackBar(snackBar)
             .closed
             .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
         debugPrint(res); //Todo
       } else {
+        if (!mounted) return;
         setState(() {
           _isLoading = false;
           IsLoading(_isLoading).dispatch(context);

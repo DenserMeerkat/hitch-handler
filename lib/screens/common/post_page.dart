@@ -282,57 +282,60 @@ class _PostsPageState extends State<PostsPage> {
                     if (snapshot.data!.isEmpty) {
                       return Container(
                         constraints: const BoxConstraints(maxWidth: 300),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(height: 12),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: isDark
-                                    ? kGrey30
-                                    : kLBlack15.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                    color: isDark ? kGrey50 : kLBlack20,
-                                    width: 2),
-                              ),
-                              child: ListTile(
-                                dense: true,
-                                leading: Container(
-                                  padding: const EdgeInsets.all(6),
-                                  decoration: BoxDecoration(
-                                    color: kPrimaryColor,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: Icon(
-                                    Icons.radio_button_checked,
-                                    size: 20,
-                                    color: isDark ? kTextColor : kLTextColor,
-                                  ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(height: 12),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? kGrey30
+                                      : kLBlack15.withOpacity(0.8),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                      color: isDark ? kGrey50 : kLBlack20,
+                                      width: 2),
                                 ),
-                                title: AutoSizeText(
-                                  "In Review",
-                                  style: TextStyle(
+                                child: ListTile(
+                                  dense: true,
+                                  leading: Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                      color: kPrimaryColor,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: Icon(
+                                      Icons.radio_button_checked,
+                                      size: 20,
                                       color: isDark ? kTextColor : kLTextColor,
-                                      fontSize: 14,
-                                      letterSpacing: 1),
-                                ),
-                                subtitle: AutoSizeText(
-                                  "No status updates made yet",
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: isDark
-                                          ? kTextColor.withOpacity(0.7)
-                                          : kLTextColor.withOpacity(0.7)),
+                                    ),
+                                  ),
+                                  title: AutoSizeText(
+                                    "In Review",
+                                    style: TextStyle(
+                                        color:
+                                            isDark ? kTextColor : kLTextColor,
+                                        fontSize: 14,
+                                        letterSpacing: 1),
+                                  ),
+                                  subtitle: AutoSizeText(
+                                    "<First Log>",
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: isDark
+                                            ? kTextColor.withOpacity(0.7)
+                                            : kLTextColor.withOpacity(0.7)),
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 30),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     }
+
                     List<Widget> list = [];
                     for (int index = 0;
                         index < snapshot.data!.length;

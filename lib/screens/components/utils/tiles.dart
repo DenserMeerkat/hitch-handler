@@ -40,8 +40,8 @@ class StatusTile extends StatelessWidget {
           color: isDark ? kGrey30 : kLBlack15.withOpacity(0.8),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-              width: index == 0 ? 2 : 1,
-              color: index == 0
+              width: index == 0 && snap['name'] != "<First Log>" ? 2 : 1,
+              color: index == 0 && snap['name'] != "<First Log>"
                   ? kPrimaryColor
                   : isDark
                       ? kGrey50

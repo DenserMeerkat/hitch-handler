@@ -43,12 +43,12 @@ class FirestoreMethods {
       }
 
       Map<String, dynamic> comments = {
-        "datePublished": null,
+        "datePublished": DateTime.now(),
         "uid": '',
-        "name": '',
+        "name": '<First Log>',
         "oldStatus": '',
-        "newStatus": '',
-        "message": '',
+        "newStatus": 'In Review',
+        "message": 'This is the first log.',
       };
       commentRef.add(comments);
 

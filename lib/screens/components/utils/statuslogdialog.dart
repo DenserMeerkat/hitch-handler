@@ -137,7 +137,7 @@ class _StatusLogDialogState extends State<StatusLogDialog> {
                               letterSpacing: 1),
                         ),
                         subtitle: AutoSizeText(
-                          "No logs found",
+                          "<First Log>",
                           maxLines: 1,
                           style: TextStyle(
                               fontSize: 12,

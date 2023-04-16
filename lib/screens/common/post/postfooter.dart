@@ -91,12 +91,13 @@ class _PostInfoState extends State<PostInfo> {
                               ),
                             )
                           : const SizedBox(),
-                      widget.time != null
-                          ? Text(
+                      widget.time == null ||
+                              widget.location == '' && widget.date == null
+                          ? const SizedBox()
+                          : Text(
                               "•",
                               style: bodyMedium2,
-                            )
-                          : const SizedBox(),
+                            ),
                       widget.time != null
                           ? Padding(
                               padding: const EdgeInsets.only(left: 8.0),
