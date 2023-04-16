@@ -129,16 +129,17 @@ class _StatusLogDialogState extends State<StatusLogDialog> {
                             color: isDark ? kTextColor : kLTextColor,
                           ),
                         ),
-                        title: AutoSizeText(
+                        title: Text(
                           "In Review",
                           style: TextStyle(
                               color: isDark ? kTextColor : kLTextColor,
                               fontSize: 14,
                               letterSpacing: 1),
                         ),
-                        subtitle: AutoSizeText(
+                        subtitle: Text(
                           "<First Log>",
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 12,
                               color: isDark
@@ -178,7 +179,7 @@ class _StatusLogDialogState extends State<StatusLogDialog> {
             constraints: BoxConstraints(maxHeight: 250.h),
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Divider(
                     height: 2,

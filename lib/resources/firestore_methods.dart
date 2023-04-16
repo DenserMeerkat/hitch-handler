@@ -95,13 +95,13 @@ class FirestoreMethods {
         await db.update({
           'upVotes': FieldValue.arrayRemove([uid]),
         });
-        await db.update({'upVoteCount': FieldValue.increment(-1)});
+        await db.update({'upVoteCount': upVotes.length - 1});
       } else {
         await _firestore.collection('posts').doc(postId).update({
           'upVotes': FieldValue.arrayUnion([uid]),
         });
 
-        await db.update({'upVoteCount': FieldValue.increment(1)});
+        await db.update({'upVoteCount': upVotes.length + 1});
       }
       debugPrint("UpVoteChangeSuccess");
       return "success";

@@ -143,6 +143,8 @@ class _ActionButtonsState extends State<ActionButtons> {
   late dynamic snapp;
   bool isBookmarked = false;
   late dynamic sub;
+  bool likeProcessing = false;
+  bool bookmarkProcessing = false;
   @override
   void initState() {
     isUpVoted = widget.snap['upVotes'].contains(widget.user.uid) ? true : false;
@@ -177,6 +179,9 @@ class _ActionButtonsState extends State<ActionButtons> {
   @override
   Widget build(BuildContext context) {
     Future<bool> onLikeButtonTapped(bool isLiked) async {
+      setState(() {
+        likeProcessing = true;
+      });
       String res = "";
       try {
         res = await FirestoreMethods().upVotePost(
@@ -186,11 +191,17 @@ class _ActionButtonsState extends State<ActionButtons> {
         debugPrint(res);
         return isLiked;
       }
+      setState(() {
+        likeProcessing = false;
+      });
       return !isLiked;
     }
 
     Future<bool> onBookmarkTapped(bool isLiked) async {
       String res = "";
+      setState(() {
+        bookmarkProcessing = true;
+      });
       bool success = false;
       try {
         res = await FirestoreMethods().bookmarkPost(
@@ -202,6 +213,9 @@ class _ActionButtonsState extends State<ActionButtons> {
       if (res == "success") {
         success = true;
       }
+      setState(() {
+        bookmarkProcessing = false;
+      });
       return success ? !isLiked : isLiked;
     }
 
@@ -272,7 +286,7 @@ class _ActionButtonsState extends State<ActionButtons> {
                       ),
                     );
                   },
-                  onTap: onLikeButtonTapped,
+                  onTap: !likeProcessing ? onLikeButtonTapped : null,
                 ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(6, 0, 2, 0),
@@ -303,10 +317,8 @@ class _ActionButtonsState extends State<ActionButtons> {
                               : kLTextColor.withOpacity(0.7),
                           size: 20.sp,
                         ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        commentCount(),
+                        //SizedBox(width: 8.w),
+                        //commentCount(),
                       ],
                     ),
                   ),
@@ -374,7 +386,7 @@ class _ActionButtonsState extends State<ActionButtons> {
               dotSecondaryColor: Color(0xff0099cc),
             ),
             isLiked: isBookmarked,
-            onTap: onBookmarkTapped,
+            onTap: !bookmarkProcessing ? onBookmarkTapped : null,
             likeBuilder: (bool isBookmarked) {
               return Icon(
                 isBookmarked ? Icons.bookmark : Icons.bookmark_add_outlined,
