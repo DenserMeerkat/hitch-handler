@@ -33,6 +33,8 @@ class FirestoreMethods {
       String postId = const Uuid().v1();
       final commentRef =
           _firestore.collection('posts').doc(postId).collection('comments');
+      final issatisfiedRef =
+      _firestore.collection('posts').doc(postId).collection('issatisfied');
 
       List<String> files = [];
       for (var i = 0; i < imgList.length; i++) {
@@ -51,6 +53,14 @@ class FirestoreMethods {
         "message": 'This is the first log.',
       };
       commentRef.add(comments);
+
+      Map<String, dynamic> issatisfied = {
+        "datePublished": DateTime.now(),
+        "uid": '****',
+        "choice": 'no',
+        "reason": 'first log',
+      };
+      issatisfiedRef.add(issatisfied);
 
       Post post = Post(
         postId: postId,
@@ -160,6 +170,40 @@ class FirestoreMethods {
       });
 
       debugPrint("UpdateChangeSuccess");
+      return "success";
+    } catch (err) {
+      debugPrint("$err");
+      return "$err";
+    }
+  }
+
+  Future<String> isSatisfiedUpdate(String postId, String choice,
+      String reason) async {
+    final postRef =
+    await FirebaseFirestore.instance.collection('posts').doc(postId).get();
+    final data = postRef.data();
+
+    Map<String, dynamic> issatisfied = {
+      "datePublished": DateTime.now(),
+      "uid": data!['uid'],
+      "choice": choice,
+      "reason": reason,
+    };
+
+    try {
+      var db1 = _firestore
+          .collection('posts')
+          .doc(postId)
+          .collection('issatisfied')
+          .doc()
+          .set(issatisfied);
+
+      var db2 = _firestore.collection('posts').doc(postId);
+      await db2.update({
+        'status': 'In Review',
+      });
+
+      debugPrint("isSatisfiedUpdateSuccess");
       return "success";
     } catch (err) {
       debugPrint("$err");

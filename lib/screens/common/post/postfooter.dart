@@ -15,6 +15,8 @@ import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/resources/firestore_methods.dart';
 import 'package:hitch_handler/screens/common/post_page.dart';
 
+TextEditingController _reasonController = TextEditingController();
+String choice = 'no';
 class PostInfo extends StatefulWidget {
   const PostInfo({
     super.key,
@@ -369,7 +371,64 @@ class _ActionButtonsState extends State<ActionButtons> {
                       foregroundColor: MaterialStatePropertyAll(
                           isDark ? kPrimaryColor : kLTextColor),
                     ),
-                    onPressed: () {}, // Todo
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Are you satisfied?'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('Yes'),
+                                onPressed: () {
+                                  choice='Yes';
+                                  Navigator.of(context).pop(); // close the dialog
+                                },
+                              ),
+                              TextButton(
+                                child: Text('No'),
+                                onPressed: () {
+                                  choice='No';
+                                  Navigator.of(context).pop(); // close the dialog
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Enter reason'),
+                                        content: TextField(
+                                          controller: _reasonController,
+                                          decoration: InputDecoration(
+                                            hintText: 'Enter reason here',
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Cancel'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop(); // close the dialog
+                                              _reasonController.clear(); // clear the reason controller
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('Submit'),
+                                            onPressed: () async{
+                                              Navigator.of(context).pop();// close the dialog
+                                              String res;
+                                              res = await FirestoreMethods().isSatisfiedUpdate(widget.snap['postId'],choice,_reasonController.text);
+                                              _reasonController.clear(); // clear the reason controller
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                      },
+                                  );
+                                  },
+                              ),
+                            ],
+                          );
+                          },
+                      );
+                      },
                     child: const Text("Satisfied ?"),
                   ),
                 )
