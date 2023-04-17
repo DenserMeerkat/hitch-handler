@@ -15,32 +15,28 @@ import 'package:hitch_handler/resources/storage_methods.dart';
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> uploadPost(
-    String uid,
-    String name,
-    String title,
-    String description,
-    String? location,
-    String domain,
-    String? date,
-    String? time,
-    String isAnon,
-    String isDept,
-    List imgList,
-  ) async {
+  Future<String> uploadPost(String uid,
+      String name,
+      String title,
+      String description,
+      String? location,
+      String domain,
+      String? date,
+      String? time,
+      String isAnon,
+      String isDept,
+      List imgList,) async {
     String res = "Some Error Occured";
     try {
       String postId = const Uuid().v1();
       final commentRef =
-          _firestore.collection('posts').doc(postId).collection('comments');
-      final issatisfiedRef =
-      _firestore.collection('posts').doc(postId).collection('issatisfied');
+      _firestore.collection('posts').doc(postId).collection('comments');
 
       List<String> files = [];
       for (var i = 0; i < imgList.length; i++) {
         File file = imgList[i];
         String photoUrl =
-            await StorageMethods().uploadImagetoStorage(postId, file);
+        await StorageMethods().uploadImagetoStorage(postId, file);
         files.add(photoUrl);
       }
 
@@ -50,17 +46,11 @@ class FirestoreMethods {
         "name": '<First Log>',
         "oldStatus": '',
         "newStatus": 'In Review',
-        "message": 'This is the first log.',
+        "message": 'TComplaint was posted',
+        "doneBy": "user",
       };
       commentRef.add(comments);
 
-      Map<String, dynamic> issatisfied = {
-        "datePublished": DateTime.now(),
-        "uid": '****',
-        "choice": 'no',
-        "reason": 'first log',
-      };
-      issatisfiedRef.add(issatisfied);
 
       Post post = Post(
         postId: postId,
@@ -86,8 +76,8 @@ class FirestoreMethods {
       );
 
       _firestore.collection('posts').doc(postId).set(
-            post.toJson(),
-          );
+        post.toJson(),
+      );
 
       res = "success";
     } catch (err) {
@@ -142,10 +132,12 @@ class FirestoreMethods {
   }
 
   Future<String> updateStatus(String postId, String uid, String toAdd,
-      String newstatus, String name) async {
+      String newstatus, String name, String doneBy) async {
     final postRef =
-        await FirebaseFirestore.instance.collection('posts').doc(postId).get();
+    await FirebaseFirestore.instance.collection('posts').doc(postId).get();
     final data = postRef.data();
+    debugPrint(name);
+    debugPrint(doneBy);
 
     Map<String, dynamic> comments = {
       "datePublished": DateTime.now(),
@@ -154,6 +146,7 @@ class FirestoreMethods {
       "oldStatus": data['status'],
       "newStatus": newstatus,
       "message": toAdd,
+      "doneBy": doneBy,
     };
 
     try {
@@ -170,40 +163,6 @@ class FirestoreMethods {
       });
 
       debugPrint("UpdateChangeSuccess");
-      return "success";
-    } catch (err) {
-      debugPrint("$err");
-      return "$err";
-    }
-  }
-
-  Future<String> isSatisfiedUpdate(String postId, String choice,
-      String reason) async {
-    final postRef =
-    await FirebaseFirestore.instance.collection('posts').doc(postId).get();
-    final data = postRef.data();
-
-    Map<String, dynamic> issatisfied = {
-      "datePublished": DateTime.now(),
-      "uid": data!['uid'],
-      "choice": choice,
-      "reason": reason,
-    };
-
-    try {
-      var db1 = _firestore
-          .collection('posts')
-          .doc(postId)
-          .collection('issatisfied')
-          .doc()
-          .set(issatisfied);
-
-      var db2 = _firestore.collection('posts').doc(postId);
-      await db2.update({
-        'status': 'In Review',
-      });
-
-      debugPrint("isSatisfiedUpdateSuccess");
       return "success";
     } catch (err) {
       debugPrint("$err");

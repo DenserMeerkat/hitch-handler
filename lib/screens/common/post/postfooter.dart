@@ -17,6 +17,7 @@ import 'package:hitch_handler/screens/common/post_page.dart';
 
 TextEditingController _reasonController = TextEditingController();
 String choice = 'no';
+bool isDisabled = false;
 class PostInfo extends StatefulWidget {
   const PostInfo({
     super.key,
@@ -208,6 +209,7 @@ class _ActionButtonsState extends State<ActionButtons> {
     }
 
     final isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
+
     Widget commentCount() {
       //Todo
       return Text(
@@ -348,80 +350,104 @@ class _ActionButtonsState extends State<ActionButtons> {
           widget.snap['status'] == "Closed" &&
                   widget.user.uid == widget.snap['uid']
               ? SizedBox(
-                  height: 30,
-                  child: OutlinedButton(
-                    style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      foregroundColor: MaterialStatePropertyAll(
-                          isDark ? kPrimaryColor : kLTextColor),
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Are you satisfied?'),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text('Yes'),
-                                onPressed: () {
-                                  choice='Yes';
-                                  Navigator.of(context).pop(); // close the dialog
-                                },
-                              ),
-                              TextButton(
-                                child: Text('No'),
-                                onPressed: () {
-                                  choice='No';
-                                  Navigator.of(context).pop(); // close the dialog
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text('Enter reason'),
-                                        content: TextField(
-                                          controller: _reasonController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Enter reason here',
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: Text('Cancel'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop(); // close the dialog
-                                              _reasonController.clear(); // clear the reason controller
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: Text('Submit'),
-                                            onPressed: () async{
-                                              Navigator.of(context).pop();// close the dialog
-                                              String res;
-                                              res = await FirestoreMethods().isSatisfiedUpdate(widget.snap['postId'],choice,_reasonController.text);
-                                              _reasonController.clear(); // clear the reason controller
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                      },
-                                  );
-                                  },
-                              ),
-                            ],
-                          );
-                          },
-                      );
-                      },
-                    child: const Text("Satisfied ?"),
+            height: 30,
+            child: OutlinedButton(
+              style: ButtonStyle(
+                shape: MaterialStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                )
-              : const SizedBox(),
-          const Spacer(),
+                ),
+                foregroundColor: MaterialStatePropertyAll(
+                  isDark ? kPrimaryColor : kLTextColor,
+                ),
+                tapTargetSize: isDisabled
+                    ? MaterialTapTargetSize.shrinkWrap
+                    : MaterialTapTargetSize.padded,
+              ),
+              onPressed: () {
+                debugPrint(isDisabled.toString());
+                if (!isDisabled) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Are you satisfied?'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('Yes'),
+                            onPressed: () {
+                              choice = 'Yes';
+                              setState(() {
+                                isDisabled = true;
+                              });
+                              Navigator.of(context).pop();
+                              debugPrint(isDisabled.toString());// close the dialog
+                            },
+                          ),
+                          TextButton(
+                            child: Text('No'),
+                            onPressed: () {
+                              choice = 'No';
+                              Navigator.of(context).pop(); // close the dialog
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Enter reason'),
+                                    content: TextField(
+                                      controller: _reasonController,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter reason here',
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // close the dialog
+                                          _reasonController
+                                              .clear(); // clear the reason controller
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('Submit'),
+                                        onPressed: () async {
+                                          Navigator.of(context)
+                                              .pop(); // close the dialog
+                                          String res;
+                                          res =
+                                          await FirestoreMethods().updateStatus(
+                                            widget.snap['postId'],
+                                            widget.user.uid,
+                                            _reasonController.text,
+                                            widget.snap['status'],
+                                            widget.user.name,
+                                            'user',
+                                          );
+                                          _reasonController
+                                              .clear(); // clear the reason controller
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+              child: Text(isDisabled ? "Satisfied" : "Satisfied ?"),
+            ),
+          ): SizedBox(),
+
+
+    const Spacer(),
           LikeButton(
             size: 20.sp,
             animationDuration: const Duration(milliseconds: 300),

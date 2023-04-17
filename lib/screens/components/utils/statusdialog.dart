@@ -256,12 +256,16 @@ class _StatusDialogState extends State<StatusDialog> {
                     if (_formkey.currentState!.validate()) {
                       String res = "";
                       debugPrint(widget.snap['comments']);
+                      debugPrint(widget.snap['uid']);
+                      debugPrint(widget.user.uid);
                       res = await FirestoreMethods().updateStatus(
                           widget.snap['postId'],
-                          widget.user.uid,
+                        widget.user.uid,
                           myTextFieldController.text,
                           statusTitle,
-                          widget.user.name);
+                          widget.user.name,
+                        "authority",
+                      );
                       debugPrint("Status Change");
                       if (!mounted) return;
                       Navigator.of(context).pop();
