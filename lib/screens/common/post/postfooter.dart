@@ -10,6 +10,7 @@ import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Project imports:
+import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/args_class.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/resources/firestore_methods.dart';
@@ -351,6 +352,7 @@ class _ActionButtonsState extends State<ActionButtons> {
                   widget.user.uid == widget.snap['uid']
               ? SizedBox(
             height: 30,
+
             child: OutlinedButton(
               style: ButtonStyle(
                 shape: MaterialStatePropertyAll(
@@ -368,77 +370,110 @@ class _ActionButtonsState extends State<ActionButtons> {
               onPressed: () {
                 debugPrint(isDisabled.toString());
                 if (!isDisabled) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Are you satisfied?'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text('Yes'),
-                            onPressed: () {
-                              choice = 'Yes';
-                              setState(() {
-                                isDisabled = true;
-                              });
-                              Navigator.of(context).pop();
-                              debugPrint(isDisabled.toString());// close the dialog
-                            },
+                  showAlertDialog(
+                    context,
+                    "Are you Satisfied ? ",
+                    Text(""),
+                     <Widget>[
+                      TextButton(
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                              color:  isDark
+                                  ? kTextColor
+                                  : kLTextColor
+                          ),),
+                        onPressed: () {
+                          choice = 'Yes';
+                          setState(() {
+                            isDisabled = true;
+                          });
+                          Navigator.of(context).pop();
+                          debugPrint(isDisabled.toString());// close the dialog
+                        },
+                      ),
+                      TextButton(
+                        child: Text(
+                          'No',
+                          style: TextStyle(
+                              color:  isDark
+                                  ? kTextColor
+                                  : kLTextColor
+                          ),),
+                        onPressed: () {
+                          choice = 'No';
+                          Navigator.of(context).pop(); // close the dialog
+                          showAlertDialog(
+                            context,
+                            "Enter reason here",
+                            Theme(
+                            data: new ThemeData(
+                              primaryColor: kLTextColor,
+                              primaryColorDark: kTextColor
                           ),
-                          TextButton(
-                            child: Text('No'),
-                            onPressed: () {
-                              choice = 'No';
-                              Navigator.of(context).pop(); // close the dialog
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Enter reason'),
-                                    content: TextField(
-                                      controller: _reasonController,
-                                      decoration: InputDecoration(
-                                        hintText: 'Enter reason here',
-                                      ),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text('Cancel'),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // close the dialog
-                                          _reasonController
-                                              .clear(); // clear the reason controller
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: Text('Submit'),
-                                        onPressed: () async {
-                                          Navigator.of(context)
-                                              .pop(); // close the dialog
-                                          String res;
-                                          res =
-                                          await FirestoreMethods().updateStatus(
-                                            widget.snap['postId'],
-                                            widget.user.uid,
-                                            _reasonController.text,
-                                            widget.snap['status'],
-                                            widget.user.name,
-                                            'user',
-                                          );
-                                          _reasonController
-                                              .clear(); // clear the reason controller
-                                        },
-                                      ),
-                                    ],
-                                  );
+                          child: TextField(
+                              controller: _reasonController,
+                              decoration: InputDecoration(
+                                hintText: '',
+                                focusColor: isDark
+                                    ? kTextColor
+                                    : kLTextColor,
+                              ),
+                            ),
+                            ),
+                            <Widget>[
+                              TextButton(
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      color:  isDark
+                                          ? kTextColor
+                                          : kLTextColor
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // close the dialog
+                                  _reasonController
+                                      .clear(); // clear the reason controller
                                 },
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    },
+                              ),
+                              TextButton(
+                                child: Text(
+                                  'Submit',
+                                  style: TextStyle(
+                                      color:  isDark
+                                          ? kTextColor
+                                          : kLTextColor
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  Navigator.of(context)
+                                      .pop(); // close the dialog
+                                  String res;
+                                  res =
+                                  await FirestoreMethods().updateStatus(
+                                    widget.snap['postId'],
+                                    widget.user.uid,
+                                    _reasonController.text,
+                                    widget.snap['status'],
+                                    widget.user.name,
+                                    'user',
+                                  );
+                                  _reasonController
+                                      .clear(); // clear the reason controller
+                                },
+                              ),
+                            ],
+                            Icons.add_circle,
+
+                          );
+                        },
+                      ),
+                    ],
+
+                    Icons.add_circle,
+
                   );
                 }
               },
