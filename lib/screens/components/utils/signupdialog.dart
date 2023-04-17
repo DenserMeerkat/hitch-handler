@@ -10,6 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:hitch_handler/args_class.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/screens/common/otp_screen.dart';
+import 'package:hitch_handler/screens/common/verify_email.dart';
 import 'package:hitch_handler/screens/components/customfields/dialogtextfield.dart';
 import 'package:hitch_handler/screens/components/utils/customdialog.dart';
 import 'package:hitch_handler/screens/signup/create_password.dart';
@@ -51,7 +52,7 @@ class _SignUpDialogState extends State<SignUpDialog> {
   void initState() {
     newUser = widget.user;
     widget.user.email != '' ? myEmailController.text = widget.user.email : null;
-    widget.user.mobno != '' ? myEmailController.text = widget.user.mobno : null;
+    widget.user.mobno != '' ? myPhoneController.text = widget.user.mobno : null;
     myEmailController.addListener(() {
       setState(() {
         clearEmail = myEmailController.text.isNotEmpty;
@@ -162,6 +163,7 @@ class _SignUpDialogState extends State<SignUpDialog> {
             submit
                 ? () {
                     if (_formkey.currentState!.validate()) {
+                      EmailVerificationPage(email: myEmailController.text);
                       debugPrint("Print");
                       Navigator.of(context).pop();
                       newUser.email = myEmailController.text;
