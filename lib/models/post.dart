@@ -21,7 +21,7 @@ class Post {
   final DateTime? dateClosed;
   final String? authUid;
   final String? authRemark;
-  final double? rating;
+  final String? satisfied;
 
   const Post({
     required this.postId,
@@ -43,7 +43,7 @@ class Post {
     this.authRemark,
     this.dateClosed,
     this.authUid,
-    this.rating,
+    this.satisfied,
   });
 
   Map<String, dynamic> toJson() => {
@@ -66,7 +66,7 @@ class Post {
         "authRemark": authRemark,
         "dateClosed": dateClosed,
         "authUid": authUid,
-        "rating": rating,
+        "satisfied": satisfied,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -91,7 +91,7 @@ class Post {
       authRemark: snapshot["authRemark"],
       dateClosed: snapshot["dateClosed"],
       authUid: snapshot["authUid"],
-      rating: snapshot["rating"],
+      satisfied: snapshot["satisfied"],
     );
   }
 }

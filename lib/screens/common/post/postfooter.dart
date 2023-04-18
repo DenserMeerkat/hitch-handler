@@ -6,6 +6,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hitch_handler/screens/components/utils/satisfieddialog.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -17,6 +18,7 @@ import 'package:hitch_handler/screens/common/post_page.dart';
 
 TextEditingController _reasonController = TextEditingController();
 String choice = 'no';
+
 class PostInfo extends StatefulWidget {
   const PostInfo({
     super.key,
@@ -147,6 +149,7 @@ class _ActionButtonsState extends State<ActionButtons> {
   late dynamic sub;
   bool likeProcessing = false;
   bool bookmarkProcessing = false;
+  late String? satisfied;
   @override
   void initState() {
     isUpVoted = widget.snap['upVotes'].contains(widget.user.uid) ? true : false;
@@ -154,6 +157,7 @@ class _ActionButtonsState extends State<ActionButtons> {
     upVoteCount = widget.snap['upVotes'].length;
     isBookmarked =
         widget.snap['bookmarks'].contains(widget.user.uid) ? true : false;
+
     var collection = FirebaseFirestore.instance.collection('posts');
     sub =
         collection.doc(widget.snap['postId']).snapshots().listen((docSnapshot) {
@@ -165,6 +169,12 @@ class _ActionButtonsState extends State<ActionButtons> {
               data['bookmarks'].contains(widget.user.uid) ? true : false;
           //upVoteCount = data['upVoteCount'];
           upVoteCount = data['upVotes'].length;
+          try {
+            satisfied = data['satisfied'];
+          } catch (err) {
+            satisfied = null;
+            debugPrint(err.toString());
+          }
         }
       });
     });
@@ -180,6 +190,12 @@ class _ActionButtonsState extends State<ActionButtons> {
 
   @override
   Widget build(BuildContext context) {
+    try {
+      satisfied = widget.snap['satisfied'];
+    } catch (err) {
+      satisfied = null;
+      debugPrint(err.toString());
+    }
     Future<bool> onLikeButtonTapped(bool isLiked) async {
       setState(() {
         likeProcessing = true;
@@ -358,78 +374,53 @@ class _ActionButtonsState extends State<ActionButtons> {
                 ),
           const Spacer(),
           widget.snap['status'] == "Closed" &&
-                  widget.user.uid == widget.snap['uid']
+                  widget.user.uid == widget.snap['uid'] &&
+                  (satisfied == null ? true : false)
               ? SizedBox(
-                  height: 30,
+                  height: 28,
                   child: OutlinedButton(
                     style: ButtonStyle(
                       shape: MaterialStatePropertyAll(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(50),
                         ),
                       ),
-                      foregroundColor: MaterialStatePropertyAll(
-                          isDark ? kPrimaryColor : kLTextColor),
+                      foregroundColor: MaterialStatePropertyAll(isDark
+                          ? kTextColor.withOpacity(0.7)
+                          : kLTextColor.withOpacity(0.7)),
                     ),
                     onPressed: () {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Are you satisfied?'),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text('Yes'),
-                                onPressed: () {
-                                  choice='Yes';
-                                  Navigator.of(context).pop(); // close the dialog
-                                },
-                              ),
-                              TextButton(
-                                child: Text('No'),
-                                onPressed: () {
-                                  choice='No';
-                                  Navigator.of(context).pop(); // close the dialog
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text('Enter reason'),
-                                        content: TextField(
-                                          controller: _reasonController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Enter reason here',
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: Text('Cancel'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop(); // close the dialog
-                                              _reasonController.clear(); // clear the reason controller
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: Text('Submit'),
-                                            onPressed: () async{
-                                              Navigator.of(context).pop();// close the dialog
-                                              String res;
-                                              res = await FirestoreMethods().isSatisfiedUpdate(widget.snap['postId'],choice,_reasonController.text);
-                                              _reasonController.clear(); // clear the reason controller
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                      },
-                                  );
-                                  },
-                              ),
-                            ],
+                          return SatisfiedDialog(
+                            snap: widget.snap,
+                            user: widget.user,
+                            onSubmit: (val) {
+                              if (val) {
+                                setState(() {
+                                  satisfied = null;
+                                });
+                              }
+                            },
                           );
-                          },
+                        },
                       );
-                      },
-                    child: const Text("Satisfied ?"),
+                      debugPrint(satisfied.toString());
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(
+                          Icons.thumb_up_outlined,
+                          size: 14,
+                        ),
+                        VerticalDivider(),
+                        Icon(
+                          Icons.thumb_down_outlined,
+                          size: 14,
+                        )
+                      ],
+                    ),
                   ),
                 )
               : const SizedBox(),

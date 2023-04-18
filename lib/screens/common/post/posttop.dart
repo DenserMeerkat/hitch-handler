@@ -7,6 +7,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hitch_handler/args_class.dart';
+import 'package:hitch_handler/screens/common/post_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -66,6 +68,7 @@ class _PostTopState extends State<PostTop> {
   late Color statusColor;
   late int statusIndex;
   late dynamic sub;
+  String? satisfied;
   @override
   void initState() {
     var collection = FirebaseFirestore.instance.collection('posts');
@@ -86,6 +89,12 @@ class _PostTopState extends State<PostTop> {
           default:
             statusIndex = 0;
         }
+        try {
+          satisfied = data['satisfied'];
+        } catch (err) {
+          satisfied = null;
+          debugPrint(err.toString());
+        }
         update();
       }
     });
@@ -105,6 +114,12 @@ class _PostTopState extends State<PostTop> {
     }
     statusColor = PostTop.status[statusIndex].color;
     statusIcon = PostTop.status[statusIndex].icon;
+    try {
+      satisfied = widget.snap['satisfied'];
+    } catch (err) {
+      satisfied = null;
+      debugPrint(err.toString());
+    }
   }
 
   void update() {
@@ -155,6 +170,51 @@ class _PostTopState extends State<PostTop> {
             ),
           ),
           const Spacer(),
+          satisfied != null
+              ? satisfied == 'Yes'
+                  ? Tooltip(
+                      triggerMode: TooltipTriggerMode.tap,
+                      message: "User Satisfied",
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            color:
+                                isDark ? kGrey30 : kLBlack15.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(50),
+                            border:
+                                Border.all(color: isDark ? kGrey40 : kLGrey30)),
+                        child: const Icon(
+                          Icons.thumb_up_alt,
+                          color: kPrimaryColor,
+                          size: 14,
+                        ),
+                      ),
+                    )
+                  : Tooltip(
+                      triggerMode: TooltipTriggerMode.tap,
+                      message: "User not Satisfied",
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            color:
+                                isDark ? kGrey30 : kLBlack15.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(50),
+                            border:
+                                Border.all(color: isDark ? kGrey40 : kLGrey30)),
+                        child: Icon(
+                          Icons.thumb_down_alt,
+                          color: isDark
+                              ? AdaptiveTheme.of(context)
+                                  .theme
+                                  .colorScheme
+                                  .error
+                              : kErrorColor,
+                          size: 14,
+                        ),
+                      ),
+                    )
+              : Container(),
+          const SizedBox(width: 8),
           widget.isAuthority
               ? PopupMenuButton(
                   color: isDark ? kGrey40 : kLBlack10,
@@ -209,20 +269,24 @@ class _PostTopState extends State<PostTop> {
                       PopupMenuItem<int>(
                         height: 20,
                         onTap: () {
-                          Future.delayed(
-                            const Duration(seconds: 0),
-                            () => showDialog(
-                              context: context,
-                              useSafeArea: false,
-                              builder: (BuildContext context) {
-                                return StatusLogDialog(
-                                  statusIndex: statusIndex,
-                                  snap: widget.snap,
-                                  user: user,
-                                );
-                              },
-                            ),
-                          );
+                          Future.delayed(const Duration(seconds: 0), () {
+                            final args =
+                                PostsArguments(widget.snap, widget.isAuthority);
+                            Navigator.pushNamed(context, PostsPage.routeName,
+                                arguments: args);
+                          }
+                              // showDialog(
+                              //   context: context,
+                              //   useSafeArea: false,
+                              //   builder: (BuildContext context) {
+                              //     return StatusLogDialog(
+                              //       statusIndex: statusIndex,
+                              //       snap: widget.snap,
+                              //       user: user,
+                              //     );
+                              //   },
+                              // ),
+                              );
                         },
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 8),

@@ -68,6 +68,7 @@ dependencies:
   http: ^0.13.5
   flutter_initicon: ^3.0.0+1
   circular_countdown_timer: ^0.2.3
+  material_segmented_control: ^4.2.0
   #expandable_page_view: ^1.0.17
 
 dev_dependencies:

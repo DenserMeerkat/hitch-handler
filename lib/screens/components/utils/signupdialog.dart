@@ -51,7 +51,7 @@ class _SignUpDialogState extends State<SignUpDialog> {
   void initState() {
     newUser = widget.user;
     widget.user.email != '' ? myEmailController.text = widget.user.email : null;
-    widget.user.mobno != '' ? myEmailController.text = widget.user.mobno : null;
+    widget.user.mobno != '' ? myPhoneController.text = widget.user.mobno : null;
     myEmailController.addListener(() {
       setState(() {
         clearEmail = myEmailController.text.isNotEmpty;
@@ -162,7 +162,6 @@ class _SignUpDialogState extends State<SignUpDialog> {
             submit
                 ? () {
                     if (_formkey.currentState!.validate()) {
-                      debugPrint("Print");
                       Navigator.of(context).pop();
                       newUser.email = myEmailController.text;
                       newUser.mobno = myPhoneController.text;

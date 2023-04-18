@@ -34,7 +34,7 @@ class FirestoreMethods {
       final commentRef =
           _firestore.collection('posts').doc(postId).collection('comments');
       final issatisfiedRef =
-      _firestore.collection('posts').doc(postId).collection('issatisfied');
+          _firestore.collection('posts').doc(postId).collection('issatisfied');
 
       List<String> files = [];
       for (var i = 0; i < imgList.length; i++) {
@@ -82,7 +82,7 @@ class FirestoreMethods {
         dateClosed: null,
         authUid: null,
         authRemark: null,
-        rating: null,
+        satisfied: null,
       );
 
       _firestore.collection('posts').doc(postId).set(
@@ -168,6 +168,9 @@ class FirestoreMethods {
       await db2.update({
         'status': newstatus,
       });
+      await db2.update({
+        'satisfied': null,
+      });
 
       debugPrint("UpdateChangeSuccess");
       return "success";
@@ -177,10 +180,10 @@ class FirestoreMethods {
     }
   }
 
-  Future<String> isSatisfiedUpdate(String postId, String choice,
-      String reason) async {
+  Future<String> isSatisfiedUpdate(
+      String postId, String choice, String reason) async {
     final postRef =
-    await FirebaseFirestore.instance.collection('posts').doc(postId).get();
+        await FirebaseFirestore.instance.collection('posts').doc(postId).get();
     final data = postRef.data();
 
     Map<String, dynamic> issatisfied = {
@@ -200,7 +203,7 @@ class FirestoreMethods {
 
       var db2 = _firestore.collection('posts').doc(postId);
       await db2.update({
-        'status': 'In Review',
+        'satisfied': choice,
       });
 
       debugPrint("isSatisfiedUpdateSuccess");

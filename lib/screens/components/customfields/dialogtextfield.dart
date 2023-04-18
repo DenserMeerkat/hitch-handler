@@ -52,7 +52,7 @@ class DialogTextFormField extends StatelessWidget {
     return TextFormField(
       maxLines: maxLines,
       minLines: minLines,
-      enabled: true,
+      enabled: enabled,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium,
       validator: validator,
