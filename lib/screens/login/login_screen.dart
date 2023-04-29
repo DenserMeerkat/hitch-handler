@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -12,7 +11,7 @@ import 'package:hitch_handler/args_class.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/screens/components/customsigninappbar.dart';
 import 'package:hitch_handler/screens/components/loginsignupfooter.dart';
-import 'package:hitch_handler/screens/components/utils/customdialog.dart';
+import 'package:hitch_handler/screens/components/utils/exitappdialog.dart';
 import 'package:hitch_handler/screens/login/loginbody.dart';
 import 'package:hitch_handler/screens/login/loginform.dart';
 import 'package:hitch_handler/screens/signup/signup_screen.dart';
@@ -83,35 +82,6 @@ class LoginScreen extends StatelessWidget {
           }, //Todo_Navigation
         ),
       ),
-    );
-  }
-
-  void exitAppDialog(BuildContext context) {
-    showAlertDialog(
-      context,
-      "Exit Apllication",
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Click Exit to close app.",
-            style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
-          ),
-        ],
-      ),
-      [
-        buildCancelButton(context),
-        buildActiveButton(
-          context,
-          true,
-          "Exit",
-          () {
-            FlutterExitApp.exitApp(iosForceExit: true);
-          },
-        )
-      ],
-      Icons.cancel_outlined,
     );
   }
 }

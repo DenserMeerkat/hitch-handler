@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:hitch_handler/screens/auth_home/auth_Archives_page.dart';
 import 'package:hitch_handler/screens/auth_home/auth_home_page.dart';
+import 'package:hitch_handler/screens/components/utils/exitappdialog.dart';
 import '../../constants.dart';
 import '../../providers/user_provider.dart';
 import '../components/appbar.dart';
@@ -66,6 +68,7 @@ class _AuthAppScreenState extends State<AuthAppScreen> {
     bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
+        exitAppDialog(context);
         return false;
       },
       child: Scaffold(

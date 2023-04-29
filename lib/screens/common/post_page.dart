@@ -196,7 +196,11 @@ class _PostsPageState extends State<PostsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  PostTop(snap: snap, isAuthority: isAuthority),
+                  PostTop(
+                    snap: snap,
+                    isAuthority: isAuthority,
+                    isViewPage: true,
+                  ),
                   PostTitle(snap: snap, isAuthority: isAuthority),
                   PostDesc(snap: snap),
                   PostImages(snap: snap, imgList: imgList),

@@ -6,7 +6,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hitch_handler/screens/components/utils/satisfieddialog.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -15,6 +14,7 @@ import 'package:hitch_handler/args_class.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/resources/firestore_methods.dart';
 import 'package:hitch_handler/screens/common/post_page.dart';
+import 'package:hitch_handler/screens/components/utils/satisfieddialog.dart';
 
 TextEditingController _reasonController = TextEditingController();
 String choice = 'no';

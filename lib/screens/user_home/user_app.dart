@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/providers/user_provider.dart';
 import 'package:hitch_handler/screens/components/appbar.dart';
+import 'package:hitch_handler/screens/components/utils/exitappdialog.dart';
 import 'package:hitch_handler/screens/user_home/add_page.dart';
 import 'package:hitch_handler/screens/user_home/archives_page.dart';
 import 'package:hitch_handler/screens/user_home/home_page.dart';
@@ -80,6 +81,7 @@ class _AppScreenState extends State<AppScreen> {
     bool isDark = AdaptiveTheme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
+        exitAppDialog(context);
         return false;
       },
       child: Scaffold(

@@ -7,15 +7,15 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hitch_handler/args_class.dart';
-import 'package:hitch_handler/screens/common/post_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
+import 'package:hitch_handler/args_class.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/models/user.dart' as model;
 import 'package:hitch_handler/providers/user_provider.dart';
+import 'package:hitch_handler/screens/common/post_page.dart';
 import 'package:hitch_handler/screens/components/utils/statusdialog.dart';
 import 'package:hitch_handler/screens/components/utils/statuslogdialog.dart';
 
@@ -36,10 +36,12 @@ class PostTop extends StatefulWidget {
   const PostTop({
     super.key,
     required this.snap,
-    required this.isAuthority,
+    this.isAuthority = false,
+    this.isViewPage = false,
   });
   final dynamic snap;
   final bool isAuthority;
+  final bool isViewPage;
 
   static List<StatusObject> status = const [
     StatusObject(
@@ -268,14 +270,16 @@ class _PostTopState extends State<PostTop> {
                       ),
                       PopupMenuItem<int>(
                         height: 20,
+                        enabled: !widget.isViewPage,
                         onTap: () {
+                          debugPrint('${widget.isViewPage}');
                           Future.delayed(const Duration(seconds: 0), () {
                             final args =
                                 PostsArguments(widget.snap, widget.isAuthority);
                             Navigator.pushNamed(context, PostsPage.routeName,
                                 arguments: args);
                           }
-                              // showDialog(
+                              //  =>showDialog(
                               //   context: context,
                               //   useSafeArea: false,
                               //   builder: (BuildContext context) {
@@ -295,7 +299,13 @@ class _PostTopState extends State<PostTop> {
                           "View Logs",
                           style: TextStyle(
                             fontSize: 12,
-                            color: isDark ? kTextColor : kLTextColor,
+                            color: widget.isViewPage
+                                ? isDark
+                                    ? kTextColor.withOpacity(0.5)
+                                    : kLTextColor.withOpacity(0.7)
+                                : isDark
+                                    ? kTextColor
+                                    : kLTextColor,
                           ),
                         ),
                       ),
@@ -306,19 +316,25 @@ class _PostTopState extends State<PostTop> {
                   type: MaterialType.transparency,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(50),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        useSafeArea: false,
-                        builder: (BuildContext context) {
-                          return StatusLogDialog(
-                            statusIndex: statusIndex,
-                            snap: widget.snap,
-                            user: user,
-                          );
-                        },
-                      );
-                    },
+                    onTap: !widget.isViewPage
+                        ? () {
+                            final args =
+                                PostsArguments(widget.snap, widget.isAuthority);
+                            Navigator.pushNamed(context, PostsPage.routeName,
+                                arguments: args);
+                            // showDialog(
+                            //   context: context,
+                            //   useSafeArea: false,
+                            //   builder: (BuildContext context) {
+                            //     return StatusLogDialog(
+                            //       statusIndex: statusIndex,
+                            //       snap: widget.snap,
+                            //       user: user,
+                            //     );
+                            //   },
+                            // );
+                          }
+                        : null,
                     child: SizedBox(
                       width: 80.w,
                       child: Status(
