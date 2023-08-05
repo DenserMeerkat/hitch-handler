@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage>
   bool showLeading = true;
   List<IconData> sortOptions = [
     Icons.hourglass_empty_outlined,
-    MdiIcons.fromString("arrow-up-bold-outline")!,
+    MdiIcons.arrowUpBoldOutline,
   ];
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);

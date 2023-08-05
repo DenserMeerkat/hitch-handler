@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // Project imports:
 import 'package:hitch_handler/constants.dart';
@@ -76,28 +77,108 @@ class _StatusLogDialogState extends State<StatusLogDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          StreamBuilder<List<DocumentSnapshot>>(
-            stream: streamController.stream,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
-              if (_isRequesting ||
-                  snapshot.connectionState == ConnectionState.waiting) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Divider(
-                      height: 2,
-                      color: isDark
-                          ? kTextColor.withOpacity(0.2)
-                          : kLTextColor.withOpacity(0.2),
+          Container(
+            constraints: BoxConstraints(maxHeight: 400.h),
+            child: StreamBuilder<List<DocumentSnapshot>>(
+              stream: streamController.stream,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
+                if (_isRequesting ||
+                    snapshot.connectionState == ConnectionState.waiting) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Divider(
+                        height: 2,
+                        color: isDark
+                            ? kTextColor.withOpacity(0.2)
+                            : kLTextColor.withOpacity(0.2),
+                      ),
+                      const SizedBox(height: 16),
+                      const StatusTileSkeleton(),
+                      const StatusTileSkeleton(),
+                    ],
+                  );
+                }
+                if (snapshot.data!.isEmpty) {
+                  return SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Divider(
+                          height: 2,
+                          color: isDark
+                              ? kTextColor.withOpacity(0.2)
+                              : kLTextColor.withOpacity(0.2),
+                        ),
+                        const SizedBox(height: 12),
+                        Container(
+                          decoration: BoxDecoration(
+                            color:
+                                isDark ? kGrey30 : kLBlack15.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                                color: isDark ? kGrey50 : kLBlack20, width: 2),
+                          ),
+                          child: ListTile(
+                            dense: true,
+                            leading: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: kPrimaryColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Icon(
+                                Icons.radio_button_checked,
+                                size: 20,
+                                color: isDark ? kTextColor : kLTextColor,
+                              ),
+                            ),
+                            title: Text(
+                              "In Review",
+                              style: TextStyle(
+                                  color: isDark ? kTextColor : kLTextColor,
+                                  fontSize: 14,
+                                  letterSpacing: 1),
+                            ),
+                            subtitle: Text(
+                              "<First Log>",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: isDark
+                                      ? kTextColor.withOpacity(0.7)
+                                      : kLTextColor.withOpacity(0.7)),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    const StatusTileSkeleton(),
-                    const StatusTileSkeleton(),
-                  ],
-                );
-              }
-              if (snapshot.data!.isEmpty) {
+                  );
+                }
+                List<Widget> list = [];
+                for (int index = 0; index < snapshot.data!.length; index += 1) {
+                  dynamic snap = snapshot.data![index].data();
+                  int statusIndex = snap['newStatus'] == "In Review"
+                      ? 0
+                      : snap['newStatus'] == "Working"
+                          ? 1
+                          : 2;
+                  IconData leading = PostTop.status[statusIndex].icon;
+                  Color iconColor = PostTop.status[statusIndex].color;
+                  String statusTitle = PostTop.status[statusIndex].title;
+                  list.add(
+                    StatusTile(
+                      index: index,
+                      isDark: isDark,
+                      iconColor: iconColor,
+                      leading: leading,
+                      statusTitle: statusTitle,
+                      snap: snap,
+                    ),
+                  );
+                }
                 return SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -108,89 +189,13 @@ class _StatusLogDialogState extends State<StatusLogDialog> {
                             ? kTextColor.withOpacity(0.2)
                             : kLTextColor.withOpacity(0.2),
                       ),
-                      const SizedBox(height: 12),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: isDark ? kGrey30 : kLBlack15.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                              color: isDark ? kGrey50 : kLBlack20, width: 2),
-                        ),
-                        child: ListTile(
-                          dense: true,
-                          leading: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: kPrimaryColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Icon(
-                              Icons.radio_button_checked,
-                              size: 20,
-                              color: isDark ? kTextColor : kLTextColor,
-                            ),
-                          ),
-                          title: Text(
-                            "In Review",
-                            style: TextStyle(
-                                color: isDark ? kTextColor : kLTextColor,
-                                fontSize: 14,
-                                letterSpacing: 1),
-                          ),
-                          subtitle: Text(
-                            "<First Log>",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: isDark
-                                    ? kTextColor.withOpacity(0.7)
-                                    : kLTextColor.withOpacity(0.7)),
-                          ),
-                        ),
-                      ),
+                      const SizedBox(height: 8),
+                      ...list
                     ],
                   ),
                 );
-              }
-              List<Widget> list = [];
-              for (int index = 0; index < snapshot.data!.length; index += 1) {
-                dynamic snap = snapshot.data![index].data();
-                int statusIndex = snap['newStatus'] == "In Review"
-                    ? 0
-                    : snap['newStatus'] == "Working"
-                        ? 1
-                        : 2;
-                IconData leading = PostTop.status[statusIndex].icon;
-                Color iconColor = PostTop.status[statusIndex].color;
-                String statusTitle = PostTop.status[statusIndex].title;
-                list.add(
-                  StatusTile(
-                    index: index,
-                    isDark: isDark,
-                    iconColor: iconColor,
-                    leading: leading,
-                    statusTitle: statusTitle,
-                    snap: snap,
-                  ),
-                );
-              }
-              return SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Divider(
-                      height: 2,
-                      color: isDark
-                          ? kTextColor.withOpacity(0.2)
-                          : kLTextColor.withOpacity(0.2),
-                    ),
-                    const SizedBox(height: 8),
-                    ...list
-                  ],
-                ),
-              );
-            },
+              },
+            ),
           ),
         ],
       ),

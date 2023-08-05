@@ -12,10 +12,10 @@ import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:hitch_handler/args_class.dart';
+import 'package:hitch_handler/screens/common/post_page.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/models/user.dart' as model;
 import 'package:hitch_handler/providers/user_provider.dart';
-import 'package:hitch_handler/screens/common/post_page.dart';
 import 'package:hitch_handler/screens/components/utils/statusdialog.dart';
 import 'package:hitch_handler/screens/components/utils/statuslogdialog.dart';
 
@@ -246,7 +246,7 @@ class _PostTopState extends State<PostTop> {
                             const Duration(seconds: 0),
                             () => showDialog(
                               context: context,
-                              useSafeArea: false,
+                              useSafeArea: true,
                               builder: (BuildContext context) {
                                 return StatusDialog(
                                   statusIndex: statusIndex,
@@ -273,15 +273,17 @@ class _PostTopState extends State<PostTop> {
                         enabled: !widget.isViewPage,
                         onTap: () {
                           debugPrint('${widget.isViewPage}');
-                          Future.delayed(const Duration(seconds: 0), () {
-                            final args =
-                                PostsArguments(widget.snap, widget.isAuthority);
-                            Navigator.pushNamed(context, PostsPage.routeName,
-                                arguments: args);
-                          }
-                              //  =>showDialog(
+                          Future.delayed(
+                            const Duration(seconds: 0),
+                            () {
+                              final args = PostsArguments(
+                                  widget.snap, widget.isAuthority);
+                              Navigator.pushNamed(context, PostsPage.routeName,
+                                  arguments: args);
+
+                              // showDialog(
                               //   context: context,
-                              //   useSafeArea: false,
+                              //   useSafeArea: true,
                               //   builder: (BuildContext context) {
                               //     return StatusLogDialog(
                               //       statusIndex: statusIndex,
@@ -289,8 +291,9 @@ class _PostTopState extends State<PostTop> {
                               //       user: user,
                               //     );
                               //   },
-                              // ),
-                              );
+                              // );
+                            },
+                          );
                         },
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 8),

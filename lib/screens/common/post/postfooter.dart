@@ -281,8 +281,8 @@ class _ActionButtonsState extends State<ActionButtons> {
                   likeBuilder: (bool isUpVoted) {
                     return Icon(
                       isUpVoted
-                          ? MdiIcons.fromString("arrow-up-bold")
-                          : MdiIcons.fromString("arrow-up-bold-outline"),
+                          ? MdiIcons.arrowUpBold
+                          : MdiIcons.arrowUpBoldOutline,
                       color: isUpVoted
                           ? kPrimaryColor
                           : isDark
