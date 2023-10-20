@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hitch_handler/constants.dart';
 import 'package:hitch_handler/screens/common/settings_page.dart';
 
-class MainAppBar extends StatelessWidget with PreferredSizeWidget {
+class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MainAppBar({
     super.key,
   });
@@ -35,39 +35,6 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
       centerTitle: true,
       backgroundColor: isDark ? kBackgroundColor : kLBlack20,
       surfaceTintColor: isDark ? kBackgroundColor : kLBlack20,
-      // leading: Builder(
-      //   builder: (BuildContext context) {
-      //     return Transform.scale(
-      //       scaleX: -1,
-      //       child: Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: IconButton(
-      //           splashColor: isDark
-      //               ? kTextColor.withOpacity(0.1)
-      //               : kLTextColor.withOpacity(0.1),
-      //           focusColor: isDark
-      //               ? kTextColor.withOpacity(0.1)
-      //               : kLTextColor.withOpacity(0.1),
-      //           highlightColor: isDark
-      //               ? kTextColor.withOpacity(0.1)
-      //               : kLTextColor.withOpacity(0.1),
-      //           hoverColor: isDark
-      //               ? kTextColor.withOpacity(0.1)
-      //               : kLTextColor.withOpacity(0.1),
-      //           splashRadius: 20.0,
-      //           icon: Icon(
-      //             Icons.exit_to_app_outlined,
-      //             color: isDark
-      //                 ? kTextColor.withOpacity(0.9)
-      //                 : kLTextColor.withOpacity(0.9),
-      //           ),
-      //           onPressed: () {},
-      //           tooltip: "Logout",
-      //         ),
-      //       ),
-      //     );
-      //   },
-      // ),
       actions: <Widget>[
         IconButton(
           splashColor: isDark
@@ -83,20 +50,7 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget {
               ? kTextColor.withOpacity(0.1)
               : kLTextColor.withOpacity(0.1),
           splashRadius: 20.0,
-          icon:
-              // Initicon(
-              //   text: user.name,
-              //   backgroundColor: isDark
-              //       ? kPrimaryColor.withOpacity(0.8)
-              //       : kLPrimaryColor.withOpacity(0.8),
-              //   size: 28,
-              //   border: Border.all(
-              //       width: 0.2, color: isDark ? Colors.transparent : kGrey30),
-              //   style: TextStyle(
-              //       color: isDark ? kLTextColor : kLTextColor,
-              //       fontWeight: FontWeight.w500),
-              // ),
-              Icon(
+          icon: Icon(
             Icons.settings_outlined,
             color: isDark
                 ? kTextColor.withOpacity(0.9)

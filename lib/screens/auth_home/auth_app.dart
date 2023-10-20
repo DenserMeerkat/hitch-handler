@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
