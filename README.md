@@ -2,6 +2,14 @@
 
 Hitch Handler is an issue reporting app designed to address issues faced by students with the college administration. It serves as a platform for students to report their concerns, ensuring that each issue is thoroughly addressed and resolved.
 
+### Student Portal
+https://github.com/DenserMeerkat/hitch-handler/assets/95911940/d155d4d8-1a65-42fb-bb98-c6ae79a3bac4 
+
+### Administrator Portal
+https://github.com/DenserMeerkat/hitch-handler/assets/95911940/12c76244-834f-4e87-a757-4dd31e441c6c
+
+
+
 ## Features
 
 - **Issue Reporting**: Students can easily report issues they encounter with the college administration.
